@@ -1,11 +1,15 @@
-#This code calculates r-spectrum and theta-spectrum.
-#Originally written by vincent Deblauwe, novembre 2007 in Matlab.
+#function to calculate r-spectrum and theta-spectrum.
+#Originally written by Vincent Deblauwe, novembre 2007 in Matlab.
 #Translated to R by Vishwesha Guttal, Nov 2013.
 
 #test=replicate(100,rnorm(100));
 
-test=read.table("SDF_R0.91.txt",sep="\t",header=FALSE)
-test=data.matrix(test)
+#test=read.table("SDF_R0.91.txt",sep="\t",header=FALSE)
+#test=data.matrix(test)
+
+rspec_ews = function(rawmatrix){
+
+test= data.matrix(rawmatrix)
 
 nr=dim(test)[1]
 nc=dim(test)[2]
@@ -55,6 +59,6 @@ for (i in 1:(length(tspectr)-1))
 m = which(DISTMASK & ANGLE >=anglebin[length(anglebin)]-STEP & ANGLE <=anglebin[length(anglebin)])
 tspectr[length(tspectr)] = sum(aspectr2D[m])/length(m)
 
-par(mfrow=c(1,2))
-plot(rspectr,type='l')
-plot(tspectr,type='l')
+out = list(tspectr, rspectr)
+return(out)
+}

@@ -1,5 +1,5 @@
 
-morancorrelation <- function(input)
+morancorrelation_ews <- function(input)
 	{
 		m <- mean(as.vector(input))
 		v <- var(as.vector(input))

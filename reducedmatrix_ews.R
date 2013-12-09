@@ -1,13 +1,13 @@
-#Known issues/TO-DO.
-#1. subsize has to be a divisor of dim of fullmatrix. Otherwise, convert it to a nearest divisor.
+#Function to reduce original matrix to submatrix by averaging
+#Writen by Vishwesha Guttal, 7th Nov 2013.
 
-reducedmatrix = function(fullmatrix, subsize=5)
+reducedmatrix_ews = function(fullmatrix, subsize=5)
 {
 	N = dim(fullmatrix)[1]
-	n = N/subsize
+	n = floor(N/subsize)
 	
 	submatrix = matrix(nrow=subsize, ncol=subsize);
-	reddata = matrix(nrow=N/subsize, ncol=N/subsize);
+	reddata = matrix(nrow=n, ncol=n);
 	
 	for (i in 1:n)
 	{

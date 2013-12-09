@@ -1,14 +1,12 @@
 # Author: Sonia Kefi, Novemeber 9, 2013
 
-patchsizedistr = function(fullmatrix,cutoff=1)
+patchsizedistr_ews = function(fullmatrix,cutoff=1)
 {
-	require(SDMTools)
-	
-	xsize = dim(p)[1]
+	xsize = dim(fullmatrix)[1]
 if (is.null(cutoff)){
-	transmatrix = matrix(as.numeric(fullmatrix>1),nrow=xsize,ncol=xsize)
+	transmatrix = matrix(as.numeric(fullmatrix==1),nrow=xsize,ncol=xsize)
 }	else{
-	transmatrix = matrix(as.numeric(fullmatrix>cutoff),nrow=xsize,ncol=xsize)
+	transmatrix = matrix(as.numeric(fullmatrix<cutoff),nrow=xsize,ncol=xsize)
 }
 
 ccl.mat = ConnCompLabel(transmatrix)
@@ -52,14 +50,16 @@ cumu.count <- vector()
 for(j in 1:l.bin){
 	cumu.count[j] <- sum(size.count[j:l.bin])/(sum(size.count))
 }
-cumdistr = c(bin2,cumu.count)
-return(cumdistr)	
+  
+  
+	out1=data.frame(bin2)
+	out2=data.frame(cumu.count)
+  out3=data.frame(size.patches)
+	
+	out=list("bins" = out1,"cum_count" = out2, "patch_size" = out3)
+	return(out)
+  
 } 
-
-## plot the cumulative distribution on a log-log scale		
-pdf("Fig_loglogCumuPlot_TPBb39.pdf")	 
-plot(log(bin2),log(cumu.count),xlab="log(Size)",ylab="log(Cumulative distribution)",pch=16,col="chartreuse4")
-dev.off()
 
 #----------------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------

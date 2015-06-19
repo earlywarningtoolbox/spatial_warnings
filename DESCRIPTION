@@ -1,0 +1,11 @@
+Package: spatialwarnings
+Type: Package
+Title: Spatial Early Warning Signals
+Version: 1.0.1
+Date: 2015-06-12
+Authors: Vasilis Dakos, Vishwesha Guttal, Sonia Kefi
+URL: https://github.com/fdschneider/caspr
+Imports: 
+  moments,
+  plotrix,
+  fields

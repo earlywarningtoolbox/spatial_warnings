@@ -46,16 +46,7 @@
 
 spatial_ews = function(rawmatrix, numsnaps=1, discrete=FALSE, subsize=5, nullmodel=0, iter = 50, detrending = FALSE, logtransform = FALSE)
 {
-  require("moments")
-  require("plotrix")
-  require("fields")
-  
-  source("./morancorrelation_ews.R")
-  source("./reducedmatrix_ews.R")
-  source("./rspec_ews.R")
-  source("./myfftshift_ews.R")
-  source("./patchsizedistr_ews.R")
-  
+
   rawmatrix=as.matrix(rawmatrix)
   
   allmatrices = rawmatrix

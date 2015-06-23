@@ -277,7 +277,7 @@ spatial_ews = function(rawmatrix, numsnaps=1, discrete=FALSE, subsize=5, nullmod
     # Spatial indicators
     plot(0,0,ylab="",xlab="",type="n",,xaxt="n",yaxt="n",xlim=c(0,1),ylim=c(0,1),frame.plot=FALSE, main = "spatial statistics")
     bcol=matrix(c(0,0,3,5,5,0,5,5,3,5,5,3),3,4)
-    addtable2plot(-0.25,0.9,signif(res_ind,3),display.colnames=TRUE,display.rownames=TRUE,hlines=TRUE,vlines=TRUE,cex=1.25, xpad=0.5,ypad=0.5,
+    plotrix::addtable2plot(-0.25,0.9,signif(res_ind,3),display.colnames=TRUE,display.rownames=TRUE,hlines=TRUE,vlines=TRUE,cex=1.25, xpad=0.5,ypad=0.5,
                   title="",bty="o", bg=bcol,xjust=0,yjust=0)
     
     mtext("Spatial Early-Warnings Each Snapshot",side=3,line=0.01, outer=TRUE, font =2)

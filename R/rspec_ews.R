@@ -32,8 +32,8 @@ tmpshift=myfftshift(tmp)
 tmpshift[n0x,n0y]=0
 aspectr2D=abs(tmpshift)^2/(n0x*n0y)^4
 
-sig2=sum(aspectr2D[DISTMASK])
-aspectr2D=aspectr2D/sig2
+sig2=sum(aspectr2D[DISTMASK]) #Normalisation
+aspectr2D=aspectr2D/sig2 #Normalisation
 
 #Now calculate r-spectrum
 STEP=1

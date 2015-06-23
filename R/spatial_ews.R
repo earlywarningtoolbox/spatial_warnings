@@ -14,6 +14,7 @@
 #'    @param iter is the number of iterations that the null model runs. (DEFAULT is 50)
 #'    @param detrending logical. If TRUE data are detrended by removing the spatial mean. (Default is FALSE)
 #'    @param logtransform logical. If TRUE data are logtransformed prior to analysis as log(X+1). (Default is FALSE)
+#'    @param plot logical. If TRUE a visual report is generated.
 #' 
 #' 
 # Returns:
@@ -44,7 +45,7 @@
 #' out=spatial_ews(desertification_BW, numsnaps=1, discrete=FALSE, subsize=5, nullmodel=0, iter = 50, detrending = FALSE, logtransform = FALSE)
 #' @keywords early-warning
 
-spatial_ews = function(rawmatrix, numsnaps=1, discrete=FALSE, subsize=5, nullmodel=0, iter = 50, detrending = FALSE, logtransform = FALSE)
+spatial_ews = function(rawmatrix, numsnaps=1, discrete=FALSE, subsize=5, nullmodel=0, iter = 50, detrending = FALSE, logtransform = FALSE, plot = FALSE)
 {
 
   rawmatrix=as.matrix(rawmatrix)
@@ -238,6 +239,7 @@ spatial_ews = function(rawmatrix, numsnaps=1, discrete=FALSE, subsize=5, nullmod
     res_ind[2,4] = SK_null_red[snaps,3]
     res_ind[3,4] = CORR_null_red[snaps,3] 
     
+    if(plot) {
     # Plotting
     x11(width=6.774360 ,height=8.527267)
     
@@ -322,6 +324,7 @@ spatial_ews = function(rawmatrix, numsnaps=1, discrete=FALSE, subsize=5, nullmod
     
     mtext("Trend Spatial Early-Warnings Reduced Data",side=3,line= - 3, outer=TRUE, font =2)  
   }
+  } #end of plotting
   
   # Output
   out1<-data.frame(mean_data, sd_data, skew_data, corr_data, sd_red_data, skew_red_data, corr_red_data)

@@ -7,6 +7,7 @@
 #test=read.table("SDF_R0.91.txt",sep="\t",header=FALSE)
 #test=data.matrix(test)
 
+#source("~/Desktop/Spatial_warnings/myfftshift_ews.R")
 rspec_ews = function(rawmatrix){
 
 test= data.matrix(rawmatrix)
@@ -59,6 +60,6 @@ for (i in 1:(length(tspectr)-1))
 m = which(DISTMASK & ANGLE >=anglebin[length(anglebin)]-STEP & ANGLE <=anglebin[length(anglebin)])
 tspectr[length(tspectr)] = sum(aspectr2D[m])/length(m)
 
-out = list(tspectr, rspectr)
+out = list(tspec=tspectr, rspec=rspectr)
 return(out)
 }

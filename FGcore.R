@@ -1,5 +1,4 @@
 FGcore<-function(data){
-source("~/Desktop/Spatial_warnings/lbl.R")
 periFT=0
 areaFT=0
 a=lbl(data)# data is the matrix of occupied and unoccupied sites

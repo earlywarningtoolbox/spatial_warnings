@@ -1,4 +1,3 @@
-
 morancorrelation_ews <- function(input)
 	{
 		m <- mean(as.vector(input))

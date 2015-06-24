@@ -1,15 +1,24 @@
-##  Generic spatial early warning signals 
-## Code originally written by V. Guttal, V. Dakos and S. Kefi and modified by S. Majumder
+##  Generic spatial early warning signals : variance,autocorrelation-lag1 and skewness
+## Code originally written by V. Guttal and modified by S. Majumder
 
 
-spatial_ews = function(rawmatrix, subsize=2, detrending = FALSE)
+#' Description: Spatial Early Warning Signals
+#'
+#' \code{spatial_ews} wrapper function used to estimate statistical properties from spatial data and compare results to null models
+#'
+#' Arguments:
+#'    @param rawmatrix is the input matrix.It should be a square matrix and contain either one or multiple snapshots of spatial data. If the input is a list of matrices, 
+#'    call as lapply. Otherwise if the input is one matrix with one snapshot after the other in the next row, the function can be called in a regular way.  
+
+
+spatial_ews_main = function(rawmatrix, subsize=2, detrending = FALSE, discrete=TRUE)
 {
   require("moments")
   require("plotrix")
   require("fields")
   
-  source("~/Caspr/morancorrelation_ews.R")
-  source("~/Caspr/reducedmatrix_ews.R")
+  source("~/Caspr_try/morancorrelation_ews.R")
+  source("~/Caspr_try/reducedmatrix_ews.R")
   
   rawmatrix=as.matrix(rawmatrix)
   
@@ -69,8 +78,10 @@ spatial_ews = function(rawmatrix, subsize=2, detrending = FALSE)
     skew_data[snaps] = skewness(as.vector(detrenddata)) 
     corr_data[snaps] = morancorrelation_ews(detrenddata) 
     
+    if (discrete==TRUE){
     #Obtain Reduced Data.
     red_detrend_data = reducedmatrix_ews(detrenddata,subsize) 
+    }
     
     #Calculate indicators for the reduced data.
     var_red_data[snaps] = sd(as.vector(red_detrend_data))^2 

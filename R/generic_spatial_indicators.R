@@ -6,9 +6,26 @@
 #'
 #' \code{spatial_ews} wrapper function used to estimate statistical properties from spatial data and compare results to null models
 #'
-#' Arguments:
+# Arguments:
 #'    @param rawmatrix is the input matrix.It should be a square matrix and contain either one or multiple snapshots of spatial data. If the input is a list of matrices, 
-#'    call as lapply. Otherwise if the input is one matrix with one snapshot after the other in the next row, the function can be called in a regular way.  
+#'    the function should be called as lapply. Otherwise if the input is one matrix with one snapshot after the other in the next row, the function can be called in a regular way.  
+#'    @param discrete logical. If TRUE the data represent discrete variables (like presence/absense), otherwise continuous data (like biomass density). Default is FALSE.
+#'    @param subsize is the dimension of the submatrix used to subsample the rawmatrix either to reduce the size of the original matrix
+#'    @param detrending logical. If TRUE data are detrended by removing the spatial mean. (Default is FALSE)
+  
+# Returns:
+#'   @return \code{spatial_ews} returns a matrix that contains:
+#'   @return \item{stats}{the mean, variance, skewness and autocorrelation at lag 1 of both the original and the reduced data.}
+#'   @return \item{var_null}{the variance estimated on the null model based on the original data.}
+#'   @return \item{sk_null}{the skewness estimated on the null model based on the original data.}
+#'   @return \item{cor_null}{the Moran correlation at lag 1 estimated on the null model based on the original data.}
+#'   @return \item{var_null_red}{the variance estimated on the reduced null model based on the subsampled data.}
+#'   @return \item{sk_null_red}{the skewness estimated on the reduced null model based on the subsampled data.}
+#'   @return \item{corr_null_red}{the autocorrelation at lag 1 estimated on the reduced null model based on the subsampled data.}
+#'   
+
+
+
 
 
 spatial_ews_main = function(rawmatrix, subsize=2, detrending = FALSE, discrete=TRUE)

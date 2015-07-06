@@ -3,6 +3,7 @@
 export(fitpsd)
 export(indicator_example)
 export(indicator_example_with_interm_result)
+export(indicator_moran)
 export(psd)
 export(spatial_ews)
 importFrom(moments,skewness)

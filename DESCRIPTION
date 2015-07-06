@@ -3,7 +3,11 @@ Type: Package
 Title: Spatial Early Warning Signals
 Version: 1.0.1
 Date: 2015-06-12
-Authors: Vasilis Dakos, Vishwesha Guttal, Sonia Kefi
+Author: Vasilis Dakos, Vishwesha Guttal, Sonia Kefi
+License: addme
+Maintainer: Add Me <addme@univ-montp2.fr>
+Description: A package that provides tools to compute spatial warnings of 
+             critical points.
 Imports: 
   moments,
   plotrix,

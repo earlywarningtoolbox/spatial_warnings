@@ -1,4 +1,5 @@
-#function to calculate r-spectrum and theta-spectrum.
+#function to calculate r-spectrum and theta-spectrum. NOT THE MAIN FUNCTION, but called by it.
+#Dependency for Indicator_SpectralFunctions
 #Originally written by Vincent Deblauwe, novembre 2007 in Matlab.
 #Translated to R by Vishwesha Guttal, Nov 2013.
 
@@ -7,7 +8,9 @@
 #test=read.table("SDF_R0.91.txt",sep="\t",header=FALSE)
 #test=data.matrix(test)
 
-#source("~/Desktop/Spatial_warnings/myfftshift_ews.R")
+
+#dependencies of this function - myfftshift_ews.R
+
 rspec_ews = function(rawmatrix){
 
 test= data.matrix(rawmatrix)

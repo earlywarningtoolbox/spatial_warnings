@@ -1,6 +1,5 @@
 
-# Correlation function ? 
-
+# Function calculates correlation function for 1 matrix. It is NOT THE MAIN FUNCTION to calculcate correlation function. It is a dependency of Indicator_CorrelationFunction.R
 corrfunc <- function(mat) {
   
   L <- dim(mat)[1] # system size

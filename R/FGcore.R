@@ -1,5 +1,11 @@
-#function to calculate area and perimeter of patches in a matrix. NOT THE MAIN FUNCTION to calculate fractal geometries. It is a dependency of Indicator_FractalGeometry.R
-#Dependency for this function - lbl.R (included in the repository)
+#' @title Function to calculate area and perimeter of patches 
+#' @description operates on a single square binary matrix
+#' @details This function is a dependency of Indicator_FractalGeometry.R and is called by it. Dependency for this function - lbl.R (included in the repository).
+
+#' @param binary square matrix
+#' @return list consisting of area and corresponding perimeter for each patch in the matrix 
+
+
 FGcore<-function(data){
 periFT=0
 areaFT=0

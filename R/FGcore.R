@@ -1,7 +1,9 @@
+#function to calculate area and perimeter of patches in a matrix. NOT THE MAIN FUNCTION to calculate fractal geometries. It is a dependency of Indicator_FractalGeometry.R
+#Dependency for this function - lbl.R (included in the repository)
 FGcore<-function(data){
 periFT=0
 areaFT=0
-a=lbl(data)# data is the matrix of occupied and unoccupied sites
+a=lbl(data) # data is the matrix of occupied and unoccupied sites
 b=a;
 L=dim(a);
 

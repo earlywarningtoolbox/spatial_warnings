@@ -1,4 +1,5 @@
-#Funtion lbl to label patches in a matrix. 
+#Funtion lbl to label patches in a matrix.
+#This function is a dependency for Indicators_FractalGeometry.R and FGcore.R
 #This function is an extension of the bwlabel function from EBImage package.
 #The only addition is the incorporation of periodic boundary conditions
 

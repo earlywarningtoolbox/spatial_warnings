@@ -4,9 +4,12 @@
 
 check_mat <- function(mat) { 
   
-  # If a list is passed then we check all elements
+  # If a list is passed then we do list-level cheks and check all elements
   if ( is.list(mat) ) { 
-    return( lapply(mat, check_mat) )
+    check_list(mat)
+    lapply(mat, check_mat)
+    
+    return(TRUE)
   }
   
   # Not a matrix ? 
@@ -24,6 +27,17 @@ check_mat <- function(mat) {
     stop('The matrix is not binary, please check input')
   }
   
-  # Add more testing: 
-  #   - what if matrices have different sizes ? 
+  return(TRUE)
+}
+
+check_list <- function(l) { 
+  
+  # Check if matrices have the same dimension. We compare them sequentially 
+  # and check for a change in dimensions.
+  dims <- do.call(rbind, lapply(l, dim))
+  ddims <- apply(dims, 2, diff)
+  if ( any(ddims > 0) ) { 
+    warning('Matrices in the provided list do not have the same size.')
+  }
+  
 }

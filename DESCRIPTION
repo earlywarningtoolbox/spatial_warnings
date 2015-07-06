@@ -9,3 +9,4 @@ Imports:
   plotrix,
   fields,
   SDMTools
+Suggests: testthat

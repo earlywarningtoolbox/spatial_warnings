@@ -12,3 +12,4 @@ indicator_skewness<-function(rawmatrix, subsize=2, detrending = FALSE, discrete=
     return(indicator_skewness_main(rawmatrix, subsize=2, detrending = FALSE, discrete=TRUE))
   }
   
+}

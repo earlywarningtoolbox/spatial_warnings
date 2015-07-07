@@ -1,12 +1,12 @@
 #' @title Function to label patches in a matrix.
 #' @details Called by FGcore
 #' @description This function is an extension of the bwlabel function from EBImage package. The only addition is the incorporation of periodic boundary conditions
-
+#'
 #' @param binary square matrix
 #' @return square matrix consisting of cells belonging to the same patch identifiable by a common unique value
 
 
-require(EBImage) #This package requires Biocinstaller to install. 
+#require("EBImage") #This package requires Biocinstaller to install. 
                  #type the following commands to install 
                   #source("http://bioconductor.org/biocLite.R")
                   #biocLite()

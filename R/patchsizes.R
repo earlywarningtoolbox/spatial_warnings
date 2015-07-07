@@ -16,7 +16,7 @@ patchsizes <- function(x) {
   # --------------------------------
   check_mat(x) # checks if binary and sensible
   if ( is.list(x)) { 
-    return( lapply(x, patches) )
+    return( lapply(x, patchsizes) )
   }
 
   # Actual computation of the indicator begins here

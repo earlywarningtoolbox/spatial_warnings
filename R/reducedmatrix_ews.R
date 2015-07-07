@@ -1,4 +1,6 @@
 #Function to reduce original matrix to submatrix by averaging
+# This function is used bt the generic indicators variance, skewness and moran corraltion. It dicvides the square matrix into submatrices of mean cover
+# 
 #Writen by Vishwesha Guttal, 7th Nov 2013.
 #Modified by Sabiha Majumder
 

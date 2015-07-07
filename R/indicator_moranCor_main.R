@@ -1,6 +1,7 @@
 ##  Generic spatial early warning signals : moran correlation
 ## Code originally written by V. Guttal and modified by S. Majumder
-
+# The dependencies are packages: moments, plotrix and fields.
+# This function calls another function called "reducedmatrix_ews.R" and "morancorrelation_ews.R" which should be saved in the same folder.
 
 #' Description: Spatial Early Warning Signal : Moran Correlation 
 #'
@@ -30,8 +31,8 @@ indicator_moranCor_main = function(rawmatrix, subsize=2, detrending = FALSE, dis
   require("plotrix")
   require("fields")
   
-  source("~/Caspr_try/morancorrelation_ews.R")
-  source("~/Caspr_try/reducedmatrix_ews.R")
+  source("~/spatial_warnings/morancorrelation_ews.R")
+  source("~/spatial_warnings/reducedmatrix_ews.R")
   
   rawmatrix=as.matrix(rawmatrix)
   

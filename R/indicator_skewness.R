@@ -2,8 +2,6 @@
 
 
 indicator_skewness<-function(rawmatrix, subsize=2, detrending = FALSE, discrete=TRUE){
-  source("~/Caspr_try/indicator_skewness_main.R")
-  source("~/Caspr_try/reducedmatrix_ews.R")
   
   if(is.list(data)==TRUE){
     return(lapply(rawmatrix,function(x){indicator_skewness_main(x,subsize=2, detrending = FALSE, discrete=TRUE)}))

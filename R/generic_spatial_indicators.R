@@ -34,9 +34,6 @@ spatial_ews_main = function(rawmatrix, subsize=2, detrending = FALSE, discrete=T
   require("plotrix")
   require("fields")
   
-  source("~/Caspr_try/morancorrelation_ews.R")
-  source("~/Caspr_try/reducedmatrix_ews.R")
-  
   rawmatrix=as.matrix(rawmatrix)
   
   allmatrices = rawmatrix

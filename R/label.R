@@ -1,4 +1,3 @@
-
 #' Labelling of patches.
 #' 
 #' @param x A binary matrix or a list of binary matrices.
@@ -13,14 +12,14 @@
 #'   
 #' @export
 #' 
-#' @example 
+#' @examples
 #'   data(B)
 #'   par(mar=c(0,0,0,0))
 #'   image(B, xaxt = "n", yaxt = "n", asp = 1, bty = "n", col = c("white", "black"))
 #'   M <- label(B)
 #'   image(M, xaxt = "n", yaxt = "n", asp = 1, bty = "n", 
 #'      col = rep(rainbow(24), 100) )
-
+#'      
 
 label <- function(mat) {
   

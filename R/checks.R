@@ -1,6 +1,7 @@
-# 
-# A function that checks the arguments passed to the indicator functions.
-# 
+#' @title Check for binary matrix
+#' @description A function that checks the arguments passed to the indicator functions.
+#' 
+#' @export
 
 check_mat <- function(mat) { 
   

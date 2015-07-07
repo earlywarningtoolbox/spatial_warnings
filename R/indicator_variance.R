@@ -2,8 +2,6 @@
 
 
 indicator_variance<-function(rawmatrix, subsize=2, detrending = FALSE, discrete=TRUE){
-  source("~/Caspr_try/indicator_variance_main.R")
-  source("~/Caspr_try/reducedmatrix_ews.R")
   
   if (is.list(data)==TRUE){
     return(lapply(rawmatrix,function(x){indicator_variance_main(x,subsize=2, detrending = FALSE, discrete=TRUE)}))

@@ -31,9 +31,6 @@ indicator_moranCor_main = function(rawmatrix, subsize=2, detrending = FALSE, dis
   require("plotrix")
   require("fields")
   
-  source("~/spatial_warnings/morancorrelation_ews.R")
-  source("~/spatial_warnings/reducedmatrix_ews.R")
-  
   rawmatrix=as.matrix(rawmatrix)
   
   allmatrices = rawmatrix

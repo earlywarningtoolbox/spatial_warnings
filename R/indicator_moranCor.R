@@ -2,9 +2,6 @@
 
 
 indicator_moranCor<-function(rawmatrix, subsize=2, detrending = FALSE, discrete=TRUE){
-  source("~/Caspr_try/indicator_moranCor_main.R")
-  source("~/Caspr_try/morancorrelation_ews.R")
-  source("~/Caspr_try/reducedmatrix_ews.R")
   
   if (is.list(data)==TRUE){
     return(lapply(rawmatrix,function(x){indicator_moranCor_main(x,subsize=2, detrending = FALSE, discrete=TRUE)}))

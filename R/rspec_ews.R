@@ -1,5 +1,5 @@
 #' @title Function to calculate r-spectrum and theta-spectrum for a single matrix.
-#' @Description This function is a dependency of Indicator_SpectralFunctions and is called by it
+#' @description This function is a dependency of Indicator_SpectralFunctions and is called by it
 #' @details Originally written by Vincent Deblauwe, novembre 2007 in Matlab. Translated to R by Vishwesha Guttal, Nov 2013.
 
 #' @param square binary matrix

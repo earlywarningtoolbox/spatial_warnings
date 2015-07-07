@@ -5,7 +5,7 @@
 #' @return A matrix containing ID numbers for each connected patch. Assuming
 #'   4-cell neighborhood and periodic boundaries.
 #'   
-#' @import caspr::mapping
+#' @import caspr
 #' @details The function is written in R and depends on the \code{mapping()}
 #'   function of package caspr.
 #'   
@@ -13,6 +13,7 @@
 
 label <- function(mat) {
 
+	library(caspr)
   if("list" %in% class(mat)){ 
     lapply(mat, label) 
   } else {

@@ -1,6 +1,7 @@
 ##  Generic spatial early warning signal : skewness
 ## Code originally written by V. Guttal and modified by S. Majumder
-
+# The dependencies are packages: moments, plotrix and fields.
+# This function calls another function called "reducedmatrix_ews.R" which should be saved in the same folder.
 
 #' Description: Spatial Early Warning Signals
 #'
@@ -27,7 +28,7 @@ indicator_skewness_main = function(rawmatrix, subsize=2, detrending = FALSE, dis
   require("plotrix")
   require("fields")
   
-  source("~/Caspr_try/reducedmatrix_ews.R")
+  source("~/spatial_warnings/reducedmatrix_ews.R")
   
   rawmatrix=as.matrix(rawmatrix)
   

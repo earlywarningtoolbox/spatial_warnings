@@ -1,5 +1,11 @@
+#' @title Function to calculate correlation at different distances.
+#' @description Operates on a single square matrix 
+#' @details This function is a dependency of Indicator_CorrelationFunction.R and is called by it
+ 
+#' @param binary square matrix
+#' @return Vector of correlation at distances from 0 to System Size/2 with increments of 1 unit.
 
-# Function calculates correlation function for 1 matrix. It is NOT THE MAIN FUNCTION to calculcate correlation function. It is a dependency of Indicator_CorrelationFunction.R
+
 corrfunc <- function(mat) {
   
   L <- dim(mat)[1] # system size

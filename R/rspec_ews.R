@@ -1,7 +1,9 @@
-#function to calculate r-spectrum and theta-spectrum. NOT THE MAIN FUNCTION, but called by it.
-#Dependency for Indicator_SpectralFunctions
-#Originally written by Vincent Deblauwe, novembre 2007 in Matlab.
-#Translated to R by Vishwesha Guttal, Nov 2013.
+#' @title Function to calculate r-spectrum and theta-spectrum for a single matrix.
+#' @Description This function is a dependency of Indicator_SpectralFunctions and is called by it
+#' @details Originally written by Vincent Deblauwe, novembre 2007 in Matlab. Translated to R by Vishwesha Guttal, Nov 2013.
+
+#' @param square binary matrix
+#' @return List of theta and power spectra at different angular and radial distances from 0 to 180 degrees (with increments of 5 degrees) and 1 to System Size/2 (with increments of 1 unit), respectively.
 
 #test=replicate(100,rnorm(100));
 

@@ -5,7 +5,8 @@
 \title{Description: Spatial Early Warning Signals}
 \usage{
 spatial_ews(rawmatrix, numsnaps = 1, discrete = FALSE, subsize = 5,
-  nullmodel = 0, iter = 50, detrending = FALSE, logtransform = FALSE)
+  nullmodel = 0, iter = 50, detrending = FALSE, logtransform = FALSE,
+  plot = FALSE)
 }
 \arguments{
 \item{rawmatrix}{is the input matrix.It should be a square matrix and contain either one or multiple snapshots of spatial data.}
@@ -23,6 +24,8 @@ spatial_ews(rawmatrix, numsnaps = 1, discrete = FALSE, subsize = 5,
 \item{detrending}{logical. If TRUE data are detrended by removing the spatial mean. (Default is FALSE)}
 
 \item{logtransform}{logical. If TRUE data are logtransformed prior to analysis as log(X+1). (Default is FALSE)}
+
+\item{plot}{logical. If TRUE a visual report is generated.}
 }
 \value{
 \code{spatial_ews} returns a matrix that contains:

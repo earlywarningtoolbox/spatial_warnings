@@ -31,7 +31,11 @@ Moran1 <- function(input, subsize = 2, detrending = FALSE, discrete = TRUE) {
 
   if (is.list(input)) {
 
-  out <- lapply(input, moran(x, subsize, detrending, discrete)) # Moran Index and null model computation 
+  out <- lapply(input, function(x){
+  moran(x, subsize, detrending, discrete)
+  })
+   
+
   return(out)                          #Returns a list of lists
 
   } else {

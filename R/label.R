@@ -30,5 +30,7 @@ label <- function(mat,
                   wrap = TRUE) {
   check_mat(mat)
   
-  .label(mat, nbmask, wrap)
+  out <- .label(mat, nbmask, wrap)
+  out[out == 0] <- NA
+  return(out)
 }

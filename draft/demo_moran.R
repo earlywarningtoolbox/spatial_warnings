@@ -21,6 +21,6 @@ Moran1(L)
 
 # Parameters test:
 
-Moran1(B, subsize = 2, detrending = TRUE, discrete = FALSE)$MoranCorr == Moran1(B)$MoranCorr
-
+Moran1(B, subsize = 2, detrending = FALSE, discrete = TRUE)$MoranCorr 
+ 
 

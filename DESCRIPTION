@@ -12,5 +12,7 @@ Imports:
   moments,
   plotrix,
   fields,
-  SDMTools
+  SDMTools,
+    Rcpp
 Suggests: testthat
+LinkingTo: Rcpp

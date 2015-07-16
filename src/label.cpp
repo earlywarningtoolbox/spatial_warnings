@@ -7,6 +7,9 @@
 
 using namespace Rcpp;
 
+// Default value for non-patch cells
+#define DEFAULT_VALUE NA_INTEGER
+
 // [[Rcpp::export(name = ".label")]]
 IntegerMatrix label(IntegerMatrix mat, 
                     IntegerMatrix nbmask,
@@ -23,15 +26,19 @@ IntegerMatrix label(IntegerMatrix mat,
     for (int j=0; j<W; j++) { 
       // We consider the cell (i,j).
       
+      // Default value is NA if not in a patch
+      if ( ! mat(i,j) > 0) { 
+        output(i,j) = DEFAULT_VALUE;
+      
       // If it is within a patch and not marked already 
-      if ( mat(i,j) > 0 && !is_marked(i,j) ) { 
-        
+      } else if ( ! is_marked(i,j) ) { 
+      
         // We flood fill the patch
         IntegerVector X = IntegerVector::create(i,j);
         flood_fill(mat, is_marked, output, nbmask, X, patch_number, wrap);
         patch_number++;
         
-      }
+      } 
     }
   }
   
@@ -53,7 +60,7 @@ void flood_fill(const IntegerMatrix &mat,
   int j = X(1);
   
   // We paint the pixel in our fill color
-  if ( mat(i,j) > 0) { 
+  if (mat(i,j) > 0) { 
     is_marked(i,j) = 1;
     output(i,j) = fillcol;
     

@@ -2,23 +2,36 @@
 % Please edit documentation in R/indicator_moran.R
 \name{indicator_moran}
 \alias{indicator_moran}
-\title{Moran's I}
+\title{Moran's Index at lag of 1}
 \usage{
-indicator_moran(input)
+indicator_moran(input, subsize = 2, detrending = FALSE, discrete = TRUE)
 }
 \arguments{
-\item{input}{A binary matrix or a list of binary matrix.}
+\item{input}{An matrix or a list of matrix object. It should
+  be a square matrix}
+
+\item{subsize}{logical. Dimension of the submatrix used to coarse-grain the
+  original matrix.}
+
+\item{detrending}{If TRUE data are detrended by removing the spatial mean.
+  (Default is FALSE)}
+
+\item{discrete}{logical. If TRUE the data represent discrete variables (like
+  presence/absense), otherwise continuous data (like biomass density).
+  Defaults to FALSE.}
 }
 \value{
-An object of class numeric, or a list of objects of class numeric
-        if `mat` was a list of binary matrices.
+A list (or a list of list if input was a list of matrix
+object) of:
+  \itemize{
+    \item `Mean`: Landscape mean cover
+    \item `MoranNullCorr`: Autocorrelation computed in the randomized matrix.
+    \item `MoranCorr`: Spatial autocorrelation of the matrix
+  }
 }
 \description{
-This function computes the Moran's I, i.e. a measure of the
-             spatial autocorrelation.
-}
-\references{
-P.A.P. Moran (1950) Notes on Continuous Stochastic Phenomena.
-            Biometrika 37(1-2):17-23
+This functions computes the Moran's spatial correlation index
+  (with lag one). It also computes a null value obtained by randomizing
+  the matrix.
 }
 

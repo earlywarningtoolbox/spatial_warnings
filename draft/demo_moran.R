@@ -1,6 +1,6 @@
-#'#'##############################
-#'  Demo moran autocorrelation  #'
-#'###############################'
+################################
+#  Demo moran autocorrelation  #
+################################
 
 # If you want to test the up-to-date package version from github
 library(devtools)
@@ -11,16 +11,16 @@ library(spatialwarnings)
 library(devtools)
 load_all()
 
-load("../data/B.rda")# B is a binary matrix
-load("../data/L.rda")# L is a list of binary matrix
+# Load an example binary matrix B and a list of binary matrices L
+data(B)
+data(L)
 
 # Default tests:
-Moran1(B)
-Moran1(L)
+indicator_moran(B)
+indicator_moran(L)
 
 
 # Parameters test:
-
-Moran1(B, subsize = 2, detrending = FALSE, discrete = TRUE)$MoranCorr 
+indicator_moran(B, subsize = 2, detrending = FALSE, discrete = TRUE)$MoranCorr 
  
 

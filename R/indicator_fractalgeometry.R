@@ -15,7 +15,7 @@
 indicator_fracgeo <- function(mat = NULL, patchids = label(mat) ){
   
   check_mat(mat) # checks if binary and sensible
-  if ( is.list(mat) | is.list(patchids) & is.null(mat)) { 
+  if ( ! is.null(mat) && is.list(mat) ) { 
     lapply(mat, indicator_fracgeo) 
   } else {
     

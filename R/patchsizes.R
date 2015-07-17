@@ -15,10 +15,11 @@ patchsizes <- function(x) {
   # of matrices
   # --------------------------------
   check_mat(x) # checks if binary and sensible
+  
   if ( is.list(x)) { 
     return( lapply(x, patchsizes) )
   }
-
+  
   # Actual computation of the indicator begins here
   # --------------------------------
   
@@ -29,6 +30,6 @@ patchsizes <- function(x) {
   if(length(patchvec) > 0) out <- sort(patchvec) else out <- NA
   #out <- data.frame(size = unique(out), freq = sapply(unique(out), function(i) length(which(out >= i)) ))
   return(out)
-
+  
 }
 

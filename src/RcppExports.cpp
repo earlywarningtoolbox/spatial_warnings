@@ -46,3 +46,14 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// moranCpp
+double moranCpp(NumericMatrix mat);
+RcppExport SEXP spatialwarnings_moranCpp(SEXP matSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericMatrix >::type mat(matSEXP);
+    __result = Rcpp::wrap(moranCpp(mat));
+    return __result;
+END_RCPP
+}

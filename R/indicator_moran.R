@@ -92,6 +92,7 @@ moran_withnull <- function(input, subsize, detrending, discrete, nreplicates) {
   if (nreplicates > 2) { 
     nulldistr <- replicate(nreplicates,
                            moranCpp(matrix(sample(mat), nrow=nrow(mat))))
+    
     result <- c(result,
                 list(null_mean = mean(nulldistr), 
                      null_sd   = sd(nulldistr),

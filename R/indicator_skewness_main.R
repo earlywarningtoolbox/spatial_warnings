@@ -1,7 +1,5 @@
 ##  Generic spatial early warning signal : skewness
 ## Code originally written by V. Guttal and modified by S. Majumder
-# The dependencies are packages: moments, plotrix and fields.
-# This function calls another function called "reducedmatrix_ews.R" which should be saved in the same folder.
 
 #' Description: Spatial Early Warning Signals
 #'
@@ -25,7 +23,6 @@
 indicator_skewness_main = function(rawmatrix, subsize=2, detrending = FALSE, discrete=TRUE)
 {
   require("moments")
-  require("plotrix")
   require("fields")
   
   rawmatrix=as.matrix(rawmatrix)
@@ -80,7 +77,7 @@ indicator_skewness_main = function(rawmatrix, subsize=2, detrending = FALSE, dis
     
     if (discrete==TRUE){
       #Obtain Reduced Data.
-      red_detrend_data = reducedmatrix_ews(detrenddata,subsize) 
+      red_detrend_data = coarse_grain(detrenddata,subsize) 
     }
     
     #Calculate indicator for the reduced data.
@@ -93,7 +90,7 @@ indicator_skewness_main = function(rawmatrix, subsize=2, detrending = FALSE, dis
     
     randomdata = matrix(sample(detrenddata),N,N) 
     
-    red_randdata = reducedmatrix_ews(randomdata,subsize) 
+    red_randdata = coarse_grain(randomdata,subsize) 
     
     # Estimate skewnessT of NON reduced data
     sk_null[snaps]=skewness(as.vector(randomdata))  

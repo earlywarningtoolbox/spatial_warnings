@@ -1,8 +1,8 @@
 #' @title Check for binary matrix
-#' @description A function that checks the arguments passed to the indicator functions.
+#' @description A function that checks the arguments passed to the indicator 
+#'   functions.
 #' 
 #' @export
-
 check_mat <- function(mat) { 
   
   # If a list is passed then we do list-level cheks and check all elements

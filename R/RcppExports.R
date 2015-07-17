@@ -13,7 +13,7 @@
     .Call('spatialwarnings_label', PACKAGE = 'spatialwarnings', mat, nbmask, wrap)
 }
 
-moranCpp <- function(mat) {
+.moranCpp <- function(mat) {
     .Call('spatialwarnings_moranCpp', PACKAGE = 'spatialwarnings', mat)
 }
 

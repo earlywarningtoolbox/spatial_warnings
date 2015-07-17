@@ -46,7 +46,7 @@ indicator_moran <- function(input,
                             subsize     = 2, 
                             detrending  = FALSE, 
                             discrete    = TRUE,
-                            nreplicates = 999) {
+                            nreplicates = 499) {
 
   check_mat(input) # checks if binary and sensible
   
@@ -65,34 +65,40 @@ indicator_moran <- function(input,
   }
 }
 
-
 # This function should not be use alone ----------------------------------
 # This function computes the moran correlation with a random matrix.
 moran_withnull <- function(input, subsize, detrending, discrete, nreplicates) {
   
-  mat  <- input
   m <- mean(input) # Compute the mean value of the matrix 
   
   # Check options and apply modifications --------------------
   
   if (detrending) {
-    mat  <- input - m 
+    input  <- input - m  # overwrites input locally
   }
   
+  # We assign either moranCpp (no coarse graining) or moranCpp_with_cg (with
+  # coarse graining) here so we test only once whether we want to coarse grain
+  # or not. Otherwise a test needs to be added within the null-distribution
+  # generation code (in `replicate` below), which is a big performance killer
+  # and makes things less readable.
   if (discrete) {
-    mat <- coarse_grain(mat, subsize)  # Coarse-grain the matrix
+    moran_fun <- moranCpp_with_cg # coarse-grain before computing the index
+  } else { 
+    moran_fun <- moranCpp         # do not
   }
   
   # Compute the Moran indicators -----------------------------
-  # Randomize matrix
-  corr     <- moranCpp(mat) # Actual
-  
+  # Note: subsize is passed but it is ignored if moran_fun is set to call 
+  #   moranCpp directly.
+  corr <- moran_fun(input, subsize)
   result <- list(mean = m, corr = corr)
   
   if (nreplicates > 2) { 
-    nulldistr <- replicate(nreplicates,
-                           moranCpp(matrix(sample(mat), nrow=nrow(mat))))
-    
+    # Compute the index on a randomized matrix
+    nulldistr <- replicate(nreplicates, 
+                           moran_fun(matrix(sample(input), nrow = nrow(input)), 
+                                     subsize) )
     result <- c(result,
                 list(null_mean = mean(nulldistr), 
                      null_sd   = sd(nulldistr),
@@ -101,6 +107,15 @@ moran_withnull <- function(input, subsize, detrending, discrete, nreplicates) {
   }
   
   return(result)
+}
+
+moranCpp <- function(mat, ...) { 
+  # Arguments beyond the first are accepted but ignored
+  .moranCpp(mat)
+}
+
+moranCpp_with_cg <- function(mat, subsize) { 
+  .moranCpp(coarse_grain(mat, subsize))
 }
 
 # Not used (converted to c++), but kept here for reference.

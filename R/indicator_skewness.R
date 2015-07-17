@@ -1,13 +1,22 @@
-#This function checks if the input is a matrix or a list of matrices and then calls the main function to calculate the indicators
+#This function checks if the input is a matrix or a list of matrices and 
+# then calls the main function to calculate the indicators
 
 
-indicator_skewness<-function(rawmatrix, subsize=2, detrending = FALSE, discrete=TRUE){
+indicator_skewness <- function(mat, 
+                               subsize = 2, 
+                               detrending = FALSE, 
+                               discrete = TRUE) {
+  check_mat(mat)
   
-  if(is.list(data)==TRUE){
-    return(lapply(rawmatrix,function(x){indicator_skewness_main(x,subsize=2, detrending = FALSE, discrete=TRUE)}))
+  if (is.list(mat)) {
+    return(lapply(mat, 
+                  indicator_skewness_main, 
+                  subsize, 
+                  detrending, 
+                  discrete))
   
   } else {
-    return(indicator_skewness_main(rawmatrix, subsize=2, detrending = FALSE, discrete=TRUE))
+    return( indicator_skewness_main(mat, subsize, detrending, discrete) )
   }
 }
   

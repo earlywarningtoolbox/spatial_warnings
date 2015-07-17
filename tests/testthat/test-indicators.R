@@ -1,10 +1,13 @@
 
 context('Test that all indicator functions perform according to specification')
 
-
-indicator_functions <- list(indicator_example, 
-                            indicator_moran) # add others here
-
+indicator_functions <- list(indicator_moran,
+                            indicator_cumpsd,
+                            indicator_fitpsd,
+                            indicator_fracgeo,
+                            indicator_largestpatch,
+                            indicator_skewness,
+                            indicator_variance) # add others here
 
 test_that('indicator functions stop if provided garbage data', { 
   
@@ -13,13 +16,20 @@ test_that('indicator functions stop if provided garbage data', {
   garbage_notbinary <- matrix(sample(c(1,2,3), 100, replace=TRUE), nrow=10)
   garbage_diffsizes <- lapply(5:10, diag)
   
+  data(B)
+  data(L)
+
   # This reflects checks in check_mat
   for (f in indicator_functions) { 
     expect_error(f(garbage_badclass))
     expect_warning(f(garbage_has_nas))
     expect_error(f(garbage_notbinary))
     expect_warning(f(garbage_diffsizes))
+    # Test if the functions actually work
+    f(B)
+    f(L)
   }
+  
   
   
 })

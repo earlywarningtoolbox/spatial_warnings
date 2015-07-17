@@ -50,16 +50,18 @@ indicator_moran <- function(input,
 
   check_mat(input) # checks if binary and sensible
   
-  if (diff(dim(input)) != 0) { 
-    stop('Computation of the Moran\'s I index requires a square matrix')
-  } 
-  
   if (is.list(input)) {
     # Returns a list of lists
     return( lapply(input, moran_withnull, subsize, detrending, discrete, 
                    nreplicates) )
   } else { 
+    
+    if (diff(dim(input)) != 0) { 
+      stop('Computation of the Moran\'s I index requires a square matrix')
+    } 
+    
     return( moran_withnull(input, subsize, detrending, discrete, nreplicates) )
+    
   }
 }
 

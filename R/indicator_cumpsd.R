@@ -1,24 +1,33 @@
 #' Get cumulative patch sizes.
 #'
-#' @param mat (optional) A binary matrix or a list of binary matrices.
+#' @param x A vector of patch sizes or a list of vectors.
 #'
-#' @param lblmat A labelled matrix as returned by `label`
-#' 
 #' @return A dataframe of the unique patch sizes \code{size}, the number of 
-#'         patches of equal or larger size than each value in \code{size}, and 
-#'         a probability that any given patch is equal or larger size than each 
-#'         value in \code{size}. 
+#'   patches of equal or larger size than each value in \code{size}, and a 
+#'   probability that any given patch is equal or larger size than each value 
+#'   in \code{size}. 
+#' 
+#' @examples
+#' 
+#' data(B)
+#' indicator_cumpsd(B)
+#' 
 #' 
 #' @export
-indicator_cumpsd <- function(mat = NULL, 
-                             lblmat = label(mat) ) {
-  
-  if ( ! is.null(mat) ) {
-    check_mat(mat) # sanity checks for the passed matrix
+#' 
+
+indicator_cumpsd <- function(x = NULL, patchvec = patchsizes(x) ) {
+  check_mat(x) # sanity checks for the passed matrix 
+
+  if ( ! is.null(x) && is.list(x)) { 
+    return( lapply(x, indicator_cumpsd) )
   } 
-  if ( ! is.null(mat) && is.list(mat)) { 
-    return( lapply(mat, indicator_cumpsd) )
-  }
   
-  return( psd(lblmat) )
+  out <- data.frame(size =  unique(patchvec))
+  out$n = sapply(seq.int(out$size), function(i) sum(patchvec >= out$size[i]) ) 
+  out$p = out$n/length(patchvec)
+  
+  return(out)
+
 }
+

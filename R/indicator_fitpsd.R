@@ -1,18 +1,27 @@
-
-#' fit candidate cumulative patch size distribution functions.
+# 
+#' @title fit candidate cumulative patch size distribution functions.
 #'
 #' @param x A patch size vector or a list of patch size vectors.
 #'
-#' @return A list object of class 'psdfit' containing the pooled cumulative patch size distribution data, as well as the AICs and model outputs of the candidate models.
+#' @return A list object of class 'psdfit' containing the pooled cumulative 
+#'   patch size distribution data, as well as the AICs and model outputs of the 
+#'   candidate models.
 #' 
-#' @details A S3 method for \code{summary()} does exist and only returns the model summary of the most parsimonious model. 
+#' @details A S3 method for \code{summary()} does exist and only returns the 
+#'   model summary of the most parsimonious model. 
+#' 
+#' @examples
+#' 
+#' data(B)
+#' indicator_fitpsd(B)
 #' 
 #' @export
 
 indicator_fitpsd <- function(x = NULL, cumpsd = indicator_cumpsd(x)) {
-  check_mat(x) # sanity checks for the passed matrix (no error if NULL)
+  check_mat(x) # sanity checks for the passed matrix or list
+  
   if ( ! is.null(x) && is.list(x)) { # FALSE for x = NULL
-    return( lapply(x, indicator_fitpsd) )
+    return( lapply(x, indicator_fitpsd) ) 
   } else {
     
     out <- list()   # prepare output object
@@ -33,10 +42,9 @@ indicator_fitpsd <- function(x = NULL, cumpsd = indicator_cumpsd(x)) {
                              start = list(alpha =  PLlm$coefficients, Sx = 1/200),
                              #algorithm = "port",
                              trace = FALSE
-    )}, silent = TRUE
-    )    
+    )}, silent = TRUE)
     
-    if(!is.null(out$TPLdown) & !coefficients(out$TPLdown)["Sx"] <= 0 ) {
+    if (!is.null(out$TPLdown) && !coefficients(out$TPLdown)["Sx"] <= 0 ) {
       out$AIC[1] <- AIC(out$TPLdown) 
     } else {
       out$TPLdown <- list(NA)
@@ -50,8 +58,7 @@ indicator_fitpsd <- function(x = NULL, cumpsd = indicator_cumpsd(x)) {
                        start = list( alpha =  PLlm$coefficients ),
                        trace = FALSE,
                        nls.control(maxiter = 50)
-    )}, silent = TRUE
-    )
+    )}, silent = TRUE)
     
     if(!is.null(out$PL)) {
       out$AIC[2] <- AIC(out$PL)

@@ -24,9 +24,13 @@ indicator_cumpsd <- function(x = NULL, patchvec = patchsizes(x) ) {
   } 
   
   out <- data.frame(size =  unique(patchvec))
-  out$n = sapply(seq.int(out$size), function(i) sum(patchvec >= out$size[i]) ) 
-  out$p = out$n/length(patchvec)
-  
+  if(length(out$size) > 1) {
+    out$n = sapply(seq.int(out$size), function(i) sum(patchvec >= out$size[i]) ) 
+    out$p = out$n/length(patchvec)
+  } else {
+    out$n = 1 
+    out$p = 1 
+  }
   return(out)
 
 }

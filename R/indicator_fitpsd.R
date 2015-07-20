@@ -87,9 +87,14 @@ indicator_fitpsd <- function(x = NULL, cumpsd = indicator_cumpsd(x)) {
     
     # compare models
     
-    out$dAIC <-   out$AIC -min(out$AIC, na.rm = TRUE)
+    if( all(is.na(out$AIC)) ) {
+      out$dAIC <- out$AIC
+    } else {
+      out$dAIC <-  out$AIC - min(out$AIC, na.rm = TRUE)
+    }
     
     out$best <- which.min(out$AIC)
+    if(length(out$best) == 0) out$best <- c(None = NA)
     
     class(out) <- "psdfit"
     return(out)
@@ -101,21 +106,19 @@ indicator_fitpsd <- function(x = NULL, cumpsd = indicator_cumpsd(x)) {
 
 plot.psdfit <- function(x, ...) {
   plot(p ~ size, x$psd, log = "xy", ...)
-  model <- x[[names(x$best)]]
-  x_new <- seq(1, max(x$psd$size), length = 64 )
-  y_new <- predict(model, newdata = list(size = x_new))
-  lines(x_new, exp(y_new))
+  if(names(x$best) %in% c("PL", "TPLdown", "TPLup", "EXP")) {
+    model <- x[[names(x$best)]]
+    x_new <- seq(1, max(x$psd$size), length = 64 )
+    y_new <- predict(model, newdata = list(size = x_new))
+    lines(x_new, exp(y_new))
+  }
 }
 
 
 #' @export
 
-summary.psdfit <- function(x)   summary(x[[x$best+4]])
-
-plot.psdfit <- function(x, ...) {
-  
-  plot(p ~ size, x$psd, log = "xy")
-  s_new <- seq(1, max(x$psd$size), length = 100) 
-  p_new <- exp(predict(x[[x$best+4]], newdata = list(size = s_new)))
-  lines(p_new ~ s_new)
-} 
+summary.psdfit <- function(x)  {
+  if(names(x$best) %in% c("PL", "TPLdown", "TPLup", "EXP")) {
+     summary(x[[x$best+4]]) 
+  } else { cat("no model could be fitted to the data") }
+}

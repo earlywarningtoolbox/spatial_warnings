@@ -51,69 +51,20 @@ indicator_skewness <- function(input,
   
   if (is.list(input)) {
     # Returns a list of lists
-    return( lapply(input, skewness_withnull, subsize, detrending, discrete, 
-                   nreplicates) )
+    return( lapply(input, indicator_variance, 
+                   subsize, detrending, discrete, nreplicates) )
   } else { 
     
     if (diff(dim(input)) != 0) { 
       stop('Computation of the skewness indicator requires a square matrix')
     } 
     
-    return( skewness_withnull(input, subsize, detrending, discrete, nreplicates) )
+    return( 
+      compute_indicator_with_null(input, subsize, detrending, 
+                                  discrete, nreplicates, 
+                                  indicator_function = 
+                                    function(input) skewness(as.vector(input)) )
+    ) 
     
   }
-}
-
-# This function should not be used alone ----------------------------------
-# This function computes the skewness indicator and computes a null model 
-# if requested (random matrix). 
-skewness_withnull <- function(input, 
-                              subsize, 
-                              detrending, 
-                              discrete, 
-                              nreplicates) {
-  
-  m <- mean(input) # Compute the mean value of the matrix 
-  
-  # Check options and apply modifications --------------------
-  
-  if (detrending) {
-    input  <- input - m  # overwrites input locally
-  }
-  
-  if (discrete) {
-    # coarse-grain before computing the index
-    indic_fun <- indic_skewness_with_cg  
-  } else { 
-    indic_fun <- indic_skewness
-  }
-  
-  # Compute the indicator -----------------------------
-  # Note: subsize is passed but it is ignored if indic_fun is set to call 
-  #   indic_skewness.
-  skew <- indic_fun(input, subsize)
-  result <- list(mean = m, value = skew)
-  
-  if (nreplicates > 2) { 
-    # Compute the index on a randomized matrix
-    nulldistr <- replicate(nreplicates, 
-                           indic_fun(matrix(sample(input), nrow = nrow(input)), 
-                                     subsize) )
-    result <- c(result,
-                list(null_mean = mean(nulldistr), 
-                     null_sd   = sd(nulldistr),
-                     z_score   = (skew - mean(nulldistr)) / sd(nulldistr),
-                     pval      = 1 - rank(c(skew, nulldistr))[1] / (nreplicates+1)))
-  }
-  
-  return(result)
-}
-
-indic_skewness <- function(mat, ...) { 
-  # Arguments beyond the first are accepted but ignored
-  skewness(as.vector(mat))
-}
-
-indic_skewness_with_cg <- function(mat, subsize) { 
-  indic_skewness(as.vector(coarse_grain(mat, subsize)))
 }

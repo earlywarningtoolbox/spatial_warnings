@@ -39,14 +39,12 @@ A list (or a list of list if input was a list of matrices) with
       \item `pval`: p-value based on the rank of the observed autocorrelation
                       in the null distribution.
     }
+data(B)
+indicator_variance(B)
 }
 \description{
 This functions computes the variance critical point indicator.
   It also computes a null value obtained by randomizing
   the matrix.
-}
-\examples{
-data(B)
-indicator_variance(B)
 }
 

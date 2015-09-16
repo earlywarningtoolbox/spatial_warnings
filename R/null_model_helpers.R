@@ -1,7 +1,4 @@
 # 
-# 
-# 
-# 
 # These functions factorize some code between numerical indicators. Most 
 # notably it handles creating the null model testing, etc.
 # 
@@ -40,6 +37,7 @@ compute_indicator_with_null <- function(input,
                 list(null_mean = mean(nulldistr), 
                      null_sd   = sd(nulldistr),
                      z_score   = (value - mean(nulldistr)) / sd(nulldistr),
+                     # Should the p-value be one-sided/two-sided ? 
                      pval      = 1 - rank(c(value, nulldistr))[1] / (nreplicates+1)))
   }
   

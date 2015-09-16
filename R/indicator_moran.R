@@ -92,7 +92,7 @@ moran_withnull <- function(input, subsize, detrending, discrete, nreplicates) {
   # Note: subsize is passed but it is ignored if moran_fun is set to call 
   #   moranCpp directly.
   corr <- moran_fun(input, subsize)
-  result <- list(mean = m, corr = corr)
+  result <- list(mean = m, value = corr)
   
   if (nreplicates > 2) { 
     # Compute the index on a randomized matrix
@@ -103,7 +103,7 @@ moran_withnull <- function(input, subsize, detrending, discrete, nreplicates) {
                 list(null_mean = mean(nulldistr), 
                      null_sd   = sd(nulldistr),
                      z_score   = (corr - mean(nulldistr)) / sd(nulldistr),
-                     pval      = rank(c(corr, nulldistr))[1] / (nreplicates+1)))
+                     pval      = 1 - rank(c(corr, nulldistr))[1] / (nreplicates+1)))
   }
   
   return(result)
@@ -117,30 +117,3 @@ moranCpp <- function(mat, ...) {
 moranCpp_with_cg <- function(mat, subsize) { 
   .moranCpp(coarse_grain(mat, subsize))
 }
-
-# Not used (converted to c++), but kept here for reference.
-
-# moran_correlation <- function(input) {
-#   
-#   if ( any(dim(input) <= 2 ) ) { 
-#     warning('The Moran\'s I computation requires a matrix with a size ',
-#          'greater than 3, returning NA.')
-#     return(NA)
-#   }
-#   
-#   m <- mean(input)            # Mean
-#   v <- var(as.vector(input))  # Variance
-#   n <- (nrow(input) - 1)      # Degrees of freedom ?
-#   
-#   moranI <- 0
-#   for (i in 2:n) {
-#     for (j in 2:n) {
-#       moranI <- moranI + (input[i,j]-m) * (input[i,j-1] + input[i,j+1] + 
-#                                            input[i-1,j] + input[i+1,j] - 4*m)
-#     }
-#   }
-#   
-#   moranI <- moranI / (4 * v * (n-2) * (n-2)) 
-#   return(moranI)
-# 
-# }

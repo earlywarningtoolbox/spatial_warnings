@@ -10,8 +10,6 @@ indicator_largestpatch(mat = NULL, patchvec = patchsizes(mat))
 \item{mat}{A binary matrix or a list of binary matrices.}
 
 \item{patchvec}{A patch vector obtained from \code{\link{patchsizes}}.}
-
-\item{myparam2}{<Explanation>}
 }
 \value{
 An object of class <myclass>, or a list of objects of class <myclass>

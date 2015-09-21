@@ -7,6 +7,7 @@ indicator_functions <- list(indicator_moran,
                             indicator_fracgeo,
                             indicator_largestpatch,
                             indicator_skewness,
+                            indicator_corrfunc,
                             indicator_variance) # add others here
 
 test_that('indicator functions stop if provided garbage data', { 

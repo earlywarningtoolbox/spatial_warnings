@@ -60,11 +60,11 @@ indicator_skewness <- function(input,
     } 
     
     return( 
-      compute_indicator_with_null(input, subsize, detrending, 
-                                  discrete, nreplicates, 
-                                  indicator_function = 
-                                    function(input) skewness(as.vector(input)) )
-    ) 
+      compute_indicator_with_null(
+        input, subsize, detrending, 
+        discrete, nreplicates, 
+        indicator_function = function(input) moments::skewness(as.vector(input))
+    )) 
     
   }
 }

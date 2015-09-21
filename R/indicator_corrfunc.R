@@ -59,7 +59,6 @@ corrfunc <- function(mat) {
     for (idx in seq.int(length(indexi))) {
       counter <- 0
       caltd   <- mat[indexi[idx],indexj[idx]] - meanf
-      browser()
       for (j in 1:r){
           rowid <- submat[j,1] +indexi[idx] - L/2
           colid <- submat[j,2] +indexj[idx] - L/2

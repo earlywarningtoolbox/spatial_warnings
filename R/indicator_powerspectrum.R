@@ -1,67 +1,74 @@
 #' @title Spatial warning indicators: Power Spectrum
 #' @description Function to calculate theta and r spectrum.
 #' @param data A list of binary matrices of length >=1 (OR) a single binary matrix
-#' @return A list of lists(of theta and R spectrum values for distances 1 to SystemSize/2 for each matrix in the list) if input is a list (OR) a single list (of theta and R spectrum values for distances 1 to SystemSize/2) if input is a single matrix
+#' @return A list of lists(of theta and R spectrum values for distances 1 to 
+#'   SystemSize/2 for each matrix in the list) if input is a list (OR) a single 
+#'   list (of theta and R spectrum values for distances 1 to SystemSize/2) if 
+#'   input is a single matrix
+#'
+#'
+#'
 #' @export
-indicator_powerspectrum<-function(data){
-  if (sum(is.list(data))==0){
-    return(rspec_ews(data))
-  } 
-  else{return(lapply(data,function(x){rspec_ews(x)}))
+# 
+indicator_powerspectrum <- function(mat) {
+  
+  # Handles mat if it is a list
+  check_mat(mat)
+  if ( is.list(mat) ) { 
+    return(lapply(mat, indicator_powerspectrum)) 
   }
   
+  nr <- nrow(mat)
+  nc <- ncol(mat)
   
-  test= data.matrix(rawmatrix)
+  n0x <- floor(nc/2) + 1
+  n0y <- floor(nr/2) + 1
   
-  nr=dim(test)[1]
-  nc=dim(test)[2]
+  # Create distance and angle matrices
+  f1 <- t(replicate(nr,seq(1,nc))) - n0x
+  f2 <- replicate(nc,seq(1,nr)) - n0y
+  DIST <- sqrt(f1^2 + f2^2)
+  ANGLE <- atan2(-f2,f1)*180/pi
   
-  n0x = floor(nc/2)+1
-  n0y = floor(nr/2)+1
+  # Calculate DFT
+  mi <- 1
+  ma <- min(c(n0x,n0y))
+  DISTMASK <- DIST>=mi & DIST<=ma
+  tmp <- fft(mat)
+  tmpshift <- myfftshift(tmp)
+  tmpshift[n0x,n0y] <- 0
+  aspectr2D <- abs(tmpshift)^2/(n0x*n0y)^4
   
-  #Create distance and angle matrices
-  f1 = t(replicate(nr,seq(1,nc))) - n0x
-  f2 = replicate(nc,seq(1,nr)) - n0y
-  DIST = sqrt(f1^2 + f2^2)
-  ANGLE=atan2(-f2,f1)*180/pi
+  sig2 <- sum(aspectr2D[DISTMASK]) #Normalisation
+  aspectr2D <- aspectr2D/sig2 #Normalisation
   
-  #Calculate DFT
-  mi=1
-  ma=min(c(n0x,n0y))
-  DISTMASK = DIST>=mi & DIST<=ma
-  tmp=fft(test)
-  tmpshift=myfftshift(tmp)
-  tmpshift[n0x,n0y]=0
-  aspectr2D=abs(tmpshift)^2/(n0x*n0y)^4
-  
-  sig2=sum(aspectr2D[DISTMASK]) #Normalisation
-  aspectr2D=aspectr2D/sig2 #Normalisation
-  
-  #Now calculate r-spectrum
-  STEP=1
-  ray=seq(mi,ma,STEP)
-  rspectr=numeric(length(ray))
+  # Now calculate r-spectrum
+  STEP <- 1
+  ray <- seq(mi,ma,STEP)
+  rspectr <- numeric(length(ray))
   for (i in 1:length(ray))
   {
-    m = DIST>=ray[i]-STEP/2 & DIST<ray[i]+STEP/2
-    rspectr[i] = mean(aspectr2D[m])
+    m <- DIST>=ray[i]-STEP/2 & DIST<ray[i]+STEP/2
+    rspectr[i] <- mean(aspectr2D[m])
   }
   
-  #Now calculate theta-spectrum
-  DISTMASK = DIST>=mi & DIST<=ma
-  STEP=5 #increments of 5 degrees
-  anglebin=seq(STEP,180,STEP)
-  tspectr=numeric(length(anglebin))
+  # Now calculate theta-spectrum
+  DISTMASK <- DIST>=mi & DIST<=ma
+  STEP <- 5 #increments of 5 degrees
+  anglebin <- seq(STEP,180,STEP)
+  tspectr <- numeric(length(anglebin))
   for (i in 1:(length(tspectr)-1))
   {
-    m = which(DISTMASK & ANGLE>=anglebin[i]-STEP & ANGLE<anglebin[i])
-    tspectr[i] = sum(aspectr2D[m])/length(m)
+    m <- which(DISTMASK & ANGLE>=anglebin[i]-STEP & ANGLE<anglebin[i])
+    tspectr[i] <- sum(aspectr2D[m])/length(m)
   }
   
-  m = which(DISTMASK & ANGLE >=anglebin[length(anglebin)]-STEP & ANGLE <=anglebin[length(anglebin)])
-  tspectr[length(tspectr)] = sum(aspectr2D[m])/length(m)
+  m <- which(DISTMASK & 
+             ANGLE >= anglebin[length(anglebin)] - STEP & 
+             ANGLE <= anglebin[length(anglebin)])
+  tspectr[length(tspectr)] <- sum(aspectr2D[m])/length(m)
   
-  out = list(tspec=tspectr, rspec=rspectr)
+  out <- list(tspec=tspectr, rspec=rspectr)
   return(out)
   
 }

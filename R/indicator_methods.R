@@ -12,15 +12,23 @@
 #'@export
 print.spindic <- function(obj, verbose = FALSE) {
   cat('Spatial indicator object (',length(obj), ' indicators):\n', sep ="")
-  for (name in names(a)) { 
+  cat('\n')
+  cat("Call:", deparse(obj[['call']]), "\n")
+  cat('\n')
+  cat('Indicator values:\n')
+  
+  # Print indicators values
+  for (name in names(obj[['indicators']])) { 
+    indic <- obj[['indicators']][[name]]
     cat(name, ': \t', sep ='')
-    if ('value' %in% names(obj[[name]])) { 
-      cat(round(obj[[name]][['value']], digits = options()[['digits']]), "\n")
-    } else if (is.numeric(obj[[name]])) { 
-      cat(round(obj[[name]], digits = options()[['digits']]), "\n")
+    if ('value' %in% names(indic)) { 
+      cat(round(indic[['value']], digits = options()[['digits']]))
+    } else if (is.numeric(indic)) { 
+      cat(round(indic, digits = options()[['digits']]))
     } else {
-      cat('<',class(obj[[name]]),'>\n', sep='')
+      cat('<',class(indic),' object>', sep='')
     }
+    cat('\n')
   }
   
   # Print a lot of stuff if the user asked for it
@@ -29,3 +37,26 @@ print.spindic <- function(obj, verbose = FALSE) {
   # Rerturn the object invisibly 
   invisible(obj)
 }
+
+
+
+# Tshe next two functions take care of computing and displaying a summary.
+# summary.spindic computs a summary object, that is displayed by 
+# print.summary.spindic. This way if the suer wants to extract info from the 
+# summary object he can assign it to a persistent variable.
+# 
+# This is the structure adopted by the functions glm/lm() et al.
+# 
+# The structure of a summary.spindic object can be pretty loose as it should
+# be only used by these two functions.
+summary.spindic <- function(obj) { 
+  
+  warnings('Not implemented yet :)')
+  
+}
+
+# Prints a summary.spindic object
+print.summary.spindic <- function(obj) { 
+  
+  
+} 

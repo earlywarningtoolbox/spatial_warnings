@@ -27,24 +27,25 @@ indicator_all <-
     return( lapply(mat, indicator_all) )
   }
   
-  # Init list
-  results <- list()
+  # Compute indicators
+  indic_results <- list()
   for (i in seq.int(length(indicators))) { 
     if (verbose) message('Computing ', names(indicators)[i], "...")
     
-    
     if (names(indicators)[i] %in% names(args)) { 
-      # args[[i]] here should be a LIST ! (even of one element)
-      results[[i]] <- do.call(indicators[[i]], c(mat, args[[i]]))
+      # /!\ args[[i]] here should be a LIST ! (even one of one element)
+      indic_results[[i]] <- do.call(indicators[[i]], c(mat, args[[i]]))
     } else { 
-      results[[i]] <- do.call(indicators[[i]], list(mat))
+      indic_results[[i]] <- do.call(indicators[[i]], list(mat))
     }
   }
+  names(indic_results) <- names(indicators)
   
-  names(results) <- names(indicators)
+  # Format and output results
+  result <- list(call = match.call(),
+                 indicators = indic_results)
+  class(result) <- c('spindic','list')
   
-  class(results) <- c('spindic','list')
-  
-  return(results)
+  return(result)
 }
 

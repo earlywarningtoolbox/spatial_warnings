@@ -25,7 +25,7 @@ test_that('indicator functions stop if provided garbage data', {
   # This reflects checks in check_mat
   for (f in indicator_functions) { 
     expect_error(f(garbage_badclass))
-    expect_warning(f(garbage_has_nas))
+    expect_error(f(garbage_has_nas))
     expect_error(f(garbage_notbinary))
     expect_warning(f(garbage_diffsizes))
     # Test if the functions actually work

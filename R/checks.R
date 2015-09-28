@@ -2,7 +2,6 @@
 #' @description A function that checks the arguments passed to the indicator 
 #'   functions.
 #' 
-#' @export
 check_mat <- function(mat) { 
   
   # If a list is passed then we do list-level cheks and check all elements
@@ -20,7 +19,7 @@ check_mat <- function(mat) {
   
   # Has NA values
   if ( any( is.na(mat) ) ) { 
-    warning('NAs in matrix')
+    stop('NAs in provided matrix.')
   }
   
   # Not a *binary* matrix ? 

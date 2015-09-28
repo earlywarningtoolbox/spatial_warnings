@@ -7,7 +7,7 @@
 #' @param mat A binary matrix or a list of square binary matrices
 #' 
 #'@export
-indicator_all <- 
+spatialwarnings <- 
   function(mat,
            indicators = list(variance = spatialwarnings::indicator_variance,
                              skewness = spatialwarnings::indicator_skewness,
@@ -24,7 +24,7 @@ indicator_all <-
   check_mat(mat) # checks if binary and sensible
   
   if ( is.list(mat)) { 
-    return( lapply(mat, indicator_all) )
+    return( lapply(mat, spatialwarnings, indicators, args, verbose) )
   }
   
   # Compute indicators

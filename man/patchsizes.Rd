@@ -10,10 +10,14 @@ patchsizes(x)
 \item{x}{A binary matrix or a list of binary matrices.}
 }
 \value{
-A vector of patch sizes. An object of class 'patchvec', or a list of
- objects of class 'patchvec' if `x` was a list of binary matrices.
+A vector of patch sizes or a list of vectors if the input was a list
+  of binary matrices.
 }
 \description{
-Labels patches and counts patch size.
+Get the distribution of patch sizes
+}
+\examples{
+data(B)
+patchsizes(B)
 }
 

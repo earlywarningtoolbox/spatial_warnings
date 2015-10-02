@@ -1,14 +1,16 @@
-#'@title Get patch sizes.
-#'  
-#'@description Labels patches and counts patch size. 
-#'  
-#'@param x A binary matrix or a list of binary matrices.
-#'  
-#'@return A vector of patch sizes. An object of class 'patchvec', or a list of
-#'  objects of class 'patchvec' if `x` was a list of binary matrices.
-#'  
-#'@export
-
+#' @title Get patch sizes.
+#' 
+#' @description Get the distribution of patch sizes
+#' 
+#' @param x A binary matrix or a list of binary matrices.
+#' 
+#' @return A vector of patch sizes or a list of vectors if the input was a list
+#'   of binary matrices.
+#' 
+#' @examples
+#' data(B)
+#' patchsizes(B)
+#' @export
 patchsizes <- function(x) { 
   
   # This part of the function implements checks and handles the case of a list
@@ -23,13 +25,11 @@ patchsizes <- function(x) {
   # Actual computation of the indicator begins here
   # --------------------------------
   
-  map <- spatialwarnings::label(x) 
-  patchvec <- as.vector(sapply(levels(as.factor(map)), function(i) length(which(map == i) ) )) 
+  map <- label(x) 
+  patchvec <- sapply(seq.int(max(map, na.rm=TRUE)),
+                     function(i) sum(map == i, na.rm = TRUE) ) 
+  patchvec <- sort(patchvec)
   
-  out <- vector()
-  if(length(patchvec) > 0) out <- sort(patchvec) else out <- NA
-  #out <- data.frame(size = unique(out), freq = sapply(unique(out), function(i) length(which(out >= i)) ))
-  return(out)
-  
+  return(patchvec)
 }
 

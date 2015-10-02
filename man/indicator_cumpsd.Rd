@@ -8,6 +8,9 @@ indicator_cumpsd(x = NULL, patchvec = patchsizes(x))
 }
 \arguments{
 \item{x}{A vector of patch sizes or a list of vectors.}
+
+\item{patchvec}{a vector of patch sizes as produced by
+  \code{\link{patchsizes}}}
 }
 \value{
 A dataframe of the unique patch sizes \code{size}, the number of

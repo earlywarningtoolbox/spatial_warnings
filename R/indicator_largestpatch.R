@@ -28,5 +28,5 @@ indicator_largestpatch <- function(mat = NULL, patchvec = patchsizes(mat)) {
   # Actual computation of the indicator begins here
   # --------------------------------
   
-  max(patchvec)
+  list(value = max(patchvec))
 }

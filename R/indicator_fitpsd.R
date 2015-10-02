@@ -16,7 +16,6 @@
 #' indicator_fitpsd(B)
 #' 
 #' @export
-
 indicator_fitpsd <- function(x = NULL, cumpsd = indicator_cumpsd(x)) {
   check_mat(x) # sanity checks for the passed matrix or list
   
@@ -96,29 +95,73 @@ indicator_fitpsd <- function(x = NULL, cumpsd = indicator_cumpsd(x)) {
     out$best <- which.min(out$AIC)
     if(length(out$best) == 0) out$best <- c(None = NA)
     
-    class(out) <- "psdfit"
+    class(out) <- c("psdfit","list")
     return(out)
   }
 } 
 
-
-#' @export
-
-plot.psdfit <- function(x, ...) {
-  plot(p ~ size, x$psd, log = "xy", ...)
-  if(names(x$best) %in% c("PL", "TPLdown", "TPLup", "EXP")) {
-    model <- x[[names(x$best)]]
-    x_new <- seq(1, max(x$psd$size), length = 64 )
-    y_new <- predict(model, newdata = list(size = x_new))
-    lines(x_new, exp(y_new))
+#' @title Plot a `psdfit` object
+#' 
+#' @param x A `psdfit` object
+#'
+#' @param all.models Should all fitted models be displayed on the plot ?
+#' 
+#' @examples 
+#' data(B)
+#' fit <- indicator_fitpsd(B)
+#' plot(B)
+#' 
+#' @export 
+plot.psdfit <- function(x, all.models = FALSE, ...) {
+  # Get the base plot of the cumulative psd
+  baseplot <- plot.indicator_cumpsd(x$psd, add.line = FALSE) 
+  
+  x_new <- seq(1, max(x$psd$size), length = 64 )
+  
+  # Compute all fitted models results
+  model.dat <- data.frame(model = factor(), x = numeric(), y = numeric())
+  for (model in c("PL", "TPLdown", "TPLup", "EXP")) { 
+    # We test whether it is a reasonable model object
+    # NB: Another idea would be to test for an existing predict() method if 
+    # fitting functions spits objects of classes other than nls ?
+    if ( inherits(x[[model]], 'nls') ) { 
+      y_new <- predict(x[[model]], newdata = list(size = x_new))
+      # Format data for ggplot
+      model.dat <- rbind(model.dat, data.frame(model = model, x = x_new, 
+                                               y = exp(y_new)))
+    }
   }
+  
+  # Discard data if we want only the best model
+  if ( !all.models ) { 
+    model.dat <- model.dat[ model.dat[ ,'model'] == names(x$best), ]
+  }
+  
+  # Warn if nothing could be fitted
+  if ( nrow(model.dat) == 0 ) { 
+    warning("No model could be fitted to the data\n") 
+  # Or else add the fit data to the plot
+  } else { 
+    baseplot <- baseplot + 
+                  ggplot2::geom_path(ggplot2::aes(x = x, y = y, color = model),
+                                    data = model.dat)
+  }
+  
+  return(baseplot)
 }
 
 
 #' @export
-
-summary.psdfit <- function(x)  {
-  if(names(x$best) %in% c("PL", "TPLdown", "TPLup", "EXP")) {
-     summary(x[[x$best+4]]) 
-  } else { cat("no model could be fitted to the data") }
+summary.psdfit <- function(x, print.all = FALSE)  {
+  cat('Patch-size distribution fitting results:\n')
+  
+  if (print.all) { 
+    return( lapply(x, summary) )
+  } else if (names(x$best) %in% c("PL", "TPLdown", "TPLup", "EXP")) { 
+    cat('Best model:')
+    return( summary(x[[x$best+4]]) )
+  } else { 
+    cat("No model could be fitted to the data\n") 
+  }
+  
 }

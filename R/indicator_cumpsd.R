@@ -15,10 +15,8 @@
 #' data(B)
 #' indicator_cumpsd(B)
 #' 
-#' 
 #' @export
 #' 
-
 indicator_cumpsd <- function(x = NULL, patchvec = patchsizes(x) ) {
   check_mat(x) # sanity checks for the passed matrix 
 
@@ -81,7 +79,6 @@ summary.indicator_cumpsd <- function(x) {
 #' plot(result, facets = TRUE)
 #'
 #' @export
-
 plot.indicator_cumpsd <- function(x, x.log = TRUE, y.log = TRUE, 
                                   add.line = TRUE, facets = FALSE) { 
   

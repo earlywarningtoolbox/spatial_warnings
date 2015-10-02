@@ -13,6 +13,7 @@ Imports:
   plotrix,
   fields,
   SDMTools,
-    Rcpp
+  Rcpp,
+  ggplot2
 Suggests: testthat
 LinkingTo: Rcpp

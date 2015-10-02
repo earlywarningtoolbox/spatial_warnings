@@ -11,7 +11,7 @@ spatialwarnings <-
   function(mat,
            indicators = list(variance = spatialwarnings::indicator_variance,
                              skewness = spatialwarnings::indicator_skewness,
-                             moranI   = spatialwarnings::indicator_moran,
+                             moran   = spatialwarnings::indicator_moran,
                              psdfit   = spatialwarnings::indicator_fitpsd,
                              largestpatch = spatialwarnings::indicator_largestpatch,
                              fracgeo  = spatialwarnings::indicator_fracgeo,

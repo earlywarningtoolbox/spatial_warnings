@@ -49,4 +49,9 @@ This functions computes the skewness critical point indicator.
 data(B)
 indicator_skewness(B)
 }
+\references{
+Guttal, V., and Jayaprakash, C. (2009). Spatial variance and
+spatial skewness: leading indicators of regime shifts in spatial
+ecological systems. Theoretical Ecology, 2(1), 3-12.
+}
 

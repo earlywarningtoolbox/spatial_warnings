@@ -2,9 +2,9 @@
 % Please edit documentation in R/indicator_variance.R
 \name{indicator_variance}
 \alias{indicator_variance}
-\title{Variance indicator}
+\title{Spatial variance indicator}
 \usage{
-indicator_variance(input, subsize = 2, detrending = FALSE,
+indicator_variance(input, subsize = 5, detrending = FALSE,
   discrete = TRUE, nreplicates = 499)
 }
 \arguments{
@@ -43,8 +43,13 @@ data(B)
 indicator_variance(B)
 }
 \description{
-This functions computes the variance critical point indicator.
+This functions computes the spatial variance critical point indicator.
   It also computes a null value obtained by randomizing
   the matrix.
+}
+\references{
+Guttal, V., and Jayaprakash, C. (2009). Spatial variance and
+spatial skewness: leading indicators of regime shifts in spatial
+ecological systems. Theoretical Ecology, 2(1), 3-12.
 }
 

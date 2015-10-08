@@ -50,4 +50,9 @@ This functions computes the Moran's spatial correlation index
 data(B)
 indicator_moran(B)
 }
+\references{
+Dakos, V., van Nes, E. H., Donangelo, R., Fort, H., &
+Scheffer, M. (2010). Spatial correlation as leading indicator of
+catastrophic shifts. Theoretical Ecology, 3(3), 163-174.
+}
 

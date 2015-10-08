@@ -14,25 +14,35 @@ spatialwarnings <-
   function(mat,
            indicators = list(variance = spatialwarnings::indicator_variance,
                              skewness = spatialwarnings::indicator_skewness,
-                             moran   = spatialwarnings::indicator_moran,
+                             moran    = spatialwarnings::indicator_moran,
                              psdfit   = spatialwarnings::indicator_fitpsd,
                              largestpatch = spatialwarnings::indicator_largestpatch,
                              fracgeo  = spatialwarnings::indicator_fracgeo,
                              cumpsd   = spatialwarnings::indicator_cumpsd),
            args = list(), 
-           verbose = FALSE) { 
+           verbose = FALSE, 
+           ...) { # passed to conversion of the mat object
   
   # Not included yet: indicator_corrfunc, indicator_powerspectrum
   
-  check_mat(mat) # checks if binary and sensible
+  # Try to convert the input object to binary matrix format 
+  mat <- as.binary_matrix(mat, ...)
   
-  if ( is.list(mat)) { 
-    return( lapply(mat, spatialwarnings, indicators, args, verbose) )
+  if ( inherits(mat, 'list')) {
+    result <- lapply(mat, spatialwarnings, indicators, args, verbose)
+    result <- list(call = match.call(), 
+                   result = result, 
+                   indicator_names = names(indicators))
+    
+    class(result) <- c('spatialwarnings', 'list')
+    attr(result, 'is_replicated') <- TRUE
+    return(result)
   }
   
   # Compute indicators
   indic_results <- list()
-  for (i in seq.int(length(indicators))) { 
+  for ( i in seq.int(length(indicators)) ) { 
+    
     if (verbose) message('Computing ', names(indicators)[i], "...")
     
     if (names(indicators)[i] %in% names(args)) { 
@@ -47,7 +57,7 @@ spatialwarnings <-
   # Format and output results
   result <- list(call = match.call(),
                  indicators = indic_results)
-  class(result) <- c('spindic','list')
+  class(result) <- c('spatialwarnings','list')
   
   return(result)
 }

@@ -14,6 +14,7 @@ Imports:
   fields,
   SDMTools,
   Rcpp,
-  ggplot2
+  ggplot2,
+  plyr
 Suggests: testthat
 LinkingTo: Rcpp

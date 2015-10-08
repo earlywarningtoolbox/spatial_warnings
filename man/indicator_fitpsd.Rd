@@ -25,4 +25,13 @@ A S3 method for \code{summary()} does exist and only returns the
 data(B)
 indicator_fitpsd(B)
 }
+\references{
+Kéfi, S., Rietkerk, M., Alados, C. L., Pueyo, Y., Papanastasis,
+V. P., ElAich, A., & De Ruiter, P. C. (2007). Spatial vegetation patterns
+and imminent desertification in Mediterranean arid ecosystems.
+Nature, 449(7159), 213-217.
+
+Clauset, A., Shalizi, C. R., & Newman, M. E. (2009).
+Power-law distributions in empirical data. SIAM review, 51(4), 661-703.
+}
 

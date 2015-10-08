@@ -1,8 +1,12 @@
-  #' @title Variance indicator
+  #' @title Spatial variance indicator
 #'
-#' @description This functions computes the variance critical point indicator. 
+#' @description This functions computes the spatial variance critical point indicator. 
 #'   It also computes a null value obtained by randomizing 
 #'   the matrix.
+
+#' @references Guttal, V., and Jayaprakash, C. (2009). Spatial variance and 
+#' spatial skewness: leading indicators of regime shifts in spatial 
+#' ecological systems. Theoretical Ecology, 2(1), 3-12.
 #' 
 #' @param input A square binary matrix or a list of square binary matrices. 
 #' 
@@ -40,7 +44,7 @@
 #' 
 #'@export
 indicator_variance <- function(input, 
-                               subsize     = 2, 
+                               subsize     = 5, 
                                detrending  = FALSE, 
                                discrete    = TRUE,
                                nreplicates = 499) {

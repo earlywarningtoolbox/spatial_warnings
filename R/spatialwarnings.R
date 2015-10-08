@@ -2,8 +2,11 @@
 #'
 #' @description This functions computes all the indicators of critical 
 #'   transitions in a convenient form. 
-#'   
-#'   
+#' 
+#' @references Kéfi, S., Guttal, V., Brock, W. A., Carpenter, S. R., Ellison, 
+#' A. M., Livina, V. N., ... & Dakos, V. (2014). Early warning signals of 
+#' ecological transitions: methods for spatial patterns. PloS one, 9(3), e92097.
+#'        
 #' @param mat A binary matrix or a list of square binary matrices
 #' 
 #'@export

@@ -2,7 +2,15 @@
 #' @title fit candidate cumulative patch size distribution functions.
 #'
 #' @param x A patch size vector or a list of patch size vectors.
-#'
+#' 
+#' @references Kéfi, S., Rietkerk, M., Alados, C. L., Pueyo, Y., Papanastasis, 
+#' V. P., ElAich, A., & De Ruiter, P. C. (2007). Spatial vegetation patterns 
+#' and imminent desertification in Mediterranean arid ecosystems. 
+#' Nature, 449(7159), 213-217.
+#' 
+#' @references Clauset, A., Shalizi, C. R., & Newman, M. E. (2009). 
+#' Power-law distributions in empirical data. SIAM review, 51(4), 661-703.
+#' 
 #' @return A list object of class 'psdfit' containing the pooled cumulative 
 #'   patch size distribution data, as well as the AICs and model outputs of the 
 #'   candidate models.

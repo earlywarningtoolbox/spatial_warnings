@@ -3,6 +3,10 @@
 #' @description This functions computes the Moran's spatial correlation index 
 #'   (with lag one). It also computes a null value obtained by randomizing 
 #'   the matrix.
+#'
+#' @references Dakos, V., van Nes, E. H., Donangelo, R., Fort, H., & 
+#' Scheffer, M. (2010). Spatial correlation as leading indicator of 
+#' catastrophic shifts. Theoretical Ecology, 3(3), 163-174.
 #' 
 #' @param input An matrix or a list of matrix object. It should 
 #'   be a square matrix 

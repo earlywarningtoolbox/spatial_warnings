@@ -3,6 +3,10 @@
 #' @description This functions computes the skewness critical point indicator. 
 #'   It also computes a null value obtained by randomizing 
 #'   the matrix.
+#'   
+#' @references Guttal, V., and Jayaprakash, C. (2009). Spatial variance and 
+#' spatial skewness: leading indicators of regime shifts in spatial 
+#' ecological systems. Theoretical Ecology, 2(1), 3-12.
 #' 
 #' @param input A square binary matrix or a list of square binary matrices. 
 #' 

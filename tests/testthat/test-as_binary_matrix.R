@@ -19,18 +19,30 @@ test_that('conversion from matrix works', {
 
 test_that('conversion from data.frame works', { 
   # df object
+  
+  # Logical case
   df_logical    <- as.data.frame(B)
   df_logical_NA <- as.data.frame(B)
   df_logical_NA[3, 4] <- NA
-  
   expect_is(as.binary_matrix(df_logical), 'binary_matrix')
   expect_error(as.binary_matrix(df_logical_NA))
   
+  # Character case
+  df_char <- data.frame(a = letters, b = rev(letters))
+  expect_error(as.binary_matrix(df_char)) # no ref state specified
+  expect_is(as.binary_matrix(df_char, state = 'r'), 'binary_matrix')
+  
+  # Numeric case
+  df_num <- data.frame(a = rnorm(100), b = rnorm(100))
+  expect_error(as.binary_matrix(df_num)) # no ref state specified
+  expect_is(as.binary_matrix(df_num, state = 20), 'binary_matrix')
+  
+  # Integer class
+  df_int <- data.frame(a = seq.int(100), b = seq.int(100)) # integer
+  expect_error(as.binary_matrix(df_int)) # no ref state specified
+  expect_is(as.binary_matrix(df_int, state = 20), 'binary_matrix')
+  
 })
-
-# Lists of stuff
-# list_mat <- L
-# list_mat_NA <- c(L, mat_NA)
 
 # Bad class object
 bad_class <- lm(a ~ b, data = data.frame(a = rnorm(10), b = rnorm(10)))

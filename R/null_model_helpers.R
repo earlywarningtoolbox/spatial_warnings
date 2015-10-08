@@ -26,8 +26,7 @@ compute_indicator_with_null <- function(input,
   # Note: subsize is always passed so the indicator_function function should 
   # accept extra arguments.
   value <- indicf(input)
-  result <- list(mean = mean(input), 
-                 value = value)
+  result <- list(value = value)
   
   if (nreplicates > 2) { 
     # Compute the index on a randomized matrix

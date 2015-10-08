@@ -52,11 +52,11 @@ as.binary_matrix.matrix <- function(mat, state = NA) {
 # Convert a list to a binary matrix object
 as.binary_matrix.list <- function(list, state = NA) { 
   
-  new_obj <- lapply(list, as.binary.matrix, ...)
+  new_obj <- lapply(list, as.binary_matrix, state)
   class(new_obj) <- c('binary_matrix', 'list')
   return(new_obj)
 }
-
+  
 # Convert a data.frame
 as.binary_matrix.data.frame <- function(df, state = NA) { 
   

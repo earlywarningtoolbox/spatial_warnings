@@ -1,4 +1,4 @@
-  #' @title Spatial variance indicator
+#' @title Spatial variance indicator
 #'
 #' @description This functions computes the spatial variance critical point indicator. 
 #'   It also computes a null value obtained by randomizing 

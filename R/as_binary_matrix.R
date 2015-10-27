@@ -20,22 +20,23 @@
 #' as.binary_matrix(mat, state = 3) 
 #' 
 #'@export
-as.binary_matrix <- function(x, state = NA) {
+as.binary_matrix <- function(x, state = NULL) {
   UseMethod("as.binary_matrix")
 }
 
 #'@export
+#'@rdname as.binary_matrix
 is.binary_matrix <- function(x) inherits(x, 'binary_matrix')
 
 # Trivial function that returns the same object when it is already a BM
 as.binary_matrix.binary_matrix <- identity 
 
 # Convert a matrix to a binary matrix object
-as.binary_matrix.matrix <- function(mat, state = NA) { 
+as.binary_matrix.matrix <- function(mat, state = NULL) { 
   
   if ( is.numeric(mat) || is.integer(mat) || is.character(mat) ) { 
-    if ( is.na(state) ) { 
-      stop('Input data.frame is not logical: I don\'t know how to convert it ', 
+    if ( is.null(state) ) { 
+      stop('Input object is not of logical type: I don\'t know how to convert it ', 
            'to a binary matrix without a reference state (state = ... argument)') 
     }
     mat <- mat == state
@@ -50,7 +51,7 @@ as.binary_matrix.matrix <- function(mat, state = NA) {
 }
 
 # Convert a list to a binary matrix object
-as.binary_matrix.list <- function(list, state = NA) { 
+as.binary_matrix.list <- function(list, state = NULL) { 
   
   new_obj <- lapply(list, as.binary_matrix, state)
   class(new_obj) <- c('binary_matrix', 'list')
@@ -58,7 +59,7 @@ as.binary_matrix.list <- function(list, state = NA) {
 }
   
 # Convert a data.frame
-as.binary_matrix.data.frame <- function(df, state = NA) { 
+as.binary_matrix.data.frame <- function(df, state = NULL) { 
   
   if ( length(unique(sapply(df, class))) > 1 )  { 
     stop('Cannot convert data.frame with mixed column classes to a ',

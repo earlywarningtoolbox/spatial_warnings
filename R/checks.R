@@ -1,7 +1,13 @@
+
+# We add the two next lines so we do not export the functions written in this 
+# file, unless explicitely specified.
+#'@export
+NULL
+
 #' @title Check for binary matrix
 #' @description A function that checks the arguments passed to the indicator 
 #'   functions.
-#' 
+#'
 check_mat <- function(mat) { 
   
   # If a list is passed then we do list-level cheks and check all elements

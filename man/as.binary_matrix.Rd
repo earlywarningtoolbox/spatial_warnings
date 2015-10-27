@@ -2,9 +2,12 @@
 % Please edit documentation in R/as_binary_matrix.R
 \name{as.binary_matrix}
 \alias{as.binary_matrix}
+\alias{is.binary_matrix}
 \title{Coerce to a binary matrix}
 \usage{
-as.binary_matrix(x, state = NA)
+as.binary_matrix(x, state = NULL)
+
+is.binary_matrix(x)
 }
 \arguments{
 \item{x}{Any R object}

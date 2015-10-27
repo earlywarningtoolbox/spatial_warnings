@@ -1,6 +1,6 @@
 
 // 
-// This headers are here so Rcpp functions can call each other
+// These headers are here so that Rcpp functions can call each other
 // 
 
 Rcpp::IntegerMatrix get_nb_coords(Rcpp::IntegerMatrix mat, 

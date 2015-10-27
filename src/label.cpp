@@ -3,7 +3,7 @@
 // 
 
 #include <Rcpp.h>
-#include "./headers.hpp"
+#include "./headers.h"
 
 using namespace Rcpp;
 

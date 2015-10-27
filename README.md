@@ -1,5 +1,5 @@
-Spatial early warning signs - R package spatial_warnings
-========================================================
+Spatial early warning signs - R package
+=======================================
 
 The package provided here helps computing spatial early warning signals of 
 critical points. This is part of a collaborative project between the group of [Sonia Kéfi](http://sonia.kefi.fr/) (Institut de Sciences d'Evolution, CNRS, IRD, Université Montpellier, France) and [Vishwesha Guttal](https://teelabiisc.wordpress.com/) (Center for Ecological Sciences, Indian Institute of Science, Bangalore, India).
@@ -35,23 +35,26 @@ aridity or nutrient input. These qualitative changes in the behavior of a system
 at a threshold represents a critical or bifurcation point, and can give rise to 
 irreversible *catastrophic shifts* when associated with irreversibility. A 
 growing body of litterature suggests that a dynamical system should exhibit 
-certain measurable properties around those critical points. Based on those 
-properties, a set of spatial indicators of those critical points have been 
-developed and fall withing several broad categories. 
+certain measurable properties around those critical points. 
+
+This package aims at providing a preactical set of tools for the detection of 
+upcoming critical points in spatial datasets, by using indicators based on those 
+properties. Those indicators fall within broad categories around which the 
+package is centered: 
 
   * "Generic" spatial indicators
   * Patch-size distribution
   * Fractal and periodic geometry
 
-The package also provides several helper functions associated with the use of 
-binary matrices such as patch-labelling functions. 
+More extensive information is provided in the vignette file included in the 
+package.
 
 ## Original authors and License
 
 This package is derived from the [work of Dakos et al.](https://github.com/earlywarningtoolbox/spatial_warnings) on early warnings signals (see also the 
 reference website for the [early-warnings signals toolbox](http://www.early-warning-signals.org/)).
 
-## License
+### License
 
 The MIT License (MIT)
 
@@ -74,3 +77,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+## References
+
+Kéfi S, Guttal V, Brock WA, Carpenter SR, Ellison AM, et al. (2014) Early Warning Signals of Ecological Transitions: Methods for Spatial Patterns. PLoS
+ONE 9(3): e92097. doi:10.1371/journal.pone.0092097

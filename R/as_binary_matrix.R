@@ -32,51 +32,57 @@ is.binary_matrix <- function(x) inherits(x, 'binary_matrix')
 as.binary_matrix.binary_matrix <- identity 
 
 # Convert a matrix to a binary matrix object
-as.binary_matrix.matrix <- function(mat, state = NULL) { 
+#'@export
+#'@rdname as.binary_matrix
+as.binary_matrix.matrix <- function(x, state = NULL) { 
   
-  if ( is.numeric(mat) || is.integer(mat) || is.character(mat) ) { 
+  if ( is.numeric(x) || is.integer(x) || is.character(x) ) { 
     if ( is.null(state) ) { 
       stop('Input object is not of logical type: I don\'t know how to convert it ', 
            'to a binary matrix without a reference state (state = ... argument)') 
     }
-    mat <- mat == state
+    x <- x == state
   }
   
   
   # This function checks that the input matrix is well-formed. 
-  check_mat(mat) 
+  check_mat(x) 
   
-  class(mat) <- c('binary_matrix', 'matrix')
-  return(mat)
+  class(x) <- c('binary_matrix', 'matrix')
+  return(x)
 }
 
 # Convert a list to a binary matrix object
-as.binary_matrix.list <- function(list, state = NULL) { 
+#'@export
+#'@rdname as.binary_matrix
+as.binary_matrix.list <- function(x, state = NULL) { 
   
-  new_obj <- lapply(list, as.binary_matrix, state)
-  class(new_obj) <- c('binary_matrix', 'list')
+  new_obj <- lapply(x, as.binary_matrix, state)
+  class(new_obj) <- c('binary_matrix', 'x')
   return(new_obj)
 }
   
 # Convert a data.frame
-as.binary_matrix.data.frame <- function(df, state = NULL) { 
+#'@export
+#'@rdname as.binary_matrix
+as.binary_matrix.data.frame <- function(x, state = NULL) { 
   
-  if ( length(unique(sapply(df, class))) > 1 )  { 
+  if ( length(unique(sapply(x, class))) > 1 )  { 
     stop('Cannot convert data.frame with mixed column classes to a ',
           'binary matrix.')
   }
   
-  # We passed a factor-only df -> convert to character then handle it as 
-  # a character df
-  if ( allcols_are(df, 'factor') ) { 
-    df <- do.call(data.frame, c(lapply(df, as.character), 
+  # We passed a factor-only x -> convert to character then handle it as 
+  # a character x
+  if ( allcols_are(x, 'factor') ) { 
+    x <- do.call(data.frame, c(lapply(x, as.character), 
                                 stringsAsFactors = FALSE))
   }
   
-  # We have now a df with all logical (binary) columns: the df is basically a 
+  # We have now a x with all logical (binary) columns: the x is basically a 
   # representation of a matrix, just in the wrong format. We just convert it
   # and pass it to as.binary_matrix.matrix
-  new_obj <- as.binary_matrix(as.matrix(df), state = state)
+  new_obj <- as.binary_matrix(as.matrix(x), state = state)
   
   return(new_obj) 
 }

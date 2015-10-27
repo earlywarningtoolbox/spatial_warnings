@@ -2,12 +2,21 @@
 % Please edit documentation in R/as_binary_matrix.R
 \name{as.binary_matrix}
 \alias{as.binary_matrix}
+\alias{as.binary_matrix.data.frame}
+\alias{as.binary_matrix.list}
+\alias{as.binary_matrix.matrix}
 \alias{is.binary_matrix}
 \title{Coerce to a binary matrix}
 \usage{
 as.binary_matrix(x, state = NULL)
 
 is.binary_matrix(x)
+
+\method{as.binary_matrix}{matrix}(x, state = NULL)
+
+\method{as.binary_matrix}{list}(x, state = NULL)
+
+\method{as.binary_matrix}{data.frame}(x, state = NULL)
 }
 \arguments{
 \item{x}{Any R object}

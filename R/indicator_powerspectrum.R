@@ -15,7 +15,7 @@ indicator_powerspectrum <- function(mat) {
   # Handles mat if it is a list
   check_mat(mat)
   if ( is.list(mat) ) { 
-    return(lapply(mat, indicator_powerspectrum)) 
+    return( lapply(mat, indicator_powerspectrum) ) 
   }
   
   nr <- nrow(mat)

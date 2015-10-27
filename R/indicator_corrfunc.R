@@ -10,6 +10,8 @@
 #' @return A numeric vector of correlation at different distances (from 0 to 
 #' matrix size/2 by increments of 1 unit) or a list of these vectors if input
 #' is a list of binary matrices.
+#'
+#'
 #'@export
 indicator_corrfunc <- function(mat) {
   

@@ -1,9 +1,12 @@
 # 
 #' @title fit candidate cumulative patch size distribution functions.
 #'
-#' @param x A patch size vector or a list of patch size vectors.
+#' @param x A binary matrix or a list of binary matrices
 #' 
-#' @references Kéfi, S., Rietkerk, M., Alados, C. L., Pueyo, Y., Papanastasis, 
+#' @param cumpsd A cumulative patch size distribution as returned by 
+#'   indicator_cumpsd
+#' 
+#' @references Kefi, S., Rietkerk, M., Alados, C. L., Pueyo, Y., Papanastasis, 
 #' V. P., ElAich, A., & De Ruiter, P. C. (2007). Spatial vegetation patterns 
 #' and imminent desertification in Mediterranean arid ecosystems. 
 #' Nature, 449(7159), 213-217.
@@ -24,7 +27,8 @@
 #' indicator_fitpsd(B)
 #' 
 #' @export
-indicator_fitpsd <- function(x = NULL, cumpsd = indicator_cumpsd(x)) {
+indicator_fitpsd <- function(x = NULL, 
+                             cumpsd = indicator_cumpsd(x)) {
   check_mat(x) # sanity checks for the passed matrix or list
   
   if ( ! is.null(x) && is.list(x)) { # FALSE for x = NULL
@@ -110,7 +114,7 @@ indicator_fitpsd <- function(x = NULL, cumpsd = indicator_cumpsd(x)) {
 
 #' @title Plot a `psdfit` object
 #' 
-#' @param x A `psdfit` object
+#' @param x A `psdfit` object as returned by `indicator_fitpsd`
 #'
 #' @param all.models Should all fitted models be displayed on the plot ?
 #' 
@@ -120,7 +124,7 @@ indicator_fitpsd <- function(x = NULL, cumpsd = indicator_cumpsd(x)) {
 #' plot(B)
 #' 
 #' @export 
-plot.psdfit <- function(x, all.models = FALSE, ...) {
+plot.psdfit <- function(x, all.models = FALSE) {
   # Get the base plot of the cumulative psd
   baseplot <- plot.indicator_cumpsd(x$psd, add.line = FALSE) 
   

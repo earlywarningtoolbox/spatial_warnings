@@ -7,7 +7,10 @@
 indicator_fitpsd(x = NULL, cumpsd = indicator_cumpsd(x))
 }
 \arguments{
-\item{x}{A patch size vector or a list of patch size vectors.}
+\item{x}{A binary matrix or a list of binary matrices}
+
+\item{cumpsd}{A cumulative patch size distribution as returned by
+  indicator_cumpsd}
 }
 \value{
 A list object of class 'psdfit' containing the pooled cumulative
@@ -26,7 +29,7 @@ data(B)
 indicator_fitpsd(B)
 }
 \references{
-Kéfi, S., Rietkerk, M., Alados, C. L., Pueyo, Y., Papanastasis,
+Kefi, S., Rietkerk, M., Alados, C. L., Pueyo, Y., Papanastasis,
 V. P., ElAich, A., & De Ruiter, P. C. (2007). Spatial vegetation patterns
 and imminent desertification in Mediterranean arid ecosystems.
 Nature, 449(7159), 213-217.

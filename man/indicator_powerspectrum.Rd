@@ -7,7 +7,7 @@
 indicator_powerspectrum(mat)
 }
 \arguments{
-\item{data}{A list of binary matrices of length >=1 (OR) a single binary matrix}
+\item{mat}{A binary matrix or a list of binary matrices}
 }
 \value{
 A list of lists(of theta and R spectrum values for distances 1 to
@@ -17,5 +17,8 @@ A list of lists(of theta and R spectrum values for distances 1 to
 }
 \description{
 Function to calculate theta and r spectrum.
+}
+\details{
+
 }
 

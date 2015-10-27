@@ -4,10 +4,10 @@
 \alias{plot.psdfit}
 \title{Plot a `psdfit` object}
 \usage{
-\method{plot}{psdfit}(x, all.models = FALSE, ...)
+\method{plot}{psdfit}(x, all.models = FALSE)
 }
 \arguments{
-\item{x}{A `psdfit` object}
+\item{x}{A `psdfit` object as returned by `indicator_fitpsd`}
 
 \item{all.models}{Should all fitted models be displayed on the plot ?}
 }

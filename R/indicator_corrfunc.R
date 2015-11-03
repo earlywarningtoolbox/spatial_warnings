@@ -3,16 +3,15 @@
 #' @description This function computes the correlation function of a binary 
 #'              matrix. 
 #'
-#' @details TODO: add details (reference ? what is a correlation function ?)
-#'
 #' @param mat A binary matrix or a list of binary matrices. 
 #' 
 #' @return A numeric vector of correlation at different distances (from 0 to 
 #' matrix size/2 by increments of 1 unit) or a list of these vectors if input
 #' is a list of binary matrices.
 #'
+#' @details TODO: add details (reference ? what is a correlation function ?)
 #'
-#'@export
+#' @export
 indicator_corrfunc <- function(mat) {
   
   check_mat(mat) # checks if binary and sensible
@@ -45,7 +44,7 @@ corrfunc <- function(mat) {
     #indices = randi(L*L,500,1)
     indices <- seq.int(L^2)
     indexi  <- c[, 2]
-    indexj  <- c[1, ]
+    indexj  <- c[ ,1]
     
     if (i == 0) {
       submat <- matrix(fullmat[fullmat[ ,3] <= i, ], 
@@ -69,6 +68,7 @@ corrfunc <- function(mat) {
         if (rowid == 0) {
           rowid=L
         }
+        
         if (colid == 0){
           colid <- L
         }

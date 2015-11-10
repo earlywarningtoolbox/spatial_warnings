@@ -47,11 +47,11 @@
 #' 
 #'@export  
 indicator_moran <- function(input, 
-                            subsize     = 2, 
+                            subsize     = 5, 
                             detrending  = FALSE, 
-                            discrete    = TRUE,
+                            discrete    = is.binary_matrix(B),
                             nreplicates = 499) {
-
+  
   check_mat(input) # checks if binary and sensible
   
   if (is.list(input)) {

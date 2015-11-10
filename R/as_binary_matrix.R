@@ -58,7 +58,7 @@ as.binary_matrix.matrix <- function(x, state = NULL) {
 as.binary_matrix.list <- function(x, state = NULL) { 
   
   new_obj <- lapply(x, as.binary_matrix, state)
-  class(new_obj) <- c('binary_matrix', 'x')
+  class(new_obj) <- c('binary_matrix', 'list')
   return(new_obj)
 }
   

@@ -1,0 +1,57 @@
+h---
+title: "Using the spatialwarnings package"
+author: "The package authors"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Ecosystems can undergo rapid and discontinuous transitions, even after a small 
+change in their control parameters. Arid systems can go extinct, lakes can 
+become eutrophized and forest patches can fail to maintain themselves, even 
+after a small increase in the external pressure they bear. Those sharp 
+transitions after a threshold has been crossed are gathered under the umbrella 
+term of *critical transitions*. Some of them can even show irreversibility, 
+where returning the external conditions to their original values is 
+insufficient to restore the ecosystem to its original state. The latter type of
+transition is a *catastrophic shift*. 
+
+A body of theoretical work suggests that ecosystems should show some 
+deviation in their characteristics before undergoing such a transition, hence 
+the development of *indicators* or *early-warning signals* of critical 
+transitions. These indicators are developed for time-series (package 
+[earlywarnings](https://cran.r-project.org/web/packages/earlywarnings/)) 
+and spatial data (this package). 
+
+The *spatialwarnings* package provides user-friendly tools to compute, test for
+significance and plot the indicators. This document provides an overview of the 
+package and a possible workflow. 
+
+The package provides many indicators, most of which falling into three broad 
+categories, that are detailed thereafter: 
+
+- "Generic" early-warning signals
+- Spectral indicators
+- Patch-based indicators
+- Potential-analysis
+
+
+
+```{r}
+  library(spatialwarnings)
+  library(ggplot2)
+
+  # Read and format data
+  data(L)
+  L <- as.binary_matrix(L)
+
+  # Compute generic early warning signals
+  test.dat <- generic_spews(L)
+  test.summary <- summary(test.dat)
+  
+  # Plot along the replicate number
+  plot.generic_spews_summary(test.summary, along = seq_along(L)) 
+```

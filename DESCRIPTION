@@ -13,5 +13,7 @@ Imports:
   Rcpp,
   ggplot2,
   plyr
-Suggests: testthat
+Suggests: testthat,
+    knitr
 LinkingTo: Rcpp
+VignetteBuilder: knitr

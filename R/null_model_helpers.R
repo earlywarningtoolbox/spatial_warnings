@@ -32,9 +32,12 @@ compute_indicator_with_null <- function(input,
     # Compute the index on a randomized matrix
     nulldistr <- replicate(nreplicates, 
                            indicf(matrix(sample(input), nrow = nrow(input))) )
+    
     result <- c(result,
                 list(null_mean = mean(nulldistr), 
                      null_sd   = sd(nulldistr),
+                     null_95   = quantile(nulldistr, .95),
+                     null_05   = quantile(nulldistr, 0.05),
                      z_score   = (value - mean(nulldistr)) / sd(nulldistr),
                      # Should the p-value be one-sided/two-sided ? 
                      pval      = 1 - rank(c(value, nulldistr))[1] / (nreplicates+1)))

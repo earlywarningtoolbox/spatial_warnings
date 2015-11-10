@@ -20,15 +20,16 @@ Summary and significance testing function for generic
 \details{
 This function returns internally a \code{data.frame} of five columns
   containing :
-  \enumerate {
+  \enumerate{
     \item \code{value} The indicator value
     \item \code{null_mean} The mean of the null distribution
     \item \code{null_sd} The standard deviation of the null distribution
     \item \code{null_95} The 95%th quantile
     \item \code{null_05} The 5%th quantile
-    \item \code{z_score} The z_score of the observed value in the null distribution
-    \item \code{pval} The p-value (based on the rank of the observed value in the null
-            distribution)
+    \item \code{z_score} The z_score of the observed value in the null
+      distribution
+    \item \code{pval} The p-value (based on the rank of the observed
+      value in the null distribution)
   }
 }
 \examples{

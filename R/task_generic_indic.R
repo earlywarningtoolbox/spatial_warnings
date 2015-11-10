@@ -70,7 +70,7 @@ generic_spews <- function(mat,
   
   # If it is a binary matrix, then coarse grain it
   if (discrete) { 
-    mat <- coarse_grain(B, subsize = 5)
+    mat <- coarse_grain(mat, subsize = 5)
   }
   
   if (detrend) { 
@@ -131,15 +131,16 @@ print.generic_spews_list <- function(obj) {
 #'   
 #' @details This function returns internally a \code{data.frame} of five columns
 #'   containing : 
-#'   \enumerate { 
+#'   \enumerate{ 
 #'     \item \code{value} The indicator value
 #'     \item \code{null_mean} The mean of the null distribution
 #'     \item \code{null_sd} The standard deviation of the null distribution
 #'     \item \code{null_95} The 95%th quantile
 #'     \item \code{null_05} The 5%th quantile
-#'     \item \code{z_score} The z_score of the observed value in the null distribution
-#'     \item \code{pval} The p-value (based on the rank of the observed value in the null
-#'             distribution)
+#'     \item \code{z_score} The z_score of the observed value in the null 
+#'       distribution
+#'     \item \code{pval} The p-value (based on the rank of the observed 
+#'       value in the null distribution)
 #'   }
 #' 
 #' @seealso \code{\link{plot.generic_spews_summary}}
@@ -151,6 +152,7 @@ print.generic_spews_list <- function(obj) {
 #' 
 #'@export
 summary.generic_spews <- function(obj, null_replicates = 999) { 
+  print('plop')
   NextMethod("summary", obj, null_replicates)
 }
 

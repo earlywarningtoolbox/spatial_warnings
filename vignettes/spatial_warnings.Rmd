@@ -45,12 +45,12 @@ using an example dataset: the output from Kubo et al's (1996) forest gap model.
 # Preparing your data 
 
 The package assumes on raster-like data, *i.e.* values regularly-spaced point 
-along a 2D grid. Some indicators can work on continuous data, however, some 
+along a 2D grid. Some indicators assume continuous data, however, some 
 others require binary (1/0) data. Some conversion may thus be required before 
 computing the indicators.
 
-A conversion generic function `as.binary_matrix` is provided and will handle 
-the conversion of discrete data to binary matrices for standard matrices, 
+A conversion generic function `as.binary_matrix` is provided and will handle the 
+conversion of discrete data to binary matrices for standard `matrix` objects, 
 data frames or list of those (see Fig. 1). However, it is up to the user to 
 convert quantitative data into a binary matrix if necessary (e.g. aerial 
 imagery). 
@@ -86,6 +86,32 @@ cells.
   # Plot along the replicate number
   plot(test.summary, along = parameters[ ,"delta"]) + xlab('delta')
 ```
+
+# Using single indicator functions 
+
+All indicators can be computed using the `indicator_*` function family. Those
+functions all accept quantitative or binary data matrices, or lists of two. 
+
+For example, using the `forestdat` example dataset, we can compute the moran 
+indicator : 
+  
+```{r}
+moran.example <- with(forestdat, indicator_moran(matrices))
+
+str(moran.example)
+```
+
+Here is an exhaustive list (27-11-2015) of the indicator functions: 
+  
+- indicator_corrfunc
+- indicator_fitpsd
+- indicator_largestpatch
+- indicator_powerspectrum
+- indicator_variance
+- indicator_cumpsd
+- indicator_fracgeo
+- indicator_moran
+- indicator_skewness
 
 # References
 

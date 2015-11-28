@@ -4,7 +4,7 @@
 \alias{plot.generic_spews_summary}
 \title{Plots the results of a generic spatial warning signal summary}
 \usage{
-\method{plot}{generic_spews_summary}(obj, along = unique(obj[, "replicate"]),
+\method{plot}{generic_spews_summary}(obj, along = obj[, "replicate"],
   what = "value", display_null = TRUE)
 }
 \arguments{

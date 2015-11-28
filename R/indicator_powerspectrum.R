@@ -9,7 +9,9 @@
 #'   SystemSize/2 for each matrix in the list) if input is a list (OR) a single 
 #'   list (of theta and R spectrum values for distances 1 to SystemSize/2) if 
 #'   input is a single matrix
-#'
+#' 
+#' @details writeme
+#' 
 #' @export
 indicator_powerspectrum <- function(mat) {
   

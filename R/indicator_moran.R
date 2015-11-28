@@ -49,7 +49,7 @@
 indicator_moran <- function(input, 
                             subsize     = 5, 
                             detrending  = FALSE, 
-                            discrete    = is.binary_matrix(B),
+                            discrete    = is.binary_matrix(input),
                             nreplicates = 499) {
   
   check_mat(input) # checks if binary and sensible

@@ -16,7 +16,7 @@ compute_indicator_with_null <- function(input,
   }
   
   # Check whether we need to coarse-grain before computing the indicator or not
-  if (discrete) { 
+  if ( is.binary_matrix(input) ) { 
     indicf <- make_indic_f_with_cg(indicator_function, subsize)
   } else { 
     indicf <- indicator_function

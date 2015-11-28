@@ -5,7 +5,7 @@
 \title{Moran's Index at lag of 1}
 \usage{
 indicator_moran(input, subsize = 5, detrending = FALSE,
-  discrete = is.binary_matrix(B), nreplicates = 499)
+  discrete = is.binary_matrix(input), nreplicates = 499)
 }
 \arguments{
 \item{input}{An matrix or a list of matrix object. It should 

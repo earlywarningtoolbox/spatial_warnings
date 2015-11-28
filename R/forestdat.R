@@ -1,7 +1,4 @@
-#' Prices of 50,000 round cut diamonds.
-#'
-#' A list of binary matrices and their associated parameters as produced by 
-#'   Kubo et al's forest gap model (Kubo et al., 1996). 
+#' A list of binary matrices and their associated parameters 
 #'
 #' @format A list of two components, matrices and parameters
 #' 
@@ -12,15 +9,13 @@
 #'       the parameters used to produce the simulations. 
 #'   }
 #' 
-#' @source local
+#' @source Generated using the implementation of Kubo's model in caspr
 #' 
 #' @references
 #' 
 #' Kubo, T., Iwasa, Y., & Furumoto, N. (1996). Forest spatial dynamics with gap
 #'   expansion: Total gap area and gap size distribution. Journal of Theoretical
 #'   Biology, 180(3), 229–246. http://doi.org/10.1006/jtbi.1996.0099
-#' 
-#'
 "forestdat"
 
 # 

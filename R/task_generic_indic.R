@@ -98,11 +98,14 @@ generic_spews <- function(mat,
 # PRINT METHODS
 # ----------------------------
 
+print.generic_spews <- function(obj) { 
+  NextMethod("print", obj)
+}
 print.generic_spews_single <- function(obj) { 
-  print( summary.generic_spews_single(obj, 0) )
+  print( summary.generic_spews_single(obj, null_replicates = 0) )
 }
 print.generic_spews_list <- function(obj) { 
-  print( summary.generic_spews_list(obj, 0) )
+  print( summary.generic_spews_list(obj, null_replicates = 0) )
 }
 
 
@@ -150,6 +153,7 @@ summary.generic_spews <- function(obj, null_replicates = 999) {
 }
 
 # Summary function for a single replicate
+#'@export
 summary.generic_spews_single <- function(obj, null_replicates = 999) { 
   
   results <- data.frame(value = numeric(), null_mean = numeric(),
@@ -158,17 +162,19 @@ summary.generic_spews_single <- function(obj, null_replicates = 999) {
   
   # Compute a distribution of null values for moran's I
   moran_null <- with(obj,
-                     indicator_moran(orig_data, subsize, detrend, 
-                     null_replicates))
+                     indicator_moran(orig_data, 
+                                     subsize = subsize, 
+                                     detrending = detrend, 
+                                     nreplicates = null_replicates))
   results <- rbind(results, moran_null)
   
   # Compute pvalues for variance/skewness/
   # Note that this is not yet implemented -> set to zero to not produce 
   #   errors when plotting. 
   results <- rbind(results, 
-                   c(obj[['results']][['mean']],     0, 0, 0, 0),
-                   c(obj[['results']][['variance']], 0, 0, 0, 0),
-                   c(obj[['results']][['skewness']], 0, 0, 0, 0))  
+                   c(obj[['results']][['mean']],     rep(0, ncol(results)-1)),
+                   c(obj[['results']][['variance']], rep(0, ncol(results)-1)),
+                   c(obj[['results']][['skewness']], rep(0, ncol(results)-1)))  
   
   warning('Significance-testing of variance and skewness is not ',
           'implemented yet')
@@ -183,6 +189,7 @@ summary.generic_spews_single <- function(obj, null_replicates = 999) {
 }
 
 # Summary function for many replicates
+#'@export
 summary.generic_spews_list <- function(obj, null_replicates = 999) { 
   
   results <- plyr::llply(obj, summary.generic_spews_single, null_replicates)

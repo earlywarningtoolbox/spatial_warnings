@@ -1,14 +1,13 @@
 # 
-# This file provides an example of use for the spatialwarning and the caspr
-# packages.
+# This file provides an example of use for the spatialwarning package.
 # 
 
 
 # Prerequisite: an installed version of spatialwarnings as user
 # 
 # This requires a working copy of devtools if installing from github.
-library(devtools)
-install_github('fdschneider/spatial_warnings')
+# library(devtools)
+# install_github('fdschneider/spatial_warnings')
 
 # We now have the package installed: we can load it
 library(spatialwarnings) # mind the absence of underscore ! 
@@ -42,3 +41,21 @@ generic_ic_summary <- summary(generic_ic) # can be slow
 generic_ic_summary
 plot(generic_ic_summary, along = parameters[ ,'delta'])
 
+
+# Second example with a real dataset
+# -----------------
+
+# Let's compute stuff on Sonia's images
+load('./draft/desertification_BW_second_from_left.rda', verbose = TRUE)
+levelplot(desertification, 
+          col.regions = colorRampPalette(c('#FFF299', '#37A42C'))(20))
+
+# Classify into 0/1
+binary_mat <- as.binary_matrix( desertification > median(desertification) ) 
+levelplot(binary_mat, 
+          col.regions = colorRampPalette(c('#FFF299', '#37A42C'))(20))
+
+# Compute psd 
+psdfit <- indicator_fitpsd(binary_mat)
+summary(psdfit)
+plot(psdfit, all.models = TRUE)

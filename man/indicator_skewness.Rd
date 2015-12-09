@@ -5,7 +5,7 @@
 \title{Skewness indicator}
 \usage{
 indicator_skewness(input, subsize = 2, detrending = FALSE,
-  discrete = TRUE, nreplicates = 499)
+  nreplicates = 499)
 }
 \arguments{
 \item{input}{A square binary matrix or a list of square binary matrices.}
@@ -15,10 +15,6 @@ original matrix.}
 
 \item{detrending}{If TRUE data are detrended by removing the spatial mean. 
 (Default is FALSE).}
-
-\item{discrete}{logical. If TRUE the data represent discrete variables (like 
-presence/absense), otherwise continuous data (like biomass density). 
-Defaults to FALSE.}
 
 \item{nreplicates}{Number of replicates to produce to estimate null 
 distribution of index.}

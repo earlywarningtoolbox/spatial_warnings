@@ -6,7 +6,6 @@
 compute_indicator_with_null <- function(input, 
                                         subsize, 
                                         detrending, 
-                                        discrete,
                                         nreplicates, 
                                         indicator_function) { 
   

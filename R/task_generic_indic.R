@@ -29,9 +29,6 @@
 #' @param mat A matrix (quantitative data), a binary matrix (qualitative data), 
 #'   or a list of those
 #' 
-#' @param discrete Whether the passed data is qualitative or quantitative. If 
-#'   the passed data is a binary matrix, then the parameter is set to TRUE. 
-#' 
 #' @param subsize The subsize for the coarse-graining in case the passed matrix
 #'   is qualitative
 #'   
@@ -54,22 +51,20 @@
 #'
 #'@export
 generic_spews <- function(mat, 
-                          discrete = is.binary_matrix(mat), 
                           subsize = 5,
                           detrend = FALSE) {
   
   orig_mat <- mat
   
   if ( is.list(mat) ) { 
-    results <- lapply(mat, with_binmat_check(generic_spews), 
-                      subsize, detrend)
+    results <- lapply(mat, generic_spews, subsize, detrend)
     class(results) <- c('generic_spews', 'generic_spews_list', 
                         'spews_result', 'list')
     return(results)
   }
   
   # If it is a binary matrix, then coarse grain it
-  if (discrete) { 
+  if ( is.binary_matrix(mat) ) { 
     mat <- coarse_grain(mat, subsize = 5)
   }
   
@@ -81,7 +76,6 @@ generic_spews <- function(mat,
   results <- list(results = .generic_spews_core(mat), 
                   orig_data = orig_mat,
                   call = match.call(),
-                  discrete = discrete, 
                   subsize = subsize, 
                   detrend = detrend)
   class(results) <- c('generic_spews', 'generic_spews_single', 
@@ -165,7 +159,7 @@ summary.generic_spews_single <- function(obj, null_replicates = 999) {
   # Compute a distribution of null values for moran's I
   moran_null <- with(obj,
                      indicator_moran(orig_data, subsize, detrend, 
-                                     discrete, null_replicates))
+                     null_replicates))
   results <- rbind(results, moran_null)
   
   # Compute pvalues for variance/skewness/

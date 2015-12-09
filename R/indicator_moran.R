@@ -11,10 +11,6 @@
 #' @param input An matrix or a list of matrix object. It should 
 #'   be a square matrix 
 #' 
-#' @param discrete logical. If TRUE the data represent discrete variables (like 
-#'   presence/absense), otherwise continuous data (like biomass density). 
-#'   Defaults to FALSE.
-#' 
 #' @param subsize logical. Dimension of the submatrix used to coarse-grain the 
 #'   original matrix.
 #' 
@@ -49,15 +45,14 @@
 indicator_moran <- function(input, 
                             subsize     = 5, 
                             detrending  = FALSE, 
-                            discrete    = is.binary_matrix(input),
                             nreplicates = 499) {
   
   check_mat(input) # checks if binary and sensible
   
   if (is.list(input)) {
     # Returns a list of lists
-    return( lapply(input, indicator_variance, 
-                   subsize, detrending, discrete, nreplicates) )
+    return( lapply(input, indicator_moran, 
+                   subsize, detrending, nreplicates) )
   } else { 
     
     if (diff(dim(input)) != 0) { 
@@ -65,8 +60,7 @@ indicator_moran <- function(input,
     } 
     
     return( 
-      compute_indicator_with_null(input, subsize, detrending, 
-                                  discrete, nreplicates, 
+      compute_indicator_with_null(input, subsize, detrending, nreplicates, 
                                   indicator_function = 
                                     function(input) .moranCpp(input)) 
     )

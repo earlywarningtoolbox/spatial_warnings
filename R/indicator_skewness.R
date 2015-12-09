@@ -10,10 +10,6 @@
 #' 
 #' @param input A square binary matrix or a list of square binary matrices. 
 #' 
-#' @param discrete logical. If TRUE the data represent discrete variables (like 
-#'   presence/absense), otherwise continuous data (like biomass density). 
-#'   Defaults to FALSE.
-#' 
 #' @param subsize logical. Dimension of the submatrix used to coarse-grain the 
 #'   original matrix.
 #' 
@@ -48,7 +44,6 @@
 indicator_skewness <- function(input, 
                                subsize     = 2, 
                                detrending  = FALSE, 
-                               discrete    = TRUE,
                                nreplicates = 499) {
   
   check_mat(input) # checks if binary and sensible
@@ -56,7 +51,7 @@ indicator_skewness <- function(input,
   if (is.list(input)) {
     # Returns a list of lists
     return( lapply(input, indicator_variance, 
-                   subsize, detrending, discrete, nreplicates) )
+                   subsize, detrending, nreplicates) )
   } else { 
     
     if (diff(dim(input)) != 0) { 
@@ -65,8 +60,7 @@ indicator_skewness <- function(input,
     
     return( 
       compute_indicator_with_null(
-        input, subsize, detrending, 
-        discrete, nreplicates, 
+        input, subsize, detrending, nreplicates, 
         indicator_function = function(input) moments::skewness(as.vector(input))
     )) 
     

@@ -4,15 +4,11 @@
 \alias{generic_spews}
 \title{Generic spatial warning signals}
 \usage{
-generic_spews(mat, discrete = is.binary_matrix(mat), subsize = 5,
-  detrend = FALSE)
+generic_spews(mat, subsize = 5, detrend = FALSE)
 }
 \arguments{
 \item{mat}{A matrix (quantitative data), a binary matrix (qualitative data), 
 or a list of those}
-
-\item{discrete}{Whether the passed data is qualitative or quantitative. If 
-the passed data is a binary matrix, then the parameter is set to TRUE.}
 
 \item{subsize}{The subsize for the coarse-graining in case the passed matrix
 is qualitative}
@@ -26,8 +22,7 @@ An object of class \code{generic_spews_single} if the passed object
   it was a list.
 }
 \description{
-Computation of spatial generic early warning signals (Moran's I, 
-  variance and skewness)
+Computation of spatial generic early warning signals (Moran's I, variance and skewness)
 }
 \details{
 Before a critical point, a spatial dynamical system is expected to 

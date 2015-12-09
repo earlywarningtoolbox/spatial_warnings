@@ -4,8 +4,7 @@
 \alias{indicator_moran}
 \title{Moran's Index at lag of 1}
 \usage{
-indicator_moran(input, subsize = 5, detrending = FALSE,
-  discrete = is.binary_matrix(input), nreplicates = 499)
+indicator_moran(input, subsize = 5, detrending = FALSE, nreplicates = 499)
 }
 \arguments{
 \item{input}{An matrix or a list of matrix object. It should 
@@ -16,10 +15,6 @@ original matrix.}
 
 \item{detrending}{If TRUE data are detrended by removing the spatial mean. 
 (Default is FALSE)}
-
-\item{discrete}{logical. If TRUE the data represent discrete variables (like 
-presence/absense), otherwise continuous data (like biomass density). 
-Defaults to FALSE.}
 
 \item{nreplicates}{Number of replicates to produce to estimate null 
 distribution of index (default: 999).}

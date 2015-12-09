@@ -72,8 +72,8 @@ indicator_powerspectrum <- function(mat) {
              ANGLE <= anglebin[length(anglebin)])
   tspectr[length(tspectr)] <- sum(aspectr2D[m])/length(m)
   
-  out <- list(r_spectrum = data.frame(dist  = ray,      tspec = rspectr),
-              t_spectrum = data.frame(angle = anglebin, rspec = tspectr))
+  out <- list(r_spectrum = data.frame(dist  = ray,      rspec = rspectr),
+              t_spectrum = data.frame(angle = anglebin, tspec = tspectr))
   
   return(out)
   

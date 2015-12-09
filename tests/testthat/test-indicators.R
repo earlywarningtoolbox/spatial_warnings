@@ -18,8 +18,8 @@ test_that('indicator functions stop if provided garbage data', {
   garbage_notbinary <- matrix(sample(c(1,2,3), 100, replace=TRUE), nrow=10)
   garbage_diffsizes <- lapply(5:10, diag)
   
-  data(B)
-  data(L)
+  data(forestdat)
+  data(forestdat)
 
   # This reflects checks in check_mat
   for (f in indicator_functions) { 
@@ -28,8 +28,8 @@ test_that('indicator functions stop if provided garbage data', {
     expect_error(f(garbage_notbinary))
     expect_warning(f(garbage_diffsizes))
     # Test if the functions actually work
-    f(B)
-    f(L)
+    f(forestdat[['matrices']][[1]])
+    f(forestdat[['matrices']])
   }
   
 })

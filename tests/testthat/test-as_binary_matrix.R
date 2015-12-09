@@ -1,13 +1,13 @@
 
 context('as.binary_matrix.* functions work as expected')
 
-# Explicitely load B
-data(B)
+# Explicitely load forestdat
+data(forestdat)
 
 test_that('conversion from matrix works', { 
   
   # Matrix object
-  mat <- B # data object
+  mat <- forestdat[['matrices']][[1]] # data object
   mat_NA <- mat 
   mat_NA[10] <- NA 
   
@@ -21,8 +21,8 @@ test_that('conversion from data.frame works', {
   # df object
   
   # Logical case
-  df_logical    <- as.data.frame(B)
-  df_logical_NA <- as.data.frame(B)
+  df_logical    <- as.data.frame(forestdat[['matrices']][[1]])
+  df_logical_NA <- as.data.frame(forestdat[['matrices']][[1]])
   df_logical_NA[3, 4] <- NA
   expect_is(as.binary_matrix(df_logical), 'binary_matrix')
   expect_error(as.binary_matrix(df_logical_NA))

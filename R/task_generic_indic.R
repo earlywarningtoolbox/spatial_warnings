@@ -14,8 +14,7 @@
 
 #' @title Generic spatial warning signals
 #' 
-#' @description Computation of spatial generic early warning signals (Moran's I, 
-#'   variance and skewness)
+#' @description Computation of spatial generic early warning signals (Moran's I, variance and skewness)
 #' 
 #' 
 #' @references 
@@ -62,7 +61,8 @@ generic_spews <- function(mat,
   orig_mat <- mat
   
   if ( is.list(mat) ) { 
-    results <- lapply(mat, generic_spews, discrete, subsize, detrend)
+    results <- lapply(mat, with_binmat_check(generic_spews), 
+                      subsize, detrend)
     class(results) <- c('generic_spews', 'generic_spews_list', 
                         'spews_result', 'list')
     return(results)
@@ -152,7 +152,6 @@ print.generic_spews_list <- function(obj) {
 #' 
 #'@export
 summary.generic_spews <- function(obj, null_replicates = 999) { 
-  print('plop')
   NextMethod("summary", obj, null_replicates)
 }
 
@@ -170,17 +169,18 @@ summary.generic_spews_single <- function(obj, null_replicates = 999) {
   results <- rbind(results, moran_null)
   
   # Compute pvalues for variance/skewness/
-  # Note that this is not yet implemented -> set to -1 to not provide 
+  # Note that this is not yet implemented -> set to zero to not produce 
   #   errors when plotting. 
   results <- rbind(results, 
-                   c(obj[['results']][['mean']],      0,  0,  0,  0),
-                   c(obj[['results']][['variance']], -1, -1, -1, -1),
-                   c(obj[['results']][['skewness']], -1, -1, -1, -1))  
+                   c(obj[['results']][['mean']],     0, 0, 0, 0),
+                   c(obj[['results']][['variance']], 0, 0, 0, 0),
+                   c(obj[['results']][['skewness']], 0, 0, 0, 0))  
   
-  warning('Testing of variance and skewness is not implemented yet')
+  warning('Significance-testing of variance and skewness is not ',
+          'implemented yet')
   
   # Format output
-  indic_list <- c('moran_I', 'mean', 'variance', 'skewness')
+  indic_list <- c('Moran\'s I', 'Mean', 'Variance', 'Skewness')
   results <- data.frame(indicator = indic_list, results)
   rownames(results) <- indic_list
   
@@ -189,6 +189,7 @@ summary.generic_spews_single <- function(obj, null_replicates = 999) {
 }
 
 # Summary function for many replicates
+#' @export
 summary.generic_spews_list <- function(obj, null_replicates = 999) { 
   
   results <- plyr::llply(obj, summary.generic_spews_single, null_replicates)
@@ -233,7 +234,7 @@ plot.generic_spews <- function(obj, along) {
   }
   
   new_data <- summary.generic_spews_list(obj, null_replicates = 0)
-  plot.generic_spews_summary(new_data)
+  plot.generic_spews_summary(new_data, along)
 }
 
 # 
@@ -268,7 +269,7 @@ plot.generic_spews <- function(obj, along) {
 #'
 #'@export
 plot.generic_spews_summary <- function(obj, 
-                                       along = unique(obj[ ,'replicate']), 
+                                       along = obj[ ,'replicate'], 
                                        what = 'value',
                                        display_null = TRUE) {  
   
@@ -286,11 +287,16 @@ plot.generic_spews_summary <- function(obj,
   # Create base plot object 
   plot <- ggplot2::ggplot(plot_data)
   
-  # Check if we want to add a null ribbon
+  # Check if we really want to add a null ribbon
   add_null <- display_null
   if ( display_null && ! "null_mean" %in% colnames(obj) ) { 
     warning('Null data was specified to be displayed but could not be found ', 
             'in the provided object')
+    add_null <- FALSE
+  }
+  if ( display_null && what != "value" ) { 
+    warning('Cannot display null model quantiles when the indicator value is ',
+            'not displayed')
     add_null <- FALSE
   }
   
@@ -319,7 +325,7 @@ plot.generic_spews_summary <- function(obj,
             ggplot2::guides(color = FALSE) # Disable color legend
   
   # Add names
-  plot <- plot + ggplot2::xlab(substitute(along))
+  plot <- plot + ggplot2::xlab(as.character(match.call()['along']))
   
   return(plot)
 }

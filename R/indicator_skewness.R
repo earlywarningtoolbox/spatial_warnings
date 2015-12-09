@@ -61,6 +61,7 @@ indicator_skewness <- function(input,
     return( 
       compute_indicator_with_null(
         input, subsize, detrending, nreplicates, 
+        do_coarse_graining = is.binary_matrix(input), 
         indicator_function = function(input) moments::skewness(as.vector(input))
     )) 
     

@@ -5,6 +5,7 @@
 # 
 compute_indicator_with_null <- function(input, 
                                         subsize, 
+                                        do_coarse_graining,
                                         detrending, 
                                         nreplicates, 
                                         indicator_function) { 
@@ -14,8 +15,8 @@ compute_indicator_with_null <- function(input,
     input <- input - mean(input)
   }
   
-  # Check whether we need to coarse-grain before computing the indicator or not
-  if ( is.binary_matrix(input) ) { 
+  # Decide whether we need to coarse-grain before computing the indicator or not
+  if ( do_coarse_graining ) { 
     indicf <- make_indic_f_with_cg(indicator_function, subsize)
   } else { 
     indicf <- indicator_function
@@ -24,7 +25,7 @@ compute_indicator_with_null <- function(input,
   # Compute the indicator_function
   # Note: subsize is always passed so the indicator_function function should 
   # accept extra arguments.
-  value <- indicf(input)
+  value  <- indicf(input)
   result <- list(value = value)
   
   if (nreplicates > 2) { 

@@ -17,6 +17,9 @@
 #' @param detrending If TRUE data are detrended by removing the spatial mean. 
 #'   (Default is FALSE)
 #' 
+#' @param do_coarse_graining If TRUE then the matrix is coarse_grained before 
+#'   computing the indicator. 
+#' 
 #' @param nreplicates Number of replicates to produce to estimate null 
 #'   distribution of index (default: 999).
 #' 
@@ -45,6 +48,7 @@
 indicator_moran <- function(input, 
                             subsize     = 5, 
                             detrending  = FALSE, 
+                            do_coarse_graining = FALSE,
                             nreplicates = 499) {
   
   check_mat(input) # checks if binary and sensible
@@ -52,7 +56,7 @@ indicator_moran <- function(input,
   if (is.list(input)) {
     # Returns a list of lists
     return( lapply(input, indicator_moran, 
-                   subsize, detrending, nreplicates) )
+                   subsize, detrending, do_coarse_graining, replicates) )
   } else { 
     
     if (diff(dim(input)) != 0) { 
@@ -61,6 +65,7 @@ indicator_moran <- function(input,
     
     return( 
       compute_indicator_with_null(input, subsize, detrending, nreplicates, 
+                                  do_coarse_graining = do_coarse_graining,
                                   indicator_function = 
                                     function(input) .moranCpp(input)) 
     )

@@ -38,9 +38,10 @@ indicator_powerspectrum <- function(mat) {
   ma <- min(c(n0x,n0y))
   DISTMASK <- DIST>=mi & DIST<=ma
   tmp <- fft(mat)
+  class(tmp) <- "matrix"
   tmpshift <- myfftshift(tmp)
   tmpshift[n0x,n0y] <- 0
-  aspectr2D <- abs(tmpshift)^2/(n0x*n0y)^4
+  aspectr2D <- abs(tmpshift)^2 / (n0x*n0y)^4
   
   sig2 <- sum(aspectr2D[DISTMASK]) #Normalisation
   aspectr2D <- aspectr2D/sig2 #Normalisation
@@ -71,7 +72,7 @@ indicator_powerspectrum <- function(mat) {
              ANGLE <= anglebin[length(anglebin)])
   tspectr[length(tspectr)] <- sum(aspectr2D[m])/length(m)
   
-  out <- list(tspec=tspectr, rspec=rspectr)
+  out <- data.frame(tspec=tspectr, rspec=rspectr)
   return(out)
   
 }

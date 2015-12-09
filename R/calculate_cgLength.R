@@ -32,5 +32,5 @@ points(CG_range,variance_null,col="black",type ="l",lwd=4,ylab="variance",xlab="
 # The optimum coarse-graining is when the difference between variance of original data and null data is significant 
 
 diff<- variance-variance_null   # array of difference in variance
-i<-which(diff==max(diff))
-optCG<-CG_range[i]              # the value of optCG will give the optimum coarse-graining required for the given data
+
+optCG<-CG_range[which(diff==max(diff))]              # the value of optCG will give the optimum coarse-graining required for the given data

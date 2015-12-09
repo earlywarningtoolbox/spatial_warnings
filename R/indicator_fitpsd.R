@@ -29,7 +29,6 @@
 #' @export
 indicator_fitpsd <- function(x = NULL, 
                              cumpsd = indicator_cumpsd(x)) {
-  check_mat(x) # sanity checks for the passed matrix or list
   
   if ( ! is.null(x) && is.list(x)) { # FALSE for x = NULL
     return( lapply(x, indicator_fitpsd) ) 
@@ -110,7 +109,7 @@ indicator_fitpsd <- function(x = NULL,
     class(out) <- c("psdfit","list")
     return(out)
   }
-} 
+}
 
 #' @title Plot a `psdfit` object
 #' 

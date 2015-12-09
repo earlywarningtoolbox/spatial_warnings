@@ -183,7 +183,6 @@ summary.generic_spews_single <- function(obj, null_replicates = 999) {
 }
 
 # Summary function for many replicates
-#' @export
 summary.generic_spews_list <- function(obj, null_replicates = 999) { 
   
   results <- plyr::llply(obj, summary.generic_spews_single, null_replicates)

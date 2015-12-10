@@ -67,7 +67,7 @@ indicator_moran <- function(input,
       compute_indicator_with_null(input, subsize, detrending, nreplicates, 
                                   do_coarse_graining = do_coarse_graining,
                                   indicator_function = 
-                                    function(input) .moranCpp(input)) 
+                                    function(input) moran_correlation(input)) 
     )
     
   }

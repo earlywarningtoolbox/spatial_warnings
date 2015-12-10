@@ -87,7 +87,7 @@ generic_spews <- function(mat,
 .generic_spews_core <- function(mat) { 
   list(variance = var(as.vector(mat)),
        skewness = moments::skewness(as.vector(mat)),
-       moran    = .moranCpp(mat),
+       moran    = moran_correlation(mat),
        mean     = mean(mat))
 }
 

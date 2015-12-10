@@ -17,3 +17,7 @@
     .Call('spatialwarnings_moranCpp', PACKAGE = 'spatialwarnings', mat)
 }
 
+.myfftshift_cpp <- function(mat) {
+    .Call('spatialwarnings_myfftshift', PACKAGE = 'spatialwarnings', mat)
+}
+

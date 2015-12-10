@@ -24,3 +24,5 @@ void flood_fill(const Rcpp::IntegerMatrix &mat,
                 Rcpp::IntegerVector X,
                 int fillcol,
                 bool wrap);
+
+Rcpp::ComplexMatrix myfftshift(Rcpp::ComplexMatrix mat);

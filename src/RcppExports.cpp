@@ -57,3 +57,14 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// myfftshift
+ComplexMatrix myfftshift(ComplexMatrix mat);
+RcppExport SEXP spatialwarnings_myfftshift(SEXP matSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< ComplexMatrix >::type mat(matSEXP);
+    __result = Rcpp::wrap(myfftshift(mat));
+    return __result;
+END_RCPP
+}

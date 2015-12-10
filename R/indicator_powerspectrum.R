@@ -36,10 +36,11 @@ indicator_powerspectrum <- function(mat) {
   # Calculate DFT
   mi <- 1
   ma <- min(c(n0x,n0y))
-  DISTMASK <- DIST>=mi & DIST<=ma
+  DISTMASK <- DIST>=mi & DIST <= ma
+  
   tmp <- fft(mat)
   class(tmp) <- "matrix"
-  tmpshift <- myfftshift(tmp)
+  tmpshift <- .myfftshift_cpp(tmp)
   tmpshift[n0x,n0y] <- 0
   aspectr2D <- abs(tmpshift)^2 / (n0x*n0y)^4
   
@@ -52,7 +53,7 @@ indicator_powerspectrum <- function(mat) {
   rspectr <- numeric(length(ray))
   for (i in 1:length(ray))
   {
-    m <- DIST>=ray[i]-STEP/2 & DIST<ray[i]+STEP/2
+    m <- DIST >= ray[i] - STEP/2 & DIST < ray[i] + STEP/2
     rspectr[i] <- mean(aspectr2D[m])
   }
   

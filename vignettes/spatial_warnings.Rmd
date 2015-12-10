@@ -77,14 +77,14 @@ cells.
   library(ggplot2)
   
   # Load and make data available
-  attach(forestdat) # make variable matrices and parameters available
+  attach(forestdat) # make variable `matrices` and `parameters` available
   
   # Compute generic early warning signals
   test.dat <- generic_spews(matrices)
   test.summary <- summary(test.dat)
   
   # Plot along the replicate number
-  plot(test.summary, along = parameters[ ,"delta"]) + xlab('delta')
+  plot(test.summary, along = parameters[ ,"delta"]) + xlab('delta') 
 ```
 
 # Using single indicator functions 

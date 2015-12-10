@@ -8,7 +8,8 @@ compute_indicator_with_null <- function(input,
                                         do_coarse_graining,
                                         detrending, 
                                         nreplicates, 
-                                        indicator_function) { 
+                                        indicator_function, 
+                                        simplify = FALSE) { 
   
   # Check options and apply modifications --------------------
   if (detrending) { 
@@ -40,12 +41,16 @@ compute_indicator_with_null <- function(input,
                      null_05   = quantile(nulldistr, 0.05),
                      z_score   = (value - mean(nulldistr)) / sd(nulldistr),
                      # Should the p-value be one-sided/two-sided ? 
+                     # Now it is one-sided (indic in the high values)
                      pval      = 1 - rank(c(value, nulldistr))[1] / (nreplicates+1)))
   }
   
+  if (simplify) { 
+    return( unlist(result) )
+  }
   return(result)
 }
-  
+
 
 # This creates an alternate version of the indicator_function above that 
 # does coarse-graining before computing its value.

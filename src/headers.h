@@ -3,6 +3,9 @@
 // These headers are here so that Rcpp functions can call each other
 // 
 
+#ifndef HEADERS_INCLUDED
+#define HEADERS_INCLUDED
+
 Rcpp::IntegerMatrix get_nb_coords(Rcpp::IntegerMatrix mat, 
                                   Rcpp::IntegerVector X,
                                   Rcpp::IntegerMatrix nbmask, 
@@ -26,3 +29,8 @@ void flood_fill(const Rcpp::IntegerMatrix &mat,
                 bool wrap);
 
 Rcpp::ComplexMatrix myfftshift(Rcpp::ComplexMatrix mat);
+
+Rcpp::NumericMatrix coarse_grain(Rcpp::NumericMatrix mat, 
+                                 int subsize);
+
+#endif

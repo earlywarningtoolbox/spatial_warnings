@@ -14,7 +14,7 @@
 #' @export
 indicator_corrfunc <- function(mat) {
   
-  check_mat(mat) # checks if binary and sensible
+  #check_mat(mat) # checks if binary and sensible
   
   if (is.list(mat)) { 
     return( lapply(mat, indicator_corrfunc) )
@@ -28,23 +28,23 @@ indicator_corrfunc <- function(mat) {
 corrfunc <- function(mat) {
   
   L <- dim(mat)[1] # system size
-  c <- as.matrix(expand.grid(seq.int(L), seq.int(L)))
-  d <- apply(c, 1, function(X) sqrt((X[1] - L/2)^2 + (X[2] - L/2)^2))
+  C <- as.matrix(expand.grid(seq.int(L), seq.int(L)))
+  d <- apply(C, 1, function(X) sqrt((X[1] - round(L/2))^2 + (X[2] - round(L/2))^2))
   
-  fullmat <- cbind(c,d)
+  fullmat <- cbind(C,d)
   fullmat <- fullmat[order(fullmat[ ,3]), ]
   dists   <- unique(fullmat[ ,3])
 
-  CoRmatNT <- rep(0, L/2) # What if L is not divisible by 2 ? 
+  CoRmatNT <- rep(0, round(L/2)) # What if L is not divisible by 2 ? 
   
   meanf <- mean(mat)
   varf  <- var(as.vector(mat))
   
-  for (i in seq(0, L/2) ){
+  for (i in seq(0, round(L/2)) ){
     #indices = randi(L*L,500,1)
     indices <- seq.int(L^2)
-    indexi  <- c[, 2]
-    indexj  <- c[ ,1]
+    indexi  <- C[, 2]
+    indexj  <- C[ ,1]
     
     if (i == 0) {
       submat <- matrix(fullmat[fullmat[ ,3] <= i, ], 
@@ -61,20 +61,20 @@ corrfunc <- function(mat) {
       counter <- 0
       caltd   <- mat[indexi[idx],indexj[idx]] - meanf
       for (j in 1:r){
-          rowid <- submat[j,1] +indexi[idx] - L/2
-          colid <- submat[j,2] +indexj[idx] - L/2
+          rowid <- submat[j,1] +indexi[idx] - round(L/2)
+          colid <- submat[j,2] +indexj[idx] - round(L/2)
           rowid <- rowid %% L 
           colid <- colid %% L 
         if (rowid == 0) {
-          rowid=L
+          rowid<-L
         }
         
         if (colid == 0){
           colid <- L
         }
-        counter <- counter+(caltd*(mat[rowid,colid]-meanf))
+        counter <- counter+(mat[rowid,colid]-meanf)
       }
-    cordump[idx] <- (counter/(r))/varf
+    cordump[idx] <- (caltd*counter/(r))/varf
     }
     CoRmatNT[i+1] <- mean(cordump)
   }

@@ -109,13 +109,15 @@ generic_spews <- function(mat,
 # ----------------------------
 # PRINT METHODS
 # ----------------------------
-
+#'@export
 print.generic_spews <- function(obj) { 
   NextMethod("print", obj)
 }
+#'@export
 print.generic_spews_single <- function(obj) { 
   print( summary.generic_spews_single(obj, null_replicates = 0) )
 }
+#'@export
 print.generic_spews_list <- function(obj) { 
   print( summary.generic_spews_list(obj, null_replicates = 0) )
 }

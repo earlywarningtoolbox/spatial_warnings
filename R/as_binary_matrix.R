@@ -29,6 +29,7 @@ as.binary_matrix <- function(x, state = NULL) {
 is.binary_matrix <- function(x) inherits(x, 'binary_matrix')
 
 # Trivial function that returns the same object when it is already a BM
+#'@export
 as.binary_matrix.binary_matrix <- identity 
 
 # Convert a matrix to a binary matrix object

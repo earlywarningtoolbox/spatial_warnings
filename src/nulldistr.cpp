@@ -19,34 +19,6 @@ int randn(double min, double max) {
   return floor( min + result[0] * ((max+1) - min) );
 }
 
-// Shuffle a matrix in place (checked for absence of bias)
-NumericMatrix shuffle_matrix(NumericMatrix &mat) { 
-  
-  int nr = mat.nrow();
-  int nc = mat.ncol();
-  double tmp;
-  
-  for (int i = 0; i<=(nc*nr)-2; i++) { 
-    
-    int j = randn(i, (nc*nr)-1); // j between i and nc*nr - 1
-    
-    // As we are in a matrix we need to compute the 2D coordinates of the 
-    //   cells to swap.
-    int xold = floor(i/nc);
-    int xnew = floor(j/nc);
-    int yold = i % nc;
-    int ynew = j % nc;
-    
-    // Swap the two cells
-    tmp = mat(xold, yold);
-    mat(xold, yold) = mat(xnew, ynew);
-    mat(xnew, ynew) = tmp;
-  }
-  
-  return mat;
-}
-
-
 //[[Rcpp::export]]
 List shuffle_and_compute(NumericMatrix mat, 
                          Function indic, 
@@ -60,11 +32,31 @@ List shuffle_and_compute(NumericMatrix mat,
   // Allocate indicator results
   List nulldistr = List(nrep);
   
+  // Get matrix sizes
+  int nr = mat.nrow();
+  int nc = mat.ncol();
+  
   for (int i=0; i < nrep; i++) { 
-    // Shuffle matrix in place
-    shuffmat = shuffle_matrix(shuffmat);
     
-    // Coarse grain
+      
+    for (int k = 0; k<=(nc*nr)-2; k++) { 
+      int j = randn(i, (nc*nr)-1); // j between i and nc*nr - 1
+      
+      // As we are in a matrix we need to compute the 2D coordinates of the 
+      //   cells to swap.
+      int xold = floor(k/nc);
+      int xnew = floor(j/nc);
+      int yold = k % nc;
+      int ynew = j % nc;
+      
+      // Swap the two cells
+      double tmp;
+      tmp = mat(xold, yold);
+      mat(xold, yold) = mat(xnew, ynew);
+      mat(xnew, ynew) = tmp;
+    }
+    
+    // Coarse grain ?
     if ( do_coarse_grain ) { 
       coarsemat = coarse_grain(shuffmat, subsize); 
       nulldistr(i) = indic(coarsemat);

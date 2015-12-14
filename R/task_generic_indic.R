@@ -35,6 +35,9 @@
 #' @param detrend Whether to substract the mean or not to the input matrix 
 #'   (detrend)
 #' 
+#' @param moranI_coarse_grain Should the matrix be coarse-grained before 
+#'   computing the moran's I neighbour correlation ?
+#'   
 #' @return An object of class \code{generic_spews_single} if the passed object
 #'   was a single matrix or an object of class \code{generic_spews_list} if 
 #'   it was a list.
@@ -111,15 +114,20 @@ generic_spews <- function(mat,
 # ----------------------------
 #'@export
 print.generic_spews <- function(obj) { 
+  cat('Generic Spatial Early-Warnings results\n') 
+  cat('\n')
+  cat('  Call: ', as.character(obj[["call"]]), '\n')
+  cat('\n')
+  
   NextMethod("print", obj)
 }
 #'@export
 print.generic_spews_single <- function(obj) { 
-  print( summary.generic_spews_single(obj, null_replicates = 0) )
+  print.data.frame( summary.generic_spews_single(obj, null_replicates = 0) )
 }
 #'@export
 print.generic_spews_list <- function(obj) { 
-  print( summary.generic_spews_list(obj, null_replicates = 0) )
+  print.data.frame( summary.generic_spews_list(obj, null_replicates = 0) )
 }
 
 
@@ -163,7 +171,13 @@ print.generic_spews_list <- function(obj) {
 #' 
 #'@export
 summary.generic_spews <- function(obj, null_replicates = 999) { 
-  NextMethod("summary", obj, null_replicates)
+  # Do own dispatch as NextMethod gives untractable errors
+  if ( inherits(obj, "generic_spews_list") ) { 
+    summary.generic_spews_list(obj, null_replicates)
+  } else if ( inherits(obj, "generic_spews_single" ) ) { 
+    summary.generic_spews_single(obj, null_replicates)
+    
+  }
 }
 
 # Summary function for a single replicate
@@ -183,6 +197,7 @@ summary.generic_spews_single <- function(obj, null_replicates = 999) {
   results <- data.frame(indicator = indic_list, results)
   rownames(results) <- indic_list
   
+  attr(results, 'nreplicates') <- null_replicates
   class(results) <- c('generic_spews_summary', 'spews_summary', 'data.frame')
   results
 }
@@ -196,6 +211,7 @@ summary.generic_spews_list <- function(obj, null_replicates = 999) {
                     function(n) data.frame(replicate = n, results[[n]]))
   results <- do.call(rbind, results)
   
+  attr(results, 'nreplicates') <- null_replicates
   class(results) <- c('generic_spews_summary', 'spews_summary', 'data.frame')
   return(results)
 }

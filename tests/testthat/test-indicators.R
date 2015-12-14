@@ -19,10 +19,10 @@ test_that('indicator functions stop if provided garbage data', {
   garbage_diffsizes <- lapply(5:10, diag)
   
   data(forestdat)
-  data(forestdat)
 
   # This reflects checks in check_mat
   for (f in indicator_functions) { 
+#     print(f)
     expect_error(f(garbage_badclass))
     expect_error(f(garbage_has_nas))
     expect_error(f(garbage_notbinary))

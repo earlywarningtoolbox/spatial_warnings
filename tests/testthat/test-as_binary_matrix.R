@@ -9,6 +9,7 @@ test_that('conversion from matrix works', {
   # Matrix object
   mat <- forestdat[['matrices']][[1]] # data object
   mat_NA <- mat 
+  class(mat_NA) <- class(mat) <- "matrix" # discard binary_matrix class
   mat_NA[10] <- NA 
   
   expect_is(as.binary_matrix(mat), 'binary_matrix')

@@ -36,6 +36,10 @@ as.binary_matrix.binary_matrix <- identity
 #'@rdname as.binary_matrix
 as.binary_matrix.matrix <- function(x, state = NULL) { 
   
+  if ( any(is.na(x)) ) { 
+    stop("Object of class `binary_matrix` cannot contain NAs.")
+  }
+  
   if ( is.numeric(x) || is.integer(x) || is.character(x) ) { 
     if ( is.null(state) ) { 
       stop('Input object is not of logical type: I don\'t know how to convert it ', 

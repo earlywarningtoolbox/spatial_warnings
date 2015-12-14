@@ -30,6 +30,8 @@
 indicator_fitpsd <- function(x = NULL, 
                              cumpsd = indicator_cumpsd(x)) {
   
+  check_mat(x) # Check input matrix
+  
   if ( ! is.null(x) && is.list(x)) { # FALSE for x = NULL
     return( lapply(x, indicator_fitpsd) ) 
   } else {

@@ -50,7 +50,7 @@ indicator_skewness <- function(input,
   
   if (is.list(input)) {
     # Returns a list of lists
-    return( lapply(input, indicator_variance, 
+    return( lapply(input, indicator_skewness, 
                    subsize, detrending, nreplicates) )
   } else { 
     

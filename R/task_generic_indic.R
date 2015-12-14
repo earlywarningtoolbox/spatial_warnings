@@ -51,7 +51,7 @@
 #'
 #'@export
 generic_spews <- function(mat, 
-                          subsize = 5,
+                          subsize = 4,
                           detrend = FALSE) {
   
   orig_mat <- mat
@@ -65,7 +65,7 @@ generic_spews <- function(mat,
   
   # If it is a binary matrix, then coarse grain it
   if ( is.binary_matrix(mat) ) { 
-    mat <- coarse_grain(mat, subsize = 5)
+    mat <- coarse_grain(mat, subsize = subsize)
   }
   
   if (detrend) { 
@@ -87,7 +87,7 @@ generic_spews <- function(mat,
 .generic_spews_core <- function(mat) { 
   list(variance = var(as.vector(mat)),
        skewness = moments::skewness(as.vector(mat)),
-       moran    = .moranCpp(mat),
+       moran    = moran_correlation(mat),
        mean     = mean(mat))
 }
 

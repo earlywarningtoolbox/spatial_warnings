@@ -18,7 +18,7 @@
 #' 
 #' @return A single value containing the SDR value 
 #' 
-#' @references ?
+#' @references ? Biggs et al. 2008 ? (Vishu suggestion IIRC [Alex])
 #'
 #'
 indicator_sdr <- function(input, low_range, high_range, 
@@ -41,16 +41,12 @@ indicator_sdr <- function(input, low_range, high_range,
               'matrix size')
     }
     
+    indicf <- function(mat) indicator_sdr_core(mat, low_range, high_range)
+    
     return( 
-      compute_indicator_with_null(input, 
-                                  detrending = FALSE, 
+      compute_indicator_with_null(input, detrending = FALSE, 
                                   nreplicates = nreplicates, 
-                                  do_coarse_graining = FALSE,
-                                  indicator_function = 
-                                  function(mat) { 
-                                    indicator_sdr_core(mat, low_range, 
-                                                       high_range)
-                                  } ) 
+                                  indicf = indicf)
     )
     
   }
@@ -60,7 +56,7 @@ indicator_sdr <- function(input, low_range, high_range,
 indicator_sdr_core <- function(mat, low_range, high_range) { 
   
   # Compute r-spectrum
-  spectrum <- indicator_powerspectrum(mat)[['r_spectrum']]
+  spectrum <- rspectrum(mat)
   
   # Compute subsets
   low_subset  <- with(spectrum, dist <= max(low_range)  & 

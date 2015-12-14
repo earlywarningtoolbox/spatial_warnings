@@ -4,7 +4,7 @@
 \alias{plot.generic_spews}
 \title{Generic spatial warning signals: plotting function}
 \usage{
-\method{plot}{generic_spews}(obj, along)
+\method{plot}{generic_spews}(obj, along = NULL)
 }
 \arguments{
 \item{obj}{A \code{generic_spews} object (as provided by the 

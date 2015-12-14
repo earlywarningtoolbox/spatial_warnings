@@ -56,12 +56,12 @@ indicator_variance <- function(input,
       stop('Computation of the variance indicator requires a square matrix')
     } 
     
-    return( 
-      compute_indicator_with_null(input, subsize, detrending, nreplicates, 
-                                  do_coarse_graining = is.binary_matrix(input),
-                                  indicator_function = 
-                                    function(input) var(as.vector(input)) )
-    )      
+    indicf <- with_coarse_graining(raw_variance, subsize)
+    
+    return( compute_indicator_with_null(input, detrending, 
+                                        nreplicates, indicf) ) 
     
   }
 }
+
+raw_variance <- function(mat) { var(as.vector(mat)) }

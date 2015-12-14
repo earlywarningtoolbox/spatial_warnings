@@ -56,19 +56,23 @@ indicator_moran <- function(input,
   if (is.list(input)) {
     # Returns a list of lists
     return( lapply(input, indicator_moran, 
-                   subsize, detrending, do_coarse_graining, replicates) )
+                   subsize, detrending, do_coarse_graining, nreplicates) )
   } else { 
     
     if (diff(dim(input)) != 0) { 
       stop('Computation of the Moran\'s I index requires a square matrix')
     } 
     
-    return( 
-      compute_indicator_with_null(input, subsize, detrending, nreplicates, 
-                                  do_coarse_graining = do_coarse_graining,
-                                  indicator_function = 
-                                    function(input) moran_correlation(input)) 
-    )
+    if ( do_coarse_graining ) { 
+      indicf <- with_coarse_graining(raw_moran, subsize)
+    } else { 
+      indicf <- raw_moran
+    }
+    
+    return( compute_indicator_with_null(input, detrending, 
+                                        nreplicates, indicf) ) 
+    
     
   }
 }
+

@@ -7,10 +7,10 @@
 indicator_sdr(input, low_range, high_range, nreplicates = 499)
 }
 \arguments{
-\item{low_range}{A numeric vector of the form `c(min, max)` describing the 
+\item{low_range}{A numeric vector of the form \code{c(min, max)} describing the 
 range of values considered as low frequencies}
 
-\item{high_range}{A numeric vector of the form `c(min, max)` describing the 
+\item{high_range}{A numeric vector of the form \code{c(min, max)} describing the 
 range of values considered as high frequencies}
 
 \item{nreplicates}{The number of replicates to compute for the null 
@@ -27,6 +27,6 @@ Compute the ratio of low frequencies over high frequencies
   randomizing the matrix.
 }
 \references{
-?
+? Biggs et al. 2008 ? (Vishu suggestion IIRC [Alex])
 }
 

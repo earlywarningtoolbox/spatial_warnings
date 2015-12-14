@@ -4,7 +4,8 @@
 \alias{generic_spews}
 \title{Generic spatial warning signals}
 \usage{
-generic_spews(mat, subsize = 5, detrend = FALSE)
+generic_spews(mat, subsize = 4, detrend = FALSE,
+  moranI_coarse_grain = FALSE)
 }
 \arguments{
 \item{mat}{A matrix (quantitative data), a binary matrix (qualitative data), 

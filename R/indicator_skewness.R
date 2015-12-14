@@ -44,26 +44,32 @@
 indicator_skewness <- function(input, 
                                subsize     = 2, 
                                detrending  = FALSE, 
+                               absolute = TRUE,
                                nreplicates = 499) {
   
   check_mat(input) # checks if binary and sensible
   
-  if (is.list(input)) {
+  if ( is.list(input) ) {
     # Returns a list of lists
     return( lapply(input, indicator_skewness, 
-                   subsize, detrending, nreplicates) )
+                   subsize, detrending, absolute, nreplicates) )
   } else { 
     
     if (diff(dim(input)) != 0) { 
       stop('Computation of the skewness indicator requires a square matrix')
     } 
     
-    return( 
-      compute_indicator_with_null(
-        input, subsize, detrending, nreplicates, 
-        do_coarse_graining = is.binary_matrix(input), 
-        indicator_function = function(input) moments::skewness(as.vector(input))
-    )) 
+    if ( absolute ) { 
+      indicf <- with_coarse_graining(raw_abs_skewness, subsize)
+    } else { 
+      indicf <- with_coarse_graining(raw_skewness, subsize)
+    }
+    
+    return( compute_indicator_with_null(input, detrending, 
+                                        nreplicates, indicf) ) 
     
   }
 }
+
+raw_skewness <- function(mat) { moments::skewness(as.vector(mat)) }
+raw_abs_skewness <- function(mat) { abs(moments::skewness(as.vector(mat))) }

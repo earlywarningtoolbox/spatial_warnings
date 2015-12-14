@@ -5,7 +5,7 @@
 \title{Skewness indicator}
 \usage{
 indicator_skewness(input, subsize = 2, detrending = FALSE,
-  nreplicates = 499)
+  absolute = TRUE, nreplicates = 499)
 }
 \arguments{
 \item{input}{A square binary matrix or a list of square binary matrices.}

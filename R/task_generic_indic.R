@@ -52,7 +52,10 @@
 #'@export
 generic_spews <- function(mat, 
                           subsize = 4,
-                          detrend = FALSE) {
+                          detrend = FALSE,
+                          moranI_coarse_grain = FALSE) {
+  
+  check_mat(mat)
   
   orig_mat <- mat
   
@@ -63,32 +66,41 @@ generic_spews <- function(mat,
     return(results)
   }
   
-  # If it is a binary matrix, then coarse grain it
-  if ( is.binary_matrix(mat) ) { 
-    mat <- coarse_grain(mat, subsize = subsize)
-  }
-  
   if (detrend) { 
     mat <- mat - mean(mat)
   }
   
+  # Build the right indicator function (closure) depending on whether or not 
+  #   moran's I should be computed on coarse-grained matrices.
+  if ( moranI_coarse_grain ) { 
+    indicf <- function(mat) { 
+      mat <- coarse_grain(mat, subsize)
+      c(variance = var(as.vector(mat)),
+        skewness = abs(moments::skewness(as.vector(mat))),
+        moran    = raw_moran(mat),
+        mean     = mean(mat))
+    }
+  } else { 
+    indicf <- function(mat) { 
+      mat_cg <- coarse_grain(mat, subsize)
+      c(variance = var(as.vector(mat_cg)),
+        skewness = abs(moments::skewness(as.vector(mat_cg))),
+        moran    = raw_moran(mat), # not CG ! 
+        mean     = mean(mat_cg))
+    }
+  }
+  
   # Compute the indicators and store the parameters used
-  results <- list(results = .generic_spews_core(mat), 
+  results <- list(results = as.list(indicf(mat)), 
                   orig_data = orig_mat,
                   call = match.call(),
                   subsize = subsize, 
+                  indicf  = indicf,
                   detrend = detrend)
+  
   class(results) <- c('generic_spews', 'generic_spews_single', 
                       'spews_result', 'list')
-  
   return(results)
-}
-
-.generic_spews_core <- function(mat) { 
-  list(variance = var(as.vector(mat)),
-       skewness = moments::skewness(as.vector(mat)),
-       moran    = moran_correlation(mat),
-       mean     = mean(mat))
 }
 
 
@@ -156,31 +168,16 @@ summary.generic_spews <- function(obj, null_replicates = 999) {
 #'@export
 summary.generic_spews_single <- function(obj, null_replicates = 999) { 
   
-  results <- data.frame(value = numeric(), null_mean = numeric(),
-                        null_sd = numeric(), z_score = numeric(), 
-                        pval = numeric())
+  # Compute a distribution of null values
+  null_values <- compute_indicator_with_null(obj[["orig_data"]],
+                                             detrending = obj[["detrend"]], 
+                                             nreplicates = null_replicates, 
+                                             indicf = obj[["indicf"]])
   
-  # Compute a distribution of null values for moran's I
-  moran_null <- with(obj,
-                     indicator_moran(orig_data, 
-                                     subsize = subsize, 
-                                     detrending = detrend, 
-                                     nreplicates = null_replicates))
-  results <- rbind(results, moran_null)
-  
-  # Compute pvalues for variance/skewness/
-  # Note that this is not yet implemented -> set to zero to not produce 
-  #   errors when plotting. 
-  results <- rbind(results, 
-                   c(obj[['results']][['mean']],     rep(0, ncol(results)-1)),
-                   c(obj[['results']][['variance']], rep(0, ncol(results)-1)),
-                   c(obj[['results']][['skewness']], rep(0, ncol(results)-1)))  
-  
-  warning('Significance-testing of variance and skewness is not ',
-          'implemented yet')
+  results <- as.data.frame(null_values) 
   
   # Format output
-  indic_list <- c('Moran\'s I', 'Mean', 'Variance', 'Skewness')
+  indic_list <- c('Variance', 'Skewness', 'Moran\'s I', 'Mean')
   results <- data.frame(indicator = indic_list, results)
   rownames(results) <- indic_list
   
@@ -228,13 +225,13 @@ summary.generic_spews_list <- function(obj, null_replicates = 999) {
 #'   \code{\link{plot.generic_spews_summary}}
 # 
 #'@export
-plot.generic_spews <- function(obj, along) { 
+plot.generic_spews <- function(obj, along = NULL) { 
   if ( 'generic_spews_single' %in% class(obj) ) { 
     stop('I cannot plot a trend with only one value !')
   }
   
   new_data <- summary.generic_spews_list(obj, null_replicates = 0)
-  plot.generic_spews_summary(new_data, along)
+  plot.generic_spews_summary(new_data, along, display_null = FALSE)
 }
 
 # 
@@ -269,16 +266,24 @@ plot.generic_spews <- function(obj, along) {
 #'
 #'@export
 plot.generic_spews_summary <- function(obj, 
-                                       along = obj[ ,'replicate'], 
+                                       along = NULL, 
                                        what = 'value',
                                        display_null = TRUE) {  
   
-  if ( ! 'replicate' %in% colnames(obj) || length(along) <= 1 ) { 
+  if ( ! 'replicate' %in% colnames(obj) || 
+         !is.null(along) && length(along) <= 1 ) { 
     stop('I cannot plot a trend with only one value')
   }
   
-  if ( max(obj[ ,'replicate']) != length(along) ) { 
-    stop('External data (along = ...) does not match ',
+  # If along is not provided, then use the replicate number
+  set_default_xlab <- FALSE 
+  if ( is.null(along) ) { 
+    along <- unique(obj[ ,"replicate"])
+    set_default_xlab <- TRUE 
+  }
+  
+  if ( length(unique(obj[ ,'replicate'])) != length(along) ) { 
+    stop('External data length (along = ...) does not match ',
          'the number of replicates !')
   }
   
@@ -305,14 +310,20 @@ plot.generic_spews_summary <- function(obj,
                             null_ymin = obj[ ,'null_05'],
                             null_ymax = obj[ ,'null_95'])
     
-    plot <- plot + ggplot2::geom_ribbon(ggplot2::aes_string(x = 'gradient',
-                                                            ymin = 'null_ymin',
-                                                            ymax = 'null_ymax'),
-                                        data = null_data, 
-                                        fill = 'grey',
-                                        alpha = .8)
+    plot <- plot + 
+      ggplot2::geom_ribbon(ggplot2::aes_string(x = 'gradient',
+                                               ymin = 'null_ymin',
+                                               ymax = 'null_ymax'),
+                           data = null_data, 
+                           fill = 'grey',
+                           alpha = .8) + 
+      ggplot2::geom_line(ggplot2::aes_string(x = "gradient", 
+                                             y = "null_mean"), 
+                         color = 'black', alpha = .1)
+      
+      
   }
-    
+  
   # Add the trend on the graph (Note that we add it over the null trend)
   plot <- plot + ggplot2::geom_line(ggplot2::aes_string(x = 'gradient', 
                                                         y = what,
@@ -325,7 +336,11 @@ plot.generic_spews_summary <- function(obj,
             ggplot2::guides(color = FALSE) # Disable color legend
   
   # Add names
-  plot <- plot + ggplot2::xlab(as.character(match.call()['along']))
+  if ( set_default_xlab ) { 
+    plot <- plot + ggplot2::xlab('Matrix number')
+  } else { 
+    plot <- plot + ggplot2::xlab(as.character(match.call()['along']))
+  }
   
   return(plot)
 }

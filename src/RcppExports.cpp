@@ -5,6 +5,18 @@
 
 using namespace Rcpp;
 
+// coarse_grain
+NumericMatrix coarse_grain(NumericMatrix mat, int subsize);
+RcppExport SEXP spatialwarnings_coarse_grain(SEXP matSEXP, SEXP subsizeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericMatrix >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< int >::type subsize(subsizeSEXP);
+    __result = Rcpp::wrap(coarse_grain(mat, subsize));
+    return __result;
+END_RCPP
+}
 // get_nb_coords
 IntegerMatrix get_nb_coords(IntegerMatrix mat, IntegerVector X, IntegerMatrix nbmask, bool wrap);
 RcppExport SEXP spatialwarnings_get_nb_coords(SEXP matSEXP, SEXP XSEXP, SEXP nbmaskSEXP, SEXP wrapSEXP) {
@@ -46,14 +58,14 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// moranCpp
-double moranCpp(NumericMatrix mat);
-RcppExport SEXP spatialwarnings_moranCpp(SEXP matSEXP) {
+// raw_moran
+double raw_moran(NumericMatrix mat);
+RcppExport SEXP spatialwarnings_raw_moran(SEXP matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< NumericMatrix >::type mat(matSEXP);
-    __result = Rcpp::wrap(moranCpp(mat));
+    __result = Rcpp::wrap(raw_moran(mat));
     return __result;
 END_RCPP
 }
@@ -65,6 +77,75 @@ BEGIN_RCPP
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< ComplexMatrix >::type mat(matSEXP);
     __result = Rcpp::wrap(myfftshift(mat));
+    return __result;
+END_RCPP
+}
+// randn
+int randn(double min, double max);
+RcppExport SEXP spatialwarnings_randn(SEXP minSEXP, SEXP maxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< double >::type min(minSEXP);
+    Rcpp::traits::input_parameter< double >::type max(maxSEXP);
+    __result = Rcpp::wrap(randn(min, max));
+    return __result;
+END_RCPP
+}
+// shuffle_and_compute
+List shuffle_and_compute(NumericMatrix mat, Function indic, bool do_coarse_grain, int subsize, int nrep);
+RcppExport SEXP spatialwarnings_shuffle_and_compute(SEXP matSEXP, SEXP indicSEXP, SEXP do_coarse_grainSEXP, SEXP subsizeSEXP, SEXP nrepSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericMatrix >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< Function >::type indic(indicSEXP);
+    Rcpp::traits::input_parameter< bool >::type do_coarse_grain(do_coarse_grainSEXP);
+    Rcpp::traits::input_parameter< int >::type subsize(subsizeSEXP);
+    Rcpp::traits::input_parameter< int >::type nrep(nrepSEXP);
+    __result = Rcpp::wrap(shuffle_and_compute(mat, indic, do_coarse_grain, subsize, nrep));
+    return __result;
+END_RCPP
+}
+// normalize
+NumericMatrix normalize(NumericMatrix aspectr2D, NumericMatrix dists, int n0x, int n0y);
+RcppExport SEXP spatialwarnings_normalize(SEXP aspectr2DSEXP, SEXP distsSEXP, SEXP n0xSEXP, SEXP n0ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericMatrix >::type aspectr2D(aspectr2DSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type dists(distsSEXP);
+    Rcpp::traits::input_parameter< int >::type n0x(n0xSEXP);
+    Rcpp::traits::input_parameter< int >::type n0y(n0ySEXP);
+    __result = Rcpp::wrap(normalize(aspectr2D, dists, n0x, n0y));
+    return __result;
+END_RCPP
+}
+// get_distances
+NumericMatrix get_distances(int nr, int nc, int n0x, int n0y);
+RcppExport SEXP spatialwarnings_get_distances(SEXP nrSEXP, SEXP ncSEXP, SEXP n0xSEXP, SEXP n0ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type nr(nrSEXP);
+    Rcpp::traits::input_parameter< int >::type nc(ncSEXP);
+    Rcpp::traits::input_parameter< int >::type n0x(n0xSEXP);
+    Rcpp::traits::input_parameter< int >::type n0y(n0ySEXP);
+    __result = Rcpp::wrap(get_distances(nr, nc, n0x, n0y));
+    return __result;
+END_RCPP
+}
+// get_rspectr
+NumericVector get_rspectr(NumericVector ray, double step, NumericMatrix dists, NumericMatrix aspectr2D);
+RcppExport SEXP spatialwarnings_get_rspectr(SEXP raySEXP, SEXP stepSEXP, SEXP distsSEXP, SEXP aspectr2DSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type ray(raySEXP);
+    Rcpp::traits::input_parameter< double >::type step(stepSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type dists(distsSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type aspectr2D(aspectr2DSEXP);
+    __result = Rcpp::wrap(get_rspectr(ray, step, dists, aspectr2D));
     return __result;
 END_RCPP
 }

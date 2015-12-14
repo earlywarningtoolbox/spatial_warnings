@@ -6,8 +6,9 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-// [[Rcpp::export(name = "moran_correlation")]]
-double moranCpp(NumericMatrix mat) { 
+//' @export
+// [[Rcpp::export]]
+double raw_moran(NumericMatrix mat) { 
   
   double m = mean(mat);
   double v = var(mat);

@@ -6,6 +6,7 @@
 # Modified by Sabiha Majumder
 # Converted to c++ by Alex
 # 
+#'@export
 reducedmatrix_ews <- function(mat, subsize) { 
   coarse_grain(mat, subsize)
 }

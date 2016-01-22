@@ -16,6 +16,9 @@
 #' @param detrending If TRUE data are detrended by removing the spatial mean. 
 #'   (Default is FALSE).
 #' 
+#' @param absolute Should the function return the absolute value or raw value 
+#'   of skewness ?
+#' 
 #' @param nreplicates Number of replicates to produce to estimate null 
 #'   distribution of index.
 #' 
@@ -36,6 +39,7 @@
 #'     }
 #' 
 #' @examples 
+#' 
 #' data(B)
 #' indicator_skewness(B)
 #' 

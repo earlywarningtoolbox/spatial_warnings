@@ -4,7 +4,7 @@
 \alias{plot.psdfit}
 \title{Plot a `psdfit` object}
 \usage{
-\method{plot}{psdfit}(x, all.models = FALSE)
+\method{plot}{psdfit}(x, all.models = FALSE, ...)
 }
 \arguments{
 \item{x}{A `psdfit` object as returned by `indicator_fitpsd`}

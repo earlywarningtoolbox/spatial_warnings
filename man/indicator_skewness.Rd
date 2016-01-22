@@ -16,6 +16,9 @@ original matrix.}
 \item{detrending}{If TRUE data are detrended by removing the spatial mean. 
 (Default is FALSE).}
 
+\item{absolute}{Should the function return the absolute value or raw value 
+of skewness ?}
+
 \item{nreplicates}{Number of replicates to produce to estimate null 
 distribution of index.}
 }
@@ -42,6 +45,7 @@ This functions computes the skewness critical point indicator.
   the matrix.
 }
 \examples{
+
 data(B)
 indicator_skewness(B)
 

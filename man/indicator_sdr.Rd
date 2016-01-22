@@ -7,6 +7,8 @@
 indicator_sdr(input, low_range, high_range, nreplicates = 499)
 }
 \arguments{
+\item{input}{A matrix or a binary_matrix, or a list of these.}
+
 \item{low_range}{A numeric vector of the form \code{c(min, max)} describing the 
 range of values considered as low frequencies}
 
@@ -15,8 +17,6 @@ range of values considered as high frequencies}
 
 \item{nreplicates}{The number of replicates to compute for the null 
 distribution}
-
-\item{mat}{A matrix or a binary_matrix, or a list of these.}
 }
 \value{
 A single value containing the SDR value

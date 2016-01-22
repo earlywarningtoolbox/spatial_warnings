@@ -4,7 +4,7 @@
 \alias{summary.generic_spews}
 \title{Generic spatial warning signals: summary function}
 \usage{
-\method{summary}{generic_spews}(obj, null_replicates = 999)
+\method{summary}{generic_spews}(obj, null_replicates = 999, ...)
 }
 \arguments{
 \item{obj}{A \code{generic_spews} object (as provided by the 

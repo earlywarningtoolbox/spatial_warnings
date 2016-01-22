@@ -3,7 +3,7 @@
 # This function prints a pretty table of a generic_spews summary object
 # 
 #'@export
-print.generic_spews_summary <- function(obj) { 
+print.generic_spews_summary <- function(obj, ...) { 
     
 
   cat('\n')

@@ -16,6 +16,9 @@ is qualitative}
 
 \item{detrend}{Whether to substract the mean or not to the input matrix 
 (detrend)}
+
+\item{moranI_coarse_grain}{Should the matrix be coarse-grained before 
+computing the moran's I neighbour correlation ?}
 }
 \value{
 An object of class \code{generic_spews_single} if the passed object

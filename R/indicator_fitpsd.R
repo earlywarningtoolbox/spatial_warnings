@@ -125,7 +125,7 @@ indicator_fitpsd <- function(x = NULL,
 #' plot(B)
 #' 
 #' @export 
-plot.psdfit <- function(x, all.models = FALSE) {
+plot.psdfit <- function(x, all.models = FALSE, ...) {
   # Get the base plot of the cumulative psd
   baseplot <- plot.indicator_cumpsd(x$psd, add.line = FALSE) 
   
@@ -156,7 +156,7 @@ plot.psdfit <- function(x, all.models = FALSE) {
   # Or else add the fit data to the plot
   } else { 
     baseplot <- baseplot + 
-                  ggplot2::geom_path(ggplot2::aes(x = x, y = y, color = model),
+                  ggplot2::geom_path(ggplot2::aes_(x = ~x, y = ~y, color = ~model),
                                     data = model.dat)
   }
   
@@ -165,7 +165,7 @@ plot.psdfit <- function(x, all.models = FALSE) {
 
 
 #' @export
-summary.psdfit <- function(x, print.all = FALSE)  {
+summary.psdfit <- function(x, print.all = FALSE, ...)  {
   cat('Patch-size distribution fitting results:\n')
   
   if (print.all) { 

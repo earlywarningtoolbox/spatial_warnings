@@ -113,7 +113,7 @@ generic_spews <- function(mat,
 # PRINT METHODS
 # ----------------------------
 #'@export
-print.generic_spews <- function(obj) { 
+print.generic_spews <- function(obj, ...) { 
   cat('Generic Spatial Early-Warnings results\n') 
   cat('\n')
   cat('  Call: ', as.character(obj[["call"]]), '\n')
@@ -122,11 +122,11 @@ print.generic_spews <- function(obj) {
   NextMethod("print", obj)
 }
 #'@export
-print.generic_spews_single <- function(obj) { 
+print.generic_spews_single <- function(obj, ...) { 
   print.data.frame( summary.generic_spews_single(obj, null_replicates = 0) )
 }
 #'@export
-print.generic_spews_list <- function(obj) { 
+print.generic_spews_list <- function(obj, ...) { 
   print.data.frame( summary.generic_spews_list(obj, null_replicates = 0) )
 }
 
@@ -170,7 +170,7 @@ print.generic_spews_list <- function(obj) {
 #' summary(result)
 #' 
 #'@export
-summary.generic_spews <- function(obj, null_replicates = 999) { 
+summary.generic_spews <- function(obj, null_replicates = 999, ...) { 
   # Do own dispatch as NextMethod gives untractable errors
   if ( inherits(obj, "generic_spews_list") ) { 
     summary.generic_spews_list(obj, null_replicates)
@@ -182,7 +182,7 @@ summary.generic_spews <- function(obj, null_replicates = 999) {
 
 # Summary function for a single replicate
 #'@export
-summary.generic_spews_single <- function(obj, null_replicates = 999) { 
+summary.generic_spews_single <- function(obj, null_replicates = 999, ...) { 
   
   # Compute a distribution of null values
   null_values <- compute_indicator_with_null(obj[["orig_data"]],
@@ -204,7 +204,7 @@ summary.generic_spews_single <- function(obj, null_replicates = 999) {
 
 # Summary function for many replicates
 #'@export
-summary.generic_spews_list <- function(obj, null_replicates = 999) { 
+summary.generic_spews_list <- function(obj, null_replicates = 999, ...) { 
   
   results <- plyr::llply(obj, summary.generic_spews_single, null_replicates)
   results <- lapply(seq_along(results), 
@@ -243,7 +243,7 @@ summary.generic_spews_list <- function(obj, null_replicates = 999) {
 #'   \code{\link{plot.generic_spews_summary}}
 # 
 #'@export
-plot.generic_spews <- function(obj, along = NULL) { 
+plot.generic_spews <- function(obj, along = NULL, ...) { 
   if ( 'generic_spews_single' %in% class(obj) ) { 
     stop('I cannot plot a trend with only one value !')
   }
@@ -286,7 +286,8 @@ plot.generic_spews <- function(obj, along = NULL) {
 plot.generic_spews_summary <- function(obj, 
                                        along = NULL, 
                                        what = 'value',
-                                       display_null = TRUE) {  
+                                       display_null = TRUE, 
+                                       ...) {  
   
   if ( ! 'replicate' %in% colnames(obj) || 
          !is.null(along) && length(along) <= 1 ) { 

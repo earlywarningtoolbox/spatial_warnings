@@ -41,7 +41,7 @@ indicator_cumpsd <- function(x = NULL, patchvec = patchsizes(x) ) {
 }
 
 #' @export
-summary.indicator_cumpsd <- function(x) { 
+summary.indicator_cumpsd <- function(x, ...) { 
   
   cat('Cumulative patch-size distribution')
   
@@ -80,7 +80,8 @@ summary.indicator_cumpsd <- function(x) {
 #'
 #' @export
 plot.indicator_cumpsd <- function(x, x.log = TRUE, y.log = TRUE, 
-                                  add.line = TRUE, facets = FALSE) { 
+                                  add.line = TRUE, facets = FALSE, 
+                                  ...) { 
   
   # Convert from list if required
   if ( inherits(x, 'list') ) { 
@@ -90,7 +91,7 @@ plot.indicator_cumpsd <- function(x, x.log = TRUE, y.log = TRUE,
     x <- do.call(rbind, x)
   }
   
-  baseplot <- ggplot2::ggplot(x, ggplot2::aes(size, p)) + 
+  baseplot <- ggplot2::ggplot(x, ggplot2::aes_(~size, ~p)) + 
                 ggplot2::geom_point() + 
                 ggplot2::xlab('Patch size') + 
                 ggplot2::ylab('Frequency') 

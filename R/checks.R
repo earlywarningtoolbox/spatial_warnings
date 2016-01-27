@@ -29,14 +29,32 @@ check_mat <- function(mat) {
   }
   
   # Not a *binary* matrix ? 
-  if ( length(table(mat)) > 2 ) { # More than 2 unique elements
-    stop('The matrix is not binary, please check input')
-  }
+  # NOTE: we do not test for this now as functions can accept non-binary
+  #   matrices !
+#   if ( length(table(mat)) > 2 ) { # More than 2 unique elements
+#     warning('The matrix is not binary')
+#   }
   
   return(TRUE)
 }
 
 check_list <- function(l) { 
+  
+  # Check that lists all contain the same elements
+  are_matrix <- sapply(l, function(x) is.matrix(x) | is.binary_matrix(x) )
+  if ( ! all(are_matrix) ) { 
+    stop('The provided list does not contain only matrices or binary_matrices ',
+         'to compute indicators')
+  }
+  
+  
+  # We select the first class which is either binary_matrix or matrix (if it is 
+  #   just a simple matrix)
+  unique_classes <- unique(as.vector(sapply(l, function(x) class(x)[1])))
+  if ( length(unique_classes) > 1 ) { 
+    warning('The provided list contains matrices and binary matrices: this is ',
+            'likely an error')
+  }
   
   # Check if matrices have the same dimension. We compare them sequentially 
   # and check for a change in dimensions.
@@ -47,3 +65,11 @@ check_list <- function(l) {
   }
   
 }
+
+warn_if_not_square <- function(mat) { 
+  if (diff(dim(mat)) != 0) { 
+    warning('The matrix is not square: indicator_sdr will only use a square ', 
+            'subset centered around the middle point.')
+  } 
+}
+    

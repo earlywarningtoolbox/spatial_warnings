@@ -18,6 +18,9 @@ test_that('indicator functions stop if provided garbage data', {
   garbage_notbinary <- matrix(sample(c(1,2,3), 100, replace=TRUE), nrow=10)
   garbage_diffsizes <- lapply(5:10, diag)
   
+  garbage_list_diff_classes <- list(garbage_notbinary,
+                                    as.binary_matrix(garbage_notbinary, 
+                                                     state = 3))
   data(forestdat)
 
   # This reflects checks in check_mat
@@ -27,6 +30,8 @@ test_that('indicator functions stop if provided garbage data', {
     expect_error(f(garbage_has_nas))
     expect_error(f(garbage_notbinary))
     expect_warning(f(garbage_diffsizes))
+    expect_warning(f(garbage_list_diff_classes))
+    
     # Test if the functions actually work
     f(forestdat[['matrices']][[1]])
     f(forestdat[['matrices']])

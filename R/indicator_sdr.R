@@ -29,27 +29,24 @@ indicator_sdr <- function(input, low_range, high_range,
   if (is.list(input)) {
     # Returns a list of lists
     return( lapply(input, indicator_sdr, low_range, high_range, nreplicates) )
-  } else { 
-    
-    if (diff(dim(input)) != 0) { 
-      warning('The matrix is not square: indicator_sdr will only use a square ', 
-              'subset centered around the middle point.')
-    } 
-    
-    if ( any( max(high_range) > dim(input)/2 ) ) { 
-      warning('Your maximum correlation distance is higher than half of the ',
-              'matrix size')
-    }
-    
-    indicf <- function(mat) indicator_sdr_core(mat, low_range, high_range)
-    
-    return( 
-      compute_indicator_with_null(input, detrending = FALSE, 
-                                  nreplicates = nreplicates, 
-                                  indicf = indicf)
-    )
-    
+  } 
+  
+  # Now the input is always a mmatrix
+  warn_if_not_square(input)
+  
+  if ( any( max(high_range) > dim(input)/2 ) ) { 
+    warning('Your maximum correlation distance is higher than half of the ',
+            'matrix size')
   }
+  
+  indicf <- function(mat) indicator_sdr_core(mat, low_range, high_range)
+  
+  return( 
+    compute_indicator_with_null(input, detrending = FALSE, 
+                                nreplicates = nreplicates, 
+                                indicf = indicf)
+  )
+    
   
 }
 
@@ -57,6 +54,12 @@ indicator_sdr_core <- function(mat, low_range, high_range) {
   
   # Compute r-spectrum
   spectrum <- rspectrum(mat)
+  
+  # Compute ratio
+  return( indicator_sdr_do_ratio(spectrum, low_range, high_range) )
+}
+
+indicator_sdr_do_ratio <- function(spectrum, low_range, high_range) { 
   
   # Compute subsets
   low_subset  <- with(spectrum, dist <= max(low_range)  & 
@@ -66,4 +69,6 @@ indicator_sdr_core <- function(mat, low_range, high_range) {
   
   # Return ratio of means
   return( with(spectrum, mean(rspec[low_subset]) / mean(rspec[high_subset])) )
+  
 }
+

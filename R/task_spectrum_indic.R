@@ -14,11 +14,10 @@
 # @param sdr_low_range, sdr_high_range The range of values (in proportion) to 
 #   use for the 
 #   
-# 
-
-spectrum_spews <- function(input, 
+#'@export
+spectral_spews <- function(input, 
                            sdr_low_range  = NULL, 
-                           sdr_high_range = NULL ) { 
+                           sdr_high_range = NULL) { 
   
   # Check if input is suitable
   check_mat(input)
@@ -28,18 +27,16 @@ spectrum_spews <- function(input,
   
   if ( is.null(sdr_low_range) || is.null(sdr_high_range)) { 
     warning('Choosing default values of lower and higher 20% for spectral ',
-            'density ratio. Use paramaeters sdr_low_range and sdr_high_range ',
+            'density ratio. Use parameters sdr_low_range and sdr_high_range ',
             'to choose a better value')
     if ( is.null(sdr_low_range) )  sdr_low_range  <- c(0, .2)
     if ( is.null(sdr_high_range) ) sdr_high_range <- c(.8, 1)
   }
   
-
   # Handle list case
   if ( is.list(input) ) { 
-    results <- lapply(input, spectrum_spews, sdr_low_range, sdr_high_range)
-    class(results) <- c('spectrum_spews', 'spectrum_spews_list', 
-                        'spews_result', 'list')
+    results <- lapply(input, spectral_spews, sdr_low_range, sdr_high_range)
+    class(results) <- c('spectral_spews_list', 'spews_result', 'list')
     return(results)
   }
   
@@ -57,6 +54,72 @@ spectrum_spews <- function(input,
                                       low_range_absolute, high_range_absolute)
   
   # Return list containing both
-  return( list(spectrum = spectrum, sdr = sdr_value) )
+  output <- list(results = list(spectrum = spectrum, 
+                                sdr = sdr_value), 
+                 orig_data = orig_input, 
+                 call = match.call(), 
+                 sdr_low_range = low_range_absolute, 
+                 sdr_high_range = high_range_absolute)
+  class(output) <- c('spectral_spews_single', 'spews_result', 'list')
+  return(output)
+}
+
+# 
+# Print methods for spectral_spews objects
+# 
+print.spectral_spews_list <- function(x, ...) { 
+  print.default(x) # Not implemented yet
+}
+
+print.spectral_spews_single <- function(x, ...) { 
+  print.default(x) # Not implemented yet
+}
+
+
+
+
+# 
+# 
+# Summary functions for spectral_spews objects.
+# 
+#'@export
+summary.spectral_spews_list <- function(x, null_replicates = 999, ...) { 
+  
+  # Compute a distribution of null values for SDR
+  null_values <- plyr::ldply(x, summary.spectral_spews_single, null_replicates)
+  
+  # Format and return output
+  results <- data.frame(replicate = seq.int(nrow(null_values)), 
+                        null_values)
+  class(results) <- c('spectral_spews_summary', 
+                      'spews_summary', 
+                      'data.frame')
+  return(results)
   
 }
+
+#'@export
+summary.spectral_spews_single <- function(x, null_replicates = 999, ...) { 
+  
+  # Build closure passed to compute_indicator_with_null that uses the correct
+  #   high and low ranges.
+  sdr_indicf <- function(mat) { 
+    indicator_sdr_core(mat, 
+                       low_range  = x[['sdr_low_range']], 
+                       high_range = x[['sdr_high_range']])
+  }
+  
+  # Compute a distribution of null values for SDR
+  null_values <- compute_indicator_with_null(x[['orig_data']], 
+                                             # We do not make use of detrending
+                                             #   for SDR
+                                             detrending = FALSE,
+                                             nreplicates = null_replicates, 
+                                             indicf = sdr_indicf)
+  # Format and return result
+  results <- as.data.frame(null_values)
+  class(results) <- c('spectral_spews_summary', 'spews_summary', 'data.frame')
+  
+  return(results)
+}
+

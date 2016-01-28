@@ -52,6 +52,7 @@ indicator_moran <- function(input,
                             nreplicates = 499) {
   
   check_mat(input) # checks if binary and sensible
+  # We do not check for binary status as moran's I can be computed on both. 
   
   if (is.list(input)) {
     # Returns a list of lists
@@ -63,6 +64,8 @@ indicator_moran <- function(input,
       stop('Computation of the Moran\'s I index requires a square matrix')
     } 
     
+    # We alter the moran function to do coarse_graining if the user asked for it
+    #   (and not whether the matrix is binary or not). 
     if ( do_coarse_graining ) { 
       indicf <- with_coarse_graining(raw_moran, subsize)
     } else { 

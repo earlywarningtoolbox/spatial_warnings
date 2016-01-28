@@ -73,3 +73,17 @@ warn_if_not_square <- function(mat) {
   } 
 }
     
+check_binary_status <- function(mat) { 
+  
+  N_unique_values <- length(unique(as.vector(mat)))
+  
+  if ( N_unique_values <= 2 && !is.binary_matrix(mat)) { 
+    warning('The matrix looks binary but has not been converted to a ',
+            'binary_matrix object. ', 
+            'This will change the results of the indicator functions and ', 
+            'is likely to be an error. ', 
+            'Please use function as.binary_matrix to convert objects to binary
+            matrices.')
+  }
+  
+}

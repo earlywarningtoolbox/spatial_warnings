@@ -45,7 +45,9 @@ indicator_variance <- function(input,
                                nreplicates = 499) {
   
   check_mat(input) # checks if binary and sensible
-  
+  # Check whether the matrix looks binary but was not declared as such
+  check_binary_status(input) 
+      
   if (is.list(input)) {
     # Returns a list of lists
     return( lapply(input, indicator_variance, 
@@ -56,8 +58,15 @@ indicator_variance <- function(input,
       stop('Computation of the variance indicator requires a square matrix')
     } 
     
-    indicf <- with_coarse_graining(raw_variance, subsize)
+    # We alter the raw_variance function so it includes coarse_graining 
+    #   in case the input is a binary matrix.
+    if ( is.binary_matrix(input) ) { 
+      indicf <- with_coarse_graining(raw_variance, subsize)
+    } else { 
+      indicf <- raw_variance
+    }
     
+    # Compute and return indicator
     return( compute_indicator_with_null(input, detrending, 
                                         nreplicates, indicf) ) 
     

@@ -16,16 +16,6 @@
 #' 
 #' @description Computation of spatial generic early warning signals (Moran's I, variance and skewness)
 #' 
-#' 
-#' @references 
-#'   Dakos, V., van Nes, E. H., Donangelo, R., Fort, H., & 
-#'   Scheffer, M. (2010). Spatial correlation as leading indicator of 
-#'   catastrophic shifts. Theoretical Ecology, 3(3), 163-174.
-#'   
-#'   Guttal, V., & Jayaprakash, C. (2008). Spatial variance and spatial 
-#'   skewness: leading indicators of regime shifts in spatial ecological 
-#'   systems. Theoretical Ecology, 2(1), 3–12. 
-#'
 #' @param mat A matrix (quantitative data), a binary matrix (qualitative data), 
 #'   or a list of those
 #' 
@@ -49,6 +39,15 @@
 #'   \code{\link{indicator_moran}}, \code{\link{indicator_variance}} and 
 #'   \code{\link{indicator_skewness}} details about null models). 
 #' 
+#' @references 
+#'   Dakos, V., van Nes, E. H., Donangelo, R., Fort, H., & 
+#'   Scheffer, M. (2010). Spatial correlation as leading indicator of 
+#'   catastrophic shifts. Theoretical Ecology, 3(3), 163-174.
+#'   
+#'   Guttal, V., & Jayaprakash, C. (2008). Spatial variance and spatial 
+#'   skewness: leading indicators of regime shifts in spatial ecological 
+#'   systems. Theoretical Ecology, 2(1), 3–12. 
+#'
 #' @seealso \code{\link{indicator_moran}}, \code{\link{indicator_variance}} and 
 #'   \code{\link{indicator_skewness}}
 #'
@@ -116,18 +115,20 @@ generic_spews <- function(mat,
 print.generic_spews <- function(obj, ...) { 
   cat('Generic Spatial Early-Warnings results\n') 
   cat('\n')
-  cat('  Call: ', as.character(obj[["call"]]), '\n')
-  cat('\n')
   
   NextMethod("print", obj)
 }
 #'@export
 print.generic_spews_single <- function(obj, ...) { 
-  print.data.frame( summary.generic_spews_single(obj, null_replicates = 0) )
+  output <- summary.generic_spews_single(obj, null_replicates = 0) 
+  row.names(output) <- NULL
+  print.data.frame(output)
 }
 #'@export
 print.generic_spews_list <- function(obj, ...) { 
-  print.data.frame( summary.generic_spews_list(obj, null_replicates = 0) )
+  output <- summary.generic_spews_list(obj, null_replicates = 0) 
+  row.names(output) <- NULL
+  print.data.frame(output)
 }
 
 

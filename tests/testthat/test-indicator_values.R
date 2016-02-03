@@ -7,8 +7,12 @@ data(forestdat)
 
 testmat <- forestdat$matrices[[1]]
 
+
+
+
 # Test variance indicator
 test_that("Indicator variance returns correct values", { 
+  
   varf <- function(mat) var(as.vector(mat))
   
   expect_equal(varf(testmat), 
@@ -22,7 +26,11 @@ test_that("Indicator variance returns correct values", {
   }
 })
 
+
+
+
 test_that("Indicator skewness returns correct values", { 
+  
   skewf <- function(mat) moments::skewness(as.vector(mat))
   
   expect_equal(skewf(testmat), 
@@ -36,6 +44,34 @@ test_that("Indicator skewness returns correct values", {
                                     nreplicates = 0,
                                     absolute = FALSE)[["value"]]) # adjust for test
   }
+})
+
+
+
+
+test_that('Indicator Moran returns a correct value', { 
+  
+  # Test first the raw function
+  
+  # Moran's I should be -1 for checkboard pattern
+  checkerboard <- matrix(c(0,1), byrow = TRUE, nrow = 1000, ncol = 1001)
+  expect_equal(raw_moran(checkerboard), -1, tolerance = 1e-2)
+  
+  # Moran's I should be zero for random matrix
+  random <- matrix(rbinom(1e6, 1, .5), nrow = 1e3, ncol = 1e3)
+  expect_equal(raw_moran(random), 0, tolerance = 1e-3)
+  
+  # Moran's I should be one for perfectly segregated matrix
+  split <- cbind(matrix(1, ncol = 500, nrow = 1000), 
+                 matrix(0, ncol = 500, nrow = 1000))
+  expect_equal(raw_moran(split), 1, tolerance = 1e-2)
+  
+  
+  # Now test the indicator functions
+  expect_equal(raw_moran(testmat), 
+               indicator_moran(testmat, do_coarse_graining = FALSE, 
+                                  nreplicates = 0)[['value']])
+  
 })
 
 # Test(s) of correlation function 

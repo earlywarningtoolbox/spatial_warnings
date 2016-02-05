@@ -76,30 +76,30 @@ print.spectral_spews_single <- function(x, ...) {
 }
 
 
+# # Define as.data.frame methods
+# as.data.frame.spectral_spews_list <- function(x, ...
 
 
 # 
 # 
-# Summary functions for spectral_spews objects.
+# Indictest functions for spectral_spews objects.
 # 
 #'@export
-summary.spectral_spews_list <- function(x, null_replicates = 999, ...) { 
+indictest.spectral_spews_list <- function(x, null_replicates = 999, ...) { 
   
   # Compute a distribution of null values for SDR
-  null_values <- plyr::ldply(x, summary.spectral_spews_single, null_replicates)
+  null_values <- plyr::ldply(x, indictest.spectral_spews_single, null_replicates)
   
   # Format and return output
   results <- data.frame(replicate = seq.int(nrow(null_values)), 
                         null_values)
-  class(results) <- c('spectral_spews_summary', 
-                      'spews_summary', 
-                      'data.frame')
+  class(results) <- c('spectral_spews_test', 'spews_test', 'data.frame')
   return(results)
   
 }
 
 #'@export
-summary.spectral_spews_single <- function(x, null_replicates = 999, ...) { 
+indictest.spectral_spews_single <- function(x, null_replicates = 999, ...) { 
   
   # Build closure passed to compute_indicator_with_null that uses the correct
   #   high and low ranges.
@@ -112,13 +112,13 @@ summary.spectral_spews_single <- function(x, null_replicates = 999, ...) {
   # Compute a distribution of null values for SDR
   null_values <- compute_indicator_with_null(x[['orig_data']], 
                                              # We do not make use of detrending
-                                             #   for SDR
+                                             #   for SDR (built-in already)
                                              detrending = FALSE,
                                              nreplicates = null_replicates, 
                                              indicf = sdr_indicf)
   # Format and return result
   results <- as.data.frame(null_values)
-  class(results) <- c('spectral_spews_summary', 'spews_summary', 'data.frame')
+  class(results) <- c('spectral_spews_test', 'spews_test', 'data.frame')
   
   return(results)
 }

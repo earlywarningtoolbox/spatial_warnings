@@ -72,7 +72,7 @@ warn_if_not_square <- function(mat) {
             'subset centered around the middle point.')
   } 
 }
-    
+
 check_binary_status <- function(mat) { 
   
   N_unique_values <- length(unique(as.vector(mat)))
@@ -87,3 +87,25 @@ check_binary_status <- function(mat) {
   }
   
 }
+
+
+# Check whether some variables are suited to make plots : used in task_generic
+#   and task_spectral spews
+check_suitable_for_plots <- function(obj, 
+                                     along, 
+                                     display_null) { 
+  
+  if ( ! 'replicate' %in% colnames(obj) || 
+        !is.null(along) && length(along) <= 1 ) { 
+    stop('I cannot plot a trend with only one value')
+  }
+  
+  if ( length(unique(obj[ ,'replicate'])) != length(along) ) { 
+    stop('External data length (along = ...) does not match ',
+         'the number of replicates !')
+  }
+  
+                                       
+                                       
+}
+                                     

@@ -290,11 +290,6 @@ plot.generic_spews_summary <- function(obj,
                                        display_null = TRUE, 
                                        ...) {  
   
-  if ( ! 'replicate' %in% colnames(obj) || 
-         !is.null(along) && length(along) <= 1 ) { 
-    stop('I cannot plot a trend with only one value')
-  }
-  
   # If along is not provided, then use the replicate number
   set_default_xlab <- FALSE 
   if ( is.null(along) ) { 
@@ -302,10 +297,7 @@ plot.generic_spews_summary <- function(obj,
     set_default_xlab <- TRUE 
   }
   
-  if ( length(unique(obj[ ,'replicate'])) != length(along) ) { 
-    stop('External data length (along = ...) does not match ',
-         'the number of replicates !')
-  }
+  check_suitable_for_plots(obj, along, display_null)
   
   plot_data <- data.frame(obj, gradient = along[obj[ ,'replicate']])
   

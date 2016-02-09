@@ -78,7 +78,7 @@ generic_spews <- function(mat,
     indicf <- function(mat) { 
       mat <- coarse_grain(mat, subsize)
       c(variance = var(as.vector(mat)),
-        skewness = abs(moments::skewness(as.vector(mat))),
+        skewness = raw_skewness(mat),
         moran    = raw_moran(mat),
         mean     = mean(mat))
     }
@@ -86,7 +86,7 @@ generic_spews <- function(mat,
     indicf <- function(mat) { 
       mat_cg <- coarse_grain(mat, subsize)
       c(variance = var(as.vector(mat_cg)),
-        skewness = abs(moments::skewness(as.vector(mat_cg))),
+        skewness = raw_skewness(mat_cg),
         moran    = raw_moran(mat), # not CG ! 
         mean     = mean(mat_cg))
     }
@@ -177,7 +177,6 @@ summary.generic_spews <- function(obj, null_replicates = 999, ...) {
     summary.generic_spews_list(obj, null_replicates)
   } else if ( inherits(obj, "generic_spews_single" ) ) { 
     summary.generic_spews_single(obj, null_replicates)
-    
   }
 }
 

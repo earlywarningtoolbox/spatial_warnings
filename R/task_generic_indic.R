@@ -62,7 +62,8 @@ generic_spews <- function(mat,
   orig_mat <- mat
   
   if ( is.list(mat) ) { 
-    results <- lapply(mat, generic_spews, subsize, detrend)
+    results <- lapply(mat, generic_spews, subsize, detrend, 
+                      moranI_coarse_grain)
     class(results) <- c('generic_spews', 'generic_spews_list', 
                         'spews_result', 'list')
     return(results)
@@ -76,10 +77,10 @@ generic_spews <- function(mat,
   #   moran's I should be computed on coarse-grained matrices.
   if ( moranI_coarse_grain ) { 
     indicf <- function(mat) { 
-      mat <- coarse_grain(mat, subsize)
-      c(variance = var(as.vector(mat)),
-        skewness = raw_skewness(mat),
-        moran    = raw_moran(mat),
+      mat_cg <- coarse_grain(mat, subsize)
+      c(variance = var(as.vector(mat_cg)),
+        skewness = raw_skewness(mat_cg),
+        moran    = raw_moran(mat_cg), # CG ! 
         mean     = mean(mat))
     }
   } else { 
@@ -88,7 +89,7 @@ generic_spews <- function(mat,
       c(variance = var(as.vector(mat_cg)),
         skewness = raw_skewness(mat_cg),
         moran    = raw_moran(mat), # not CG ! 
-        mean     = mean(mat_cg))
+        mean     = mean(mat))
     }
   }
   

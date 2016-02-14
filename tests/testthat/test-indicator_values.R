@@ -59,7 +59,7 @@ test_that('Indicator Moran returns a correct value', {
   
   # Moran's I should be zero for random matrix
   random <- matrix(rbinom(1e6, 1, .5), nrow = 1e3, ncol = 1e3)
-  expect_equal(raw_moran(random), 0, tolerance = 1e-3)
+  expect_equal(raw_moran(random), 0, tolerance = 1e-2)
   
   # Moran's I should be one for perfectly segregated matrix
   split <- cbind(matrix(1, ncol = 500, nrow = 1000), 
@@ -70,6 +70,45 @@ test_that('Indicator Moran returns a correct value', {
   # Now test the indicator functions
   expect_equal(raw_moran(testmat), 
                indicator_moran(testmat, do_coarse_graining = FALSE, 
+                               nreplicates = 0)[['value']])
+  
+})
+
+
+
+
+test_that('Generic indicator task function returns correct values', { 
+  
+  # Parameters
+  size <- 4
+  moran_do_cg <- FALSE
+  detrending <- FALSE
+  moran_do_cg <- FALSE
+  
+  genindic_result <- generic_spews(testmat, 
+                                   subsize = size, 
+                                   moranI_coarse_grain = moran_do_cg)
+  
+  # Moran
+  expect_equal(genindic_result[['results']][['moran']], 
+               indicator_moran(testmat, 
+                               subsize = size, 
+                               do_coarse_graining = moran_do_cg, 
+                               nreplicates = 0)[['value']])
+  
+  # Skewness
+  expect_equal(genindic_result[['results']][['skewness']],
+               indicator_skewness(testmat, 
+                                  subsize = size, 
+                                  detrending = detrending,
+                                  absolute = FALSE, 
+                                  nreplicates = 0)[['value']])
+  
+  # Variances
+  expect_equal(genindic_result[['results']][['variance']],
+               indicator_variance(testmat, 
+                                  subsize = size, 
+                                  detrending = detrending,
                                   nreplicates = 0)[['value']])
   
 })

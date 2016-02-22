@@ -1,7 +1,34 @@
-
-# Plot function for SDR
+# 
+#' @title Plot method for Spectral Density Ratio (SDR)
+#' 
+#' @description This method reads the Spectral Density Ratio (SDR) values 
+#'   produced by \code{\link{indictest}} and plots the trend with null values. 
+#' 
+#' @param obj An \code{spectral_spews_test} object as produced by \link{indictest}
+#' 
+#' @param along An optional vector of values along which the trend is to be 
+#'   displayed. The length of the vector must be equal to the number of 
+#'   indicator values provided in the object \code{obj}.
+#' 
+#' @param what The value to plot on the y-axis. It defaults to the SDR value 
+#'   but alternative values can be \code{'z_score'} or \code{'pval'}. 
+#' 
+#' @param display_null Whether to display the null-distribution ribbon
+#' 
+#' 
+#' @examples
+#' 
+#' data(forestdat)
+#' sdr_test <- indictest(spectral_spews(forestdat[['matrices']]))
+#' plot(sdr_test)
+#' 
+#' # Display the z_score along the vector of parameter values
+#' plot(sdr_test, 
+#'      along = forestdat[['parameters']][ ,'delta'], 
+#'      what = 'z_score')
+#' 
 #'@export
-plot.spectral_spews_test <- function(obj, 
+plot.spectral_spews_test <- function(obj, # an indictest object
                                      along = NULL, 
                                      what = 'value', 
                                      display_null = TRUE) { 
@@ -15,7 +42,10 @@ plot.spectral_spews_test <- function(obj,
   
   check_suitable_for_plots(obj, along, display_null)
   
-  plot_data <- data.frame(obj, gradient = along[obj[ ,'replicate']])
+  # This function only plots summary sdr so we subset the indictest data.frame
+  is_sdr <- obj[ ,'type'] == 'sdr'
+  plot_data <- data.frame(obj[is_sdr, ],
+                          gradient = along[obj[is_sdr,'replicate']])
   
   # Create base plot object 
   plot <- ggplot2::ggplot(plot_data)
@@ -36,8 +66,8 @@ plot.spectral_spews_test <- function(obj,
   
   if ( add_null ) { 
     null_data <- data.frame(plot_data,
-                            null_ymin = obj[ ,'null_05'],
-                            null_ymax = obj[ ,'null_95'])
+                            null_ymin = obj[is_sdr,'null_05'],
+                            null_ymax = obj[is_sdr,'null_95'])
     
     plot <- plot + 
       ggplot2::geom_ribbon(ggplot2::aes_string(x = 'gradient',
@@ -58,7 +88,7 @@ plot.spectral_spews_test <- function(obj,
                                                         y = what))
   
   # Add ylabs
-  plot <- plot + ggplot2::ylab('SDR value')
+  plot <- plot + ggplot2::ylab('Spectral density ratio')
   
   # Add names
   if ( set_default_xlab ) { 
@@ -72,79 +102,59 @@ plot.spectral_spews_test <- function(obj,
 
 # Plot function for r-spectrum
 # 
+# We define the S3 method. 
+# 
 #'@export
 plot_spectrum <- function(obj, ...) { 
   UseMethod("plot_spectrum")
 }
 
 #'@export
-plot_spectrum.spectral_spews_list <- function(obj, 
-                          along = NULL, 
-                          add.facets = TRUE) { 
-  
-  if ( ! inherits(obj, 'spectral_spews_list') ) { 
-    
-  }
+plot_spectrum.spectral_spews_test <- function(obj, 
+                                              along = NULL, 
+                                              display_null = TRUE) { 
   
   # If along is not provided, then use the replicate number
   set_default_xlab <- FALSE 
   if ( is.null(along) ) { 
-    along <- seq.int(length(obj))
-    set_default_xlab <- TRUE 
+    along <- unique(obj[ ,"replicate"])
   }
   
-  if ( length(obj) != length(along) ) { 
-    stop('External data length (along = ...) does not match ',
-         'the number of replicates !')
-  }
+  # We subset the original object to use only rspectrum-related variables and 
+  # add the gradient variable to it. We also add a replicate column 
+  is_rspec <- obj[ ,'type'] == 'rspectrum'
+  obj <- data.frame(obj[is_rspec, ], 
+                    gradient = along[obj[is_rspec, 'replicate']])
   
-  # Massage data so it fits the ggplot format
-  all_spectra <- plyr::adply(seq.int(obj), 1, function(i) { 
-      data.frame(replicate = i, 
-                 along = along[i],
-                 obj[[i]][['results']][['spectrum']], 
-                 sdr = obj[[i]][['results']][['sdr']])
-    })
-  
-  # Create base plot
-  plot <- ggplot2::ggplot(all_spectra) + 
-            ggplot2::ylab('R-spectrum value')
-  
-  # Add layer
-  if ( add.facets ) { 
-    plot <- plot + ggplot2::geom_line(ggplot2::aes_q(x = ~dist, 
-                                                     y = ~rspec, 
-                                                     color = ~sdr,
-                                                     group = ~replicate)) + 
-              ggplot2::facet_wrap( ~ along ) + 
-              ggplot2::scale_color_gradient(low = '#000000', high = '#E86435', 
-                                            name = 'Spectral \nDensity \nRatio') 
-  } else { 
+  # Create base plot. 
+  plot <- ggplot2::ggplot(obj) +
+            ggplot2::ylab('r-spectrum value') + 
+            ggplot2::xlab('Distance (cell size unit)')
+    
+  # If we are in correct conditions to add a null values ribbon
+  if ( display_null ) { 
     plot <- plot + 
+      ggplot2::geom_ribbon(ggplot2::aes_q(x = ~dist,
+                                          ymin = ~null_05,
+                                          ymax = ~null_95),
+                           fill = 'grey',
+                           alpha = .8) + 
       ggplot2::geom_line(ggplot2::aes_q(x = ~dist, 
-                                        y = ~rspec, 
-                                        color = ~along, 
-                                        group = ~replicate))
+                                        y = ~null_mean), 
+                         color = 'black', alpha = .1)
   }
   
-  # Add names
-  if ( set_default_xlab ) { 
-    plot <- plot + ggplot2::xlab('Matrix number')
-  } else { 
-    plot <- plot + ggplot2::xlab(as.character(match.call()['along']))
+  # Add layer for the observed spectrum
+  plot <- plot + ggplot2::geom_line(ggplot2::aes_q(x = ~dist, 
+                                                   y = ~value, 
+                                                   group = ~replicate)) +
+    ggplot2::scale_color_gradient(low = '#000000', high = '#E86435', 
+                                  name = 'Spectral \nDensity \nRatio') 
+   
+  # Add facets if multiple replicates are present
+  if ( length(unique(obj[ ,"replicate"])) > 1 ) {
+    plot <- plot + ggplot2::facet_wrap( ~ gradient ) 
   }
   
   return(plot) 
-}
-
-#@export
-plot_spectrum.spectral_spews_single <- function(obj) { 
-  
-  dat <- data.frame(obj[['results']][['spectrum']], 
-                    sdr = obj[['results']][['sdr']])
-  
-  ggplot2::ggplot(dat) + 
-    ggplot2::geom_line(ggplot2::aes_q(x = ~dist, 
-                                      y = ~rspec))
-  
 }

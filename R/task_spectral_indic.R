@@ -76,11 +76,7 @@ print.spectral_spews_single <- function(x, ...) {
 }
 
 
-# # Define as.data.frame methods
-# as.data.frame.spectral_spews_list <- function(x, ...
 
-
-# 
 # 
 # Indictest functions for spectral_spews objects.
 # 
@@ -88,14 +84,20 @@ print.spectral_spews_single <- function(x, ...) {
 indictest.spectral_spews_list <- function(x, null_replicates = 999, ...) { 
   
   # Compute a distribution of null values for SDR
-  null_values <- plyr::ldply(x, indictest.spectral_spews_single, null_replicates)
+  results <- plyr::llply(x, indictest.spectral_spews_single, 
+                             null_replicates, ...)
+  
+  # Add a replicate column with replicate number
+  results <- Map(function(x, df) { df[ ,'replicate'] <- x; df }, 
+                     seq.int(length(results)), results)
+  
+  # Bind all of it in a single df
+  results <- do.call(rbind, results)
   
   # Format and return output
-  results <- data.frame(replicate = seq.int(nrow(null_values)), 
-                        null_values)
   class(results) <- c('spectral_spews_test', 'spews_test', 'data.frame')
-  return(results)
   
+  return(results)
 }
 
 #'@export
@@ -110,14 +112,37 @@ indictest.spectral_spews_single <- function(x, null_replicates = 999, ...) {
   }
   
   # Compute a distribution of null values for SDR
-  null_values <- compute_indicator_with_null(x[['orig_data']], 
-                                             # We do not make use of detrending
-                                             #   for SDR (built-in already)
-                                             detrending = FALSE,
-                                             nreplicates = null_replicates, 
-                                             indicf = sdr_indicf)
-  # Format and return result
-  results <- as.data.frame(null_values)
+  null_values_sdr <- 
+    compute_indicator_with_null(x[['orig_data']], 
+                                # We do not make use of detrending
+                                #   for SDR (built-in already)
+                                detrending = FALSE,
+                                nreplicates = null_replicates, 
+                                indicf = sdr_indicf)
+  
+  # Compute a distribution of null values for SDR
+  # rspec_null returns a vector instead of a data.frame and is thus 
+  #   compatible with compute_indicator_with_null that uses replicate 
+  #   internally.
+  rspec_null <- function(mat) rspectrum(mat)[['rspec']]
+  
+  null_values_spectrum <- 
+    compute_indicator_with_null(x[['orig_data']], 
+                                detrending = FALSE,
+                                nreplicates = null_replicates, 
+                                indicf = rspec_null)
+  
+  # Format and return result. We always add a replicate column that can be 
+  #   read later by the plot methods. 
+  results <- 
+    plyr::rbind.fill(data.frame(replicate = 1, 
+                                type = 'sdr', 
+                                null_values_sdr), 
+                     data.frame(replicate = 1, 
+                                type = 'rspectrum', 
+                                dist = x[['results']][['spectrum']][ ,'dist'], 
+                                null_values_spectrum))
+  
   class(results) <- c('spectral_spews_test', 'spews_test', 'data.frame')
   
   return(results)

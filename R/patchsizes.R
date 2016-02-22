@@ -8,8 +8,9 @@
 #'   of binary matrices.
 #' 
 #' @examples
-#' data(B)
-#' patchsizes(B)
+#' data(forestdat)
+#' patchsizes(forestdat[['matrices']][[1]])
+#'
 #' @export
 patchsizes <- function(x) { 
   

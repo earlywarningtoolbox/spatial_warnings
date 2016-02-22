@@ -8,6 +8,9 @@
 # 
 #'@export
 reducedmatrix_ews <- function(mat, subsize) { 
+  warning('reducedmatrix_ews will be deleted in a future version of ',
+          'spatialwarnings and should not be used ', 
+          'please use coarse_grain() instead')
   coarse_grain(mat, subsize)
 }
 

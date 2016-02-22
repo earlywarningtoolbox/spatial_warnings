@@ -3,3 +3,5 @@
 tools
 .rsetup
 ^.*.kate-swp$
+manuscript
+draft

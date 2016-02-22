@@ -12,8 +12,8 @@
 #' 
 #' @examples
 #' 
-#' data(B)
-#' indicator_cumpsd(B)
+#' data(forestdat)
+#' indicator_cumpsd(forestdat)
 #' 
 #' @export
 #' 

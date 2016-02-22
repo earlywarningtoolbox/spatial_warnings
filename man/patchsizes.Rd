@@ -17,7 +17,8 @@ A vector of patch sizes or a list of vectors if the input was a list
 Get the distribution of patch sizes
 }
 \examples{
-data(B)
-patchsizes(B)
+data(forestdat)
+patchsizes(forestdat[['matrices']][[1]])
+
 }
 

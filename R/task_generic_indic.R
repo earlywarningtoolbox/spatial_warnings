@@ -64,7 +64,7 @@ generic_spews <- function(mat,
   if ( is.list(mat) ) { 
     results <- lapply(mat, generic_spews, subsize, detrend, 
                       moranI_coarse_grain)
-    class(results) <- c('generic_spews', 'generic_spews_list', 
+    class(results) <- c('generic_spews_list', 'generic_spews', 
                         'spews_result', 'list')
     return(results)
   }
@@ -101,7 +101,7 @@ generic_spews <- function(mat,
                   indicf  = indicf,
                   detrend = detrend)
   
-  class(results) <- c('generic_spews', 'generic_spews_single', 
+  class(results) <- c('generic_spews_single', 'generic_spews',
                       'spews_result', 'list')
   return(results)
 }
@@ -121,102 +121,16 @@ print.generic_spews <- function(obj, ...) {
 }
 #'@export
 print.generic_spews_single <- function(obj, ...) { 
-  output <- summary.generic_spews_single(obj, null_replicates = 0) 
+  output <- indictest.generic_spews_single(obj, null_replicates = 0) 
   row.names(output) <- NULL
   print.data.frame(output)
 }
 #'@export
 print.generic_spews_list <- function(obj, ...) { 
-  output <- summary.generic_spews_list(obj, null_replicates = 0) 
+  output <- indictest.generic_spews_list(obj, null_replicates = 0) 
   row.names(output) <- NULL
   print.data.frame(output)
 }
-
-
-
-
-# ----------------------------
-# SUMMARY METHODS
-# ----------------------------
-# 
-#' @title Generic spatial warning signals: summary function
-#' 
-#' @description Summary and significance testing function for generic 
-#'   spatial early-warning signals. 
-#' 
-#' @param obj A \code{generic_spews} object (as provided by the 
-#'   \code{generic_spews} function). 
-#' 
-#' @param null_replicates The number of replicates to generate in the null 
-#'   distribution to test significance
-#'   
-#' @details This function returns internally a \code{data.frame} of five columns
-#'   containing : 
-#'   \enumerate{ 
-#'     \item \code{value} The indicator value
-#'     \item \code{null_mean} The mean of the null distribution
-#'     \item \code{null_sd} The standard deviation of the null distribution
-#'     \item \code{null_95} The 95%th quantile
-#'     \item \code{null_05} The 5%th quantile
-#'     \item \code{z_score} The z_score of the observed value in the null 
-#'       distribution
-#'     \item \code{pval} The p-value (based on the rank of the observed 
-#'       value in the null distribution)
-#'   }
-#' 
-#' @seealso \code{\link{plot.generic_spews_summary}}
-#' 
-#' @examples 
-#' data(B)
-#' result <- generic_spews( as.binary_matrix(B) )
-#' summary(result)
-#' 
-#'@export
-summary.generic_spews <- function(obj, null_replicates = 999, ...) { 
-  # Do own dispatch as NextMethod gives untractable errors
-  if ( inherits(obj, "generic_spews_list") ) { 
-    summary.generic_spews_list(obj, null_replicates)
-  } else if ( inherits(obj, "generic_spews_single" ) ) { 
-    summary.generic_spews_single(obj, null_replicates)
-  }
-}
-
-# Summary function for a single replicate
-#'@export
-summary.generic_spews_single <- function(obj, null_replicates = 999, ...) { 
-  
-  # Compute a distribution of null values
-  null_values <- compute_indicator_with_null(obj[["orig_data"]],
-                                             detrending = obj[["detrend"]], 
-                                             nreplicates = null_replicates, 
-                                             indicf = obj[["indicf"]])
-  
-  results <- as.data.frame(null_values) 
-  
-  # Format output
-  indic_list <- c('Variance', 'Skewness', 'Moran\'s I', 'Mean')
-  results <- data.frame(indicator = indic_list, results)
-  rownames(results) <- indic_list
-  
-  attr(results, 'nreplicates') <- null_replicates
-  class(results) <- c('generic_spews_summary', 'spews_summary', 'data.frame')
-  results
-}
-
-# Summary function for many replicates
-#'@export
-summary.generic_spews_list <- function(obj, null_replicates = 999, ...) { 
-  
-  results <- plyr::llply(obj, summary.generic_spews_single, null_replicates)
-  results <- lapply(seq_along(results), 
-                    function(n) data.frame(replicate = n, results[[n]]))
-  results <- do.call(rbind, results)
-  
-  attr(results, 'nreplicates') <- null_replicates
-  class(results) <- c('generic_spews_summary', 'spews_summary', 'data.frame')
-  return(results)
-}
-
 
 
 
@@ -234,14 +148,14 @@ summary.generic_spews_list <- function(obj, null_replicates = 999, ...) {
 #' @param along A vector providing values over which the indicator trend 
 #'   will be plotted. 
 #' 
-#' @return A ggplot object (usually displayed immediatelly when called at the 
+#' @details A ggplot object (usually displayed immediatelly when called at the 
 #'   prompt). 
 #' 
 #' @details Since this function returns a ggplot object, it can be later 
 #'   modified to add other graphical elements (e.g. axis names or annotations). 
 #' 
 #' @seealso \code{\link{generic_spews}}, 
-#'   \code{\link{plot.generic_spews_summary}}
+#'   \code{\link{plot.generic_spews_test}}
 # 
 #'@export
 plot.generic_spews <- function(obj, along = NULL, ...) { 
@@ -249,17 +163,17 @@ plot.generic_spews <- function(obj, along = NULL, ...) {
     stop('I cannot plot a trend with only one value !')
   }
   
-  new_data <- summary.generic_spews_list(obj, null_replicates = 0)
-  plot.generic_spews_summary(new_data, along, display_null = FALSE)
+  new_data <- indictest.generic_spews_list(obj, null_replicates = 0)
+  plot.generic_spews_test(new_data, along, display_null = FALSE)
 }
 
 # 
-#' @title Plots the results of a generic spatial warning signal summary
+#' @title Plot the results of a generic spatial warning \code{indictest} result
 #' 
 #' @description Plotting functions for generic early warning signals
 #' 
-#' @param obj A \code{generic_spews_summary} object (as provided by the 
-#'   \code{summary} methods for \code{generic_spews} objects). 
+#' @param obj A \code{generic_spews_test} object (as provided by the 
+#'   \code{\link{indictest}} function.
 #' 
 #' @param along A vector providing values over which the indicator trend 
 #'   will be plotted. 
@@ -276,15 +190,15 @@ plot.generic_spews <- function(obj, along = NULL, ...) {
 #' @details Since this function returns a ggplot object, it can be later 
 #'   modified to add other graphical elements (e.g. axis names or annotations). 
 #' 
-#' @seealso \code{\link{generic_spews}}, \code{\link{summary.generic_spews}}
+#' @seealso \code{\link{generic_spews}}, \code{\link{indictest.generic_spews}}
 #'
 #' @examples 
-#' data(B)
-#' result <- generic_spews( as.binary_matrix(B) )
-#' plot(summary(result))
+#' data(forestdat)
+#' result <- generic_spews( as.binary_matrix(forestdat[['matrices']]) )
+#' plot(indictest(result))
 #'
 #'@export
-plot.generic_spews_summary <- function(obj, 
+plot.generic_spews_test <- function(obj, 
                                        along = NULL, 
                                        what = 'value',
                                        display_null = TRUE, 

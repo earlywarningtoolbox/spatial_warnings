@@ -105,7 +105,4 @@ check_suitable_for_plots <- function(obj,
          'the number of replicates !')
   }
   
-                                       
-                                       
 }
-                                     

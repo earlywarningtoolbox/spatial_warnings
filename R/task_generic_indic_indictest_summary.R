@@ -1,9 +1,9 @@
 # 
 # 
-# This function prints a pretty table of a generic_spews summary object
+# This function prints a pretty table of a generic_spews_test object
 # 
 #'@export
-print.generic_spews_summary <- function(obj, ...) { 
+print.generic_spews_test <- function(obj, ...) { 
     
 
   cat('\n')
@@ -22,7 +22,8 @@ print.generic_spews_summary <- function(obj, ...) {
   }
   
   cat('\n')
-  cat(' Significance tested against', attr(obj, 'nreplicates'), 'randomly shuffled matrices\n')
+  cat(' Significance tested against', attr(obj, 'nreplicates'), 
+      'randomly shuffled matrices\n')
   cat(" Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1", '\n')
   cat('\n')
 }

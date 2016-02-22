@@ -13,19 +13,18 @@
 \item{along}{A vector providing values over which the indicator trend 
 will be plotted.}
 }
-\value{
-A ggplot object (usually displayed immediatelly when called at the 
-  prompt).
-}
 \description{
 Plot function for generic early warning signals
 }
 \details{
+A ggplot object (usually displayed immediatelly when called at the 
+  prompt).
+
 Since this function returns a ggplot object, it can be later 
   modified to add other graphical elements (e.g. axis names or annotations).
 }
 \seealso{
 \code{\link{generic_spews}}, 
-  \code{\link{plot.generic_spews_summary}}
+  \code{\link{plot.generic_spews_test}}
 }
 

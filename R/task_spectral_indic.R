@@ -75,7 +75,37 @@ print.spectral_spews_single <- function(x, ...) {
   print.default(x) # Not implemented yet
 }
 
+# 
+# as.data.frame methods for spectral_spews objects
+# 
+as.data.frame.spectral_spews_list <- function(x, ...) { 
+  
+  # Compute a distribution of null values for SDR
+  results <- plyr::llply(x, as.data.frame, ...)
+  
+  # Add a replicate column with replicate number
+  results <- Map(function(x, df) { df[ ,'replicate'] <- x; df }, 
+                 seq.int(length(results)), results)
+  
+  # Bind all of it in a single df
+  results <- do.call(rbind, results)
+  
+  return(results)
+}
 
+as.data.frame.spectral_spews_single <- function(x, ...) { 
+  
+  with(x, 
+    plyr::rbind.fill(data.frame(replicate = 1, 
+                                type = 'sdr', 
+                                value = results[['sdr']]), 
+                    data.frame(replicate = 1, 
+                                type  = 'rspectrum', 
+                                dist  = results[['spectrum']][ ,'dist'],
+                                value = results[['spectrum']][ ,'rspec'])) 
+  )
+  
+}
 
 # 
 # Indictest functions for spectral_spews objects.

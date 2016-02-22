@@ -100,6 +100,14 @@ plot.spectral_spews_test <- function(obj, # an indictest object
   return(plot)
 }
 
+#'@export
+plot.spectral_spews_list <- function(obj, along = NULL) { 
+  plot.spectral_spews_test(as.data.frame(obj), 
+                           along = along,
+                           display_null = FALSE, 
+                           what = 'value')
+}
+
 # Plot function for r-spectrum
 # 
 # We define the S3 method. 
@@ -109,6 +117,7 @@ plot_spectrum <- function(obj, ...) {
   UseMethod("plot_spectrum")
 }
 
+# Method for indictest output
 #'@export
 plot_spectrum.spectral_spews_test <- function(obj, 
                                               along = NULL, 
@@ -157,4 +166,20 @@ plot_spectrum.spectral_spews_test <- function(obj,
   }
   
   return(plot) 
+}
+
+# Method for spectral_spews output (list object)
+#'@export 
+plot_spectrum.spectral_spews_list <- function(obj, 
+                                              along = NULL) { 
+  data_as_df <- as.data.frame(obj)
+  plot_spectrum.spectral_spews_test(data_as_df, along = along, 
+                                    display_null = FALSE)
+}
+
+# Method for spectral_spews output (single object)
+#'@export 
+plot_spectrum.spectral_spews_single <- function(obj) { 
+  data_as_df <- as.data.frame(obj)
+  plot_spectrum.spectral_spews_test(data_as_df, display_null = FALSE)
 }

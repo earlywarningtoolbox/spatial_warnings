@@ -6,6 +6,7 @@
 #   method, please refer to the task_* files. 
 
 # Define global method
+#'@export
 indictest <- function(obj, null_replicates = 999, ...) { 
   UseMethod('indictest')
 }

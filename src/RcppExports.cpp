@@ -80,33 +80,6 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// randn
-int randn(double min, double max);
-RcppExport SEXP spatialwarnings_randn(SEXP minSEXP, SEXP maxSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< double >::type min(minSEXP);
-    Rcpp::traits::input_parameter< double >::type max(maxSEXP);
-    __result = Rcpp::wrap(randn(min, max));
-    return __result;
-END_RCPP
-}
-// shuffle_and_compute
-List shuffle_and_compute(NumericMatrix mat, Function indic, bool do_coarse_grain, int subsize, int nrep);
-RcppExport SEXP spatialwarnings_shuffle_and_compute(SEXP matSEXP, SEXP indicSEXP, SEXP do_coarse_grainSEXP, SEXP subsizeSEXP, SEXP nrepSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type mat(matSEXP);
-    Rcpp::traits::input_parameter< Function >::type indic(indicSEXP);
-    Rcpp::traits::input_parameter< bool >::type do_coarse_grain(do_coarse_grainSEXP);
-    Rcpp::traits::input_parameter< int >::type subsize(subsizeSEXP);
-    Rcpp::traits::input_parameter< int >::type nrep(nrepSEXP);
-    __result = Rcpp::wrap(shuffle_and_compute(mat, indic, do_coarse_grain, subsize, nrep));
-    return __result;
-END_RCPP
-}
 // normalize
 NumericMatrix normalize(NumericMatrix aspectr2D, NumericMatrix dists, int n0x, int n0y);
 RcppExport SEXP spatialwarnings_normalize(SEXP aspectr2DSEXP, SEXP distsSEXP, SEXP n0xSEXP, SEXP n0ySEXP) {

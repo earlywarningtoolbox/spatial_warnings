@@ -26,14 +26,6 @@ raw_moran <- function(mat) {
     .Call('spatialwarnings_myfftshift', PACKAGE = 'spatialwarnings', mat)
 }
 
-randn <- function(min, max) {
-    .Call('spatialwarnings_randn', PACKAGE = 'spatialwarnings', min, max)
-}
-
-shuffle_and_compute <- function(mat, indic, do_coarse_grain, subsize, nrep) {
-    .Call('spatialwarnings_shuffle_and_compute', PACKAGE = 'spatialwarnings', mat, indic, do_coarse_grain, subsize, nrep)
-}
-
 normalize <- function(aspectr2D, dists, n0x, n0y) {
     .Call('spatialwarnings_normalize', PACKAGE = 'spatialwarnings', aspectr2D, dists, n0x, n0y)
 }

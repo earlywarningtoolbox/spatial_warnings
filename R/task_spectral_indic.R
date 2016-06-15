@@ -77,7 +77,7 @@ print.spectral_spews_single <- function(x, ...) {
 
 # 
 # as.data.frame methods for spectral_spews objects
-# 
+#'@export
 as.data.frame.spectral_spews_list <- function(x, ...) { 
   
   # Compute a distribution of null values for SDR
@@ -93,6 +93,7 @@ as.data.frame.spectral_spews_list <- function(x, ...) {
   return(results)
 }
 
+#'@export
 as.data.frame.spectral_spews_single <- function(x, ...) { 
   
   with(x, 

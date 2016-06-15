@@ -24,13 +24,18 @@ spectral_spews <- function(input,
   
   orig_input <- input # Save original data for null models later
 
+  if ( is.null(sdr_low_range) ) { 
+    warning("Choosing the 20% lowest frequencies for spectral density ratio ",
+            "as none was specified. Use parameter sdr_low_range to choose ", 
+            "a different value.")
+    sdr_low_range <- c(0, .2)
+  }
   
-  if ( is.null(sdr_low_range) || is.null(sdr_high_range)) { 
-    warning('Choosing default values of lower and higher 20% for spectral ',
-            'density ratio. Use parameters sdr_low_range and sdr_high_range ',
-            'to choose a better value')
-    if ( is.null(sdr_low_range) )  sdr_low_range  <- c(0, .2)
-    if ( is.null(sdr_high_range) ) sdr_high_range <- c(.8, 1)
+  if ( is.null(sdr_high_range) ) { 
+    warning("Choosing the 20% highest frequencies for spectral density ratio ",
+            "as none was specified. Use parameter sdr_low_range to choose ", 
+            "a different value.")
+    sdr_high_range <- c(.8, 1)
   }
   
   # Handle list case
@@ -67,10 +72,12 @@ spectral_spews <- function(input,
 # 
 # Print methods for spectral_spews objects
 # 
+#'@export
 print.spectral_spews_list <- function(x, ...) { 
   print.default(x) # Not implemented yet
 }
 
+#'@export
 print.spectral_spews_single <- function(x, ...) { 
   print.default(x) # Not implemented yet
 }

@@ -33,7 +33,7 @@ spectral_spews <- function(input,
   
   if ( is.null(sdr_high_range) ) { 
     warning("Choosing the 20% highest frequencies for spectral density ratio ",
-            "as none was specified. Use parameter sdr_low_range to choose ", 
+            "as none was specified. Use parameter sdr_high_range to choose ", 
             "a different value.")
     sdr_high_range <- c(.8, 1)
   }
@@ -88,7 +88,7 @@ print.spectral_spews_single <- function(x, ...) {
 as.data.frame.spectral_spews_list <- function(x, ...) { 
   
   # Compute a distribution of null values for SDR
-  results <- plyr::llply(x, as.data.frame, ...)
+  results <- plyr::llply(x, as.data.frame.spectral_spews_single, ...)
   
   # Add a replicate column with replicate number
   results <- Map(function(x, df) { df[ ,'replicate'] <- x; df }, 
@@ -107,7 +107,7 @@ as.data.frame.spectral_spews_single <- function(x, ...) {
     plyr::rbind.fill(data.frame(replicate = 1, 
                                 type = 'sdr', 
                                 value = results[['sdr']]), 
-                    data.frame(replicate = 1, 
+                     data.frame(replicate = 1, 
                                 type  = 'rspectrum', 
                                 dist  = results[['spectrum']][ ,'dist'],
                                 value = results[['spectrum']][ ,'rspec'])) 

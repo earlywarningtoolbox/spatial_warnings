@@ -22,19 +22,7 @@ raw_moran <- function(mat) {
     .Call('spatialwarnings_raw_moran', PACKAGE = 'spatialwarnings', mat)
 }
 
-.myfftshift_cpp <- function(mat) {
-    .Call('spatialwarnings_myfftshift', PACKAGE = 'spatialwarnings', mat)
-}
-
-normalize <- function(aspectr2D, dists, n0x, n0y) {
-    .Call('spatialwarnings_normalize', PACKAGE = 'spatialwarnings', aspectr2D, dists, n0x, n0y)
-}
-
-get_distances <- function(nr, nc, n0x, n0y) {
-    .Call('spatialwarnings_get_distances', PACKAGE = 'spatialwarnings', nr, nc, n0x, n0y)
-}
-
-get_rspectr <- function(ray, step, dists, aspectr2D) {
-    .Call('spatialwarnings_get_rspectr', PACKAGE = 'spatialwarnings', ray, step, dists, aspectr2D)
+rspectrum <- function(rmat) {
+    .Call('spatialwarnings_rspectrum', PACKAGE = 'spatialwarnings', rmat)
 }
 

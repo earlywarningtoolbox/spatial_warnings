@@ -18,7 +18,7 @@ Imports:
 Suggests:
     testthat,
     knitr
-LinkingTo: Rcpp
+LinkingTo: Rcpp, RcppArmadillo
 VignetteBuilder: knitr
 LazyData: true
 RoxygenNote: 5.0.1

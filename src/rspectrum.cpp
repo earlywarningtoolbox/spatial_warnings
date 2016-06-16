@@ -39,7 +39,6 @@ DataFrame rspectrum(NumericMatrix rmat) {
   int i=1;
   while ( !more_than_two_values && i<amat.n_elem ) {
     if ( amat(i-1) != amat(i) ) { 
-      Rcout << amat; 
       more_than_two_values = true;
     }
     i++;

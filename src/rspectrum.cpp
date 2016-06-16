@@ -46,7 +46,6 @@ DataFrame rspectrum(NumericMatrix rmat) {
   
   // We have not found more than two values -> return early
   if ( !more_than_two_values ) { 
-    Rcout << "returning early\n"; 
     return DataFrame::create(_["dist"]  = ray, 
                              _["rspec"] = NumericVector::create(NumericVector::get_na()));
   }

@@ -35,8 +35,7 @@ DataFrame rspectrum(NumericMatrix rmat) {
   
   // Compute aspectr2D and normalize it
   mat_fft(n0x, n0y) = 0; 
-  mat aspectr2D = pow(abs(mat_fft), 2) / pow((n0x+1) * (n0y+1), 4);
-
+  
   // Compute r-spectrum
   vec ray = linspace(mi, ma, ma-mi+1);
   vec rspectr = zeros(ma-mi+1); 
@@ -55,8 +54,9 @@ DataFrame rspectrum(NumericMatrix rmat) {
         double dist = sqrt( pow(i - n0x, 2) + pow(j - n0y, 2) );
         
         if ( dist >= r - step/2 && dist < r + step/2 ) { 
-          rspectr(l) += aspectr2D(i, j);
-          norm_factor += aspectr2D(i, j);
+          double aspectr2D_ij = pow(abs(mat_fft(i, j)), 2) / pow((n0x+1) * (n0y+1), 4);
+          rspectr(l) += aspectr2D_ij;
+          norm_factor += aspectr2D_ij;
           total_inmask++;
         }
         

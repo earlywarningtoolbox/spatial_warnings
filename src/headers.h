@@ -28,8 +28,6 @@ void flood_fill(const Rcpp::IntegerMatrix &mat,
                 int fillcol,
                 bool wrap);
 
-Rcpp::ComplexMatrix myfftshift(Rcpp::ComplexMatrix mat);
-
 Rcpp::NumericMatrix coarse_grain(Rcpp::NumericMatrix mat, 
                                  int subsize);
 

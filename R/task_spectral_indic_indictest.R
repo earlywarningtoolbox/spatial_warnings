@@ -17,6 +17,7 @@ indictest.spectral_spews_list <- function(x, null_replicates = 999, ...) {
   results <- do.call(rbind, results)
   
   # Format and return output
+  attr(results, "nreplicates") <- null_replicates
   class(results) <- c('spectral_spews_test', 'spews_test', 'data.frame')
   
   return(results)
@@ -54,6 +55,8 @@ indictest.spectral_spews_single <- function(x, null_replicates = 999, ...) {
   results <- data.frame(replicate = 1, results)
   row.names(results) <- NULL
   
+  # Format output
+  attr(results, "nreplicates") <- null_replicates
   class(results) <- c('spectral_spews_test', 'spews_test', 'data.frame')
   
   return(results)

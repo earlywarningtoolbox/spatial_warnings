@@ -66,17 +66,3 @@ print_one_replicate <- function(tab, n) {
   cat(paste0(n_str, mean_str, variance_str, skewness_str, moran_str, "\n"))
   
 }
-
-pval_stars <- function(value) { 
-  if (value < 0.001) { 
-    return('*** ' )
-  } else if (value < 0.01) { 
-    return('**  '  )
-  } else if (value < 0.05) { 
-    return('*   '   )
-  } else if (value < 0.1) { 
-    return('.   '   )
-  } else { 
-    return('    ')
-  }
-}

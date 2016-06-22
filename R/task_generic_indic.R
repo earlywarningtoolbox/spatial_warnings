@@ -106,34 +106,6 @@ generic_spews <- function(mat,
   return(results)
 }
 
-
-
-
-# ----------------------------
-# PRINT METHODS
-# ----------------------------
-#'@export
-print.generic_spews <- function(obj, ...) { 
-  cat('Generic Spatial Early-Warnings results\n') 
-  cat('\n')
-  
-  NextMethod("print", obj)
-}
-#'@export
-print.generic_spews_single <- function(obj, ...) { 
-  output <- indictest.generic_spews_single(obj, null_replicates = 0) 
-  row.names(output) <- NULL
-  print.data.frame(output)
-}
-#'@export
-print.generic_spews_list <- function(obj, ...) { 
-  output <- indictest.generic_spews_list(obj, null_replicates = 0) 
-  row.names(output) <- NULL
-  print.data.frame(output)
-}
-
-
-
 # ----------------------------
 # PLOT METHODS
 # ----------------------------
@@ -158,7 +130,7 @@ print.generic_spews_list <- function(obj, ...) {
 #'   \code{\link{plot.generic_spews_test}}
 # 
 #'@export
-plot.generic_spews <- function(obj, along = NULL, ...) { 
+plot.generic_spews <- function(obj, along = NULL) { 
   if ( 'generic_spews_single' %in% class(obj) ) { 
     stop('I cannot plot a trend with only one value !')
   }

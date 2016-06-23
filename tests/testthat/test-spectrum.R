@@ -46,7 +46,7 @@ test_that("the cpp implementation of the spectrum computations is correct", {
   aspectr2D <- abs(tmpshift)^2 / (n0x*n0y)^4
   
   sig2 <- sum(aspectr2D[DISTMASK]) #Normalisation
-  print(sig2)
+  
   aspectr2D <- aspectr2D/sig2 #Normalisation
   
   # Now calculate r-spectrum

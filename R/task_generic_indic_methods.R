@@ -26,3 +26,24 @@ print.generic_spews_list <- function(obj, ...) {
   print.data.frame(output)
 }
 
+
+
+# As data.frame methods
+
+#'@export
+as.data.frame.generic_spews_list <- function(obj) { 
+  
+  df <- plyr::ldply(obj, function(x) { as.data.frame(x[['results']]) })
+  df[ ,'replicate'] <- seq.int(length(obj))
+  
+  # Extract and reorder the data.frame
+  df <- df[ ,c('replicate', 'mean', 'moran', 'skewness', 'variance')]
+  tidyr::gather_(df, 'indicator', 'value', 
+                 c('mean', 'moran', 'skewness', 'variance'))
+}
+
+#'@export
+as.data.frame.generic_spews_single <- function(obj) { 
+  as.data.frame.generic_spews_list(list(obj))
+}
+

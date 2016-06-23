@@ -8,6 +8,8 @@ context("Test that results matches those in PLOS One")
 
 test_that('results matches those in PLOS One', { 
   
+  stopifnot(require(reshape2))
+  
   datdir <- './plosone/' # mind the trailing /
   source(paste0(datdir,'early_warning_generic_R_code.R'), chdir = TRUE)
   
@@ -34,10 +36,11 @@ test_that('results matches those in PLOS One', {
   matrices <- lapply(matrices, as.binary_matrix, state = 1) # veg is 1
   
   # Now compute indicators
-  test_results <- generic_spews(matrices, subsize = 10, 
-                                moranI_coarse_grain = TRUE)
-  test_reshaped <- reshape2::acast(summary(test_results, 0),  
-                                   replicate ~ indicator)
+  test_results  <- generic_spews(matrices, subsize = 10, 
+                                 moranI_coarse_grain = TRUE)
+  test_reshaped <- acast(as.data.frame(test_results), 
+                         replicate ~ indicator)
+  
   test_reshaped
   
   # Now test for concordance

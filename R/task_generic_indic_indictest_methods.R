@@ -116,29 +116,33 @@ plot.generic_spews_test <- function(obj,
 # This function prints a pretty table of a generic_spews_test object
 # 
 #'@export
-print.generic_spews_test <- function(obj, ...) { 
-    
+print.generic_spews_test <- function(x, ...) { 
+  cat('Generic Spatial Early-Warnings Summary\n') 
+  cat('\n')
 
-  cat('\n')
-  cat(' Generic Spatial Early-Warnings Summary\n') 
-  cat('\n')
+  x2 <- as.data.frame(x)
+  x2 <- subset(x2, select=c("replicate", "indicator", "value", "pval"))
+  x2<- data.frame(x2, stars = pval_stars(x2[ ,'pval']))
+  x2 <- melt(x2, id.vars=c("replicate", "indicator"))
+  x2 <- dcast(x2, replicate ~ indicator + variable)
+
+  names(x2) <- c(
+	  'Replicate #', 'Mean', 'P>null', '   ',
+	  'Moran\'s I', 'P>null', '   ',
+	  'Skewness', 'P>null', '   ',
+	  'Variance', 'P>null', '   '
+	  )
+
+  print.data.frame(x2, row.names = FALSE)
   
-  cat(' Matrix', '   Mean', '  Variance (P>null)', 
-      '    Skewness (P>null)', '   Moran\'s I (P>null)', '\n')
-  
-  if ( 'replicate' %in% colnames(obj) ) { 
-    for (i in unique(obj[ ,'replicate'])) { 
-      print_one_replicate(subset(obj, replicate == i), i)
-    }
-  } else { 
-    print_one_replicate(obj, 1)
-  }
-  
   cat('\n')
-  cat(' Significance tested against', attr(obj, 'nreplicates'), 
+  cat(' Significance tested against', attr(x, 'nreplicates'), 
       'randomly shuffled matrices\n')
   cat(" Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1", '\n')
   cat('\n')
+
+  invisible(x)
+
 }
 
 print_one_replicate <- function(tab, n) { 

@@ -4,8 +4,6 @@ context('Test that all indicator functions perform according to specification')
 test_that('indicator functions stop if provided garbage data', { 
 
   indicator_functions <- list(indicator_moran,
-                              indicator_fracgeo,
-                              indicator_largestpatch,
                               indicator_powerspectrum,
                               indicator_skewness,
                               indicator_variance) # add others here

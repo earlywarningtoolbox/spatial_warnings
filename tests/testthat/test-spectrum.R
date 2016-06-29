@@ -5,19 +5,6 @@
 
 context("Test the correct computation of r-spectrum")
 
-test_that("rspectrum works as indicator_powerspectrum", { 
-  
-  data(forestdat)
-  testmat <- forestdat[["matrices"]][[1]]
-  
-  rspec <- indicator_powerspectrum(testmat)
-  rspec2 <- rspectrum(testmat)
-  
-  all.equal(rspec, rspec2)
-  expect_equal(rspec, rspec2)
-  
-})
-
 test_that("the cpp implementation of the spectrum computations is correct", { 
   
   # Redefine the old functions
@@ -94,3 +81,4 @@ test_that("the cpp implementation of the spectrum computations is correct", {
                tolerance = 2/100) # this is a big difference (difference in numerical precision ?)
   
 })
+

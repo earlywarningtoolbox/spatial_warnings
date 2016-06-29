@@ -14,7 +14,7 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//[[Rcpp::export(name = "coarse_grain")]]
+//[[Rcpp::export(name = ".coarse_grain_unsafe")]]
 NumericMatrix coarse_grain(NumericMatrix mat, 
                            int subsize) {
   

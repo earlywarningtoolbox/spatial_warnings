@@ -4,8 +4,7 @@
 \alias{indicator_moran}
 \title{Moran's Index at lag of 1}
 \usage{
-indicator_moran(input, subsize = 5, detrending = FALSE,
-  do_coarse_graining = FALSE, nreplicates = 499)
+indicator_moran(input, subsize = 1, detrending = FALSE, nreplicates = 999)
 }
 \arguments{
 \item{input}{An matrix or a list of matrix object. It should 
@@ -17,11 +16,11 @@ original matrix.}
 \item{detrending}{If TRUE data are detrended by removing the spatial mean. 
 (Default is FALSE)}
 
-\item{do_coarse_graining}{If TRUE then the matrix is coarse_grained before 
-computing the indicator.}
-
 \item{nreplicates}{Number of replicates to produce to estimate null 
 distribution of index (default: 999).}
+
+\item{do_coarse_graining}{If TRUE then the matrix is coarse_grained before 
+computing the indicator.}
 }
 \value{
 A list (or a list of list if input was a list of matrix 

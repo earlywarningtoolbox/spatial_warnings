@@ -46,10 +46,10 @@
 #' 
 #'@export
 indicator_skewness <- function(input, 
-                               subsize     = 2, 
+                               subsize     = 5, 
                                detrending  = FALSE, 
                                absolute = TRUE,
-                               nreplicates = 499) {
+                               nreplicates = 999) {
   
   check_mat(input) # checks if binary and sensible
   # Check whether the matrix looks binary but was not declared as such
@@ -61,10 +61,6 @@ indicator_skewness <- function(input,
                    subsize, detrending, absolute, nreplicates) )
   } else { 
     
-    if (diff(dim(input)) != 0) { 
-      stop('Computation of the skewness indicator requires a square matrix')
-    } 
-    
     # We choose the function depending on whether we want the absolute value 
     #   of skewness or its raw value.
     if ( absolute ) { 
@@ -73,10 +69,9 @@ indicator_skewness <- function(input,
       indic_tmp <- raw_skewness
     }
     
-    
     # We alter the chosen function above depending on whether we want 
     #   coarse_graining or not.
-    if ( is.binary_matrix(input) ) { 
+    if ( subsize > 1 ) { 
       indicf <- with_coarse_graining(indic_tmp, subsize)
     } else { 
       indicf <- indic_tmp
@@ -90,10 +85,15 @@ indicator_skewness <- function(input,
 }
 
 raw_skewness <- function(mat) { 
-  if ( sd(mat) == 0 ) { 
-    return(0)
+  if ( length(mat) < 2 || sd(mat) == 0 ) { 
+    return(NA)
   } else { 
     return( moments::skewness(as.vector(mat)) )
   }
 }
-raw_abs_skewness <- function(mat) { abs(raw_skewness(mat)) }
+
+raw_abs_skewness <- function(mat) { 
+  abs(raw_skewness(mat)) 
+}
+
+

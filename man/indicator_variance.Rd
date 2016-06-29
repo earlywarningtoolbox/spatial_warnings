@@ -5,7 +5,7 @@
 \title{Spatial variance indicator}
 \usage{
 indicator_variance(input, subsize = 5, detrending = FALSE,
-  nreplicates = 499)
+  nreplicates = 999)
 }
 \arguments{
 \item{input}{A square binary matrix or a list of square binary matrices.}
@@ -35,6 +35,7 @@ A list (or a list of list if input was a list of matrices) with
       \item `pval`: p-value based on the rank of the observed autocorrelation
                       in the null distribution.
     }
+
 data(B)
 indicator_variance(B)
 }

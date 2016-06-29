@@ -9,6 +9,7 @@ testmat <- forestdat$matrices[[1]]
 
 
 
+context('Test that all indicator functions return correct values')
 
 # Test variance indicator
 test_that("Indicator variance returns correct values", { 
@@ -69,8 +70,7 @@ test_that('Indicator Moran returns a correct value', {
   
   # Now test the indicator functions
   expect_equal(raw_moran(testmat), 
-               indicator_moran(testmat, do_coarse_graining = FALSE, 
-                               nreplicates = 0)[['value']])
+               indicator_moran(testmat, nreplicates = 0)[['value']])
   
 })
 
@@ -92,8 +92,7 @@ test_that('Generic indicator task function returns correct values', {
   # Moran
   expect_equal(genindic_result[['results']][['moran']], 
                indicator_moran(testmat, 
-                               subsize = size, 
-                               do_coarse_graining = moran_do_cg, 
+                               subsize = 1,
                                nreplicates = 0)[['value']])
   
   # Skewness
@@ -112,9 +111,3 @@ test_that('Generic indicator task function returns correct values', {
                                   nreplicates = 0)[['value']])
   
 })
-
-# Test(s) of correlation function 
-# 
-# - at length zero, correlation should be 1 (except for very small matrices 
-#     (like ~ 4x4) (due to approximation of variance).
-# - for a matrix with one state only, correlation is zero at all lengths

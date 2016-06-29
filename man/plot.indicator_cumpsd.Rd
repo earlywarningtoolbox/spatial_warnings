@@ -4,8 +4,8 @@
 \alias{plot.indicator_cumpsd}
 \title{Plot a patch-size cumulative distribution}
 \usage{
-\method{plot}{indicator_cumpsd}(x, x.log = TRUE, y.log = TRUE,
-  add.line = TRUE, facets = FALSE, ...)
+plot.indicator_cumpsd(x, x.log = TRUE, y.log = TRUE, add.line = TRUE,
+  facets = FALSE, ...)
 }
 \arguments{
 \item{x}{An `indicator_cumpsd` object as produced by `indicator_cumpsd`}

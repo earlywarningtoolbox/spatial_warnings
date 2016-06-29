@@ -4,7 +4,7 @@
 \alias{plot.spectral_spews_test}
 \title{Plot method for Spectral Density Ratio (SDR)}
 \usage{
-\method{plot}{spectral_spews_test}(obj, along = NULL, what = "value",
+plot.spectral_spews_test(obj, along = NULL, what = "value",
   display_null = TRUE)
 }
 \arguments{

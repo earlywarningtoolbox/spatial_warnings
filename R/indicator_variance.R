@@ -34,6 +34,7 @@
 #'       \item `pval`: p-value based on the rank of the observed autocorrelation
 #'                       in the null distribution.
 #'     }
+#' 
 #' data(B)
 #' indicator_variance(B)
 #' 
@@ -42,29 +43,24 @@
 indicator_variance <- function(input, 
                                subsize     = 5, 
                                detrending  = FALSE, 
-                               nreplicates = 499) {
+                               nreplicates = 999) {
   
   check_mat(input) # checks if binary and sensible
   # Check whether the matrix looks binary but was not declared as such
   check_binary_status(input) 
       
-  if (is.list(input)) {
+  if (is.list(input)) { 
     # Returns a list of lists
     return( lapply(input, indicator_variance, 
                    subsize, detrending, nreplicates) )
   } else { 
     
-    if (diff(dim(input)) != 0) { 
-      stop('Computation of the variance indicator requires a square matrix')
-    } 
-    
     # We alter the raw_variance function so it includes coarse_graining 
-    #   in case the input is a binary matrix.
-    if ( is.binary_matrix(input) ) { 
+    #   in case subsize is above 1. 
+    indicf <- raw_variance
+    if ( subsize > 1 ) { 
       indicf <- with_coarse_graining(raw_variance, subsize)
-    } else { 
-      indicf <- raw_variance
-    }
+    } 
     
     # Compute and return indicator
     return( compute_indicator_with_null(input, detrending, 
@@ -74,3 +70,4 @@ indicator_variance <- function(input,
 }
 
 raw_variance <- function(mat) { var(as.vector(mat)) }
+

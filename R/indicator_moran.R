@@ -46,10 +46,9 @@
 #' 
 #'@export  
 indicator_moran <- function(input, 
-                            subsize     = 5, 
+                            subsize     = 1, # default = no cg
                             detrending  = FALSE, 
-                            do_coarse_graining = FALSE,
-                            nreplicates = 499) {
+                            nreplicates = 999) {
   
   check_mat(input) # checks if binary and sensible
   # We do not check for binary status as moran's I can be computed on both. 
@@ -57,16 +56,12 @@ indicator_moran <- function(input,
   if (is.list(input)) {
     # Returns a list of lists
     return( lapply(input, indicator_moran, 
-                   subsize, detrending, do_coarse_graining, nreplicates) )
+                   subsize, detrending, nreplicates) )
   } else { 
-    
-    if (diff(dim(input)) != 0) { 
-      stop('Computation of the Moran\'s I index requires a square matrix')
-    } 
     
     # We alter the moran function to do coarse_graining if the user asked for it
     #   (and not whether the matrix is binary or not). 
-    if ( do_coarse_graining ) { 
+    if ( subsize > 1 ) { 
       indicf <- with_coarse_graining(raw_moran, subsize)
     } else { 
       indicf <- raw_moran

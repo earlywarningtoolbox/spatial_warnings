@@ -5,7 +5,6 @@ test_that('indicator functions stop if provided garbage data', {
 
   indicator_functions <- list(indicator_moran,
                               indicator_cumpsd,
-                              indicator_fitpsd,
                               indicator_fracgeo,
                               indicator_largestpatch,
                               indicator_powerspectrum,

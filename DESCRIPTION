@@ -14,7 +14,8 @@ Imports:
     moments,
     Rcpp,
     ggplot2 (>= 1.0.0),
-    plyr
+    plyr,
+    poweRlaw
 Suggests:
     testthat,
     knitr

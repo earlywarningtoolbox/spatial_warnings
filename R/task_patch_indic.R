@@ -52,8 +52,13 @@ patchdistr_spews <- function(x) {
     return(results)
 
   } 
-
   
+  
+  # Input needs to be a binary matrix here
+  if ( ! is.binary_matrix(x) ) { 
+    stop('Computing patch-size distributions require a binary matrix: please ', 
+         'convert your data using as.binary_matrix() first.')
+  }
   
   # Get patch size distribution
   psd <- patchsizes(x)
@@ -65,6 +70,7 @@ patchdistr_spews <- function(x) {
     warning('Not enough different patch sizes to fit distribution: returning NA')
     result <- list(models = list(pl = NA, exp = NA, ln = NA),
                    likelihoods = list(pl = NA, exp = NA, ln = NA),
+                   xmin = NA,
                    best = 'none')
     class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 
                        'spews_result', 'list')
@@ -90,7 +96,8 @@ patchdistr_spews <- function(x) {
   best <- names(models)[unlist(likelihoods) == max(unlist(likelihoods))]
   
   # Return 
-  result <- list(models = models, likelihoods = likelihoods, best = best)
+  result <- list(models = models, likelihoods = likelihoods, best = best, 
+                 xmin = xmin)
   class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 
                       'spews_result', 'list')
   return(result)

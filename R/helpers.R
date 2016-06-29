@@ -8,7 +8,7 @@ with_coarse_graining <- function(indicf, subsize) {
   }
 }
 
-# Function that transformrs a set of values into stars for display
+# Function that transforms a set of values into stars for display
 pval_stars <- function(value) { 
   
   if ( length(value) > 1 ) { 

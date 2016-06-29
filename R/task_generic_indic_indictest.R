@@ -56,7 +56,7 @@ indictest.generic_spews_single <- function(obj, null_replicates = 999, ...) {
 #'@export
 indictest.generic_spews_list <- function(obj, null_replicates = 999, ...) { 
   
-  results <- plyr::llply(obj, indictest.generic_spews_single, null_replicates)
+  results <- plyr::llply(obj, indictest.generic_spews_single, null_replicates, ...)
   results <- lapply(seq_along(results), 
                     function(n) data.frame(replicate = n, results[[n]]))
   results <- do.call(rbind, results)

@@ -119,20 +119,24 @@ plot.generic_spews_test <- function(obj,
 print.generic_spews_test <- function(x, ...) { 
   cat('Generic Spatial Early-Warnings Summary\n') 
   cat('\n')
-
+  
+  # Reformat table
   x2 <- as.data.frame(x)
-  x2 <- subset(x2, select=c("replicate", "indicator", "value", "pval"))
-  x2<- data.frame(x2, stars = pval_stars(x2[ ,'pval']))
-  x2 <- melt(x2, id.vars=c("replicate", "indicator"))
-  x2 <- dcast(x2, replicate ~ indicator + variable)
-
-  names(x2) <- c(
-	  'Replicate #', 'Mean', 'P>null', '   ',
-	  'Moran\'s I', 'P>null', '   ',
-	  'Skewness', 'P>null', '   ',
-	  'Variance', 'P>null', '   '
-	  )
-
+  x2 <- data.frame(x2, stars = pval_stars(x2[ ,'pval']))
+  x2 <- dlply(x2, ~ indicator, subset, select = c('value', 'pval', 'stars'))
+  
+  # We just keep the value for the mean (pval makes no sense)
+  x2[['Mean']] <- x2[['Mean']][ ,c('value')]
+  
+  # Format final table
+  x2 <- data.frame(replicate = unique(x[ ,'replicate']), 
+                   do.call(data.frame, x2))
+                     
+  names(x2) <- c('Replicate', 'Mean', 
+                 'Moran\'s I', 'P>null', '   ',
+                 'Skewness', 'P>null', '   ',
+                 'Variance', 'P>null', '   ')
+  
   print.data.frame(x2, row.names = FALSE)
   
   cat('\n')
@@ -142,5 +146,5 @@ print.generic_spews_test <- function(x, ...) {
   cat('\n')
 
   invisible(x)
-
 }
+

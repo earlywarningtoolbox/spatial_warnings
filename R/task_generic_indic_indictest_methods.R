@@ -1,12 +1,16 @@
 # 
 # 
 # This file contains common methods (plot/print/summary/as.data.frame) used for 
-#   generic indicators. 
+#   generic indicators (object with significance assessment 'indictest')
 # 
 
-# ----------------------------
-# PLOT METHODS
-# ----------------------------
+
+
+
+# Plot method
+# --------------------------------------------------
+
+
 # 
 #' @title Plot the results of a generic spatial warning \code{indictest} result
 #' 
@@ -39,10 +43,10 @@
 #'
 #'@export
 plot.generic_spews_test <- function(obj, 
-                                       along = NULL, 
-                                       what = 'value',
-                                       display_null = TRUE, 
-                                       ...) {  
+                                    along = NULL, 
+                                    what = 'value',
+                                    display_null = TRUE, 
+                                    ...) {  
   
   # If along is not provided, then use the replicate number
   set_default_xlab <- FALSE 
@@ -53,7 +57,8 @@ plot.generic_spews_test <- function(obj,
   
   check_suitable_for_plots(obj, along, display_null)
   
-  plot_data <- data.frame(obj, gradient = along[obj[ ,'replicate']])
+  plot_data <- data.frame(as.data.frame(obj), 
+                          gradient = along[obj[ ,'replicate']])
   
   # Create base plot object 
   plot <- ggplot2::ggplot(plot_data)
@@ -111,13 +116,26 @@ plot.generic_spews_test <- function(obj,
   return(plot)
 }
 
-# 
-# 
-# This function prints a pretty table of a generic_spews_test object
-# 
+
+
+# as.data.frame methods
+# --------------------------------------------------
+as.data.frame.generic_spews_test <- function(obj) { 
+  
+  # The list methods actually works pretty well so we do this. However, 
+  # we define the method instead of relying on automatic dispatch 
+  # in case we want to change it later
+  as.data.frame.list(obj) 
+}
+
+
+
+# Print method
+# --------------------------------------------------
+ 
 #'@export
-print.generic_spews_test <- function(x, ...) { 
-  cat('Generic Spatial Early-Warnings Summary\n') 
+print.generic_spews_test <- function(x) { 
+  cat('Generic Spatial Early-Warnings\n') 
   cat('\n')
   
   # Reformat table
@@ -147,4 +165,10 @@ print.generic_spews_test <- function(x, ...) {
 
   invisible(x)
 }
+
+
+
+# Summary method
+# --------------------------------------------------
+summary.generic_spews_test <- print.generic_spews_test
 

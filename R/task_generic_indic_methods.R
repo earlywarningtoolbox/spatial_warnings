@@ -1,12 +1,18 @@
 # TODO: summary methods for single and list
 # 
 # This file contains common methods (plot/print/summary/as.data.frame) used for 
-#   generic indicators. 
+#   generic indicators objects (without significance assessment). 
 # 
 
-# ----------------------------
-# PLOT METHODS
-# ----------------------------
+
+
+
+
+# Plot methods
+# --------------------------------------------------
+
+
+
 # 
 #' @title Generic spatial warning signals: plotting function
 #' 
@@ -33,35 +39,48 @@ plot.generic_spews <- function(obj, along = NULL) {
     stop('I cannot plot a trend with only one value !')
   }
   
-  new_data <- indictest.generic_spews_list(obj, null_replicates = 0)
+  new_data <- as.data.frame(obj)
   plot.generic_spews_test(new_data, along, display_null = FALSE)
 }
 
-# As print methods
+
+
+
+# Print methods
+# --------------------------------------------------
 
 #'@export
 print.generic_spews <- function(obj, ...) { 
-  cat('Generic Spatial Early-Warnings results\n') 
+  output <- as.data.frame(obj) 
+  row.names(output) <- NULL
+  print.data.frame(output)
+}
+
+
+
+
+# Summary methods
+# --------------------------------------------------
+
+# This function works for both list and single object
+#'@export
+summary.generic_spews <- function(obj) { 
+  
+  cat('Generic Spatial Early-Warnings\n') 
   cat('\n')
   
-  NextMethod("print", obj)
+  # Format output table
+  output <- as.data.frame(obj)
+  output <- dcast(output,  replicate ~ indicator, value.var = 'value')
+  names(output) <- c('Replicate', 'Mean', 'Moran\'s I', 'Skewness', 'Variance')
+  
+  print.data.frame(output, row.names = FALSE)
 }
 
-#'@export
-print.generic_spews_single <- function(obj, ...) { 
-  output <- indictest.generic_spews_single(obj, null_replicates = 0) 
-  row.names(output) <- NULL
-  print.data.frame(output)
-}
 
-#'@export
-print.generic_spews_list <- function(obj, ...) { 
-  output <- indictest.generic_spews_list(obj, null_replicates = 0) 
-  row.names(output) <- NULL
-  print.data.frame(output)
-}
 
 # As data.frame methods
+# --------------------------------------------------
 
 #'@export
 as.data.frame.generic_spews_list <- function(obj) { 

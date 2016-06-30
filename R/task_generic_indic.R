@@ -1,16 +1,9 @@
 # 
 # 
-# Functions providing the global workflow for generic early-warning-signals
+# This file contains the main function to compute the Generic Spews
 # 
 # 
 
-
-
-
-
-# ----------------------------
-# COMPUTATION 
-# ----------------------------
 
 #' @title Generic spatial warning signals
 #' 

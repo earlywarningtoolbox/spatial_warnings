@@ -1,4 +1,10 @@
 # 
+# 
+# This file contains the indictest functions for generic spews
+# 
+
+
+
 #' @title Generic spatial warning signals: significance assessment
 #' 
 #' @description Significance-testing function for generic spatial early-warning 
@@ -34,6 +40,12 @@
 #'@export
 indictest.generic_spews_single <- function(obj, null_replicates = 999, ...) { 
   
+  # We do not support low numbers of replicates
+  if ( null_replicates < 3 ) { 
+    stop('The number of null replicates should be above 3 to ', 
+         'assess significance')
+  }
+  
   # Compute a distribution of null values
   null_values <- compute_indicator_with_null(obj[["orig_data"]],
                                              detrending = obj[["detrend"]], 
@@ -42,9 +54,12 @@ indictest.generic_spews_single <- function(obj, null_replicates = 999, ...) {
   
   results <- as.data.frame(null_values) 
   
-  # Format output
+  # Format output. Note that we always add a "replicate" column even if there 
+  # is only one so code works on both
   indic_list <- c('Variance', 'Skewness', 'Moran\'s I', 'Mean')
-  results <- data.frame(indicator = indic_list, results)
+  results <- data.frame(replicate = 1, 
+                        indicator = indic_list, 
+                        results)
   rownames(results) <- indic_list
   
   attr(results, 'nreplicates') <- null_replicates
@@ -57,8 +72,11 @@ indictest.generic_spews_single <- function(obj, null_replicates = 999, ...) {
 indictest.generic_spews_list <- function(obj, null_replicates = 999, ...) { 
   
   results <- plyr::llply(obj, indictest.generic_spews_single, null_replicates, ...)
-  results <- lapply(seq_along(results), 
-                    function(n) data.frame(replicate = n, results[[n]]))
+  
+  # Replace replicate column with correct number
+  for ( n in seq_along(results) ) { 
+    results[[n]][ ,'replicate'] <- n
+  }
   results <- do.call(rbind, results)
   
   attr(results, 'nreplicates') <- null_replicates

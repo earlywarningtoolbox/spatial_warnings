@@ -11,30 +11,37 @@ generic_spews(mat, subsize = 4, detrend = FALSE,
 \item{mat}{A matrix (quantitative data), a binary matrix (qualitative data), 
 or a list of those}
 
-\item{subsize}{The subsize for the coarse-graining in case the passed matrix
-is qualitative}
+\item{subsize}{The subsize used for the coarse-graining phase (see Details)}
 
-\item{detrend}{Whether to substract the mean or not to the input matrix 
-(detrend)}
+\item{detrend}{Should the values be detrended by removing the spatial mean
+of the matrix ?}
 
-\item{moranI_coarse_grain}{Should the matrix be coarse-grained before 
-computing the moran's I neighbour correlation ?}
+\item{moranI_coarse_grain}{Should the input matrix be coarse-grained before
+computing the Moran's I indicator value ?}
 }
 \value{
-An object of class \code{generic_spews_single} if the passed object
-  was a single matrix or an object of class \code{generic_spews_list} if 
-  it was a list.
+An object of class \code{generic_spews_single} (actually a list) 
+  if mat is a single matrix or an object of class \code{generic_spews_list} 
+  if mat is list.
 }
 \description{
-Computation of spatial generic early warning signals (Moran's I, variance and skewness)
+Computation of spatial generic early warning signals (Moran's I,
+  variance and skewness)
 }
 \details{
-Before a critical point, a spatial dynamical system is expected to 
-  show an increase in spatial correlation at lag-1 (measured by Moran's I), 
-  in variance and in skewness. These functions provides a workflow to 
-  compute and test those indicators (see 
-  \code{\link{indicator_moran}}, \code{\link{indicator_variance}} and 
-  \code{\link{indicator_skewness}} details about null models).
+The Generic Early warning signal are based on the property of a 
+  dynamical system to "slow down" when approaching a critical point, 
+  that is take more time to return to equilibrium after a perturbation. This 
+  is expected to be reflected in several spatial characteristics: the 
+  variance, the spatial autocorrelation (at lag-1) and the skewness. This 
+  function provides a convenient workflow to compute these indicators, 
+  assess their significance and display the results. 
+
+Before computing the actual indicators, the matrix can be "coarse-grained". 
+  This process reduces the matrix by averaging the nearby cells using 
+  a square window defined by the \code{subsize} parameter. This helps 
+  removing artefactual trends in variance and skewness due to binary (1/0) 
+  data.
 }
 \references{
 Dakos, V., van Nes, E. H., Donangelo, R., Fort, H., & 
@@ -47,6 +54,20 @@ Dakos, V., van Nes, E. H., Donangelo, R., Fort, H., &
 }
 \seealso{
 \code{\link{indicator_moran}}, \code{\link{indicator_variance}} and 
-  \code{\link{indicator_skewness}}
+  \code{\link{indicator_skewness}} for individual indicators. 
+  \code{\link{indictest}} to assess the significance of indicator values.
+
+# An example using a list of matrices
+
+data(forestdat)
+gen_indic <- generic_spews(forestdat[['matrices']], 
+                           subsize = 2)
+
+# Display results
+print(gen_indic)
+summary(gen_indic)
+
+# Display trends along the varying model parameter
+plot(gen_indic, along = forestdat[['parameters']][ ,'delta])
 }
 

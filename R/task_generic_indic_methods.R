@@ -71,7 +71,7 @@ summary.generic_spews <- function(obj) {
   
   # Format output table
   output <- as.data.frame(obj)
-  output <- dcast(output,  replicate ~ indicator, value.var = 'value')
+  output <- reshape2::dcast(output,  replicate ~ indicator, value.var = 'value')
   names(output) <- c('Replicate', 'Mean', 'Moran\'s I', 'Skewness', 'Variance')
   
   print.data.frame(output, row.names = FALSE)

@@ -10,37 +10,6 @@
 # Plot method
 # --------------------------------------------------
 
-
-# 
-#' @title Plot the results of a generic spatial warning \code{indictest} result
-#' 
-#' @description Plotting functions for generic early warning signals
-#' 
-#' @param obj A \code{generic_spews_test} object (as provided by the 
-#'   \code{\link{indictest}} function.
-#' 
-#' @param along A vector providing values over which the indicator trend 
-#'   will be plotted. 
-#' 
-#' @param what The variable to plot. The default is to plot the value of the 
-#'   indicator, but other variables can be chosen (e.g. p-value). 
-#' 
-#' @param display_null Controls the display of a grey ribbon representing the 
-#'   95% and 5% quantile of the null distribution
-#'   
-#' @return A ggplot object (usually displayed immediatelly when called at the 
-#'   prompt). 
-#' 
-#' @details Since this function returns a ggplot object, it can be later 
-#'   modified to add other graphical elements (e.g. axis names or annotations). 
-#' 
-#' @seealso \code{\link{generic_spews}}, \code{\link{indictest.generic_spews}}
-#'
-#' @examples 
-#' data(forestdat)
-#' result <- generic_spews( as.binary_matrix(forestdat[['matrices']]) )
-#' plot(indictest(result))
-#'
 #'@export
 plot.generic_spews_test <- function(obj, 
                                     along = NULL, 

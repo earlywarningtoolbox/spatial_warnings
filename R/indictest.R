@@ -13,7 +13,9 @@
 #' 
 #' @param null_replicates How many times should the input matrix be randomized
 #'   to create the null distribution ?
-#'   
+#' 
+#' @param ... Additionnal arguments passed to methods 
+#' 
 #' @return An object of class \code{*_spews_test} depending on the input object
 #'   (actually, a data.frame)
 #'

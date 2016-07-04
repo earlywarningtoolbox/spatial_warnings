@@ -10,13 +10,15 @@ Maintainer: Alexandre Genin <alexandre.genin@univ-montp2.fr> , Florian D.
     Schneider <florian.schneider@univ-montp2.fr>
 Description: A package that provides tools to compute spatial warnings of
     critical points.
+Depends: R (>= 2.10)
 Imports:
     moments,
     Rcpp,
     ggplot2 (>= 1.0.0),
     plyr,
     poweRlaw,
-    reshape2
+    reshape2,
+    tidyr
 Suggests:
     testthat,
     knitr

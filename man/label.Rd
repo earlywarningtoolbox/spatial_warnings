@@ -11,7 +11,8 @@ label(mat, nbmask = matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0), ncol = 3),
 \item{mat}{A binary matrix}
 
 \item{nbmask}{a "neighboring mask": a matrix with odd dimensions describing
-which neighbors are to be considered around a cell (see examples).}
+which neighbors are to be considered as neighbors around a cell 
+(see examples).}
 
 \item{wrap}{Whether to wrap around lattice boundaries (`TRUE`/`FALSE`), 
 effectively using periodic boundaries.}
@@ -27,16 +28,18 @@ This function "labels" the patches of a binary (1/0) matrix. It
 }
 \examples{
 
-data(B)
+data(forestdat)
+attach(forestdat)
+
 par(mfrow=c(1, 2))
-image(B)
-image(label(B))
+image(matrices[[1]])
+image(label(matrices[[1]]))
 
 # With 8-way neighborhood mask and no wrapping around borders
 nbmask8 <- matrix(c(1,1,1,
                     1,0,1,
                     1,1,1), ncol=3)
-image(label(B, nbmask8, wrap = FALSE))
+image(label(matrices[[1]], nbmask8, wrap = FALSE))
 
 }
 

@@ -35,8 +35,8 @@
 #'                       in the null distribution.
 #'     }
 #' 
-#' data(B)
-#' indicator_variance(B)
+#' data(forestdat)
+#' indicator_variance(forestdat[['matrices']])
 #' 
 #' 
 #'@export

@@ -13,11 +13,10 @@
 
 
 
-# 
+# NOTE: we do not document these args as they are already included by another
+#   function in the generic_spews doc file
+#  
 #' @rdname generic_spews
-#' 
-#' @param along A vector providing values over which the indicator trend 
-#'   will be plotted. 
 #' 
 #' @export
 plot.generic_spews <- function(obj, along = NULL) { 
@@ -34,7 +33,7 @@ plot.generic_spews <- function(obj, along = NULL) {
 
 # Print methods
 # --------------------------------------------------
-
+  
 #'@export
 print.generic_spews <- function(obj, ...) { 
   output <- as.data.frame(obj) 
@@ -69,10 +68,10 @@ summary.generic_spews <- function(obj) {
 # --------------------------------------------------
 
 #'@export
-as.data.frame.generic_spews_list <- function(obj) { 
+as.data.frame.generic_spews_list <- function(x) { 
   
-  df <- plyr::ldply(obj, function(x) { as.data.frame(x[['results']]) })
-  df[ ,'replicate'] <- seq.int(length(obj))
+  df <- plyr::ldply(x, function(x) { as.data.frame(x[['results']]) })
+  df[ ,'replicate'] <- seq.int(length(x))
   
   # Extract and reorder the data.frame
   df <- df[ ,c('replicate', 'mean', 'moran', 'skewness', 'variance')]
@@ -81,7 +80,7 @@ as.data.frame.generic_spews_list <- function(obj) {
 }
 
 #'@export
-as.data.frame.generic_spews_single <- function(obj) { 
-  as.data.frame.generic_spews_list(list(obj))
+as.data.frame.generic_spews_single <- function(x) { 
+  as.data.frame.generic_spews_list(list(x))
 }
 

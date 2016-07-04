@@ -7,6 +7,13 @@
 using namespace Rcpp;
 
 //' @export
+//' 
+//' @title Compute the Moran's I at lag 1
+//' 
+//' @param mat A matrix
+//' 
+//' @return The Moran's I numeric value. 
+//' 
 // [[Rcpp::export]]
 double raw_moran(NumericMatrix mat) { 
   

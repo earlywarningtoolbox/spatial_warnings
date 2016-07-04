@@ -12,18 +12,15 @@
 #'   be a square matrix 
 #' 
 #' @param subsize logical. Dimension of the submatrix used to coarse-grain the 
-#'   original matrix.
+#'   original matrix (set to 1 for no coarse-graining).
 #' 
 #' @param detrending If TRUE data are detrended by removing the spatial mean. 
 #'   (Default is FALSE)
 #' 
-#' @param do_coarse_graining If TRUE then the matrix is coarse_grained before 
-#'   computing the indicator. 
-#' 
 #' @param nreplicates Number of replicates to produce to estimate null 
 #'   distribution of index (default: 999).
 #' 
-#' @return A list (or a list of list if input was a list of matrix 
+#' @return A list (or a list of those if input was a list of matrix 
 #'   object) of:
 #'     \itemize{
 #'       \item `mean`: Landscape mean cover
@@ -40,8 +37,9 @@
 #'     }
 #'
 #' @examples 
-#' data(B)
-#' indicator_moran(B)
+#' 
+#' data(arid)
+#' indicator_moran(arid)
 #'
 #' 
 #'@export  

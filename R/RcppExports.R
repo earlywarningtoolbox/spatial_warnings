@@ -18,6 +18,13 @@
 }
 
 #' @export
+#' 
+#' @title Compute the Moran's I at lag 1
+#' 
+#' @param mat A matrix
+#' 
+#' @return The Moran's I numeric value. 
+#' 
 raw_moran <- function(mat) {
     .Call('spatialwarnings_raw_moran', PACKAGE = 'spatialwarnings', mat)
 }

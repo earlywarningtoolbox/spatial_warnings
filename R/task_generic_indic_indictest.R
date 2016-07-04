@@ -7,8 +7,7 @@
 #' 
 #' @rdname generic_spews
 #' 
-#' @param obj A \code{generic_spews} object as produced by 
-#'   \code{\link{generic_spews}}. 
+#' @param ... Additional arguments passed onto methods
 #' 
 #' @param null_replicates The number of replicates to use to compute a null 
 #'   distribution

@@ -1,16 +1,33 @@
+# 
+# 
+# This file contains the indictest functions for spectral spews
+# 
+
+#' @title Spectral Spatial Early-Warnings
+#' 
+#' @rdname spectral_spews
+#' 
+#' @param null_replicates The number of replicates to use to compute use in the 
+#'   null distribution
+#' 
+#' @param ... Further arguments passed onto methods
+#' 
+#' @export
+indictest.spectral_spews <- function(obj, null_replicates = 999, ...) { 
+  NextMethod('indictest')
+}
 
 # 
 # Indictest functions for spectral_spews objects.
 # 
-#'@export
-indictest.spectral_spews_list <- function(x, null_replicates = 999, ...) { 
+indictest.spectral_spews_list <- function(obj, null_replicates = 999, ...) { 
   
   # Compute a distribution of null values for SDR
-  results <- plyr::llply(x, indictest.spectral_spews_single, 
+  results <- plyr::llply(obj, indictest.spectral_spews_single, 
                              null_replicates, ...)
   
   # Add a replicate column with replicate number
-  results <- Map(function(x, df) { df[ ,'replicate'] <- x; df }, 
+  results <- Map(function(obj, df) { df[ ,'replicate'] <- obj; df }, 
                  seq.int(length(results)), results)
   
   # Bind all of it in a single df
@@ -23,22 +40,21 @@ indictest.spectral_spews_list <- function(x, null_replicates = 999, ...) {
   return(results)
 }
 
-#'@export
-indictest.spectral_spews_single <- function(x, null_replicates = 999, ...) { 
+indictest.spectral_spews_single <- function(obj, null_replicates = 999, ...) { 
   
   # Build closure passed to compute_indicator_with_null that uses the correct
   #   high and low ranges.
   sdr_indicf <- function(mat) { 
     spectrum <- rspectrum(mat)
     
-    c(sdr = indicator_sdr_do_ratio(spectrum, x[['sdr_low_range']], 
-                                   x[['sdr_high_range']]), 
+    c(sdr = indicator_sdr_do_ratio(spectrum, obj[['sdr_low_range']], 
+                                   obj[['sdr_high_range']]), 
       spectrum = spectrum[ ,'rspec'])
   }
   
   # Compute a distribution of null values for SDR
   null_values_sdr <- 
-    compute_indicator_with_null(x[['orig_data']], 
+    compute_indicator_with_null(obj[['orig_data']], 
                                 # We do not make use of detrending for SDR
                                 detrending = FALSE,
                                 nreplicates = null_replicates, 
@@ -47,7 +63,7 @@ indictest.spectral_spews_single <- function(x, null_replicates = 999, ...) {
     data.frame(type = 'sdr', dist = NA,
                lapply(null_values_sdr, `[`, 1)), # first element of each list element
     data.frame(type = 'rspectrum', 
-               dist = x[['results']][['spectrum']][ ,'dist'], 
+               dist = obj[['results']][['spectrum']][ ,'dist'], 
                lapply(null_values_sdr, `[`, -1)) # all but first elem
   )
   

@@ -11,19 +11,16 @@ indicator_moran(input, subsize = 1, detrending = FALSE, nreplicates = 999)
 be a square matrix}
 
 \item{subsize}{logical. Dimension of the submatrix used to coarse-grain the 
-original matrix.}
+original matrix (set to 1 for no coarse-graining).}
 
 \item{detrending}{If TRUE data are detrended by removing the spatial mean. 
 (Default is FALSE)}
 
 \item{nreplicates}{Number of replicates to produce to estimate null 
 distribution of index (default: 999).}
-
-\item{do_coarse_graining}{If TRUE then the matrix is coarse_grained before 
-computing the indicator.}
 }
 \value{
-A list (or a list of list if input was a list of matrix 
+A list (or a list of those if input was a list of matrix 
   object) of:
     \itemize{
       \item `mean`: Landscape mean cover
@@ -45,8 +42,9 @@ This functions computes the Moran's spatial correlation index
   the matrix.
 }
 \examples{
-data(B)
-indicator_moran(B)
+
+data(arid)
+indicator_moran(arid)
 
 
 }

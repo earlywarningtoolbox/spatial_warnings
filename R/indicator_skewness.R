@@ -40,8 +40,8 @@
 #' 
 #' @examples 
 #' 
-#' data(B)
-#' indicator_skewness(B)
+#' data(arid)
+#' indicator_skewness(arid)
 #' 
 #' 
 #'@export

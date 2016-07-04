@@ -29,11 +29,13 @@ of the matrix ?}
 \item{moranI_coarse_grain}{Should the input matrix be coarse-grained before
 computing the Moran's I indicator value ?}
 
-\item{obj}{A \code{generic_spews} object as produced by 
-\code{\link{generic_spews}}.}
+\item{obj}{A \code{generic_spews} object (as provided by the 
+\code{generic_spews} function).}
 
 \item{null_replicates}{The number of replicates to use to compute a null 
 distribution}
+
+\item{...}{Additional arguments passed onto methods}
 
 \item{along}{A vector providing values over which the indicator trend 
 will be plotted.}
@@ -46,12 +48,6 @@ values ("value") but other metrics can be displayed. Correct values are
 the null distribution. Note that it can not be displayed when the trend 
 line reflects something else than the indicator values (when \code{what} 
 is not set to "value").}
-
-\item{obj}{A \code{generic_spews} object (as provided by the 
-\code{generic_spews} function).}
-
-\item{along}{A vector providing values over which the indicator trend 
-will be plotted.}
 }
 \value{
 \code{generic_spews} returns an object of class \code{generic_spews_single}

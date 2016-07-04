@@ -1,8 +1,7 @@
 # 
 #' @title Spectral spatial early-warning signals: SDR plotting function
 #' 
-#' @description This method reads the Spectral Density Ratio (SDR) values 
-#'   produced by \code{\link{indictest}} and plots the trend with null values. 
+#' @rdname spectral_spews
 #' 
 #' @param obj An \code{spectral_spews_test} object as produced by \link{indictest}
 #' 
@@ -10,39 +9,15 @@
 #'   displayed. The length of the vector must be equal to the number of 
 #'   indicator values provided in the object \code{obj}.
 #' 
-#' @param what The trendline to be displayed. Defaults to the indicator's 
-#'   values ("value") but other metrics can be displayed. Correct values are 
-#'   "value", "pval" or "z_score".
+#' @param what What the trend-line to be displayed should represent about the 
+#'   indicator. Defaults to the indicator's values ("value") but other metrics 
+#'   can be displayed. Correct values are "value", "pval" or "z_score".
 #' 
-#' @param display_null Chooses whether a grey ribbon should be added to reflect
+#' @param display_null Sets whether a grey ribbon should be added to reflect
 #'   the null distribution. Note that it can not be displayed when the trend 
 #'   line reflects something else than the indicator values (when \code{what} 
 #'   is not set to "value").
 #' 
-#' @return A ggplot object (usually displayed immediately when plot() is 
-#'   called interactively). 
-#' 
-#' @details Since this function returns a ggplot object, it can be later 
-#'   modified to add other graphical elements (e.g. axis names or annotations). 
-#' 
-#' @examples
-#' 
-#' data(forestdat)
-#' sdr_test <- indictest( spectral_spews(forestdat[['matrices']]) )
-#' plot(sdr_test)
-#' 
-#' # Display the z_score along the vector of parameter values
-#' plot(sdr_test, 
-#'      along = forestdat[['parameters']][ ,'delta'], 
-#'      what = 'z_score')
-#' 
-#' if ( require(ggplot2) ) { 
-#'   plot(sdr_test, along = forestdat[['parameters']][ ,'delta']) + 
-#'     xlab('delta') +  
-#'     theme_minimal() 
-#' }
-
-#'@export
 plot.spectral_spews_test <- function(obj, # an indictest object
                                      along = NULL, 
                                      what = 'value', 
@@ -115,7 +90,6 @@ plot.spectral_spews_test <- function(obj, # an indictest object
   return(plot)
 }
 
-#'@export
 plot.spectral_spews_list <- function(obj, along = NULL) { 
   plot.spectral_spews_test(as.data.frame(obj), 
                            along = along,
@@ -123,12 +97,18 @@ plot.spectral_spews_list <- function(obj, along = NULL) {
                            what = 'value')
 }
 
+
+
+
 # Plot function for r-spectrum
 # 
-# We define the S3 method. 
+# We define the S3 method. Note that args are already defined in plot() method
 # 
-#'@export
-plot_spectrum <- function(obj, ...) { 
+#' @title Spectrum plot
+#'
+#' @rdname spectral_spews
+#' 
+plot_spectrum <- function(obj, along = NULL, display_null = TRUE) { 
   UseMethod("plot_spectrum")
 }
 
@@ -184,7 +164,6 @@ plot_spectrum.spectral_spews_test <- function(obj,
 }
 
 # Method for spectral_spews output (list object)
-#'@export 
 plot_spectrum.spectral_spews_list <- function(obj, 
                                               along = NULL) { 
   data_as_df <- as.data.frame(obj)
@@ -193,7 +172,6 @@ plot_spectrum.spectral_spews_list <- function(obj,
 }
 
 # Method for spectral_spews output (single object)
-#'@export 
 plot_spectrum.spectral_spews_single <- function(obj) { 
   data_as_df <- as.data.frame(obj)
   plot_spectrum.spectral_spews_test(data_as_df, display_null = FALSE)

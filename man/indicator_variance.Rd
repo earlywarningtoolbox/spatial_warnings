@@ -36,8 +36,8 @@ A list (or a list of list if input was a list of matrices) with
                       in the null distribution.
     }
 
-data(B)
-indicator_variance(B)
+data(forestdat)
+indicator_variance(forestdat[['matrices']])
 }
 \description{
 This functions computes the spatial variance critical point indicator. 

@@ -46,8 +46,8 @@ This functions computes the skewness critical point indicator.
 }
 \examples{
 
-data(B)
-indicator_skewness(B)
+data(arid)
+indicator_skewness(arid)
 
 
 }

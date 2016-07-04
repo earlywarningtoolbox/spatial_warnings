@@ -18,7 +18,7 @@ indictest.generic_spews_single <- function(obj, null_replicates = 999, ...) {
                                              nreplicates = null_replicates, 
                                              indicf = obj[["indicf"]])
   
-  results <- as.data.frame(null_values) 
+  results <- as.data.frame(null_values)
   
   # Format output. Note that we always add a "replicate" column even if there 
   # is only one so code works on both

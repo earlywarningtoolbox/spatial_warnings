@@ -25,7 +25,9 @@
 #'   if mat is a single matrix or an object of class \code{generic_spews_list} 
 #'   if mat is list.
 #' 
-#' @details The Generic Early warning signal are based on the property of a 
+#' @details 
+#' 
+#' The Generic Early warning signal are based on the property of a 
 #'   dynamical system to "slow down" when approaching a critical point, 
 #'   that is take more time to return to equilibrium after a perturbation. This 
 #'   is expected to be reflected in several spatial characteristics: the 
@@ -37,7 +39,7 @@
 #'   This process reduces the matrix by averaging the nearby cells using 
 #'   a square window defined by the \code{subsize} parameter. This helps 
 #'   removing artefactual trends in variance and skewness due to binary (1/0) 
-#'   data. 
+#'   data but is completely optional when using continous data.
 #'   
 #' @references 
 #'   Dakos, V., van Nes, E. H., Donangelo, R., Fort, H., & 
@@ -47,25 +49,25 @@
 #'   Guttal, V., & Jayaprakash, C. (2008). Spatial variance and spatial 
 #'   skewness: leading indicators of regime shifts in spatial ecological 
 #'   systems. Theoretical Ecology, 2(1), 3–12. 
-#'
-#' @seealso \code{\link{indicator_moran}}, \code{\link{indicator_variance}} and 
+#' 
+#' @seealso 
+#'   \code{\link{indicator_moran}}, \code{\link{indicator_variance}} and 
 #'   \code{\link{indicator_skewness}} for individual indicators. 
 #'   \code{\link{indictest}} to assess the significance of indicator values.
 #'
-#' # An example using a list of matrices
+#' @examples
 #' 
+#' # An example using a list of matrices
 #' data(forestdat)
-#' gen_indic <- generic_spews(forestdat[['matrices']], 
-#'                            subsize = 2)
+#' gen_indic <- generic_spews(forestdat[['matrices']], subsize = 2)
 #' 
 #' # Display results
-#' print(gen_indic)
 #' summary(gen_indic)
 #' 
 #' # Display trends along the varying model parameter
-#' plot(gen_indic, along = forestdat[['parameters']][ ,'delta])
+#' plot(gen_indic, along = forestdat[['parameters']][ ,'delta'])
 #' 
-#'@export
+#' @export
 generic_spews <- function(mat, 
                           subsize = 4,
                           detrend = FALSE,

@@ -41,7 +41,20 @@ Before computing the actual indicators, the matrix can be "coarse-grained".
   This process reduces the matrix by averaging the nearby cells using 
   a square window defined by the \code{subsize} parameter. This helps 
   removing artefactual trends in variance and skewness due to binary (1/0) 
-  data.
+  data but is completely optional when using continous data.
+}
+\examples{
+
+# An example using a list of matrices
+data(forestdat)
+gen_indic <- generic_spews(forestdat[['matrices']], subsize = 2)
+
+# Display results
+summary(gen_indic)
+
+# Display trends along the varying model parameter
+plot(gen_indic, along = forestdat[['parameters']][ ,'delta'])
+
 }
 \references{
 Dakos, V., van Nes, E. H., Donangelo, R., Fort, H., & 
@@ -56,18 +69,5 @@ Dakos, V., van Nes, E. H., Donangelo, R., Fort, H., &
 \code{\link{indicator_moran}}, \code{\link{indicator_variance}} and 
   \code{\link{indicator_skewness}} for individual indicators. 
   \code{\link{indictest}} to assess the significance of indicator values.
-
-# An example using a list of matrices
-
-data(forestdat)
-gen_indic <- generic_spews(forestdat[['matrices']], 
-                           subsize = 2)
-
-# Display results
-print(gen_indic)
-summary(gen_indic)
-
-# Display trends along the varying model parameter
-plot(gen_indic, along = forestdat[['parameters']][ ,'delta])
 }
 

@@ -14,11 +14,11 @@ plot.generic_spews(obj, along = NULL)
 will be plotted.}
 }
 \description{
-Plot function for generic early warning signals
+Plot generic early warning signals trends
 }
 \details{
-A ggplot object (usually displayed immediatelly when called at the 
-  prompt).
+A ggplot object (usually displayed immediately when plot() is 
+  called interactively).
 
 Since this function returns a ggplot object, it can be later 
   modified to add other graphical elements (e.g. axis names or annotations).
@@ -26,5 +26,18 @@ Since this function returns a ggplot object, it can be later
 \seealso{
 \code{\link{generic_spews}}, 
   \code{\link{plot.generic_spews_test}}
+
+ @examples
+ data(forestdat)
+ 
+ genindic <- generic_spews(forestdat[['matrices']])
+ plot(genindic, along = forestdat[['parameters']][ ,'delta']) 
+ 
+ # The plot can be modified using ggplot functions
+ if ( require(ggplot2) ) { 
+   plot(genindic, along = forestdat[['parameters']][ ,'delta']) + 
+     xlab('delta') + 
+     theme_minimal() 
+ }
 }
 

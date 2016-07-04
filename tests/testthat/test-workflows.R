@@ -24,8 +24,8 @@ test_that("The Generic-spews workflow works", {
         
         print.generic_spews(gensp)        
         summary.generic_spews(gensp)      
-        as.data.frame(gensp) -> null
-        as.data.frame(gensp) -> null
+        as.data.frame(gensp) 
+        as.data.frame(gensp) 
         
         
         gensp.test <- indictest(gensp)
@@ -45,6 +45,56 @@ test_that("The Generic-spews workflow works", {
     # Return true 
     TRUE})
         
+  }
+  
+})
+
+
+test_that("The Spectral-spews workflow works", { 
+  
+    
+    data(forestdat)
+    data(arid)
+    
+    datasets <- list(forestdat[['matrices']], arid, 
+                     forestdat[['matrices']][[1]], arid[[1]])
+    
+    for ( dataset in datasets ) { 
+      
+    expect_true({
+      capture.output({
+        
+        specsp <- spectral_spews(dataset) 
+        
+        print.spectral_spews(specsp)        
+        
+        if ( ! is.matrix(dataset) ) { 
+          summary.spectral_spews_list(specsp)      
+          as.data.frame.spectral_spews_list(specsp) 
+        } else { 
+          summary.spectral_spews_single(specsp)      
+          as.data.frame.spectral_spews_single(specsp) 
+        }
+        
+        
+        specsp.test <- indictest(specsp)
+        
+        print.spectral_spews_test(specsp.test)        
+        
+        # Missing functions !
+        # summary.spectral_spews_test(specsp.test)      
+        # as.data.frame.spectral_spews_test(specsp.test)
+        print('NOTE: 2 methods missing')
+        
+        if ( ! is.matrix(dataset) ) { 
+          plot.spectral_spews_test(specsp.test)  
+        }
+        
+      })
+    
+    # Return true 
+    TRUE})
+    
   }
   
 })

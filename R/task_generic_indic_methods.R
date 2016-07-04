@@ -16,7 +16,7 @@
 # 
 #' @title Generic spatial warning signals: plotting function
 #' 
-#' @description Plot function for generic early warning signals
+#' @description Plot generic early warning signals trends
 #' 
 #' @param obj A \code{generic_spews} object (as provided by the 
 #'   \code{generic_spews} function). 
@@ -24,16 +24,29 @@
 #' @param along A vector providing values over which the indicator trend 
 #'   will be plotted. 
 #' 
-#' @details A ggplot object (usually displayed immediatelly when called at the 
-#'   prompt). 
+#' @details A ggplot object (usually displayed immediately when plot() is 
+#'   called interactively). 
 #' 
 #' @details Since this function returns a ggplot object, it can be later 
 #'   modified to add other graphical elements (e.g. axis names or annotations). 
 #' 
 #' @seealso \code{\link{generic_spews}}, 
 #'   \code{\link{plot.generic_spews_test}}
-# 
-#'@export
+#' 
+#'  @examples
+#'  data(forestdat)
+#'  
+#'  genindic <- generic_spews(forestdat[['matrices']])
+#'  plot(genindic, along = forestdat[['parameters']][ ,'delta']) 
+#'  
+#'  # The plot can be modified using ggplot functions
+#'  if ( require(ggplot2) ) { 
+#'    plot(genindic, along = forestdat[['parameters']][ ,'delta']) + 
+#'      xlab('delta') + 
+#'      theme_minimal() 
+#'  }
+#' 
+#' @export
 plot.generic_spews <- function(obj, along = NULL) { 
   if ( 'generic_spews_single' %in% class(obj) ) { 
     stop('I cannot plot a trend with only one value !')

@@ -4,7 +4,8 @@
 \alias{spectral_spews}
 \title{Spectrum-based spatial early-warning signals.}
 \usage{
-spectral_spews(input, sdr_low_range = NULL, sdr_high_range = NULL)
+spectral_spews(input, sdr_low_range = NULL, sdr_high_range = NULL,
+  quiet = FALSE)
 }
 \arguments{
 \item{input}{The input matrix or a list of matrices.}
@@ -13,6 +14,8 @@ spectral_spews(input, sdr_low_range = NULL, sdr_high_range = NULL)
 use for the computation of the spectral density ratio (default: lower and 
 higher 20%). For example, for the lowest 20%, set sdr_low_range to 
 c(0, .2). See also the Details section.}
+
+\item{quiet}{Do not display some warnings}
 }
 \value{
 An object of class \code{spectral_spews_list} or 

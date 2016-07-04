@@ -19,6 +19,8 @@
 #'   higher 20%). For example, for the lowest 20%, set sdr_low_range to 
 #'   c(0, .2). See also the Details section. 
 #' 
+#' @param quiet Do not display some warnings
+#' 
 #' @return An object of class \code{spectral_spews_list} or 
 #'   \code{spectral_spews_single} depending on whether the input was a list of 
 #'   matrices or a single matrix. 
@@ -66,21 +68,22 @@
 #' @export
 spectral_spews <- function(input, 
                            sdr_low_range  = NULL, 
-                           sdr_high_range = NULL) { 
+                           sdr_high_range = NULL, 
+                           quiet = FALSE) { 
   
   # Check if input is suitable
   check_mat(input)
   
   orig_input <- input # Save original data for null models later
   
-  if ( is.null(sdr_low_range) ) { 
+  if ( !quiet && is.null(sdr_low_range) ) { 
     warning("Choosing the 20% lowest frequencies for spectral density ratio ",
             "as none was specified. Use parameter sdr_low_range to choose ", 
             "a different value.")
     sdr_low_range <- c(0, .2)
   }
   
-  if ( is.null(sdr_high_range) ) { 
+  if ( !quiet && is.null(sdr_high_range) ) { 
     warning("Choosing the 20% highest frequencies for spectral density ratio ",
             "as none was specified. Use parameter sdr_high_range to choose ", 
             "a different value.")
@@ -89,14 +92,14 @@ spectral_spews <- function(input,
   
   # Handle list case
   if ( is.list(input) ) { 
-    results <- lapply(input, spectral_spews, sdr_low_range, sdr_high_range)
+    results <- lapply(input, spectral_spews, sdr_low_range, sdr_high_range, quiet)
     class(results) <- c('spectral_spews_list', 'spews_result', 'list')
     return(results)
   }
   
   # Now the input is always a matrix -> process it
   # Check and warn if not square
-  if ( nrow(input) != ncol(input) ) { 
+  if ( !quiet && nrow(input) != ncol(input) ) { 
     warning('The matrix is not square: only a squared subset in the left part ', 
             'will be used.')
     mindim <- min(dim(input))

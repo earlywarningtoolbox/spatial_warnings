@@ -1,5 +1,5 @@
 # 
-#' @title Plot method for Spectral Density Ratio (SDR)
+#' @title Spectral spatial early-warning signals: SDR plotting function
 #' 
 #' @description This method reads the Spectral Density Ratio (SDR) values 
 #'   produced by \code{\link{indictest}} and plots the trend with null values. 
@@ -10,16 +10,25 @@
 #'   displayed. The length of the vector must be equal to the number of 
 #'   indicator values provided in the object \code{obj}.
 #' 
-#' @param what The value to plot on the y-axis. It defaults to the SDR value 
-#'   but alternative values can be \code{'z_score'} or \code{'pval'}. 
+#' @param what The trendline to be displayed. Defaults to the indicator's 
+#'   values ("value") but other metrics can be displayed. Correct values are 
+#'   "value", "pval" or "z_score".
 #' 
-#' @param display_null Whether to display the null-distribution ribbon
+#' @param display_null Chooses whether a grey ribbon should be added to reflect
+#'   the null distribution. Note that it can not be displayed when the trend 
+#'   line reflects something else than the indicator values (when \code{what} 
+#'   is not set to "value").
 #' 
+#' @return A ggplot object (usually displayed immediately when plot() is 
+#'   called interactively). 
+#' 
+#' @details Since this function returns a ggplot object, it can be later 
+#'   modified to add other graphical elements (e.g. axis names or annotations). 
 #' 
 #' @examples
 #' 
 #' data(forestdat)
-#' sdr_test <- indictest(spectral_spews(forestdat[['matrices']]))
+#' sdr_test <- indictest( spectral_spews(forestdat[['matrices']]) )
 #' plot(sdr_test)
 #' 
 #' # Display the z_score along the vector of parameter values
@@ -27,6 +36,12 @@
 #'      along = forestdat[['parameters']][ ,'delta'], 
 #'      what = 'z_score')
 #' 
+#' if ( require(ggplot2) ) { 
+#'   plot(sdr_test, along = forestdat[['parameters']][ ,'delta']) + 
+#'     xlab('delta') +  
+#'     theme_minimal() 
+#' }
+
 #'@export
 plot.spectral_spews_test <- function(obj, # an indictest object
                                      along = NULL, 

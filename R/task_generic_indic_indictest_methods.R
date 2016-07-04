@@ -10,7 +10,52 @@
 # Plot method
 # --------------------------------------------------
 
-#'@export
+# 
+#' @title Generic spatial early-warning signals: plotting function
+#' 
+#' @description Plot generic early warning signals trends (with null 
+#'   distributions)
+#' 
+#' @param obj A \code{generic_spews} object (as provided by the 
+#'   \code{generic_spews} function). 
+#' 
+#' @param along A vector providing values over which the indicator trend 
+#'   will be plotted. 
+#' 
+#' @param what The trendline to be displayed. Defaults to the indicator's 
+#'   values ("value") but other metrics can be displayed. Correct values are 
+#'   "value", "pval" or "z_score".
+#' 
+#' @param display_null Chooses whether a grey ribbon should be added to reflect
+#'   the null distribution. Note that it can not be displayed when the trend 
+#'   line reflects something else than the indicator values (when \code{what} 
+#'   is not set to "value").
+#' 
+#' @param ... Ignored.
+#' 
+#' @return A ggplot object (usually displayed immediately when plot() is 
+#'   called interactively). 
+#' 
+#' @details Since this function returns a ggplot object, it can be later 
+#'   modified to add other graphical elements (e.g. axis names or annotations). 
+#' 
+#' @seealso \code{\link{generic_spews}}
+#' 
+#' @examples
+#' 
+#' data(forestdat)
+#' 
+#' genindic <- indictest(generic_spews(forestdat[['matrices']]))
+#' plot(genindic, along = forestdat[['parameters']][ ,'delta']) 
+#' 
+#' # The plot can be modified using ggplot functions
+#' if ( require(ggplot2) ) { 
+#'   plot(genindic, along = forestdat[['parameters']][ ,'delta']) + 
+#'     xlab('delta') + 
+#'     theme_minimal() 
+#' }
+#' 
+#' @export
 plot.generic_spews_test <- function(obj, 
                                     along = NULL, 
                                     what = 'value',

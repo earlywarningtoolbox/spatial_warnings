@@ -2,7 +2,7 @@
 % Please edit documentation in R/task_generic_indic.R
 \name{generic_spews}
 \alias{generic_spews}
-\title{Generic spatial warning signals}
+\title{Generic Spatial Early-Warnings}
 \usage{
 generic_spews(mat, subsize = 4, detrend = FALSE,
   moranI_coarse_grain = FALSE)
@@ -41,7 +41,9 @@ Before computing the actual indicators, the matrix can be "coarse-grained".
   This process reduces the matrix by averaging the nearby cells using 
   a square window defined by the \code{subsize} parameter. This helps 
   removing artefactual trends in variance and skewness due to binary (1/0) 
-  data but is completely optional when using continous data.
+  data but is completely optional when using continous data. Keep in mind 
+  that it effectively reduces the size of the matrix by \code{subsize} on 
+  each dimension.
 }
 \examples{
 

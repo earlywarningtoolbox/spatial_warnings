@@ -5,7 +5,7 @@
 # 
 
 
-#' @title Generic spatial warning signals
+#' @title Generic Spatial Early-Warnings
 #' 
 #' @description Computation of spatial generic early warning signals (Moran's I,
 #'   variance and skewness)
@@ -39,7 +39,9 @@
 #'   This process reduces the matrix by averaging the nearby cells using 
 #'   a square window defined by the \code{subsize} parameter. This helps 
 #'   removing artefactual trends in variance and skewness due to binary (1/0) 
-#'   data but is completely optional when using continous data.
+#'   data but is completely optional when using continous data. Keep in mind 
+#'   that it effectively reduces the size of the matrix by \code{subsize} on 
+#'   each dimension.
 #'   
 #' @references 
 #'   Dakos, V., van Nes, E. H., Donangelo, R., Fort, H., & 

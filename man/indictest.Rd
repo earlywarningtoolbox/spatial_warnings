@@ -21,14 +21,18 @@ An object of class \code{*_spews_test} depending on the input object
 Assess the significance of spatial early-warning values
 }
 \details{
-This function implements the methods described in Kéfi et al. 
-  (2014) that suggest randomizing the spatial matrix to compute a null 
-  distribution. The observed values of indicators are tested against 
-  this distribution to obtain p-values.
+The significance of many early-warning signals can be estimated by 
+  reshuffling the original matrix. Indicators are then recomputed 
+  on the shuffled matrices and the values obtained are used as a null 
+  distribution. P-values are obtained based on the rank of the observered
+  value in the null distribution.
 }
 \references{
 Kéfi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 
   V.N., et al. (2014). Early Warning Signals of Ecological Transitions: 
   Methods for Spatial Patterns. PLoS ONE, 9, e92097
+}
+\seealso{
+\code{\link{generic_spews}}, \code{\link{spectral_spews}}
 }
 

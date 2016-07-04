@@ -5,10 +5,10 @@
 # 
 
 
-#' @title Generic Spatial Early-Warnings
+#' @title Generic Spatial Early-Warning signals
 #' 
-#' @description Computation of spatial generic early warning signals (Moran's I,
-#'   variance and skewness)
+#' @description Computation, significance assesment and display of spatial 
+#'   generic early warning signals (Moran's I, variance and skewness)
 #' 
 #' @param mat A matrix (quantitative data), a binary matrix (qualitative data), 
 #'   or a list of those
@@ -21,9 +21,17 @@
 #' @param moranI_coarse_grain Should the input matrix be coarse-grained before
 #'   computing the Moran's I indicator value ?
 #'   
-#' @return An object of class \code{generic_spews_single} (actually a list) 
-#'   if mat is a single matrix or an object of class \code{generic_spews_list} 
-#'   if mat is list.
+#' @return 
+#' 
+#' \code{generic_spews} returns an object of class \code{generic_spews_single}
+#'   (actually a list) if mat is a single matrix or an object of class 
+#'   \code{generic_spews_list} if mat is a list. 
+#' 
+#' \code{indictest} returns an object of class \code{generic_test} (actually 
+#'   a data.frame). 
+#' 
+#' \code{plot} methods return ggplot objects, usually immediately displayed 
+#'   when used interactively.
 #' 
 #' @details 
 #' 
@@ -43,7 +51,17 @@
 #'   that it effectively reduces the size of the matrix by \code{subsize} on 
 #'   each dimension.
 #'   
+#' The significance of generic early-warning signals can be estimated by 
+#'   reshuffling the original matrix (function \code{indictest}). Indicators 
+#'   are then recomputed on the shuffled matrices and the values obtained are 
+#'   used as a null distribution. P-values are obtained based on the rank of 
+#'   the observered value in the null distribution. 
+#'
 #' @references 
+#'   Kéfi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., 
+#'   Livina, V.N., et al. (2014). Early Warning Signals of Ecological 
+#'   Transitions: Methods for Spatial Patterns. PLoS ONE, 9, e92097.
+#'   
 #'   Dakos, V., van Nes, E. H., Donangelo, R., Fort, H., & 
 #'   Scheffer, M. (2010). Spatial correlation as leading indicator of 
 #'   catastrophic shifts. Theoretical Ecology, 3(3), 163-174.
@@ -51,15 +69,14 @@
 #'   Guttal, V., & Jayaprakash, C. (2008). Spatial variance and spatial 
 #'   skewness: leading indicators of regime shifts in spatial ecological 
 #'   systems. Theoretical Ecology, 2(1), 3–12. 
-#' 
+#'   
+#'
 #' @seealso 
 #'   \code{\link{indicator_moran}}, \code{\link{indicator_variance}} and 
 #'   \code{\link{indicator_skewness}} for individual indicators. 
-#'   \code{\link{indictest}} to assess the significance of indicator values.
 #'
 #' @examples
 #' 
-#' # An example using a list of matrices
 #' data(forestdat)
 #' gen_indic <- generic_spews(forestdat[['matrices']], subsize = 2)
 #' 
@@ -68,6 +85,23 @@
 #' 
 #' # Display trends along the varying model parameter
 #' plot(gen_indic, along = forestdat[['parameters']][ ,'delta'])
+#' 
+#' # Compute significance
+#' gen_test <- indictest(gen_indic)
+#' 
+#' print(gen_test)
+#' 
+#' # Display the trend, now with a grey ribbon indicating the 5%-95% quantile
+#' # range of the null distribution
+#' plot(gen_test, along = forestdat[['parameters']][ ,'delta'])
+#' 
+#' # Note that plot() method returns a ggplot object that can be modified
+#' # for convenience
+#' if ( require(ggplot2) ) { 
+#'   plot(gen_test, along = forestdat[['parameters']][ ,'delta']) + 
+#'     xlab('Delta') + 
+#'     theme_minimal()
+#' }
 #' 
 #' @export
 generic_spews <- function(mat, 

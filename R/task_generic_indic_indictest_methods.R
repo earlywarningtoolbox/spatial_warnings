@@ -13,9 +13,8 @@
 # 
 #' @title Generic spatial early-warning signals: plotting function
 #' 
-#' @description Plot generic early warning signals trends (with null 
-#'   distributions)
-#' 
+#' @rdname generic_spews
+#'
 #' @param obj A \code{generic_spews} object (as provided by the 
 #'   \code{generic_spews} function). 
 #' 
@@ -30,30 +29,6 @@
 #'   the null distribution. Note that it can not be displayed when the trend 
 #'   line reflects something else than the indicator values (when \code{what} 
 #'   is not set to "value").
-#' 
-#' @param ... Ignored.
-#' 
-#' @return A ggplot object (usually displayed immediately when plot() is 
-#'   called interactively). 
-#' 
-#' @details Since this function returns a ggplot object, it can be later 
-#'   modified to add other graphical elements (e.g. axis names or annotations). 
-#' 
-#' @seealso \code{\link{generic_spews}}
-#' 
-#' @examples
-#' 
-#' data(forestdat)
-#' 
-#' genindic <- indictest(generic_spews(forestdat[['matrices']]))
-#' plot(genindic, along = forestdat[['parameters']][ ,'delta']) 
-#' 
-#' # The plot can be modified using ggplot functions
-#' if ( require(ggplot2) ) { 
-#'   plot(genindic, along = forestdat[['parameters']][ ,'delta']) + 
-#'     xlab('delta') + 
-#'     theme_minimal() 
-#' }
 #' 
 #' @export
 plot.generic_spews_test <- function(obj, 
@@ -134,6 +109,7 @@ plot.generic_spews_test <- function(obj,
 
 # as.data.frame methods
 # --------------------------------------------------
+#'@export
 as.data.frame.generic_spews_test <- function(obj) { 
   
   # The list methods actually works pretty well so we do this. However, 

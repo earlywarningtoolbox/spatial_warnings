@@ -3,8 +3,11 @@
 # This file contains common methods to handle spectral_spews objects
 # 
 
-# 
-# as.data.frame methods for spectral_spews objects
+
+
+# As data.frame methods
+# --------------------------------------------------
+
 #'@export
 as.data.frame.spectral_spews_list <- function(x, ...) { 
   
@@ -25,7 +28,7 @@ as.data.frame.spectral_spews_list <- function(x, ...) {
 as.data.frame.spectral_spews_single <- function(x, ...) { 
   
   with(x, 
-    plyr::rbind.fill(data.frame(replicate = 1, 
+    rbind.fill(data.frame(replicate = 1, 
                                 type = 'sdr', 
                                 value = results[['sdr']]), 
                      data.frame(replicate = 1, 
@@ -37,10 +40,13 @@ as.data.frame.spectral_spews_single <- function(x, ...) {
 }
 
 
-# Print methods for spectral_spews objects
-# 
+
+
+# Print methods
+# --------------------------------------------------
+
 #'@export
-print.spectral_spews_list <- function(x, ...) { 
+print.spectral_spews <- function(x, ...) { 
   cat('Spectral Spatial Early-Warnings results\n') 
   cat('\n')
   
@@ -52,14 +58,12 @@ print.spectral_spews_list <- function(x, ...) {
   invisible(x)
 }
 
-#'@export
-print.spectral_spews_single <- function(x, ...) { 
-  print.spectral_spews_list(list(x))
-  invisible(x)
-}
 
 
-# Summary methods for spectral_spews objects
+
+# Summary methods
+# --------------------------------------------------
+
 #'@export
 summary.spectral_spews_list <- function(x, ...) { 
   cat('Spectral Spatial Early-Warnings results\n') 
@@ -97,26 +101,3 @@ summary.spectral_spews_list <- function(x, ...) {
 summary.spectral_spews_single <- function(x, ...) { 
   summary.spectral_spews_list(list(x))
 }
-
-
-#'@export
-print.spectral_spews_test <- function(x) { 
-  cat('Spectral Spatial Early-Warnings results\n') 
-  cat('\n')
-  
-  # Show only SDR and print as data frame
-  x2 <- as.data.frame(x)
-  x2 <- subset(x2, type == 'sdr')[ ,c('replicate', 'value', 'pval')]
-  x2<- data.frame(x2, stars = pval_stars(x2[ ,'pval']))
-  names(x2) <- c('Replicate #', 'SDR Value', 'P>null', '   ')
-  print.data.frame(x2, row.names = FALSE)
-  
-  cat('\n')
-  cat(' Significance tested against', attr(x, 'nreplicates'), 
-      'randomly shuffled matrices\n')
-  cat(" Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1", '\n')
-  cat('\n')
-
-  invisible(x)
-}
-

@@ -26,7 +26,7 @@ patchsizes <- function(x) {
   
   # If there is no patch at all -> return NA
   if ( ! any(x) ) { 
-    return( NA )
+    return( numeric() )
   }
   
   # Actual computation of the indicator begins here

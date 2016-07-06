@@ -56,6 +56,13 @@ reference website for the [early-warnings signals toolbox](http://www.early-warn
 
 ### License
 
+This work has for now a dual license. For the code that was written by the 
+authors, an MIT License is chosen. Some code has been written by Cosma Rohilla 
+Shalizi [http://bactra.org/](http://bactra.org/) and is redistributed in its 
+entirety with the R package as specified in the README file that comes with it.
+
+These licensing questions will be hopefully cleared up soon.
+
 The MIT License (MIT)
 
 Copyright (c) 2015 the authors

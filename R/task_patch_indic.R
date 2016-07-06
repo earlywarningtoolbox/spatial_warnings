@@ -38,9 +38,6 @@
 #   the truncated powerlaw. 
 # 
 
-# Used to return NA when there
-model_nalist <- list(pl = NA, exp = NA, ln = NA, tpl = NA)
-
 #' @export
 patchdistr_spews <- function(x) {
   
@@ -66,6 +63,8 @@ patchdistr_spews <- function(x) {
   psd <- patchsizes(x)
   
   
+  # Used to return NA when there
+  model_nalist <- list(pl = NA, exp = NA, ln = NA, tpl = NA)
   
   # If there is only one big patch -> return NA early
   if ( length(unique(psd)) <= 2 ) { 

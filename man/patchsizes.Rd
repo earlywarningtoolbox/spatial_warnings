@@ -11,7 +11,8 @@ patchsizes(x)
 }
 \value{
 A vector of patch sizes or a list of vectors if the input was a list
-  of binary matrices.
+  of binary matrices. If input contained no patches (all values to FALSE), 
+  then NA is returned.
 }
 \description{
 Get the distribution of patch sizes

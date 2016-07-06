@@ -5,7 +5,8 @@
 #' @param x A binary matrix or a list of binary matrices.
 #' 
 #' @return A vector of patch sizes or a list of vectors if the input was a list
-#'   of binary matrices.
+#'   of binary matrices. If input contained no patches (all values to FALSE), 
+#'   then NA is returned.
 #' 
 #' @examples
 #' data(forestdat)
@@ -21,6 +22,11 @@ patchsizes <- function(x) {
   
   if ( is.list(x)) { 
     return( lapply(x, patchsizes) )
+  }
+  
+  # If there is no patch at all -> return NA
+  if ( ! any(x) ) { 
+    return( NA )
   }
   
   # Actual computation of the indicator begins here

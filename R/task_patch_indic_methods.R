@@ -102,17 +102,20 @@ plot_distr.patchdistr_spews_list <- function(obj, all.models = TRUE) {
 #'@export
 predict.patchdistr_spews_single <- function(obj, all.models = TRUE) { 
   
+  
   if ( obj[['best']] == 'none' ) { 
     warning('Cannot predict values with no model fit: returning NA')
     na_dat <- data.frame(x = NA, y = NA)
     return( list(obs = na_dat, pred = na_dat) )
   }
+  
   # Get observed values
   vals_obs <- plot(obj[['models']][[1]], draw = FALSE)
   
   # Predict values
   vals_pred <- Map(function(n, dat) { 
-                          data.frame(model = n, lines(dat, draw = FALSE)) 
+                          data.frame(model = n, 
+                                     get_predicted_vals(dat, vals_obs)) 
                         }, 
                         names(obj[['models']]), obj[["models"]])
   vals_pred <- do.call(rbind, vals_pred)
@@ -149,3 +152,26 @@ predict.patchdistr_spews_list <- function(obj, all.models = TRUE) {
   return(dat)
 }
 
+
+
+
+# This helper functions calls the right method in case the fit is 
+#   poweRlaw-based or pli-based
+get_predicted_vals <- function(obj, data) { 
+  
+  get_vals_if_tpl <- function(obj) { 
+    xvals <- round(seq(1, max(data), length.out = 100))
+    yvals <- ppowerexp(xvals, threshold = 1, exponent = obj[['exponent']], 
+                       rate = obj[['rate']], lower.tail = FALSE)
+    data.frame(x = xvals, y = yvals)
+  }
+  
+  # If the fit is poweRlaw-based then we rely on its lines() method, otherwise
+  #   we use ppowerexp from pli
+  result <- wrap(obj, 
+                 function(x) { lines(x, length.out = 100, draw = FALSE) }, # use lines() methods in poweRlaw package
+                 get_vals_if_tpl) # use adequate function from pli
+  
+  # We do an explicit return so the return is not invisible (easier debug)
+  return(result) 
+}

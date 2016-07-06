@@ -12,8 +12,13 @@ test_that("The Generic-spews workflow works", {
     data(forestdat)
     data(arid)
     
-    datasets <- list(forestdat[['matrices']], arid, 
-                     forestdat[['matrices']][[1]], arid[[1]])
+    fast <- TRUE
+    if (fast) { 
+      datasets <- list(forestdat[['matrices']], arid, 
+                      forestdat[['matrices']][[1]], arid[[1]])
+    } else { 
+      datasets <- list(forestdat[['matrices']], arid[[1]])
+    }
     
     for ( dataset in datasets ) { 
       

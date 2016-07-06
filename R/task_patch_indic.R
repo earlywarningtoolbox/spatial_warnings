@@ -31,13 +31,15 @@
 # A WORD ON IMPLEMENTATION DETAILS
 # 
 # This function tests several distributions fits and chooses what is best 
-#   according to maximum likelihood. So far it does not do proper ll-ratio 
+#   according to AIC So far it does not do proper ll-ratio 
 #   tests but just considers the distribution with best likelihood. 
 # 
 # The poweRlaw package provides ML-fitting for all of these functions except 
 #   the truncated powerlaw. 
 # 
 
+# Used to return NA when there
+model_nalist <- list(pl = NA, exp = NA, ln = NA, tpl = NA)
 
 #' @export
 patchdistr_spews <- function(x) {
@@ -62,16 +64,14 @@ patchdistr_spews <- function(x) {
   
   # Get patch size distribution
   psd <- patchsizes(x)
-
+  
   
   
   # If there is only one big patch -> return NA early
   if ( length(unique(psd)) <= 2 ) { 
     warning('Not enough different patch sizes to fit distribution: returning NA')
-    result <- list(models = list(pl = NA, exp = NA, ln = NA),
-                   likelihoods = list(pl = NA, exp = NA, ln = NA),
-                   xmin = NA,
-                   best = 'none')
+    result <- list(models = model_nalist, likelihoods = model_nalist,
+                   aics = model_nalist, best = 'none')
     class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 
                        'spews_result', 'list')
     return(result)
@@ -81,43 +81,53 @@ patchdistr_spews <- function(x) {
   
   # We first fit a powerlaw. We do not provide an xmin: it will be 
   #   estimated
-  pl_model <- estimate_dist_params(psd, poweRlaw::displ, xmin = NULL)
-  
-  # Retrieve xmin from the estimation
-  xmin <- pl_model$getXmin()
+  pl_model <- estimate_dist_params(psd, poweRlaw::displ)
   
   # Now fit an exponential and a lognormal
-  exp_model <- estimate_dist_params(psd, poweRlaw::disexp,   xmin = xmin)
-  ln_model  <- estimate_dist_params(psd, poweRlaw::dislnorm, xmin = xmin)
+  exp_model <- estimate_dist_params(psd, poweRlaw::disexp)
+  ln_model  <- estimate_dist_params(psd, poweRlaw::dislnorm)
+  
+  # Now we fit an truncated powerlaw using pli source code
+  tpl_model <- powerexp.fit(psd, threshold = 1) # xmin
   
   # Format results
-  models <- list(pl = pl_model, exp = exp_model, ln = ln_model)
-  likelihoods <- lapply(models, poweRlaw::dist_ll)
-  best <- names(models)[unlist(likelihoods) == max(unlist(likelihoods))]
+  models <- list(pl = pl_model, exp = exp_model, ln = ln_model, tpl = tpl_model)
+  
+  likelihoods <- lapply(models, wrap, dist_ll, function(x) { x[['loglike']]})
+  no_parms <- lapply(models, wrap, 
+                      function(x) x$no_pars, 
+                      function(x) 2) # a tpl always has 2 params
+  
+  aics <- Map(function(ll,k) 2*k - 2 * ll, likelihoods, no_parms)
+  
+  best <- names(models)[unlist(aics) == min(unlist(aics))]
   
   # Return 
-  result <- list(models = models, likelihoods = likelihoods, best = best, 
-                 xmin = xmin)
+  result <- list(models = models, likelihoods = likelihoods, 
+                 aics = aics, best = best)
   class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 
                       'spews_result', 'list')
   return(result)
-  
 }
 
 
-estimate_dist_params <- function(distrib_vec, disttype, xmin = NULL) { 
+estimate_dist_params <- function(distrib_vec, disttype) { 
   dist <- disttype$new(distrib_vec)
+  dist$setXmin(1)
   
-  # Set xmin if unspecified
-  if ( is.null(xmin) ) { 
-    xmin <- poweRlaw::estimate_xmin(dist)
-  }  
-  dist$setXmin(xmin)
-  
-  # Estimate PL parms
+  # Estimate parms
   parms_estimate <- poweRlaw::estimate_pars(dist)
   dist$setPars(parms_estimate$pars)
   
   dist
 }
 
+# We have to types of data that include distributions: we need to apply the 
+# right function to each of them so here is a generic wrapper
+wrap <- function(obj, powerLawf, plif) { 
+  if ( class(obj) %in% c('displ', 'disexp', 'dislnorm') ) { 
+    return( powerLawf(obj) )
+  } else { 
+    return( plif(obj) )
+  }
+}

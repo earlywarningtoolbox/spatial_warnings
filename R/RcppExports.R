@@ -5,6 +5,10 @@
     .Call('spatialwarnings_coarse_grain', PACKAGE = 'spatialwarnings', mat, subsize)
 }
 
+discpowerexp_norm <- function(expo, rate, xmin) {
+    .Call('spatialwarnings_discpowerexp_norm', PACKAGE = 'spatialwarnings', expo, rate, xmin)
+}
+
 .get_nb_coords <- function(mat, X, nbmask, wrap) {
     .Call('spatialwarnings_get_nb_coords', PACKAGE = 'spatialwarnings', mat, X, nbmask, wrap)
 }
@@ -31,5 +35,9 @@ raw_moran <- function(mat) {
 
 rspectrum <- function(rmat) {
     .Call('spatialwarnings_rspectrum', PACKAGE = 'spatialwarnings', rmat)
+}
+
+sum_all_one_over_k_before <- function(n, expo) {
+    .Call('spatialwarnings_sum_all_one_over_k_before', PACKAGE = 'spatialwarnings', n, expo)
 }
 

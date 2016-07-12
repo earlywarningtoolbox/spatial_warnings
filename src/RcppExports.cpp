@@ -18,6 +18,19 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// discpowerexp_norm
+double discpowerexp_norm(double expo, double rate, int xmin);
+RcppExport SEXP spatialwarnings_discpowerexp_norm(SEXP expoSEXP, SEXP rateSEXP, SEXP xminSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< double >::type expo(expoSEXP);
+    Rcpp::traits::input_parameter< double >::type rate(rateSEXP);
+    Rcpp::traits::input_parameter< int >::type xmin(xminSEXP);
+    __result = Rcpp::wrap(discpowerexp_norm(expo, rate, xmin));
+    return __result;
+END_RCPP
+}
 // get_nb_coords
 IntegerMatrix get_nb_coords(IntegerMatrix mat, IntegerVector X, IntegerMatrix nbmask, bool wrap);
 RcppExport SEXP spatialwarnings_get_nb_coords(SEXP matSEXP, SEXP XSEXP, SEXP nbmaskSEXP, SEXP wrapSEXP) {
@@ -78,6 +91,18 @@ BEGIN_RCPP
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< NumericMatrix >::type rmat(rmatSEXP);
     __result = Rcpp::wrap(rspectrum(rmat));
+    return __result;
+END_RCPP
+}
+// sum_all_one_over_k_before
+double sum_all_one_over_k_before(int n, double expo);
+RcppExport SEXP spatialwarnings_sum_all_one_over_k_before(SEXP nSEXP, SEXP expoSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< double >::type expo(expoSEXP);
+    __result = Rcpp::wrap(sum_all_one_over_k_before(n, expo));
     return __result;
 END_RCPP
 }

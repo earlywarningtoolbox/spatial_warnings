@@ -40,3 +40,11 @@ patchsizes <- function(x) {
   return(patchvec)
 }
 
+# Get the higher tail cumulative distribution of something (P(x >= k))
+cumpsd <- function(dat) { 
+  x <- sort(unique(dat))
+  N <- length(dat)
+  y <- sapply(x, function(k) { sum(dat >= k) / N })
+  return( data.frame(x = x, y = y) )
+}
+

@@ -29,7 +29,7 @@
 # Location of the external program calculating the normalizing constant
 ### EDIT THE FILE LOCATION TO GIVE CORRECT PATH ON YOUR SYSTEM!
 # invoked by discpowerexp.norm, below
-discpowerexp.filename <- "~/bin/discpowerexp"
+discpowerexp.filename <- './testthat/pli-R-v0.0.3-2007-07-25/discpowerexp'
 
 
 

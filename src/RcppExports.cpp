@@ -94,6 +94,20 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// tplsum
+double tplsum(double expo, double rate, int from, int to);
+RcppExport SEXP spatialwarnings_tplsum(SEXP expoSEXP, SEXP rateSEXP, SEXP fromSEXP, SEXP toSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< double >::type expo(expoSEXP);
+    Rcpp::traits::input_parameter< double >::type rate(rateSEXP);
+    Rcpp::traits::input_parameter< int >::type from(fromSEXP);
+    Rcpp::traits::input_parameter< int >::type to(toSEXP);
+    __result = Rcpp::wrap(tplsum(expo, rate, from, to));
+    return __result;
+END_RCPP
+}
 // sum_all_one_over_k_before
 double sum_all_one_over_k_before(int n, double expo);
 RcppExport SEXP spatialwarnings_sum_all_one_over_k_before(SEXP nSEXP, SEXP expoSEXP) {

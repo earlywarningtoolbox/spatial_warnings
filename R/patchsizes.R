@@ -45,6 +45,6 @@ cumpsd <- function(dat) {
   x <- sort(unique(dat))
   N <- length(dat)
   y <- sapply(x, function(k) { sum(dat >= k) / N })
-  return( data.frame(x = x, y = y) )
+  return( data.frame(patchsize = x, y = y) )
 }
 

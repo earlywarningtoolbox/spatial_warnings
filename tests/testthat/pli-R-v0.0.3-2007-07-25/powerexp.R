@@ -61,7 +61,7 @@
 
 # Location of external program invoking the GSL for calculating the exponential
 # integral function
-exp_int_function_filename <- "~/bin/exponential_integral"
+exp_int_function_filename <- "./testthat/pli-R-v0.0.3-2007-07-25/exponential-integral/exp_int"
 #### EDIT THIS LOCATION!!!! ###
 
 

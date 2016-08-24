@@ -20,8 +20,8 @@
 #' 
 #' @examples
 #' 
-#' data(B)
-#' indicator_fitpsd(B)
+#' data(arid)
+#' indicator_fitpsd(arid)
 #' 
 # 
 # 
@@ -30,22 +30,18 @@
 # 
 # A WORD ON IMPLEMENTATION DETAILS
 # 
-# This function tests several distributions fits and chooses what is best 
-#   according to AIC So far it does not do proper ll-ratio 
-#   tests but just considers the distribution with best likelihood. 
-# 
-# The poweRlaw package provides ML-fitting for all of these functions except 
-#   the truncated powerlaw. 
+# The poweRlaw package provides ML-fitting for PL + LNORM + EXP but pli 
+#   provides fitting for TPL
 # 
 
 #' @export
-patchdistr_spews <- function(x) {
+patchdistr_spews <- function(x, ...) {
   
   check_mat(x) # Check input matrix
   
   # If input is a list -> apply on each element
   if ( is.list(x)) { # FALSE for x = NULL
-    results <- lapply(x, patchdistr_spews) 
+    results <- llply(x, patchdistr_spews, ...) 
     class(results) <- c('patchdistr_spews_list', 'patchdistr_spews', 
                         'spews_result', 'list')
     return(results)
@@ -54,79 +50,66 @@ patchdistr_spews <- function(x) {
   
   
   # Input needs to be a binary matrix here
-  if ( ! is.binary_matrix(x) ) { 
-    stop('Computing patch-size distributions require a binary matrix: please ', 
-         'convert your data using as.binary_matrix() first.')
+  if ( ! is.logical(x) ) { 
+    stop('Computing patch-size distributions require a logical matrix (TRUE/',
+         'FALSE values): please convert your data first.')
   }
   
   # Get patch size distribution
   psd <- patchsizes(x)
   
-  
   # Used to return NA when there
   model_nalist <- list(pl = NA, exp = NA, ln = NA, tpl = NA)
   
-  # If there is only one big patch -> return NA early
+  # If there are not enough patches to work with -> return NA early
   if ( length(unique(psd)) <= 2 ) { 
     warning('Not enough different patch sizes to fit distribution: returning NA')
-    result <- list(models = model_nalist, likelihoods = model_nalist,
-                   aics = model_nalist, best = 'none')
+    result <- list(models = model_nalist, likelihoods = model_nalist, 
+                   aics = model_nalist, bics = model_nalist)
     class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 
                        'spews_result', 'list')
     return(result)
   }
   
+  # Return object 
+  result <- list(psd_obs = psd, 
+                 psd_shapes = psdtype(psd), 
+                 psd_plfit = "To be implemented")
+  class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 'spews_result', 'list')
   
-  
-  # We first fit a powerlaw. We do not provide an xmin: it will be 
-  #   estimated
-  pl_model <- estimate_dist_params(psd, poweRlaw::displ)
-  
-  # Now fit an exponential and a lognormal
-  exp_model <- estimate_dist_params(psd, poweRlaw::disexp)
-  ln_model  <- estimate_dist_params(psd, poweRlaw::dislnorm)
-  
-  # Now we fit an truncated powerlaw using pli source code
-  tpl_model <- powerexp.fit(psd, threshold = 1) # xmin
-  
-  # Format results
-  models <- list(pl = pl_model, exp = exp_model, ln = ln_model, tpl = tpl_model)
-  
-  likelihoods <- lapply(models, wrap, dist_ll, function(x) { x[['loglike']]})
-  no_parms <- lapply(models, wrap, 
-                      function(x) x$no_pars, 
-                      function(x) 2) # a tpl always has 2 params
-  
-  aics <- Map(function(ll,k) 2*k - 2 * ll, likelihoods, no_parms)
-  
-  best <- names(models)[unlist(aics) == min(unlist(aics))]
-  
-  # Return 
-  result <- list(models = models, likelihoods = likelihoods, 
-                 aics = aics, best = best)
-  class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 
-                      'spews_result', 'list')
   return(result)
 }
 
+psdtype <- function(psd, best_by = "AICc") { 
 
-estimate_dist_params <- function(distrib_vec, disttype) { 
-  dist <- disttype$new(distrib_vec)
-  dist$setXmin(1)
+  # Fit a model for everyone
+  models <- list(pl  =   pl_fit(psd), 
+                 tpl =   tpl_fit(psd), 
+                 exp =   exp_fit(psd), 
+                 lnorm = lnorm_fit(psd)) 
   
-  # Estimate parms
-  parms_estimate <- poweRlaw::estimate_pars(dist)
-  dist$setPars(parms_estimate$pars)
+  models <- lapply(models, as.data.frame)
+  models <- do.call(rbind.fill, models)
+  row.names(models) <- models[ ,'type']
   
-  dist
+  # Compute AICs
+  models[ ,'AIC']  <- get_AIC(models[ ,'ll'],  models[ ,'npars'])
+  models[ ,'AICc'] <- get_AICc(models[ ,'ll'], models[ ,'npars'], length(psd))
+  models[ ,'BICc'] <- get_BIC(models[ ,'ll'],  models[ ,'npars'], length(psd))
+  
+  models[ ,'best'] <- models[ ,best_by] == max(models[ ,best_by])
+  
+  return(models)
 }
 
-# We have to types of data that include distributions: we need to apply the 
-# right function to each of them so here is a generic wrapper
-wrap <- function(obj, powerLawf, plif) { 
-  if ( class(obj) %in% c('displ', 'disexp', 'dislnorm') ) { 
-    return( powerLawf(obj) )
-  } else { 
-    return( plif(obj) )
-  }
+get_AIC <- function(ll, k) { 
+  2*k - 2*ll 
+}
+
+get_AICc <- function(ll, k, n) { 
+  2*k - 2*ll + (2*k*(k+1))/(n-k-1)
+}
+
+get_BIC <- function(ll, k, n) { 
+  2*k*log(n) - 2*ll 
 }

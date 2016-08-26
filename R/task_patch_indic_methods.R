@@ -4,28 +4,13 @@
 # 
 
 
-#'@export
-as.data.frame.patchdistr_spews_single <- function(obj) { 
-  data.frame(replicate   = 1, 
-             model       = names(obj[['models']]),
-             likelihoods = unlist(obj[['likelihoods']]), 
-             is_best     = names(obj[['models']]) == obj[['best']])
-}
 
-#'@export
-as.data.frame.patchdistr_spews_list <- function(obj) { 
-  # Format data
-  results <- lapply(obj, as.data.frame.patchdistr_spews_single)
-  results <- Map(function(n, df) { df[ ,'replicate'] <- n; df }, 
-                 seq.int(length(results)), results)
-  
-  # Bind it altogether and return
-  do.call(rbind, results)
-}
-
-
-
-
+# Plot methods
+# --------------------------------------------------
+# 
+# Note: plot will display how characteristics change along the gradient. To 
+#   have a plot of distributions, use plot_distr
+# 
 
 #'@export
 plot.patchdistr_spews_list <- function(obj) { 
@@ -80,16 +65,31 @@ plot_distr.patchdistr_spews_list <- function(obj, best_only = FALSE) {
 
 
 
-# Predict methods (retrieve data)
+
+# Predict methods 
+# --------------------------------------------------
+
 #'@export
 predict.patchdistr_spews_single <- function(obj, 
                                             newdata = NULL,
                                             best_only = FALSE) { 
   
-  
   # Get observed values
-#   vals_obs <- plot(obj[['models']][[1]], draw = FALSE)
   vals_obs <- cumpsd(obj[["psd_obs"]])
+  
+  # Shapes table
+  shptbl <- obj[['psd_shapes']]
+  
+  # Bail if no fit carried out. Note that we need to set classes in the 
+  # output pred df otherwise coercion when merging with existing results 
+  # goes wrong (e.g. factor converted to integer)
+  if ( all(is.na(shptbl[ ,'type'])) ) { 
+    result <- list(obs = vals_obs, 
+                   pred = data.frame(type = NA_character_, 
+                                     patchsize = NA_integer_, 
+                                     y = NA_real_))
+    return(result)
+  }
   
   # Create x vector of values
   if ( is.null(newdata) ) { 
@@ -97,9 +97,6 @@ predict.patchdistr_spews_single <- function(obj,
                                   max(obj[["psd_obs"]]), 
                                   length.out = 1000) ) )
   }
-  
-  # Shapes table
-  shptbl <- obj[['psd_shapes']]
   
   if ( best_only ) { 
     shptbl <- shptbl[shptbl[ ,'best'], ]
@@ -148,25 +145,24 @@ predict.patchdistr_spews_list <- function(obj, newdata = NULL, best_only = FALSE
 }
 
 
+# As data.frame methods
+# --------------------------------------------------
 
-
-# This helper functions calls the right method in case the fit is 
-#   poweRlaw-based or pli-based
-get_predicted_vals <- function(obj, data) { 
-  
-  get_vals_if_tpl <- function(obj) { 
-    xvals <- round(seq(1, max(data), length.out = 100))
-    yvals <- ppowerexp(xvals, threshold = 1, exponent = obj[['exponent']], 
-                       rate = obj[['rate']], lower.tail = FALSE)
-    data.frame(x = xvals, y = yvals)
-  }
-  
-  # If the fit is poweRlaw-based then we rely on its lines() method, otherwise
-  #   we use ppowerexp from pli
-  result <- wrap(obj, 
-                 function(x) { lines(x, length.out = 100, draw = FALSE) }, # use lines() methods in poweRlaw package
-                 get_vals_if_tpl) # use adequate function from pli
-  
-  # We do an explicit return so the return is not invisible (easier debug)
-  return(result) 
+#'@export
+as.data.frame.patchdistr_spews_single <- function(obj) { 
+  return(obj[['psd_shapes']])
 }
+
+#'@export
+as.data.frame.patchdistr_spews_list <- function(obj) { 
+  
+  # Format data
+  results <- lapply(obj, as.data.frame.patchdistr_spews_single)
+  results <- Map(function(n, df) { 
+                   data.frame(replicate = n, df) 
+                 }, seq.int(length(results)), results)
+  
+  # Bind it altogether and return df 
+  do.call(rbind, results)
+}
+

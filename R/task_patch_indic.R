@@ -35,7 +35,7 @@
 # 
 
 #' @export
-patchdistr_spews <- function(x, ...) {
+patchdistr_spews <- function(x, best_by = "AIC", ...) {
   
   check_mat(x) # Check input matrix
   
@@ -58,30 +58,28 @@ patchdistr_spews <- function(x, ...) {
   # Get patch size distribution
   psd <- patchsizes(x)
   
-  # Used to return NA when there
-  model_nalist <- list(pl = NA, exp = NA, ln = NA, tpl = NA)
-  
-  # If there are not enough patches to work with -> return NA early
-  if ( length(unique(psd)) <= 2 ) { 
-    warning('Not enough different patch sizes to fit distribution: returning NA')
-    result <- list(models = model_nalist, likelihoods = model_nalist, 
-                   aics = model_nalist, bics = model_nalist)
-    class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 
-                       'spews_result', 'list')
-    return(result)
-  }
-  
   # Return object 
   result <- list(psd_obs = psd, 
-                 psd_shapes = psdtype(psd), 
+                 psd_shapes = psdtype(psd, best_by = best_by), 
                  psd_plfit = "To be implemented")
   class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 'spews_result', 'list')
   
   return(result)
 }
 
-psdtype <- function(psd, best_by = "AICc") { 
-
+psdtype <- function(psd, best_by = "AIC") { 
+  
+  table_names <- c('method', 'type', 'npars', 'AIC', 'AICc', 'BIC', 'best', 
+                'expo', 'rate', 'meanlog', 'sdlog')
+  
+  # If there are not enough patches to work with -> return NA early
+  if ( length(unique(psd)) <= 2 ) { 
+    warning('Not enough different patch sizes to fit distribution: returning NA')
+    NAresult <- as.data.frame(as.list(rep(NA, length(table_names))))
+    colnames(NAresult) <- table_names
+    return(NAresult)
+  }
+  
   # Fit a model for everyone
   models <- list(pl  =   pl_fit(psd), 
                  tpl =   tpl_fit(psd), 
@@ -95,9 +93,11 @@ psdtype <- function(psd, best_by = "AICc") {
   # Compute AICs
   models[ ,'AIC']  <- get_AIC(models[ ,'ll'],  models[ ,'npars'])
   models[ ,'AICc'] <- get_AICc(models[ ,'ll'], models[ ,'npars'], length(psd))
-  models[ ,'BICc'] <- get_BIC(models[ ,'ll'],  models[ ,'npars'], length(psd))
+  models[ ,'BIC'] <- get_BIC(models[ ,'ll'],  models[ ,'npars'], length(psd))
   
-  models[ ,'best'] <- models[ ,best_by] == max(models[ ,best_by])
+  models[ ,'best'] <- models[ ,best_by] == min(models[ ,best_by])
+  # Reorganize columns 
+  models <- models[ ,table_names]
   
   return(models)
 }

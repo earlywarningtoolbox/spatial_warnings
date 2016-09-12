@@ -104,23 +104,7 @@ spectral_spews <- function(mat,
   
   # Check if mat is suitable
   check_mat(mat)
-  
-  orig_input <- mat # Save original data for null models later
-  
-  if ( !quiet && is.null(sdr_low_range) ) { 
-    warning("Choosing the 20% lowest frequencies for spectral density ratio ",
-            "as none was specified. Use parameter sdr_low_range to choose ", 
-            "a different value.")
-    sdr_low_range <- c(0, .2)
-  }
-  
-  if ( !quiet && is.null(sdr_high_range) ) { 
-    warning("Choosing the 20% highest frequencies for spectral density ratio ",
-            "as none was specified. Use parameter sdr_high_range to choose ", 
-            "a different value.")
-    sdr_high_range <- c(.8, 1)
-  }
-  
+      
   # Handle list case
   if ( is.list(mat) ) { 
     results <- lapply(mat, spectral_spews, sdr_low_range, sdr_high_range, quiet)
@@ -128,6 +112,8 @@ spectral_spews <- function(mat,
                         'spews_result', 'list')
     return(results)
   }
+  
+  orig_input <- mat # Save original data for null models later
   
   # Now the mat is always a matrix -> process it
   # Check and warn if not square
@@ -137,24 +123,26 @@ spectral_spews <- function(mat,
     mindim <- min(dim(mat))
     mat <- mat[seq.int(mindim), seq.int(mindim)]
   }
+    
       
   # Compute powerspectrum
   spectrum <- rspectrum(mat)
   
   # Compute SDR
-  maxdist <- max(spectrum[ ,'dist'])
-  low_range_absolute  <- sdr_low_range * maxdist
-  high_range_absolute <- sdr_high_range * maxdist
+  ranges_absolute <- convert_ranges_to_absolute(mat, sdr_low_range, 
+                                                sdr_high_range, quiet)
+  browser()
   sdr_value <- indicator_sdr_do_ratio(spectrum, 
-                                      low_range_absolute, high_range_absolute)
+                                      ranges_absolute[["low"]], 
+                                      ranges_absolute[["high"]])
   
   # Return list containing both
   output <- list(results = list(spectrum = spectrum, 
                                 sdr = sdr_value), 
                  orig_data = orig_input, 
                  call = match.call(), 
-                 sdr_low_range = low_range_absolute, 
-                 sdr_high_range = high_range_absolute)
+                 low_range = ranges_absolute[['low']], 
+                 high_range = ranges_absolute[['high']])
   class(output) <- c('spectral_spews_single', 'spectral_spews', 
                      'spews_result', 'list')
   return(output)

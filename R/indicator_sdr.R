@@ -7,11 +7,17 @@
 #' 
 #' @param input A matrix or a logical matrix (TRUE/FALSE), or a list of these. 
 #' 
-#' @param low_range A numeric vector of the form \code{c(min, max)} describing the 
-#'   range of values considered as low frequencies
+#' @param sdr_low_range The range of values (in proportion) to 
+#'   use for the computation of the spectral density ratio.
+#'   For example, for the lowest 20% (default value), set sdr_low_range to 
+#'   c(0, .2).
+#'  
+#' @param sdr_high_range The range of values (in proportion) to 
+#'   use for the computation of the spectral density ratio. For example, for 
+#'   the higher 20% (default value), set sdr_high_range to 
+#'   c(.8, 1). 
 #' 
-#' @param high_range A numeric vector of the form \code{c(min, max)} describing the 
-#'   range of values considered as high frequencies
+#' @param quiet Disable some warnings
 #' 
 #' @param nreplicates The number of replicates to compute for the null 
 #'   distribution
@@ -20,29 +26,34 @@
 #' 
 #' @references ? Biggs et al. 2008 ? (Vishu suggestion IIRC [Alex])
 #'
-#'
-indicator_sdr <- function(input, low_range, high_range, 
-                          nreplicates = 499) { 
+#' @export
+indicator_sdr <- function(input, 
+                          sdr_low_range  = NULL, 
+                          sdr_high_range = NULL, 
+                          nreplicates = 499, 
+                          quiet = FALSE) { 
   
   check_mat(input) # checks if binary and sensible
   
   if (is.list(input)) {
     # Returns a list of lists
-    return( lapply(input, indicator_sdr, low_range, high_range, nreplicates) )
+    return( llply(input, indicator_sdr, sdr_low_range, sdr_high_range, 
+                   nreplicates, quiet) )
   } 
   
   # Now the input is always a mmatrix
   warn_if_not_square(input)
   
-  if ( any( max(high_range) > dim(input)/2 ) ) { 
-    warning('Your maximum correlation distance is higher than half of the ',
-            'matrix size')
+  ranges_absolute <- convert_ranges_to_absolute(input, sdr_low_range, 
+                                                sdr_high_range, quiet)
+  
+  indicf <- function(mat) { 
+    indicator_sdr_core(mat, ranges_absolute[["low"]], ranges_absolute[["high"]])
   }
   
-  indicf <- function(mat) indicator_sdr_core(mat, low_range, high_range)
-  
   return( 
-    compute_indicator_with_null(input, detrending = FALSE, 
+    compute_indicator_with_null(input, 
+                                detrending = FALSE, 
                                 nreplicates = nreplicates, 
                                 indicf = indicf)
   )
@@ -72,3 +83,30 @@ indicator_sdr_do_ratio <- function(spectrum, low_range, high_range) {
   
 }
 
+# Convert ranges from proportional values to absolute distance values
+convert_ranges_to_absolute <- function(mat, 
+                                       sdr_low_range  = NULL, 
+                                       sdr_high_range = NULL, 
+                                       quiet = FALSE) { 
+  
+  if ( !quiet && is.null(sdr_low_range) ) { 
+    warning("Choosing the 20% lowest frequencies for spectral density ratio ",
+            "as none was specified. Use parameter sdr_low_range to choose ", 
+            "a different value.")
+    sdr_low_range <- c(0, .2)
+  }
+  
+  if ( !quiet && is.null(sdr_high_range) ) { 
+    warning("Choosing the 20% highest frequencies for spectral density ratio ",
+            "as none was specified. Use parameter sdr_high_range to choose ", 
+            "a different value.")
+    sdr_high_range <- c(.8, 1)
+  }
+  
+  maxdist <- 1 + floor(min(dim(mat)) / 2)
+  low_range_absolute  <- sdr_low_range * maxdist
+  high_range_absolute <- sdr_high_range * maxdist
+  
+  return( list(low = low_range_absolute, 
+               high = high_range_absolute) )
+}

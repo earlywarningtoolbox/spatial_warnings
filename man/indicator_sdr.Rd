@@ -4,19 +4,26 @@
 \alias{indicator_sdr}
 \title{Spectral Density Ratio (SDR) indicator}
 \usage{
-indicator_sdr(input, low_range, high_range, nreplicates = 499)
+indicator_sdr(input, sdr_low_range = NULL, sdr_high_range = NULL,
+  nreplicates = 499, quiet = FALSE)
 }
 \arguments{
 \item{input}{A matrix or a logical matrix (TRUE/FALSE), or a list of these.}
 
-\item{low_range}{A numeric vector of the form \code{c(min, max)} describing the 
-range of values considered as low frequencies}
+\item{sdr_low_range}{The range of values (in proportion) to 
+use for the computation of the spectral density ratio.
+For example, for the lowest 20% (default value), set sdr_low_range to 
+c(0, .2).}
 
-\item{high_range}{A numeric vector of the form \code{c(min, max)} describing the 
-range of values considered as high frequencies}
+\item{sdr_high_range}{The range of values (in proportion) to 
+use for the computation of the spectral density ratio. For example, for 
+the higher 20% (default value), set sdr_high_range to 
+c(.8, 1).}
 
 \item{nreplicates}{The number of replicates to compute for the null 
 distribution}
+
+\item{quiet}{Disable some warnings}
 }
 \value{
 A single value containing the SDR value

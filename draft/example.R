@@ -68,6 +68,12 @@ indictest(desert_spews_cont)
 plot(desert_spews_cont)
 
 
+# Note that we can compute each indicator alone if we only need a raw value
+indicator_variance(arid)
+indicator_skewness(arid)
+indicator_moran(arid)
+
+
 
 
 # Compute spectral spatial EWS
@@ -99,6 +105,9 @@ plot_spectrum(desert_spectral_test)
 plot(desert_spectral_test)  
 
 
+# Similarly, we can compute each "indicator" alone
+indicator_sdr(arid)
+rspectrum(arid[[1]])
 
 # Compute patch-based EWS (this is still a WIP so errors might occur)
 # -----------------

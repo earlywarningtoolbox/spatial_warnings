@@ -19,7 +19,8 @@ indictest.spectral_spews <- function(obj, null_replicates = 999, ...) {
 
 # 
 # Indictest functions for spectral_spews objects.
-# 
+#' @method indictest spectral_spews_list
+#' @export
 indictest.spectral_spews_list <- function(obj, null_replicates = 999, ...) { 
   
   # Compute a distribution of null values for SDR
@@ -40,6 +41,8 @@ indictest.spectral_spews_list <- function(obj, null_replicates = 999, ...) {
   return(results)
 }
 
+#' @method indictest spectral_spews_single
+#' @export
 indictest.spectral_spews_single <- function(obj, null_replicates = 999, ...) { 
   
   # Build closure passed to compute_indicator_with_null that uses the correct

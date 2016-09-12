@@ -12,10 +12,10 @@ generic_spews(mat, subsize = 4, detrend = FALSE,
 
 \method{indictest}{generic_spews}(obj, null_replicates = 999, ...)
 
-plot.generic_spews_test(obj, along = NULL, what = "value",
+\method{plot}{generic_spews_test}(obj, along = NULL, what = "value",
   display_null = TRUE, ...)
 
-plot.generic_spews(obj, along = NULL)
+\method{plot}{generic_spews}(obj, along = NULL)
 }
 \arguments{
 \item{mat}{A matrix (quantitative data), a binary matrix (TRUE/FALSE data), 

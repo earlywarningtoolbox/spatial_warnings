@@ -18,7 +18,8 @@
 #'   line reflects something else than the indicator values (when \code{what} 
 #'   is not set to "value").
 #'
-#'@export
+#' @method plot spectral_spews_test
+#' @export
 plot.spectral_spews_test <- function(obj, # an indictest object
                                      along = NULL, 
                                      what = 'value', 
@@ -92,6 +93,7 @@ plot.spectral_spews_test <- function(obj, # an indictest object
 }
 
 #' @export
+#' @method plot spectral_spews_list
 plot.spectral_spews_list <- function(obj, along = NULL) { 
   plot.spectral_spews_test(as.data.frame(obj), 
                            along = along,
@@ -169,7 +171,8 @@ plot_spectrum.spectral_spews_test <- function(obj,
 # Method for spectral_spews output (list object)
 #' @export
 plot_spectrum.spectral_spews_list <- function(obj, 
-                                              along = NULL) { 
+                                              along = NULL, 
+                                              ...) { 
   data_as_df <- as.data.frame(obj)
   plot_spectrum.spectral_spews_test(data_as_df, along = along, 
                                     display_null = FALSE)
@@ -177,7 +180,7 @@ plot_spectrum.spectral_spews_list <- function(obj,
 
 # Method for spectral_spews output (single object)
 #' @export
-plot_spectrum.spectral_spews_single <- function(obj) { 
+plot_spectrum.spectral_spews_single <- function(obj, ...) { 
   data_as_df <- as.data.frame(obj)
   plot_spectrum.spectral_spews_test(data_as_df, display_null = FALSE)
 }

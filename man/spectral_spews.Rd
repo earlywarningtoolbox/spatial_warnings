@@ -12,7 +12,7 @@ spectral_spews(mat, sdr_low_range = NULL, sdr_high_range = NULL,
 
 \method{indictest}{spectral_spews}(obj, null_replicates = 999, ...)
 
-plot.spectral_spews_test(obj, along = NULL, what = "value",
+\method{plot}{spectral_spews_test}(obj, along = NULL, what = "value",
   display_null = TRUE)
 
 plot_spectrum(obj, along = NULL, display_null = TRUE)

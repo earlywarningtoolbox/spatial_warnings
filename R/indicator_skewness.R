@@ -52,8 +52,6 @@ indicator_skewness <- function(input,
                                nreplicates = 999) {
   
   check_mat(input) # checks if binary and sensible
-  # Check whether the matrix looks binary but was not declared as such
-  check_binary_status(input) 
   
   if ( is.list(input) ) {
     # Returns a list of lists

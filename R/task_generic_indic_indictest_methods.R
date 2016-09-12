@@ -30,6 +30,7 @@
 #'   line reflects something else than the indicator values (when \code{what} 
 #'   is not set to "value").
 #' 
+#' @method plot generic_spews_test
 #' @export
 plot.generic_spews_test <- function(obj, 
                                     along = NULL, 
@@ -110,7 +111,7 @@ plot.generic_spews_test <- function(obj,
 # as.data.frame methods
 # --------------------------------------------------
 #'@export
-as.data.frame.generic_spews_test <- function(obj) { 
+as.data.frame.generic_spews_test <- function(obj, ...) { 
   
   # The list methods actually works pretty well so we do this. However, 
   # we define the method instead of relying on automatic dispatch 
@@ -150,7 +151,7 @@ print.generic_spews_test <- function(x) {
   cat('\n')
   cat(' Significance tested against', attr(x, 'nreplicates'), 
       'randomly shuffled matrices\n')
-  cat(" Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1", '\n')
+  cat(" Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1", '\n')
   cat('\n')
 
   invisible(x)
@@ -160,5 +161,6 @@ print.generic_spews_test <- function(x) {
 
 # Summary method
 # --------------------------------------------------
+#'@export
 summary.generic_spews_test <- print.generic_spews_test
 

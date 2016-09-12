@@ -19,7 +19,7 @@ print.spectral_spews_test <- function(x) {
   cat('\n')
   cat(' Significance tested against', attr(x, 'nreplicates'), 
       'randomly shuffled matrices\n')
-  cat(" Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1", '\n')
+  cat(" Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1", '\n')
   cat('\n')
 
   invisible(x)

@@ -35,14 +35,18 @@ A list (or a list of list if input was a list of matrices) with
       \item `pval`: p-value based on the rank of the observed autocorrelation
                       in the null distribution.
     }
-
-data(forestdat)
-indicator_variance(forestdat[['matrices']])
 }
 \description{
 This functions computes the spatial variance critical point indicator. 
   It also computes a null value obtained by randomizing 
   the matrix.
+}
+\examples{
+
+data(forestdat)
+indicator_variance(forestdat[['matrices']])
+
+
 }
 \references{
 Guttal, V., and Jayaprakash, C. (2009). Spatial variance and 

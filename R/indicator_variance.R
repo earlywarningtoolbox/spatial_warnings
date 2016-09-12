@@ -35,6 +35,8 @@
 #'                       in the null distribution.
 #'     }
 #' 
+#' @examples
+#' 
 #' data(forestdat)
 #' indicator_variance(forestdat[['matrices']])
 #' 

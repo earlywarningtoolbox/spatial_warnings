@@ -23,7 +23,7 @@ of skewness ?}
 distribution of index.}
 }
 \value{
-A list (or a list of list if input was a list of matrices) with 
+A list (or a list of lists if input was a list of matrices) with 
   components:
     \itemize{
       \item `mean`: Landscape mean cover

@@ -18,7 +18,7 @@ plot.generic_spews_test(obj, along = NULL, what = "value",
 plot.generic_spews(obj, along = NULL)
 }
 \arguments{
-\item{mat}{A matrix (quantitative data), a binary matrix (qualitative data), 
+\item{mat}{A matrix (quantitative data), a binary matrix (TRUE/FALSE data), 
 or a list of those}
 
 \item{subsize}{The subsize used for the coarse-graining phase (see Details)}
@@ -76,7 +76,7 @@ The Generic Early warning signal are based on the property of a
 Before computing the actual indicators, the matrix can be "coarse-grained". 
   This process reduces the matrix by averaging the nearby cells using 
   a square window defined by the \code{subsize} parameter. This helps 
-  removing artefactual trends in variance and skewness due to binary (1/0) 
+  removing artefactual trends in variance and skewness due to binary (1/0) grazing.results
   data but is completely optional when using continous data. Keep in mind 
   that it effectively reduces the size of the matrix by \code{subsize} on 
   each dimension.

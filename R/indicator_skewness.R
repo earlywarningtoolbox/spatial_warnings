@@ -1,4 +1,4 @@
-#' @title Skewness indicator
+ #' @title Skewness indicator
 #'
 #' @description This functions computes the skewness critical point indicator. 
 #'   It also computes a null value obtained by randomizing 
@@ -22,7 +22,7 @@
 #' @param nreplicates Number of replicates to produce to estimate null 
 #'   distribution of index.
 #' 
-#' @return A list (or a list of list if input was a list of matrices) with 
+#' @return A list (or a list of lists if input was a list of matrices) with 
 #'   components:
 #'     \itemize{
 #'       \item `mean`: Landscape mean cover

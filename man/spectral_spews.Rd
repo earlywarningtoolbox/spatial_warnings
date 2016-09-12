@@ -21,13 +21,13 @@ plot_spectrum(obj, along = NULL, display_null = TRUE)
 \item{mat}{The input matrix or a list of matrices.}
 
 \item{sdr_low_range}{The range of values (in proportion) to 
-use for the computation of the spectral density ratio (default: lower 20\%).
-For example, for the lowest 20%, set sdr_low_range to 
+use for the computation of the spectral density ratio.
+For example, for the lowest 20% (default value), set sdr_low_range to 
 c(0, .2). See also the Details section.}
 
 \item{sdr_high_range}{The range of values (in proportion) to 
-use for the computation of the spectral density ratio (default: higher 
-20\%). For example, for the higher 20%, set sdr_high_range to 
+use for the computation of the spectral density ratio. For example, for 
+the higher 20% (default value), set sdr_high_range to 
 c(.8, 1). See also the Details section.}
 
 \item{quiet}{Do not display some warnings}
@@ -68,20 +68,24 @@ Computation of spatial early warning signals based on spectral
 }
 \details{
 Spectral early warning signals are based on the fact that some dynamical 
-  systems can exhibit an increase in their spatial structure when 
-  approaching a transition (e.g. scale-free patterns).
-  This is expected to be reflected in the spectrum of the spatial structure
-  by an increase in lower frequencies ("reddening" of the spectrum). 
+  systems can exhibit an change in some characteristics of their spatial 
+  structure when approaching a transition. In particular, long-range 
+  correlations are expected to have an increased importance. 
+
+This is expected to be reflected in the spectrum of the spatial structure
+  in the form of an increase of the relative importance of lower 
+  frequencies ("reddening" of the spectrum) over higher frequencies.
   
 This functions allows computing the radial-spectrum which gives the relative 
-  dominance of each scale over as a function of distance, from 1 to 
+  importance of each space scale as a function of distance, from 1 to 
   \code{N/2} (N being the minimum between the number of rows and columns). 
   If the matrix is not square, then it is cropped to biggest square that 
-  fits in the left side of the matrix. 
+  fits within the left side of the matrix. 
 
 Additionally, it summarizes this spectrum into a Spectral 
   Density Ratio (SDR), which is the ratio of low frequencies over 
-  high frequencies of the r-spectrum. 
+  high frequencies of the r-spectrum. The SDR value is expected to increase
+  before a transition point.
 
 The significance of spectral early-warning signals can be estimated by 
   reshuffling the original matrix (function \code{indictest}). Indicators 
@@ -99,11 +103,18 @@ spec_indic <- spectral_spews(forestdat[['matrices']],
 
 summary(spec_indic)
 
-# Display SDR trend
-plot(spec_indic)
+# Display trends along the varying model parameter
+plot(spec_indic, along = forestdat[['parameters']][ ,'delta'])
+
+# Assess significance
+spec_test <- indictest(spec_indic)
+summary(spec_test)
+
+# Display trends, now with a grey 5\%-95\% quantiles of the null distribution
+plot(spec_test, along = forestdat[['parameters']][ ,'delta'])
 
 # Display radial-spectra
-plot_spectrum(spec_indic, along = forestdat[['parameters']][ ,'delta'])
+plot_spectrum(spec_test, along = forestdat[['parameters']][ ,'delta'])
 
 }
 \references{

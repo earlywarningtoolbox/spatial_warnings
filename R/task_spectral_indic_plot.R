@@ -17,7 +17,8 @@
 #'   the null distribution. Note that it can not be displayed when the trend 
 #'   line reflects something else than the indicator values (when \code{what} 
 #'   is not set to "value").
-#' 
+#'
+#'@export
 plot.spectral_spews_test <- function(obj, # an indictest object
                                      along = NULL, 
                                      what = 'value', 
@@ -90,6 +91,7 @@ plot.spectral_spews_test <- function(obj, # an indictest object
   return(plot)
 }
 
+#'@export
 plot.spectral_spews_list <- function(obj, along = NULL) { 
   plot.spectral_spews_test(as.data.frame(obj), 
                            along = along,
@@ -108,12 +110,13 @@ plot.spectral_spews_list <- function(obj, along = NULL) {
 #'
 #' @rdname spectral_spews
 #' 
+#' @export
 plot_spectrum <- function(obj, along = NULL, display_null = TRUE) { 
   UseMethod("plot_spectrum")
 }
 
 # Method for indictest output
-#'@export
+#' @export
 plot_spectrum.spectral_spews_test <- function(obj, 
                                               along = NULL, 
                                               display_null = TRUE) { 
@@ -164,6 +167,7 @@ plot_spectrum.spectral_spews_test <- function(obj,
 }
 
 # Method for spectral_spews output (list object)
+#' @export
 plot_spectrum.spectral_spews_list <- function(obj, 
                                               along = NULL) { 
   data_as_df <- as.data.frame(obj)
@@ -172,6 +176,7 @@ plot_spectrum.spectral_spews_list <- function(obj,
 }
 
 # Method for spectral_spews output (single object)
+#' @export
 plot_spectrum.spectral_spews_single <- function(obj) { 
   data_as_df <- as.data.frame(obj)
   plot_spectrum.spectral_spews_test(data_as_df, display_null = FALSE)

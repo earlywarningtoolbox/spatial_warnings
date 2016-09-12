@@ -4,9 +4,7 @@
 #'@export
 NULL
 
-# @title Check for binary matrix
-# @description A function that checks the arguments passed to the indicator 
-#   functions.
+# A function that checks the arguments passed to the indicator functions.
 #
 check_mat <- function(mat) { 
   
@@ -27,33 +25,23 @@ check_mat <- function(mat) {
   if ( any( is.na(mat) ) ) { 
     stop('NAs in provided matrix.')
   }
-  
-  # Not a *binary* matrix ? 
-  # NOTE: we do not test for this now as functions can accept non-binary
-  #   matrices !
-#   if ( length(table(mat)) > 2 ) { # More than 2 unique elements
-#     warning('The matrix is not binary')
-#   }
-  
+    
   return(TRUE)
 }
 
 check_list <- function(l) { 
   
   # Check that lists all contain the same elements
-  are_matrix <- sapply(l, function(x) is.matrix(x) | is.binary_matrix(x) )
+  are_matrix <- sapply(l, function(x) is.matrix(x) )
   if ( ! all(are_matrix) ) { 
-    stop('The provided list does not contain only matrices or binary_matrices ',
-         'to compute indicators')
+    stop('The provided list does not contain only matrices')
   }
   
   
-  # We select the first class which is either binary_matrix or matrix (if it is 
-  #   just a simple matrix)
-  unique_classes <- unique(as.vector(sapply(l, function(x) class(x)[1])))
-  if ( length(unique_classes) > 1 ) { 
-    warning('The provided list contains matrices and binary matrices: this is ',
-            'likely an error')
+  unique_types <- unique(sapply(l, function(x) typeof(x)))
+  if ( length(unique_types) > 1 ) { 
+    warning('The provided list contains matrices of different data types: this ',
+            'is most likely an error')
   }
   
   # Check if matrices have the same dimension. We compare them sequentially 
@@ -72,22 +60,6 @@ warn_if_not_square <- function(mat) {
             'subset centered around the middle point.')
   } 
 }
-
-check_binary_status <- function(mat) { 
-  
-  N_unique_values <- length(unique(as.vector(mat)))
-  
-  if ( N_unique_values <= 2 && !is.binary_matrix(mat)) { 
-    warning('The matrix looks binary but has not been converted to a ',
-            'binary_matrix object. ', 
-            'This will change the results of the indicator functions and ', 
-            'is likely to be an error. ', 
-            'Please use function as.binary_matrix to convert objects to binary
-            matrices.')
-  }
-  
-}
-
 
 # Check whether some variables are suited to make plots : used in task_generic
 #   and task_spectral spews

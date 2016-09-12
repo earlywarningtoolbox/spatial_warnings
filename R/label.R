@@ -1,5 +1,8 @@
 #' @title Labelling of unique patches.
 #' 
+#' @description Label each patch with a number in a TRUE/FALSE matrix using 
+#'   flood fill algorithm
+#' 
 #' @param mat A binary matrix
 #' 
 #' @param nbmask a "neighboring mask": a matrix with odd dimensions describing

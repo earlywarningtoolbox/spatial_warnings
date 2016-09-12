@@ -7,7 +7,7 @@
 indicator_sdr(input, low_range, high_range, nreplicates = 499)
 }
 \arguments{
-\item{input}{A matrix or a binary_matrix, or a list of these.}
+\item{input}{A matrix or a logical matrix (TRUE/FALSE), or a list of these.}
 
 \item{low_range}{A numeric vector of the form \code{c(min, max)} describing the 
 range of values considered as low frequencies}

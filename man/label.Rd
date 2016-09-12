@@ -21,6 +21,10 @@ effectively using periodic boundaries.}
 A matrix containing ID numbers for each connected patch. Default 
   parameters assume 4-cell neighborhood and periodic boundaries.
 }
+\description{
+Label each patch with a number in a TRUE/FALSE matrix using 
+  flood fill algorithm
+}
 \details{
 This function "labels" the patches of a binary (1/0) matrix. It 
   returns the same matrix, with an integer representing the ID of the 

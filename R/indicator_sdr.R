@@ -5,7 +5,7 @@
 #'   of the r-spectrum. It also computes a null value obtained by 
 #'   randomizing the matrix. 
 #' 
-#' @param input A matrix or a binary_matrix, or a list of these. 
+#' @param input A matrix or a logical matrix (TRUE/FALSE), or a list of these. 
 #' 
 #' @param low_range A numeric vector of the form \code{c(min, max)} describing the 
 #'   range of values considered as low frequencies

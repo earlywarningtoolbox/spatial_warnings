@@ -107,7 +107,11 @@ plot(desert_spectral_test)
 
 # Similarly, we can compute each "indicator" alone
 indicator_sdr(arid)
-rspectrum(arid[[1]])
+rspectrum(arid[[1]]) # not an indicator by itself -> does not accept lists of matrices
+
+
+
+
 
 # Compute patch-based EWS (this is still a WIP so errors might occur)
 # -----------------

@@ -9,6 +9,8 @@ using namespace Rcpp;
 using namespace arma; 
 
 
+//
+//' @export
 // [[Rcpp::export]]
 DataFrame rspectrum(NumericMatrix rmat) { 
   

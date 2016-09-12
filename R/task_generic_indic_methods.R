@@ -18,6 +18,7 @@
 #  
 #' @rdname generic_spews
 #' 
+#' @method plot generic_spews
 #' @export
 plot.generic_spews <- function(obj, along = NULL) { 
   if ( 'generic_spews_single' %in% class(obj) ) { 
@@ -68,7 +69,7 @@ summary.generic_spews <- function(obj) {
 # --------------------------------------------------
 
 #'@export
-as.data.frame.generic_spews_list <- function(x) { 
+as.data.frame.generic_spews_list <- function(x, ...) { 
   
   df <- plyr::ldply(x, function(x) { as.data.frame(x[['results']]) })
   df[ ,'replicate'] <- seq.int(length(x))
@@ -80,7 +81,7 @@ as.data.frame.generic_spews_list <- function(x) {
 }
 
 #'@export
-as.data.frame.generic_spews_single <- function(x) { 
+as.data.frame.generic_spews_single <- function(x, ...) { 
   as.data.frame.generic_spews_list(list(x))
 }
 

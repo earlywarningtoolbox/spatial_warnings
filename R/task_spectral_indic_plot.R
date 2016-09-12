@@ -91,7 +91,7 @@ plot.spectral_spews_test <- function(obj, # an indictest object
   return(plot)
 }
 
-#'@export
+#' @export
 plot.spectral_spews_list <- function(obj, along = NULL) { 
   plot.spectral_spews_test(as.data.frame(obj), 
                            along = along,

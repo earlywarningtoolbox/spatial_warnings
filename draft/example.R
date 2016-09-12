@@ -1,7 +1,6 @@
 # 
 # This file provides an example of use for the spatialwarning package. It will 
-# change and be adapted as the interaction with the spatialwarnings package
-# changes.
+# change and be adapted as the spatialwarnings package changes.
 # 
 
 library(lattice)
@@ -10,9 +9,11 @@ library(lattice)
 # 
 # This requires a working copy of devtools if installing from github.
 library(devtools)
-# install_github('fdschneider/spatial_warnings')
 
-# We now have the package installed: we can load it
+# Set up IISC proxy beforehand if needed
+# Sys.setenv(https_proxy = "proxy.iisc.ernet.in:3128")
+# Sys.setenv(http_proxy  = "proxy.iisc.ernet.in:3128")
+install_github('fdschneider/spatial_warnings')
 library(spatialwarnings) # mind the absence of underscore ! 
 
 # An example dataset is provided with the package: forestdat
@@ -30,9 +31,16 @@ levelplot(matrices[[10]])
 # ... and the parameters used for its simulation
 parameters[10, ]
 
-# Let's compute the generic EWS on the whole dataset and see whether it changes 
-# along the gradient (not only on the last mtx)
-generic_ic <- generic_spews(matrices)
+
+
+
+# Generic indicators
+# -----------------
+
+# Let's compute the generic EWS on the whole forest dataset and see whether 
+# it changes along the gradient (not only on the last mtx)
+# See ?generic_spews for options such as coarse-graining length
+generic_ic <- generic_spews(matrices) 
 plot(generic_ic, along = parameters[ ,'delta']) # increases !
 
 # Now we can assess significance by comparing it to a reshuffled matrix of same
@@ -42,28 +50,22 @@ generic_ic_test # this will print a pretty table
 plot(generic_ic_test, along = parameters[ ,'delta'])
 
 
-
-# Second example with a real dataset
+# Second example with a real dataset. This is a greyscale aerial picture 
 # -----------------
 
-# Let's compute stuff on Sonia's images
-data(desertification)
-levelplot(desertification, 
+# Let's plot first the data
+data(arid)
+levelplot(arid[[1]], 
           col.regions = colorRampPalette(c('#FFF299', '#37A42C'))(20))
 
-# Classify into 0/1
-desertification <- as.binary_matrix( desertification > median(desertification) ) 
-levelplot(desertification, 
-          col.regions = colorRampPalette(c('#FFF299', '#37A42C'))(20))
+# Compute the EWS on continuous, raw data. Note that this coarse-grains 
+#   the date using a 4x4 window as default -> we set the subsize to 1. 
+desert_spews_cont <- generic_spews(arid, subsize = 1)
+plot(desert_spews_cont)
 
-# Compute generic generic_spews
-desert_spews <- generic_spews(desertification)
-
-# Assess significance
-indictest(desert_spews)
-
-# Does not work because there is only one value !
-plot(desert_spews)
+# Assess significance and plot
+indictest(desert_spews_cont)
+plot(desert_spews_cont)
 
 
 
@@ -88,13 +90,35 @@ plot(spectral_test, along = parameters[ ,'delta'])
 plot_spectrum(spectral_test)
 
 # Do the same workflow on the real dataset
-desert_spectral_ic <- spectral_spews(desertification)
+desert_spectral_ic <- spectral_spews(arid)
 desert_spectral_test <- indictest(desert_spectral_ic)
 
 # Plot spectrum
 plot_spectrum(desert_spectral_test)
-
-# This code produces an error as there is only one value 
-# of SDR available.
+# Plot SDR trend
 plot(desert_spectral_test)  
+
+
+
+# Compute patch-based EWS (this is still a WIP so errors might occur)
+# -----------------
+
+patch_ic <- patchdistr_spews(arid)
+
+# The above code produces an error as we provided continous data -> we need 
+#   to threshold it beforehand
+arid_bw <- lapply(arid, function(x) x > mean(x))
+
+patch_ic <- patchdistr_spews(arid_bw)
+
+# For now only the plot_distr method is implemented (displays psds with 
+#   fits overlayed)
+plot_distr(patch_ic)
+
+plot_distr(patch_ic, best_only = TRUE) # display only best fit (using AIC)
+
+
+
+
+
 

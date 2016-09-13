@@ -131,7 +131,7 @@ spectral_spews <- function(mat,
   # Compute SDR
   ranges_absolute <- convert_ranges_to_absolute(mat, sdr_low_range, 
                                                 sdr_high_range, quiet)
-  browser()
+  
   sdr_value <- indicator_sdr_do_ratio(spectrum, 
                                       ranges_absolute[["low"]], 
                                       ranges_absolute[["high"]])

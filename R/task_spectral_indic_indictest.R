@@ -44,7 +44,7 @@ indictest.spectral_spews_list <- function(obj, null_replicates = 999, ...) {
 #' @method indictest spectral_spews_single
 #' @export
 indictest.spectral_spews_single <- function(obj, null_replicates = 999, ...) { 
-  browser()
+  
   # Build closure passed to compute_indicator_with_null that uses the correct
   #   high and low ranges.
   sdr_indicf <- function(mat) { 

@@ -73,10 +73,10 @@ Spectral early warning signals are based on the fact that some dynamical
   correlations are expected to have an increased importance. 
 
 This is expected to be reflected in the spectrum of the spatial structure
-  in the form of an increase of the relative importance of lower 
-  frequencies ("reddening" of the spectrum) over higher frequencies.
+  by an increase of the relative importance of lower frequencies over higher 
+  frequencies ("reddening" of the spectrum).
   
-This functions allows computing the radial-spectrum which gives the relative 
+This task allows computing the radial-spectrum which gives the relative 
   importance of each space scale as a function of distance, from 1 to 
   \code{N/2} (N being the minimum between the number of rows and columns). 
   If the matrix is not square, then it is cropped to biggest square that 
@@ -91,7 +91,12 @@ The significance of spectral early-warning signals can be estimated by
   reshuffling the original matrix (function \code{indictest}). Indicators 
   are then recomputed on the shuffled matrices and the values obtained are 
   used as a null distribution. P-values are obtained based on the rank of 
-  the observered value in the null distribution.
+  the observered value in the null distribution. 
+
+The trend of SDR values can be plotted using the \code{plot()} method. 
+  Alternatively, the spectrum itself can be plotted (with facets 
+  if multiple input matrices were used) using the \code{plot_spectrum} 
+  method.
 }
 \examples{
 

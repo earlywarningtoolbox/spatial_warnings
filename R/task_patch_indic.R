@@ -67,49 +67,31 @@ patchdistr_spews <- function(x, best_by = "AIC", ...) {
   return(result)
 }
 
-psdtype <- function(psd, best_by = "AIC") { 
-  
-  table_names <- c('method', 'type', 'npars', 'AIC', 'AICc', 'BIC', 'best', 
-                'expo', 'rate', 'meanlog', 'sdlog')
+plrange <- function(psd, bounds = c(1, max(psd)-1)) { 
   
   # If there are not enough patches to work with -> return NA early
   if ( length(unique(psd)) <= 2 ) { 
-    warning('Not enough different patch sizes to fit distribution: returning NA')
-    NAresult <- as.data.frame(as.list(rep(NA, length(table_names))))
-    colnames(NAresult) <- table_names
-    return(NAresult)
+    warning('Not enough different patch sizes to estimate xmin: returning NA')
+    return(NA)
   }
   
-  # Fit a model for everyone
-  models <- list(pl  =   pl_fit(psd), 
-                 tpl =   tpl_fit(psd), 
-                 exp =   exp_fit(psd), 
-                 lnorm = lnorm_fit(psd)) 
+  # Range of xmins to scan
+  xmins <- seq(min(bounds), max(bounds), by = 1)
   
-  models <- lapply(models, as.data.frame)
-  models <- do.call(rbind.fill, models)
-  row.names(models) <- models[ ,'type']
+  kss <- rep(NA_real_, length(xmins))
+  # Loop over all xmins 
+  for (i in seq_along(xmins)) { 
+    xmin <- xmins[i]
+    
+    # Compute distance statistic
+    # -- 
+    
+    # Fit PL with given xmin
+    
+  }
   
-  # Compute AICs
-  models[ ,'AIC']  <- get_AIC(models[ ,'ll'],  models[ ,'npars'])
-  models[ ,'AICc'] <- get_AICc(models[ ,'ll'], models[ ,'npars'], length(psd))
-  models[ ,'BIC'] <- get_BIC(models[ ,'ll'],  models[ ,'npars'], length(psd))
+  browser()
   
-  models[ ,'best'] <- models[ ,best_by] == min(models[ ,best_by])
-  # Reorganize columns 
-  models <- models[ ,table_names]
   
-  return(models)
-}
-
-get_AIC <- function(ll, k) { 
-  2*k - 2*ll 
-}
-
-get_AICc <- function(ll, k, n) { 
-  2*k - 2*ll + (2*k*(k+1))/(n-k-1)
-}
-
-get_BIC <- function(ll, k, n) { 
-  2*k*log(n) - 2*ll 
+  
 }

@@ -20,13 +20,13 @@
 #' @param nreplicates Number of replicates to produce to estimate null 
 #'   distribution of index (default: 999).
 #' 
-#' @return A list (or a list of those if input was a list of matrix 
+#' @return A list (or a list of those if input is a list of matrix 
 #'   object) of:
 #'     \itemize{
 #'       \item `mean`: Landscape mean cover
 #'       \item `corr`: Spatial autocorrelation of the matrix
 #'     }
-#'   If nreplicates was above 2, then the list has the following additional 
+#'   If nreplicates is above 2, then the list has the following additional 
 #'   components : 
 #'     \itemize{
 #'       \item `null_mean`: Mean autocorrelation of the null distribution

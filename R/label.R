@@ -57,6 +57,10 @@ percolation <- function(mat, nbmask = matrix(c(0,1,0,
   
   patches <- label(mat, nbmask)
   
+  if ( all(is.na(patches)) ) { 
+    return(NA) # logical
+  } 
+  
   unique_patches <- seq.int(max(patches, na.rm = TRUE))
   
   # We scan all patches and see whether they have height or width equal 

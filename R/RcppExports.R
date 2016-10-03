@@ -42,6 +42,10 @@ tplsum <- function(expo, rate, from, to) {
     .Call('spatialwarnings_tplsum', PACKAGE = 'spatialwarnings', expo, rate, from, to)
 }
 
+sum_all_one_over_k <- function(from, to, expo) {
+    .Call('spatialwarnings_sum_all_one_over_k', PACKAGE = 'spatialwarnings', from, to, expo)
+}
+
 sum_all_one_over_k_before <- function(n, expo) {
     .Call('spatialwarnings_sum_all_one_over_k_before', PACKAGE = 'spatialwarnings', n, expo)
 }

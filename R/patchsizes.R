@@ -15,13 +15,12 @@
 #' @export
 patchsizes <- function(x) { 
   
-  # This part of the function implements checks and handles the case of a list
-  # of matrices
-  # --------------------------------
-  check_mat(x) # checks if binary and sensible
-  
   if ( is.list(x)) { 
     return( lapply(x, patchsizes) )
+  }
+  
+  if ( !is.matrix(x) || !is.logical(x) ) { 
+    stop('A logical matrix if needed to compute patch sizes')
   }
   
   # If there is no patch at all -> return NA

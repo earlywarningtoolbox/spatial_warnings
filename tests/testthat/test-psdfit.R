@@ -214,9 +214,9 @@ if ( TEST_PSD_FITS ) {
     }
     
   })
-
-
-    
+  
+  
+  
   # For TPL xmax must not be too low (>3?)
   test_that('TPL fitting works', { 
     rates <- c(1.001, 1.01, 1.1, 2, 10)

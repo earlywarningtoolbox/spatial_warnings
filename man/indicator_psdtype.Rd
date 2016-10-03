@@ -4,13 +4,16 @@
 \alias{indicator_psdtype}
 \title{Change in patch-size distributions types}
 \usage{
-indicator_psdtype(input, best_by = "AIC")
+indicator_psdtype(input, best_by = "AIC", merge = FALSE)
 }
 \arguments{
 \item{input}{A logical (TRUE/FALSE values) matrix or a list of these.}
 
 \item{best_by}{The criterion used to select the best distribution type 
 (one of \code{"AIC"}, \code{"BIC"} or \code{"AICc"}).}
+
+\item{merge}{If input is a list, then merge all the observed patch-size
+distributions in a single one to obtain a better fit.}
 }
 \value{
 A data.frame (or a list of these if input was a list) with the 
@@ -27,6 +30,8 @@ A data.frame (or a list of these if input was a list) with the
         best fit 
       \item `expo`, `rate`, `meanlog`, `sdlog` the estimates for distribution
         parameters. 
+      \item 'percolation' A logical value indicating whether there is 
+        \code{\link{percolation}} in the system. 
     }
 }
 \description{

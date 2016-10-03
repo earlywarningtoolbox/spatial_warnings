@@ -17,6 +17,9 @@
 #' @param best_by The criterion used to select the best distribution type 
 #'   (one of \code{"AIC"}, \code{"BIC"} or \code{"AICc"}). 
 #' 
+#' @param merge If input is a list, then merge all the observed patch-size
+#'   distributions in a single one to obtain a better fit.
+#' 
 #' @return A data.frame (or a list of these if input was a list) with the 
 #'   following columns:
 #'     \itemize{
@@ -31,6 +34,8 @@
 #'         best fit 
 #'       \item `expo`, `rate`, `meanlog`, `sdlog` the estimates for distribution
 #'         parameters. 
+#'       \item 'percolation' A logical value indicating whether there is 
+#'         \code{\link{percolation}} in the system. 
 #'     }
 #' 
 #' @references
@@ -57,14 +62,18 @@
 #'
 #'
 #'@export 
-indicator_psdtype <- function(input, best_by = "AIC") { 
+indicator_psdtype <- function(input, best_by = "AIC", merge = FALSE) { 
   
-  if ( is.list(input) ) { 
+  if ( !(merge) && is.list(input) ) { 
     return( lapply(input, indicator_psdtype, best_by = best_by) )
   } 
   
   # Compute psd
+  if (merge) { 
+    psd <- do.call(c, lapply(input, patchsizes))
+  } else { 
   psd <- patchsizes(input)
+  }
   
   result <- data.frame(psdtype(psd, best_by = "AIC"), 
                        percolation = percolation(input))

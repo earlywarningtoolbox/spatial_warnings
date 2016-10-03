@@ -1,4 +1,4 @@
-#' @title Labelling of unique patches.
+#' @title Labelling of unique patches and detection of percolation. 
 #' 
 #' @description Label each patch with a number in a TRUE/FALSE matrix using 
 #'   flood fill algorithm
@@ -15,9 +15,9 @@
 #' @return A matrix containing ID numbers for each connected patch. Default 
 #'   parameters assume 4-cell neighborhood and periodic boundaries.
 #' 
-#' @details This function "labels" the patches of a binary (1/0) matrix. It 
-#'   returns the same matrix, with an integer representing the ID of the 
-#'   patch instead of 1/0.
+#' @details The \code{label} function "labels" the patches of a binary (1/0) 
+#'   matrix. It returns a matrix of similar height and width, with integer 
+#'   values representing the ID of the patch. Empty cells are labeled \code{NA}.
 #' 
 #' @examples 
 #' 
@@ -44,3 +44,35 @@ label <- function(mat,
   
   .label(mat, nbmask, wrap)
 }
+
+#' @rdname label
+#'
+#' @description \code{percolation()} detects whether percolation occurs in the
+#'   matrix (i.e. a patch has a width or a height equal to the size of the 
+#'   matrix)
+#' 
+#' @export
+percolation <- function(mat, nbmask = matrix(c(0,1,0,
+                                               1,0,1,
+                                               0,1,0), ncol=3)) { 
+  
+  patches <- label(mat, nbmask)
+  
+  unique_patches <- seq.int(max(patches, na.rm = TRUE))
+  
+  # We scan all patches and see whether they have height or width equal 
+  #   to the size of the matrix
+  for ( patch in unique_patches ) { 
+    patch_cell_coords <- which(patches == patch, arr.ind = TRUE)
+    pos.min <- apply(patch_cell_coords, 2, min)
+    pos.max <- apply(patch_cell_coords, 2, max)
+    if ( any( (pos.max - pos.min)+1 == dim(mat)) ) { 
+      return(TRUE)
+    }
+  }
+  
+  # If we have not found any patch of such size, then there is no percolation 
+  #   so we return
+  return(FALSE)
+}
+

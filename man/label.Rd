@@ -2,10 +2,13 @@
 % Please edit documentation in R/label.R
 \name{label}
 \alias{label}
-\title{Labelling of unique patches.}
+\alias{percolation}
+\title{Labelling of unique patches and detection of percolation.}
 \usage{
 label(mat, nbmask = matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0), ncol = 3),
   wrap = TRUE)
+
+percolation(mat, nbmask = matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0), ncol = 3))
 }
 \arguments{
 \item{mat}{A binary matrix}
@@ -24,11 +27,15 @@ A matrix containing ID numbers for each connected patch. Default
 \description{
 Label each patch with a number in a TRUE/FALSE matrix using 
   flood fill algorithm
+
+\code{percolation()} detects whether percolation occurs in the
+  matrix (i.e. a patch has a width or a height equal to the size of the 
+  matrix)
 }
 \details{
-This function "labels" the patches of a binary (1/0) matrix. It 
-  returns the same matrix, with an integer representing the ID of the 
-  patch instead of 1/0.
+The \code{label} function "labels" the patches of a binary (1/0) 
+  matrix. It returns a matrix of similar height and width, with integer 
+  values representing the ID of the patch. Empty cells are labeled \code{NA}.
 }
 \examples{
 

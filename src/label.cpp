@@ -47,7 +47,6 @@ IntegerMatrix label(IntegerMatrix mat,
 
 // We use an implicit stack here which is not very efficient but easier on my 
 // brain and probably enough for our use.
-// NOTE: get max stack size with `ulimit -s` (on my box [Alex]: 8192)
 void flood_fill(const IntegerMatrix &mat, 
                 LogicalMatrix &is_marked,
                 IntegerMatrix &output,

@@ -66,7 +66,9 @@ indicator_psdtype <- function(input, best_by = "AIC") {
   # Compute psd
   psd <- patchsizes(input)
   
-  return( psdtype(psd, best_by = "AIC") )
+  result <- data.frame(psdtype(psd, best_by = "AIC"), 
+                       percolation = percolation(input))
+  return(result)
 }
 
 psdtype <- function(psd, best_by = "AIC") { 

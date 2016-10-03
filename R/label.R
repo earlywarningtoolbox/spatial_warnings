@@ -55,7 +55,7 @@ percolation <- function(mat, nbmask = matrix(c(0,1,0,
                                                1,0,1,
                                                0,1,0), ncol=3)) { 
   
-  patches <- label(mat, nbmask)
+  patches <- label(mat, nbmask, wrap = FALSE)
   
   if ( all(is.na(patches)) ) { 
     return(NA) # logical

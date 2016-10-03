@@ -40,7 +40,6 @@ label <- function(mat,
                                     1,0,1,
                                     0,1,0), ncol=3), # 4way NB 
                   wrap = TRUE) {
-  check_mat(mat)
   
   .label(mat, nbmask, wrap)
 }

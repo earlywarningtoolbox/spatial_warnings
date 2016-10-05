@@ -62,20 +62,16 @@
 #'
 #'
 #'@export 
-indicator_psdtype <- function(input, best_by = "AIC", merge = FALSE) { 
+indicator_psdtype <- function(input, merge = FALSE, best_by = "AIC") { 
   
-  if ( !(merge) && is.list(input) ) { 
+  if ( !merge && is.list(input) ) { 
     return( lapply(input, indicator_psdtype, best_by = best_by) )
   } 
   
   multiple_matrices <- is.list(input)
   
   # Compute psd
-  if ( multiple_matrices ) { 
-    psd <- do.call(c, lapply(input, patchsizes))
-  } else { 
-    psd <- patchsizes(input)
-  }
+  psd <- patchsizes(input, merge = merge)
   
   # Compute percolation point. If the user requested a merge of all 
   #   patch size distributions, then we return the proportion of matrices 

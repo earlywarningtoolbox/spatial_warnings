@@ -4,7 +4,7 @@
 \alias{patchsizes}
 \title{Get patch sizes.}
 \usage{
-patchsizes(x)
+patchsizes(x, merge = FALSE)
 }
 \arguments{
 \item{x}{A binary matrix or a list of binary matrices.}

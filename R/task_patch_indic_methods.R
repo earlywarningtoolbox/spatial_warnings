@@ -13,11 +13,23 @@
 # 
 
 #'@export
-plot.patchdistr_spews_list <- function(obj) { 
+plot.patchdistr_spews_list <- function(obj, along = NULL) { 
   browser()
   
   obj_table <- as.data.frame(obj)
-    
+  
+  # Subset table for best fits
+  obj_table <- obj_table[obj_table[['best']], ]
+  
+  # If along is provided, then add it to the table
+  if ( !is.null(along) ) { 
+    obj_table[ ,"along"] <- along
+  } else { 
+    obj_table[ ,"along"] <- obj_table[ ,'replicate']
+  }
+  
+  ggplot(obj_table) + 
+    geom_tile(aes(x = along, y = type, fill = type), color = 'black') 
   
 }
 
@@ -30,17 +42,39 @@ plot_distr <- function(obj, best_only = FALSE) {
 }
 
 #'@export
-plot_distr.patchdistr_spews_single <- function(obj, best_only = FALSE) { 
+plot_distr.patchdistr_spews_single <- function(obj, 
+                                               best_only = FALSE, 
+                                               plrange = TRUE) { 
   
   # Get plottable data.frames
-  values <- predict(obj, best_only = best_only)
-    
-  ggplot() + 
+  values <- predict(obj, best_only = best_only)  
+  
+  plot <- ggplot() + 
     geom_point(aes(x = patchsize, y = y), data = values[['obs']]) + 
     geom_line(aes(x = patchsize, y = y, color = type), 
               data = values[['pred']]) + 
     scale_y_log10() +
-    scale_x_log10()
+    scale_x_log10() + 
+    xlab('Patch size') + 
+    ylab('Frequency (P>=x)')
+  
+  # If we want plrange too, then add it to the graph 
+  if ( plrange ) { 
+  xmin <- obj[['plrange']][, "xmin_est"]
+  plot <- plot + 
+    annotate(geom = 'segment', 
+             x = xmin, xend = xmin,
+             y = with(values, obs[['y']][obs[['patchsize']] == xmin]),
+             yend = with(values, min(obs[['y']])), 
+             color = "red", linetype = "dotted") + 
+    annotate(geom = 'segment', 
+             x = xmin, xend = max(values[["obs"]][["patchsize"]]), 
+             y = with(values, min(obs[['y']])), 
+             yend = with(values, min(obs[['y']])), 
+             color = 'red', size = 2) 
+  }
+  
+  return(plot)
 }
 
 #'@export
@@ -58,7 +92,7 @@ plot_distr.patchdistr_spews_list <- function(obj, best_only = FALSE) {
     scale_x_log10() + 
     facet_wrap( ~ replicate) + 
     xlab('Patch size') + 
-    ylab('Frequency (P>x)')
+    ylab('Frequency (P>=x)')
     
 }
 
@@ -78,7 +112,7 @@ predict.patchdistr_spews_single <- function(obj,
   vals_obs <- cumpsd(obj[["psd_obs"]])
   
   # Shapes table
-  shptbl <- obj[['psd_shapes']]
+  shptbl <- obj[['psd_type']]
   
   # Bail if no fit carried out. Note that we need to set classes in the 
   # output pred df otherwise coercion when merging with existing results 
@@ -132,7 +166,7 @@ predict.patchdistr_spews_list <- function(obj, newdata = NULL, best_only = FALSE
   dat <- lapply(obj, predict.patchdistr_spews_single, newdata, best_only)
   
   dat <- Map(function(n, x) { 
-                x[['obs']]  <- data.frame(replicate = n, x[['obs']])
+               x[['obs']]  <- data.frame(replicate = n, x[['obs']])
                x[['pred']] <- data.frame(replicate = n, x[['pred']])
                x
              }, seq.int(length(dat)), dat)
@@ -145,12 +179,14 @@ predict.patchdistr_spews_list <- function(obj, newdata = NULL, best_only = FALSE
 }
 
 
+
+
 # As data.frame methods
 # --------------------------------------------------
 
 #'@export
 as.data.frame.patchdistr_spews_single <- function(obj) { 
-  return(obj[['psd_shapes']])
+  data.frame(obj[['psd_type']], obj[['plrange']]) 
 }
 
 #'@export
@@ -166,3 +202,71 @@ as.data.frame.patchdistr_spews_list <- function(obj) {
   do.call(rbind, results)
 }
 
+
+
+
+# Summary methods
+# --------------------------------------------------
+#'@export
+summary.patchdistr_spews_single <- function(obj, ...) { 
+  cat('Patch-based Early-Warnings results\n') 
+  cat('\n')
+  
+  # Get and subset data.frame
+  dat <- as.data.frame(obj)
+  dat <- dat[dat[ ,"best"], ]
+  dat <- dat[ ,c('type', 'plrange')]
+  
+  # Format power-law range
+  dat[ ,'plrange'] <- paste0(round(dat[ ,'plrange'] * 100), "%")
+  
+  # Replace names so it is prettier
+  names(dat) <- c('Distribution type', 'Power-law range')
+  rownames(dat) <- NULL
+  
+  print.data.frame(dat, row.names = FALSE)
+  cat('\n')
+  cat('Use as.data.frame() to retrieve values in a convenient form\n')
+}
+
+#'@export
+summary.patchdistr_spews_list <- function(obj, ...) { 
+  cat('Patch-based Early-Warnings results\n') 
+  cat('\n')
+  
+  # Get and subset data.frame
+  dat <- as.data.frame(obj)
+  dat <- dat[dat[ ,"best"], ]
+  dat <- dat[ ,c('replicate', 'type', 'plrange')]
+  
+  # Format power-law range
+  dat[ ,'plrange'] <- paste0(round(dat[ ,'plrange'] * 100), "%")
+  
+  # Replace names so it is prettier
+  names(dat) <- c('Matrix', 'Distribution type', 'Power-law range')
+  rownames(dat) <- NULL
+  
+  print.data.frame(dat, row.names = FALSE)
+  cat('\n')
+  cat('Use as.data.frame() to retrieve values in a convenient form\n')
+}
+
+
+
+
+# Print methods
+# --------------------------------------------------
+# Note this method works for both single and lists objects so we only 
+#   define it for patchdistr_spews (and not their *_list *_single 
+#   equivalents)
+
+#'@export
+print.patchdistr_spews <- function(obj, ...) { 
+  cat('Patch-based Early-Warnings results\n') 
+  cat('\n')
+  
+  print.data.frame( as.data.frame(obj), row.names = FALSE)
+  
+  cat('\n')
+  cat('Use as.data.frame() to retrieve values in a convenient form\n')
+}

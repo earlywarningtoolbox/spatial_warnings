@@ -35,63 +35,47 @@
 # 
 
 #' @export
-patchdistr_spews <- function(x, best_by = "AIC", ...) {
+patchdistr_spews <- function(x, 
+                             best_by = "AIC", 
+                             xmin_bounds = NULL, 
+                             merge = FALSE,
+                             ...) {
   
   check_mat(x) # Check input matrix
   
   # If input is a list -> apply on each element
-  if ( is.list(x)) { # FALSE for x = NULL
-    results <- llply(x, patchdistr_spews, ...) 
+  if ( !merge & is.list(x)) { # FALSE for x = NULL
+    results <- llply(x, patchdistr_spews, best_by, xmin_bounds, merge, ...) 
     class(results) <- c('patchdistr_spews_list', 'patchdistr_spews', 
                         'spews_result', 'list')
     return(results)
-
   } 
   
+  # Get patch size distribution
+  psd <- patchsizes(x, merge = merge)
   
-  # Input needs to be a binary matrix here
-  if ( ! is.logical(x) ) { 
-    stop('Computing patch-size distributions require a logical matrix (TRUE/',
-         'FALSE values): please convert your data first.')
+  # Set bounds to search for xmin
+  if ( is.null(xmin_bounds) ) { 
+    xmin_bounds <- range(psd)
   }
   
-  # Get patch size distribution
-  psd <- patchsizes(x)
+  # Compute percolation 
+  if ( is.list(x) ) { 
+    perc <- unlist(lapply(x, percolation))
+    perc <- mean(perc)
+  } else { 
+    perc <- percolation(x)
+  } 
   
   # Return object 
-  result <- list(psd_obs = psd, 
-                 psd_shapes = psdtype(psd, best_by = best_by), 
-                 psd_plfit = "To be implemented")
-  class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 'spews_result', 'list')
+  result <- list(psd_obs = sort(psd), 
+                 psd_type = psdtype(psd, best_by), 
+                 percolation = perc,
+                 plrange = plrange(psd, xmin_bounds))
+  class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 
+                     'spews_result', 'list')
   
   return(result)
 }
 
-plrange <- function(psd, bounds = c(1, max(psd)-1)) { 
-  
-  # If there are not enough patches to work with -> return NA early
-  if ( length(unique(psd)) <= 2 ) { 
-    warning('Not enough different patch sizes to estimate xmin: returning NA')
-    return(NA)
-  }
-  
-  # Range of xmins to scan
-  xmins <- seq(min(bounds), max(bounds), by = 1)
-  
-  kss <- rep(NA_real_, length(xmins))
-  # Loop over all xmins 
-  for (i in seq_along(xmins)) { 
-    xmin <- xmins[i]
-    
-    # Compute distance statistic
-    # -- 
-    
-    # Fit PL with given xmin
-    
-  }
-  
-  browser()
-  
-  
-  
-}
+

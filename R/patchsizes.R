@@ -13,14 +13,21 @@
 #' patchsizes(forestdat[['matrices']][[1]])
 #'
 #' @export
-patchsizes <- function(x) { 
+patchsizes <- function(x, merge = FALSE) { 
   
   if ( is.list(x)) { 
-    return( lapply(x, patchsizes) )
+    result <- lapply(x, patchsizes) 
+    if (merge) { 
+      # This always works even if only one element
+      result <- do.call(c, result)
+      names(result) <- NULL
+    }
+    return(result)
   }
   
-  if ( !is.matrix(x) || !is.logical(x) ) { 
-    stop('A logical matrix if needed to compute patch sizes')
+  if ( ! is.logical(x) ) { 
+    stop('Patch-size distributions require a logical matrix',
+         '(TRUE/FALSE values): please convert your data first.')
   }
   
   # If there is no patch at all -> return NA

@@ -31,34 +31,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// get_nb_coords
-IntegerMatrix get_nb_coords(IntegerMatrix mat, IntegerVector X, IntegerMatrix nbmask, bool wrap);
-RcppExport SEXP spatialwarnings_get_nb_coords(SEXP matSEXP, SEXP XSEXP, SEXP nbmaskSEXP, SEXP wrapSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerMatrix >::type mat(matSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type X(XSEXP);
-    Rcpp::traits::input_parameter< IntegerMatrix >::type nbmask(nbmaskSEXP);
-    Rcpp::traits::input_parameter< bool >::type wrap(wrapSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_nb_coords(mat, X, nbmask, wrap));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_nb_values
-IntegerVector get_nb_values(IntegerMatrix mat, IntegerVector X, IntegerMatrix nbmask, bool wrap);
-RcppExport SEXP spatialwarnings_get_nb_values(SEXP matSEXP, SEXP XSEXP, SEXP nbmaskSEXP, SEXP wrapSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerMatrix >::type mat(matSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type X(XSEXP);
-    Rcpp::traits::input_parameter< IntegerMatrix >::type nbmask(nbmaskSEXP);
-    Rcpp::traits::input_parameter< bool >::type wrap(wrapSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_nb_values(mat, X, nbmask, wrap));
-    return rcpp_result_gen;
-END_RCPP
-}
 // label
 IntegerMatrix label(IntegerMatrix mat, IntegerMatrix nbmask, bool wrap);
 RcppExport SEXP spatialwarnings_label(SEXP matSEXP, SEXP nbmaskSEXP, SEXP wrapSEXP) {

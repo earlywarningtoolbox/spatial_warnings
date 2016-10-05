@@ -11,11 +11,6 @@ Rcpp::IntegerMatrix get_nb_coords(Rcpp::IntegerMatrix mat,
                                   Rcpp::IntegerMatrix nbmask, 
                                   bool wrap);
 
-Rcpp::IntegerVector get_nb_values(Rcpp::IntegerMatrix mat, 
-                                  Rcpp::IntegerVector X,
-                                  Rcpp::IntegerMatrix nbmask, 
-                                  bool wrap);
-
 Rcpp::IntegerMatrix label_patches(Rcpp::IntegerMatrix mat, 
                                   Rcpp::IntegerMatrix nbmask,
                                   bool wrap);

@@ -10,6 +10,16 @@ raw_moran(mat)
 \item{mat}{A matrix}
 }
 \value{
-The Moran's I numeric value.
+The Moran's I numeric value as a numeric number.
+}
+\description{
+This function computes the Moran'I value at lag 1.
+}
+\details{
+See \link{indicator_moran} or \link{generic_spews} 
+  for more information
+}
+\seealso{
+\link{indicator_moran}, \link{generic_spews}
 }
 

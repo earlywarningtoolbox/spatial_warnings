@@ -1,27 +1,33 @@
 // 
-// A small function that computes moran's I index as it was done in the 
-//   equivalent function moran_computation() (./R/indicator_moran.R).
+// A small function that computes moran's I index 
 // 
 
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//' @export
 //' 
 //' @title Compute the Moran's I at lag 1
 //' 
 //' @param mat A matrix
 //' 
-//' @return The Moran's I numeric value. 
+//' @description This function computes the Moran'I value at lag 1.
+//'
+//' @details See \link{indicator_moran} or \link{generic_spews} 
+//'   for more information
+//'
+//' @return The Moran's I numeric value as a numeric number.
 //' 
-// [[Rcpp::export]]
+//' @seealso \link{indicator_moran}, \link{generic_spews} 
+//' 
+//' @export
+//[[Rcpp::export]]
 double raw_moran(NumericMatrix mat) { 
   
   double m = mean(mat);
   double v = var(mat);
   int h = mat.nrow() - 1;
   int w = mat.ncol() - 1;
-
+  
   double moranI = 0;
   for (int i=1; i<h; i++) { 
     for (int j=1; j<w; j++) { 

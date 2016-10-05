@@ -51,13 +51,13 @@ indicator_sdr <- function(input,
     indicator_sdr_core(mat, ranges_absolute[["low"]], ranges_absolute[["high"]])
   }
   
+  
   return( 
     compute_indicator_with_null(input, 
                                 detrending = FALSE, 
                                 nreplicates = nreplicates, 
                                 indicf = indicf)
   )
-    
   
 }
 

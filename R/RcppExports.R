@@ -9,26 +9,25 @@ discpowerexp_norm <- function(expo, rate, xmin) {
     .Call('spatialwarnings_discpowerexp_norm', PACKAGE = 'spatialwarnings', expo, rate, xmin)
 }
 
-.get_nb_coords <- function(mat, X, nbmask, wrap) {
-    .Call('spatialwarnings_get_nb_coords', PACKAGE = 'spatialwarnings', mat, X, nbmask, wrap)
-}
-
-.get_nb_values <- function(mat, X, nbmask, wrap) {
-    .Call('spatialwarnings_get_nb_values', PACKAGE = 'spatialwarnings', mat, X, nbmask, wrap)
-}
-
 .label <- function(mat, nbmask, wrap) {
     .Call('spatialwarnings_label', PACKAGE = 'spatialwarnings', mat, nbmask, wrap)
 }
 
-#' @export
 #' 
 #' @title Compute the Moran's I at lag 1
 #' 
 #' @param mat A matrix
 #' 
-#' @return The Moran's I numeric value. 
+#' @description This function computes the Moran'I value at lag 1.
+#'
+#' @details See \link{indicator_moran} or \link{generic_spews} 
+#'   for more information
+#'
+#' @return The Moran's I numeric value as a numeric number.
 #' 
+#' @seealso \link{indicator_moran}, \link{generic_spews} 
+#' 
+#' @export
 raw_moran <- function(mat) {
     .Call('spatialwarnings_raw_moran', PACKAGE = 'spatialwarnings', mat)
 }

@@ -46,7 +46,7 @@ indictest.spectral_spews_list <- function(obj, null_replicates = 999, ...) {
 indictest.spectral_spews_single <- function(obj, null_replicates = 999, ...) { 
   
   # Build closure passed to compute_indicator_with_null that uses the correct
-  #   high and low ranges.
+  #   high and low ranges, and is compatible with the use of replicate(). 
   sdr_indicf <- function(mat) { 
     spectrum <- rspectrum(mat)
     
@@ -62,6 +62,7 @@ indictest.spectral_spews_single <- function(obj, null_replicates = 999, ...) {
                                 detrending = FALSE,
                                 nreplicates = null_replicates, 
                                 indicf = sdr_indicf)
+  
   results <- rbind(
     data.frame(type = 'sdr', dist = NA,
                lapply(null_values_sdr, `[`, 1)), # first element of each list element
@@ -69,7 +70,6 @@ indictest.spectral_spews_single <- function(obj, null_replicates = 999, ...) {
                dist = obj[['results']][['spectrum']][ ,'dist'], 
                lapply(null_values_sdr, `[`, -1)) # all but first elem
   )
-  
   # Add replicate column and discard row names
   results <- data.frame(replicate = 1, results)
   row.names(results) <- NULL

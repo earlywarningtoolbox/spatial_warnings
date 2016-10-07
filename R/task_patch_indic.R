@@ -71,7 +71,8 @@ patchdistr_spews <- function(x,
   result <- list(psd_obs = sort(psd), 
                  psd_type = psdtype(psd, best_by), 
                  percolation = perc,
-                 plrange = plrange(psd, xmin_bounds))
+                 plrange = plrange(psd, xmin_bounds), 
+                 unique_patches = length(psd))
   class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 
                      'spews_result', 'list')
   

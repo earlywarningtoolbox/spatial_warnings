@@ -43,6 +43,9 @@ summary.generic_spews <- function(obj) {
   cat('Generic Spatial Early-Warnings\n') 
   cat('\n')
   
+  display_size_info(obj)
+  cat('\n')
+  
   # Format output table
   output <- as.data.frame(obj)
   output <- reshape2::dcast(output,  replicate ~ indicator, value.var = 'value')

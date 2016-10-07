@@ -108,7 +108,21 @@ spectral_spews <- function(mat,
   
   # Check if mat is suitable
   check_mat(mat)
-      
+  
+  if ( !quiet && is.null(sdr_low_range) ) { 
+    warning("Choosing the 20% lowest frequencies for spectral density ratio ",
+            "as none was specified. Use parameter sdr_low_range to choose ", 
+            "a different value.")
+    sdr_low_range <- c(0, .2)
+  }
+  
+  if ( !quiet && is.null(sdr_high_range) ) { 
+    warning("Choosing the 20% highest frequencies for spectral density ratio ",
+            "as none was specified. Use parameter sdr_high_range to choose ", 
+            "a different value.")
+    sdr_high_range <- c(.8, 1)
+  }
+  
   # Handle list case
   if ( is.list(mat) ) { 
     results <- lapply(mat, spectral_spews, sdr_low_range, sdr_high_range, quiet)
@@ -128,21 +142,19 @@ spectral_spews <- function(mat,
     mat <- mat[seq.int(mindim), seq.int(mindim)]
   }
     
-      
   # Compute powerspectrum
   spectrum <- rspectrum(mat)
   
   # Compute SDR
   ranges_absolute <- convert_ranges_to_absolute(mat, sdr_low_range, 
-                                                sdr_high_range, quiet)
+                                                sdr_high_range)
   
   sdr_value <- indicator_sdr_do_ratio(spectrum, 
                                       ranges_absolute[["low"]], 
                                       ranges_absolute[["high"]])
   
   # Return list containing both
-  output <- list(results = list(spectrum = spectrum, 
-                                sdr = sdr_value), 
+  output <- list(results = list(spectrum = spectrum, sdr = sdr_value), 
                  orig_data = orig_input, 
                  call = match.call(), 
                  low_range = ranges_absolute[['low']], 

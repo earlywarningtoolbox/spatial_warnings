@@ -70,20 +70,8 @@ summary.spectral_spews_list <- function(x, ...) {
   cat('\n')
   
   # Compute correct size to display
-  sizes <- sapply(x, function(x) dim(x[["orig_data"]]))
-  sizes <- apply(sizes, 1, function(X) length(unique(X)) == 1)
-  has_different_sizes <- ! any(sizes)
-  if (has_different_sizes) { 
-    size_text_report <- "variable sizes"
-  } else { 
-    size_text_report <- paste0("size: ", nrow(x[[1]][["orig_data"]]), 'x', 
-                               ncol(x[[1]][["orig_data"]]))
-  } 
-  cat(' ', 
-      length(x), ' ', 
-      ifelse(length(x)>1, 'matrices', 'matrix'), ' ',
-      "(", size_text_report,')\n', sep = '')
-  cat('\n')
+  display_size_info(x) 
+  cat("\n")
   
   # Show only SDR and print as data frame
   x2 <- as.data.frame(x)

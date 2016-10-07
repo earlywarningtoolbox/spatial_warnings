@@ -40,7 +40,7 @@ plot.spectral_spews_test <- function(obj, # an indictest object
                           gradient = along[obj[is_sdr,'replicate']])
   
   # Create base plot object 
-  plot <- ggplot2::ggplot(plot_data)
+  plot <- ggplot(plot_data) + theme_spwarnings()
   
   # Check if we really want to add a null ribbon
   add_null <- display_null
@@ -62,31 +62,28 @@ plot.spectral_spews_test <- function(obj, # an indictest object
                             null_ymax = obj[is_sdr,'null_95'])
     
     plot <- plot + 
-      ggplot2::geom_ribbon(ggplot2::aes_string(x = 'gradient',
-                                               ymin = 'null_ymin',
-                                               ymax = 'null_ymax'),
-                           data = null_data, 
-                           fill = 'grey',
-                           alpha = .8) + 
-      ggplot2::geom_line(ggplot2::aes_string(x = "gradient", 
-                                             y = "null_mean"), 
-                         color = 'black', alpha = .1)
-      
-      
+      geom_ribbon(aes_string(x = 'gradient',
+                             ymin = 'null_ymin',
+                             ymax = 'null_ymax'),
+                  data = null_data, 
+                  fill = 'grey',
+                  alpha = .8) + 
+      geom_line(aes_string(x = "gradient", 
+                           y = "null_mean"), 
+                color = 'black', alpha = .1)
   }
   
   # Add the trend on the graph (Note that we add it over the null trend)
-  plot <- plot + ggplot2::geom_line(ggplot2::aes_string(x = 'gradient', 
-                                                        y = what))
+  plot <- plot + geom_line(aes_string(x = 'gradient', y = what))
   
   # Add ylabs
-  plot <- plot + ggplot2::ylab('Spectral density ratio')
+  plot <- plot + ylab('Spectral density ratio')
   
   # Add names
   if ( set_default_xlab ) { 
-    plot <- plot + ggplot2::xlab('Matrix number')
+    plot <- plot + xlab('Matrix number')
   } else { 
-    plot <- plot + ggplot2::xlab(as.character(match.call()['along']))
+    plot <- plot + xlab(as.character(match.call()['along']))
   }
   
   return(plot)
@@ -136,33 +133,34 @@ plot_spectrum.spectral_spews_test <- function(obj,
                     gradient = along[obj[is_rspec, 'replicate']])
   
   # Create base plot. 
-  plot <- ggplot2::ggplot(obj) +
-            ggplot2::ylab('r-spectrum value') + 
-            ggplot2::xlab('Distance (cell size unit)')
+  plot <- ggplot(obj) +
+            ylab('r-spectrum value') + 
+            xlab('Distance (cell size unit)') + 
+            theme_spwarnings()
     
   # If we are in correct conditions to add a null values ribbon
   if ( display_null ) { 
     plot <- plot + 
-      ggplot2::geom_ribbon(ggplot2::aes_q(x = ~dist,
-                                          ymin = ~null_05,
-                                          ymax = ~null_95),
-                           fill = 'grey',
-                           alpha = .8) + 
-      ggplot2::geom_line(ggplot2::aes_q(x = ~dist, 
+      geom_ribbon(aes_q(x = ~dist,
+                        ymin = ~null_05,
+                        ymax = ~null_95),
+                  fill = 'grey',
+                  alpha = .8) + 
+      geom_line(aes_q(x = ~dist, 
                                         y = ~null_mean), 
                          color = 'black', alpha = .1)
   }
   
   # Add layer for the observed spectrum
-  plot <- plot + ggplot2::geom_line(ggplot2::aes_q(x = ~dist, 
+  plot <- plot + geom_line(aes_q(x = ~dist, 
                                                    y = ~value, 
                                                    group = ~replicate)) +
-    ggplot2::scale_color_gradient(low = '#000000', high = '#E86435', 
+    scale_color_gradient(low = '#000000', high = '#E86435', 
                                   name = 'Spectral \nDensity \nRatio') 
    
   # Add facets if multiple replicates are present
   if ( length(unique(obj[ ,"replicate"])) > 1 ) {
-    plot <- plot + ggplot2::facet_wrap( ~ gradient ) 
+    plot <- plot + facet_wrap( ~ gradient ) 
   }
   
   return(plot) 

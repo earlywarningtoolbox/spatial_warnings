@@ -39,7 +39,6 @@ compute_indicator_with_null <- function(input,
                       pval      = apply(cbind(value, nulldistr), 1, 
                                         function(X) 1 - rank(X)[1] / length(X)))
     result <- append(result, nullstats)
-    
   }
   
   return(result)
@@ -49,7 +48,8 @@ compute_indicator_with_null <- function(input,
 # the null distribution.
 safe_quantile <- function(nulldistr, p) { 
   if ( any( is.na(nulldistr) ) ) { 
-    warning('Computation of null values produced NAs')
+    warning(paste0('Computation of null values produced NAs (', 
+                   sum(is.na(nulldistr)), " out of ", length(nulldistr), ")"))
   }
   quantile(nulldistr, p, na.rm = TRUE)
 }

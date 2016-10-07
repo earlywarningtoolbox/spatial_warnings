@@ -1,6 +1,9 @@
 # 
 # 
-# This file contains code that fits psds
+# This file contains code related to patch size distribution fitting. These 
+#   functions can fit Power-law (pl), Truncated Power-law (tpl), Lognormal 
+#   (lnorm) and Exponential (exp) distributions using maximum likelihood, as 
+#   per Clauset et al. 's recommendations. 
 # 
 
 

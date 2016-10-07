@@ -214,14 +214,14 @@ summary.patchdistr_spews_single <- function(obj, ...) {
   
   # Get and subset data.frame
   dat <- as.data.frame(obj)
-  dat <- dat[dat[ ,"best"], ]
+  dat <- dat[ is.na(dat[ ,'best']) | dat[ ,"best"], ]
   dat <- dat[ ,c('type', 'plrange')]
   
   # Format power-law range
   dat[ ,'plrange'] <- paste0(round(dat[ ,'plrange'] * 100), "%")
   
   # Replace names so it is prettier
-  names(dat) <- c('Distribution type', 'Power-law range')
+  names(dat) <- c('Best type', 'Power-law range')
   rownames(dat) <- NULL
   
   print.data.frame(dat, row.names = FALSE)
@@ -236,14 +236,14 @@ summary.patchdistr_spews_list <- function(obj, ...) {
   
   # Get and subset data.frame
   dat <- as.data.frame(obj)
-  dat <- dat[dat[ ,"best"], ]
+  dat <- dat[ is.na(dat[ ,'best']) | dat[ ,"best"], ]
   dat <- dat[ ,c('replicate', 'type', 'plrange')]
   
   # Format power-law range
   dat[ ,'plrange'] <- paste0(round(dat[ ,'plrange'] * 100), "%")
   
   # Replace names so it is prettier
-  names(dat) <- c('Matrix', 'Distribution type', 'Power-law range')
+  names(dat) <- c('Mat. #', 'Best type', 'Power-law range')
   rownames(dat) <- NULL
   
   print.data.frame(dat, row.names = FALSE)

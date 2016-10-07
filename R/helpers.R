@@ -34,3 +34,25 @@ pval_stars <- function(value, NA_ret = NA) {
   }
 }
 
+
+# Print a line with matrix size information 
+display_size_info <- function(x, ...) { 
+  UseMethod('display_size_info')
+}
+
+# ... for spews_result class
+display_size_info.spews_result <- function(x) { 
+  sizes <- sapply(x, function(x) dim(x[["orig_data"]]))
+  sizes <- apply(sizes, 1, function(X) length(unique(X)) == 1)
+  has_different_sizes <- ! any(sizes)
+  if (has_different_sizes) { 
+    size_text_report <- "variable sizes"
+  } else { 
+    size_text_report <- paste0("size: ", nrow(x[[1]][["orig_data"]]), 'x', 
+                               ncol(x[[1]][["orig_data"]]))
+  } 
+  cat(' ', 
+      length(x), ' ', 
+      ifelse(length(x)>1, 'matrices', 'matrix'), ' ',
+      "(", size_text_report,')\n', sep = '')
+}

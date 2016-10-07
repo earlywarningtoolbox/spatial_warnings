@@ -30,10 +30,23 @@
 indicator_sdr <- function(input, 
                           sdr_low_range  = NULL, 
                           sdr_high_range = NULL, 
-                          nreplicates = 499, 
-                          quiet = FALSE) { 
+                          nreplicates = 999) { 
   
   check_mat(input) # checks if binary and sensible
+  
+  if ( is.null(sdr_low_range) ) { 
+    warning("Choosing the 20% lowest frequencies for spectral density ratio ",
+            "as none was specified. Use parameter sdr_low_range to choose ", 
+            "a different value.")
+    sdr_low_range <- c(0, .2)
+  }
+  
+  if ( is.null(sdr_high_range) ) { 
+    warning("Choosing the 20% highest frequencies for spectral density ratio ",
+            "as none was specified. Use parameter sdr_high_range to choose ", 
+            "a different value.")
+    sdr_high_range <- c(.8, 1)
+  }
   
   if (is.list(input)) {
     # Returns a list of lists
@@ -86,23 +99,8 @@ indicator_sdr_do_ratio <- function(spectrum, low_range, high_range) {
 # Convert ranges from proportional values to absolute distance values
 convert_ranges_to_absolute <- function(mat, 
                                        sdr_low_range  = NULL, 
-                                       sdr_high_range = NULL, 
-                                       quiet = FALSE) { 
-  
-  if ( !quiet && is.null(sdr_low_range) ) { 
-    warning("Choosing the 20% lowest frequencies for spectral density ratio ",
-            "as none was specified. Use parameter sdr_low_range to choose ", 
-            "a different value.")
-    sdr_low_range <- c(0, .2)
-  }
-  
-  if ( !quiet && is.null(sdr_high_range) ) { 
-    warning("Choosing the 20% highest frequencies for spectral density ratio ",
-            "as none was specified. Use parameter sdr_high_range to choose ", 
-            "a different value.")
-    sdr_high_range <- c(.8, 1)
-  }
-  
+                                       sdr_high_range = NULL) { 
+    
   maxdist <- 1 + floor(min(dim(mat)) / 2)
   low_range_absolute  <- sdr_low_range * maxdist
   high_range_absolute <- sdr_high_range * maxdist

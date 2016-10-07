@@ -1,0 +1,28 @@
+# 
+# 
+# Textual output options 
+DIGITS <- 3
+
+
+# A theme that gives visual homogenity to all the plots 
+# produced by the spatialwarnings package. It is implemented as a function so 
+# that some things are tweakable on the fly
+# 
+theme_spwarnings <- function() { 
+  lightgray <- "#DCDAD5"
+  lightgray_darker <- "#B6B5B1"
+  lightgray_lighter <- "#F1EFE9"
+  theme_bw() + 
+    theme(panel.grid.major  = element_line(color = lightgray_darker, 
+                                             linetype = 2), 
+          panel.grid.minor  = element_blank(), 
+          strip.background = element_rect(fill = lightgray, color = lightgray), 
+          panel.border = element_rect(color = lightgray)
+          ) 
+}
+    
+# Line color scale
+linescale_spwarnings <- function() { 
+  scale_color_manual(values = c('#EAD710', '#EA4510', '#6E10EA', '#10EA12'))
+}
+

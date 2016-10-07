@@ -7,9 +7,9 @@
 
 
 
-# Plot method
+# Plot methods
 # --------------------------------------------------
-
+# 
 # 
 #' @title Generic spatial early-warning signals: plotting function
 #' 
@@ -50,8 +50,14 @@ plot.generic_spews_test <- function(obj,
   plot_data <- data.frame(as.data.frame(obj), 
                           gradient = along[obj[ ,'replicate']])
   
+  # Change indicator names to prettier names before plotting 
+  levels(plot_data[ ,'indicator']) <- c('Mean', 'Moran\'s I', 
+                                        'Skewness', 'Variance')
+  
   # Create base plot object 
-  plot <- ggplot2::ggplot(plot_data)
+  plot <- ggplot2::ggplot(plot_data) + 
+    theme_spwarnings() + 
+    linescale_spwarnings()
   
   # Check if we really want to add a null ribbon
   add_null <- display_null
@@ -81,8 +87,6 @@ plot.generic_spews_test <- function(obj,
       ggplot2::geom_line(ggplot2::aes_string(x = "gradient", 
                                              y = "null_mean"), 
                          color = 'black', alpha = .1)
-      
-      
   }
   
   # Add the trend on the graph (Note that we add it over the null trend)
@@ -93,12 +97,14 @@ plot.generic_spews_test <- function(obj,
   
   # Add facets 
   plot <- plot + 
-            ggplot2::facet_wrap( ~ indicator, scales = 'free_y') + 
-            ggplot2::guides(color = FALSE) # Disable color legend
+            facet_wrap( ~ indicator, scales = 'free_y') + 
+            guides(color = FALSE) + # Disable color legend (redundant with facets)
+            ylab('Indicator value') 
   
-  # Add names
+  # Add x-axis names 
   if ( set_default_xlab ) { 
-    plot <- plot + ggplot2::xlab('Matrix number')
+    plot <- plot + 
+      ggplot2::xlab('Matrix number') 
   } else { 
     plot <- plot + ggplot2::xlab(as.character(match.call()['along']))
   }
@@ -125,7 +131,7 @@ as.data.frame.generic_spews_test <- function(obj, ...) {
 # --------------------------------------------------
  
 #'@export
-print.generic_spews_test <- function(x) { 
+print.generic_spews_test <- function(x, ...) { 
   cat('Generic Spatial Early-Warnings\n') 
   cat('\n')
   
@@ -135,18 +141,18 @@ print.generic_spews_test <- function(x) {
   x2 <- dlply(x2, ~ indicator, subset, select = c('value', 'pval', 'stars'))
   
   # We just keep the value for the mean (pval makes no sense)
-  x2[['Mean']] <- x2[['Mean']][ ,c('value')]
+  x2[['mean']] <- x2[['mean']][ ,c('value')]
   
   # Format final table
   x2 <- data.frame(replicate = unique(x[ ,'replicate']), 
                    do.call(data.frame, x2))
                      
-  names(x2) <- c('Replicate', 'Mean', 
+  names(x2) <- c('Mat. #', 'Mean', 
                  'Moran\'s I', 'P>null', '   ',
                  'Skewness', 'P>null', '   ',
                  'Variance', 'P>null', '   ')
   
-  print.data.frame(x2, row.names = FALSE)
+  print.data.frame(x2, row.names = FALSE, digits = DIGITS)
   
   cat('\n')
   cat(' Significance tested against', attr(x, 'nreplicates'), 

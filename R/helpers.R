@@ -9,21 +9,28 @@ with_coarse_graining <- function(indicf, subsize) {
 }
 
 # Function that transforms a set of values into stars for display
-pval_stars <- function(value) { 
+pval_stars <- function(value, NA_ret = NA) { 
   
   if ( length(value) > 1 ) { 
-    return( sapply(value, pval_stars) )
+    stars <- sapply(value, pval_stars, NA_ret = NA_ret) 
+    attributes(stars) <- attributes(value)
+    return(stars)
+  }
+  
+  if ( is.na(value) ) { 
+    return(NA_ret) 
   }
   
   if (value < 0.001) { 
-    return('*** ' )
+    return('***' )
   } else if (value < 0.01) { 
-    return('**  '  )
+    return('** '  )
   } else if (value < 0.05) { 
-    return('*   '   )
+    return('*  '   )
   } else if (value < 0.1) { 
-    return('.   '   )
+    return('.  '   )
   } else { 
-    return('    ')
+    return('   ')
   }
 }
+

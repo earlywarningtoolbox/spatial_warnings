@@ -17,6 +17,9 @@
 #'   
 #' @param detrend Should the values be detrended by removing the spatial mean
 #'   of the matrix ?
+#'   
+#' @param abs_skewness Should the absolute skewness be used instead of its 
+#'   raw values ? 
 #' 
 #' @param moranI_coarse_grain Should the input matrix be coarse-grained before
 #'   computing the Moran's I indicator value ?
@@ -107,6 +110,7 @@
 generic_spews <- function(mat, 
                           subsize = 4,
                           detrend = FALSE,
+                          abs_skewness = FALSE,
                           moranI_coarse_grain = FALSE) {
   
   check_mat(mat)
@@ -114,35 +118,39 @@ generic_spews <- function(mat,
   orig_mat <- mat
   
   if ( is.list(mat) ) { 
-    results <- lapply(mat, generic_spews, subsize, detrend, 
+    results <- lapply(mat, generic_spews, subsize, detrend, abs_skewness,
                       moranI_coarse_grain)
     class(results) <- c('generic_spews_list', 'generic_spews', 
                         'spews_result', 'list')
     return(results)
   }
   
-  if (detrend) { 
-    mat <- mat - mean(mat)
-  }
-  
-  # Build the right indicator function (closure) depending on whether or not 
-  #   moran's I should be computed on coarse-grained matrices.
-  if ( moranI_coarse_grain ) { 
-    indicf <- function(mat) { 
-      mat_cg <- coarse_grain(mat, subsize)
-      c(variance = var(as.vector(mat_cg)),
-        skewness = raw_skewness(mat_cg),
-        moran    = raw_moran(mat_cg), # CG ! 
-        mean     = mean(mat))
+  # Build the right indicator function (closure) that take into accounts the 
+  #   above options. 
+  indicf <- function(mat) { 
+    
+    mat_cg <- coarse_grain(mat, subsize)
+    
+    # Handle detrending
+    if (detrend) { 
+      mat_cg <- mat_cg - mean(mat_cg)
     }
-  } else { 
-    indicf <- function(mat) { 
-      mat_cg <- coarse_grain(mat, subsize)
-      c(variance = var(as.vector(mat_cg)),
-        skewness = raw_skewness(mat_cg),
-        moran    = raw_moran(mat), # not CG ! 
-        mean     = mean(mat))
+    
+    if (moranI_coarse_grain) { 
+      moran_value <- raw_moran(mat_cg) 
+    } else { 
+      moran_value <- raw_moran(mat)
     }
+    
+    skewness_value <- raw_skewness(mat_cg)
+    if (abs_skewness) { 
+      skewness_value <- abs(skewness_value)
+    }
+    
+    c(variance = var(as.vector(mat_cg)),
+      skewness = skewness_value,
+      moran    = moran_value,
+      mean     = mean(mat))
   }
   
   # Compute the indicators and store the parameters used
@@ -150,7 +158,9 @@ generic_spews <- function(mat,
                   orig_data = orig_mat,
                   call = match.call(),
                   subsize = subsize, 
-                  indicf  = indicf,
+                  indicf  = indicf, 
+                  abs_skewness = abs_skewness, 
+                  moranI_coarse_grain = moranI_coarse_grain,
                   detrend = detrend)
   
   class(results) <- c('generic_spews_single', 'generic_spews',

@@ -35,8 +35,8 @@ indictest.generic_spews_single <- function(obj, null_replicates = 999, ...) {
   results <- as.data.frame(null_values)
   
   # Format output. Note that we always add a "replicate" column even if there 
-  # is only one so code works on both
-  indic_list <- c('Variance', 'Skewness', 'Moran\'s I', 'Mean')
+  # is only one so summary() code works on both
+  indic_list <- c('variance', 'skewness', 'moran', 'mean')
   results <- data.frame(replicate = 1, 
                         indicator = indic_list, 
                         results)

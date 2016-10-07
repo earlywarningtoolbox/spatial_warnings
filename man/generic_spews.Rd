@@ -7,7 +7,7 @@
 \alias{plot.generic_spews_test}
 \title{Generic Spatial Early-Warning signals}
 \usage{
-generic_spews(mat, subsize = 4, detrend = FALSE,
+generic_spews(mat, subsize = 4, detrend = FALSE, abs_skewness = FALSE,
   moranI_coarse_grain = FALSE)
 
 \method{indictest}{generic_spews}(obj, null_replicates = 999, ...)
@@ -25,6 +25,9 @@ or a list of those}
 
 \item{detrend}{Should the values be detrended by removing the spatial mean
 of the matrix ?}
+
+\item{abs_skewness}{Should the absolute skewness be used instead of its 
+raw values ?}
 
 \item{moranI_coarse_grain}{Should the input matrix be coarse-grained before
 computing the Moran's I indicator value ?}

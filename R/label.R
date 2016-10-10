@@ -41,6 +41,14 @@ label <- function(mat,
                                     0,1,0), ncol=3), # 4way NB 
                   wrap = TRUE) {
   
+  # Handle the all empty or all full case
+  if ( all(mat) ) { 
+    return( matrix(TRUE, nrow = nrow(mat), ncol = ncol(mat)) ) 
+  } 
+  if ( all(!mat) ) { 
+    return( matrix(FALSE, nrow = nrow(mat), ncol = ncol(mat)) ) 
+  }
+  
   .label(mat, nbmask, wrap)
 }
 

@@ -35,15 +35,10 @@ patchsizes <- function(x, merge = FALSE) {
     return( numeric() )
   }
   
-  # Actual computation of the indicator begins here
-  # --------------------------------
-  
+  # We use the label function -> it returns patch sizes as attributes
   map <- label(x) 
-  patchvec <- sapply(seq.int(max(map, na.rm=TRUE)),
-                     function(i) sum(map == i, na.rm = TRUE) ) 
-  patchvec <- sort(patchvec)
   
-  return(patchvec)
+  return(attr(map, "psd"))
 }
 
 # Get the higher tail cumulative distribution of something (P(x >= k))

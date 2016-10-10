@@ -3,6 +3,8 @@
 // 
 
 #include <Rcpp.h>
+#include <queue>
+#include <utility>
 #include "./headers.h"
 
 using namespace Rcpp;
@@ -21,73 +23,90 @@ IntegerMatrix label(IntegerMatrix mat,
   IntegerMatrix output(H,W);
   LogicalMatrix is_marked(H,W);
   int patch_number = 1;
+  std::vector<int> patchsizes;
+  int new_size;
   
   for (int i=0; i<W; i++) { 
-    for (int j=0; j<W; j++) { 
+    for (int j=0; j<H; j++) { 
       // We consider the cell (i,j).
       
       // Default value is NA if not in a patch
       if ( ! mat(i,j) > 0) { 
         output(i,j) = DEFAULT_VALUE;
+        is_marked(i,j) = 1;
+      }
       
       // If it is within a patch and not marked already 
-      } else if ( ! is_marked(i,j) ) { 
-      
+      if ( !is_marked(i,j) ) { 
         // We flood fill the patch
-        IntegerVector X = IntegerVector::create(i,j);
-        flood_fill(mat, is_marked, output, nbmask, X, patch_number, wrap);
+        std::pair<int,int> xy = std::make_pair(i,j);
+        new_size = flood_fill(mat, is_marked, output, nbmask, 
+                                              xy, patch_number, wrap);
+        patchsizes.push_back(new_size);
         patch_number++;
-        
-      } 
+      }
+      output(i,j);
     }
   }
   
+  output.attr("psd") = patchsizes;
   return(output);
 }
 
 
-// We use an implicit stack here which is not very efficient but easier on my 
-// brain and probably enough for our use.
-void flood_fill(const IntegerMatrix &mat, 
+// This flood fill is implemented with a queue
+int flood_fill(const IntegerMatrix &mat, 
                 LogicalMatrix &is_marked,
                 IntegerMatrix &output,
                 IntegerMatrix nbmask,
-                IntegerVector X,
+                std::pair<int, int> xy,
                 int fillcol,
                 bool wrap) { 
   
-  int i = X(0);
-  int j = X(1);
+  // Create empty queue
+  std::queue <std::pair<int, int> > to_fill;
   
-  // We paint the pixel in our fill color
-  if (mat(i,j) > 0) { 
-    is_marked(i,j) = 1;
+  // Keep a count of the number of cell counted
+  int total_marked = 0;
+  
+  // Add our cell to the queue
+  to_fill.push(xy);
+  is_marked(xy.first, xy.second) = 1; // The cell has been pushed to the queue
+  total_marked++;
+  
+  while ( !to_fill.empty() ) { 
+    xy = to_fill.front();
+    to_fill.pop(); 
+    int i = xy.first;
+    int j = xy.second;
+    
+    // We paint the pixel in our fill color (it always starts with vegetation)
     output(i,j) = fillcol;
     
     // We consider its neighbors
-    IntegerMatrix nb = get_nb_coords(mat, X, nbmask, wrap);
+    IntegerMatrix nb = get_nb_coords(mat, xy, nbmask, wrap);
     
+    // We add the neighbors to the queue if needed
     for (int n=0; n<nb.nrow(); n++) { 
-      // We flood fill them if they are vegetated and not-marked
-      if ( mat(nb(n,0),nb(n,1)) > 0 && ! is_marked(nb(n,0), nb(n,1)) ) {
-        IntegerVector X_new = IntegerVector::create(nb(n,0), nb(n,1));
-        flood_fill(mat, is_marked, output, nbmask, X_new, fillcol, wrap);
+      int newx = nb(n, 0);
+      int newy = nb(n, 1);
+      
+      if ( !is_marked(newx, newy) && (mat(newx, newy) > 0) ) { 
+        // We mark this cell to know it has been put in the queue
+        is_marked(newx, newy) = 1;
+        total_marked++;
+        std::pair<int,int> xynew = std::make_pair(newx, newy);
+        to_fill.push(xynew);
       }
     }
   }
-  
+  return total_marked;
 }
-
 
 // A function that returns the coordinates of neighboring cells in a matrix,
 //   taking into account the wraparound
-// 
-
-#include <Rcpp.h>
-using namespace Rcpp;
-
 IntegerMatrix get_nb_coords(IntegerMatrix mat, 
-                            IntegerVector X,
+                            std::pair<int,int> X,
                             IntegerMatrix nbmask, 
                             bool wrap) { 
   
@@ -108,8 +127,8 @@ IntegerMatrix get_nb_coords(IntegerMatrix mat,
         int shift_y = nbj - ceil( (nbmask.ncol()-1)/2 );
         
         // Actual coordinates of the neighbor
-        int nb_x = (X(0) + shift_x);
-        int nb_y = (X(1) + shift_y);
+        int nb_x = (X.first + shift_x);
+        int nb_y = (X.second + shift_y);
         
         // Does the neighbor fall outside the matrix ? 
         bool is_out = nb_x < 0 | nb_x >= W | nb_y < 0 | nb_y >= H;
@@ -137,7 +156,6 @@ IntegerMatrix get_nb_coords(IntegerMatrix mat,
     neighbors_xy = tmp;
   }
   
-  colnames(neighbors_xy) = CharacterVector::create("x","y");
   return neighbors_xy; 
 }
 

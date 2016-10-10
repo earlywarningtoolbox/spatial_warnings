@@ -6,24 +6,22 @@
 #ifndef HEADERS_INCLUDED
 #define HEADERS_INCLUDED
 
-Rcpp::IntegerMatrix get_nb_coords(Rcpp::IntegerMatrix mat, 
-                                  Rcpp::IntegerVector X,
-                                  Rcpp::IntegerMatrix nbmask, 
-                                  bool wrap);
+using namespace Rcpp;; 
 
-Rcpp::IntegerMatrix label_patches(Rcpp::IntegerMatrix mat, 
-                                  Rcpp::IntegerMatrix nbmask,
-                                  bool wrap);
+IntegerMatrix get_nb_coords(IntegerMatrix mat, 
+                            std::pair<int,int> X,
+                            IntegerMatrix nbmask, 
+                            bool wrap);
 
-void flood_fill(const Rcpp::IntegerMatrix &mat, 
-                Rcpp::LogicalMatrix &is_marked,
-                Rcpp::IntegerMatrix &output,
-                Rcpp::IntegerMatrix nbmask,
-                Rcpp::IntegerVector X,
+int flood_fill(const IntegerMatrix &mat, 
+                LogicalMatrix &is_marked,
+                IntegerMatrix &output,
+                IntegerMatrix nbmask,
+                std::pair<int, int> xy,
                 int fillcol,
                 bool wrap);
 
-Rcpp::NumericMatrix coarse_grain(Rcpp::NumericMatrix mat, 
+Rcpp::NumericMatrix coarse_grain(NumericMatrix mat, 
                                  int subsize);
 
 #endif

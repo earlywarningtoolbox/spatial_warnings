@@ -64,6 +64,8 @@
 #'@export 
 indicator_psdtype <- function(input, merge = FALSE, best_by = "AIC") { 
   
+  check_mat(input)
+  
   if ( !merge && is.list(input) ) { 
     return( lapply(input, indicator_psdtype, best_by = best_by) )
   } 

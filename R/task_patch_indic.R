@@ -44,7 +44,7 @@ patchdistr_spews <- function(x,
   check_mat(x) # Check input matrix
   
   # If input is a list -> apply on each element
-  if ( !merge & is.list(x)) { # FALSE for x = NULL
+  if ( !merge & is.list(x)) { 
     results <- llply(x, patchdistr_spews, best_by, xmin_bounds, merge, ...) 
     class(results) <- c('patchdistr_spews_list', 'patchdistr_spews', 
                         'spews_result', 'list')

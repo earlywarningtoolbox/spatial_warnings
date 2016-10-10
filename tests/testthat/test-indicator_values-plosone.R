@@ -33,7 +33,7 @@ test_that('results matches those in PLOS One', {
                           function(df) { 
                             data[seq.int(df[['start']], df[['end']]), ]
                           })
-  matrices <- lapply(matrices, as.binary_matrix, state = 1) # veg is 1
+  matrices <- lapply(matrices, function(x) x == 1) # veg is 1
   
   # Now compute indicators
   test_results  <- generic_spews(matrices, subsize = 10, 

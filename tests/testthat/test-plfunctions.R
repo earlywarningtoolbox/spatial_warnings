@@ -48,15 +48,14 @@ test_that("PL computations work with xmins", {
 
 test_that("xmins estimation is coherent", { 
   
-  parms <- expand.grid(expo      = seq(1, 2, by = .1), 
-                       true_xmin = 1* 10^seq(0, 7, by = .5))
-  xmax <- 1e3
+  parms <- expand.grid(expo      = c(1.3, 1.5, 1.8),
+                       true_xmin = round(1* 10^c(1, 1.5, 3, 6, 9, 12)))
   
   estim_xmin <- function(df) { 
-    pldat <- poweRlaw::rpldis(xmax, df[ ,'true_xmin'], df[, 'expo'])
-    pldat <- pldat[pldat<xmax]
+    pldat <- poweRlaw::rpldis(1000, df[ ,'true_xmin'], df[, 'expo'])
     est_xmin <- xmin_estim(pldat)
-    cat(df[ ,'true_xmin'], ' -> ', est_xmin, "\n", sep = "")
+    print(xmax)
+    cat("\n", df[ ,'true_xmin'], ' -> ', est_xmin, "\n", sep = "")
     data.frame(df, est_xmin = est_xmin)
   }
   
@@ -65,4 +64,4 @@ test_that("xmins estimation is coherent", {
   }
   
 })
-  
+

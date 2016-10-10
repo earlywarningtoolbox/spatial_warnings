@@ -17,8 +17,6 @@
 #'   the higher 20% (default value), set sdr_high_range to 
 #'   c(.8, 1). 
 #' 
-#' @param quiet Disable some warnings
-#' 
 #' @param nreplicates The number of replicates to compute for the null 
 #'   distribution
 #' 
@@ -51,14 +49,14 @@ indicator_sdr <- function(input,
   if (is.list(input)) {
     # Returns a list of lists
     return( llply(input, indicator_sdr, sdr_low_range, sdr_high_range, 
-                   nreplicates, quiet) )
+                   nreplicates) )
   } 
   
   # Now the input is always a mmatrix
   warn_if_not_square(input)
   
   ranges_absolute <- convert_ranges_to_absolute(input, sdr_low_range, 
-                                                sdr_high_range, quiet)
+                                                sdr_high_range)
   
   indicf <- function(mat) { 
     indicator_sdr_core(mat, ranges_absolute[["low"]], ranges_absolute[["high"]])

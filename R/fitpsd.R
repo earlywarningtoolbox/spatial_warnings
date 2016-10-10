@@ -52,10 +52,9 @@ zeta_w_xmin <- function(expo, xmins) {
       output[perm[i]] <- output[perm[i-1]]
     }
   }
-    
+  
   return(output)
 }
-
 
 
 # PL fitting 
@@ -132,7 +131,13 @@ pl_fit <- function(dat, xmin = 1, method = "auto") {
   # If we want no approximation, then find the best fit
   if ( method == "direct") { 
     negll <- function(expo) { - pl_ll(dat, expo, xmin) }
-    est <- nlm(negll, expo_estim)
+    
+    if ( OPTIMWARNINGS ) { 
+      est <- nlm(negll, expo_estim)
+    } else { 
+      est <- suppressWarnings( nlm(negll, expo_estim) )
+    }
+      
     expo_estim <- est[["estimate"]]
   }
   
@@ -161,8 +166,8 @@ xmin_estim <- function(dat, bounds = range(dat)) {
   # Compute empirical cdf of data
   cdf <- sapply(dat, function(x) mean(dat >= x) )
   
-  kss <- adply(xmins, 1, get_ks_dist, 
-               dat = dat, cdf = cdf, .progress = 'time')[ ,2]
+  # Compute all kss
+  kss <- adply(xmins, 1, get_ks_dist, dat = dat, cdf = cdf)[ ,2]
   
   # Note that sometimes the fit fails, especially when xmin is around the 
   #   distribution tail -> we need to remove some NAs here
@@ -214,7 +219,12 @@ exp_fit <- function(dat) {
   rate0 <- 1 / mean(dat)
   
   negll <- function(rate) - exp_ll(dat, rate)
-  est <- nlm(negll, rate0)
+  
+  if ( OPTIMWARNINGS ) { 
+    est <- nlm(negll, rate0)
+  } else { 
+    est <- suppressWarnings( nlm(negll, rate0) )
+  }
   
   result <- list(type = 'exp',
                  method = 'll', 
@@ -332,8 +342,8 @@ tpl_fit <- function(dat) {
   pars0 <- c( pl_fit(dat)[['expo']], exp_fit(dat)[['rate']] )
   
   negll <- function(pars) - tpl_ll(dat, pars[1], pars[2])
-  rss   <- function(pars) sum( (dat - ptpl(dat, pars[1], pars[2]))^2 )
   
+  # More robust than nlm ?   
   est <- constrOptim(pars0, negll, 
                      grad = NULL,
                      ui = matrix(c(1, 0, 0, 1), ncol = 2), 

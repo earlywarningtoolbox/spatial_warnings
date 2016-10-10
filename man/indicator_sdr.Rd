@@ -22,8 +22,6 @@ c(.8, 1).}
 
 \item{nreplicates}{The number of replicates to compute for the null 
 distribution}
-
-\item{quiet}{Disable some warnings}
 }
 \value{
 A single value containing the SDR value

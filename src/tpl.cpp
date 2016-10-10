@@ -19,10 +19,6 @@ double tplsum(double expo, double rate,
     newval = pow(k, -expo) * exp(-k * rate);
     ans += newval;
     
-    // We bail if the series seem to converge
-    if ( newval < TOLERANCE ) { 
-      return(ans);
-    }
   }
   
   return ans;

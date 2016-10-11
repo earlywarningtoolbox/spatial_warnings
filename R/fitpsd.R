@@ -56,6 +56,17 @@ zeta_w_xmin <- function(expo, xmins) {
   return(output)
 }
 
+tplsum <- function(expo, rate, xs) { 
+  perm <- order(xs)
+  xs.sorted <- xs[order(xs)]
+  
+  vals <- .tplsum(expo, rate, xs.sorted)
+  
+  # Permute values in original order
+  vals[perm] <- vals
+  
+  return(vals)
+}
 
 # PL fitting 
 # ---------------------------------------
@@ -270,7 +281,7 @@ pdislnorm <- function(x, meanlog, sdlog) {
 
 # LNORM: LL
 lnorm_ll <- function(x, meanlog, sdlog) { 
-  
+
 #   cat('\n', 'LL:\n')
 #   cat("meanlog=", meanlog, "/sdlog=", sdlog, " -> ", ddislnorm(x, meanlog, sdlog, log = TRUE), "\n\n")
   
@@ -309,7 +320,7 @@ lnorm_fit <- function(dat) {
 
 # P(x=k)
 dtpl <- function(x, expo, rate) { 
-  const <- tplsum(expo, rate, from = 1, to = 1e6)
+  const <- tplsum(expo, rate, 1e6)
 #   C = ( float(exp(self.xmin * self.Lambda) /
 #             lerchphi(exp(-self.Lambda), self.alpha, self.xmin)) )
   
@@ -321,13 +332,9 @@ dtpl <- function(x, expo, rate) {
 # P(x>=k)
 ptpl <- function(x, expo, rate) { 
   
-  const <- tplsum(expo, rate, from = 1, to = 1e6)
+  const <- tplsum(expo, rate, 1e6)
   
-  p_inf_to_k <- sapply(x, function(k) { 
-    tplsum(expo, rate, from = 1, to = ceiling(k-1)) / const 
-    })
-  
-#   p_sup_to_1 <- tplsum(expo, rate, from = 1, to = 1)
+  p_inf_to_k <- tplsum(expo, rate, x) / const
   
   return( 1 - p_inf_to_k ) 
   
@@ -339,21 +346,17 @@ tpl_ll <- function(x, expo, rate) {
 
 tpl_fit <- function(dat) { 
   
-  pars0 <- c( pl_fit(dat)[['expo']], exp_fit(dat)[['rate']] )
+  pars0 <- c( pl_fit(dat, method = "approx")[['expo']], 1)
   
   negll <- function(pars) - tpl_ll(dat, pars[1], pars[2])
   
-  # More robust than nlm ?   
-  est <- constrOptim(pars0, negll, 
-                     grad = NULL,
-                     ui = matrix(c(1, 0, 0, 1), ncol = 2), 
-                     ci = c(-1, 0))
+  est <- nlm(negll, pars0)
   
   result <- list(type = 'tpl',
                  method = 'll', 
-                 expo = est[['par']][1], 
-                 rate = est[['par']][2], 
-                 ll = - est[["value"]],
+                 expo = est[['estimate']][1], 
+                 rate = est[['estimate']][2], 
+                 ll = - est[["minimum"]],
                  npars = 2)
   return(result)
 }

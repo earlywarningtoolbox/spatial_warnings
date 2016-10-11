@@ -20,11 +20,14 @@ IntegerMatrix label(IntegerMatrix mat,
   int W = mat.ncol();
   int H = mat.nrow();
   
+  // Initialize variables 
   IntegerMatrix output(H,W);
   LogicalMatrix is_marked(H,W);
-  int patch_number = 1;
+  int patch_id = 1;
+  
   std::vector<int> patchsizes;
-  int new_size;
+  IntegerVector patch;
+  bool percolation;
   
   for (int i=0; i<W; i++) { 
     for (int j=0; j<H; j++) { 
@@ -40,39 +43,49 @@ IntegerMatrix label(IntegerMatrix mat,
       if ( !is_marked(i,j) ) { 
         // We flood fill the patch
         std::pair<int,int> xy = std::make_pair(i,j);
-        new_size = flood_fill(mat, is_marked, output, nbmask, 
-                                              xy, patch_number, wrap);
-        patchsizes.push_back(new_size);
-        patch_number++;
+        patch = flood_fill(mat, is_marked, output, nbmask, 
+                           xy, patch_id, wrap);
+        // Update percolation status, patch sizes and increase patch id
+        percolation = percolation ? true : patch(0) == 1;
+        patchsizes.push_back(patch(1));
+        patch_id++;
       }
       output(i,j);
     }
   }
   
   output.attr("psd") = patchsizes;
+  output.attr("percolation") = percolation;
   return(output);
 }
 
 
 // This flood fill is implemented with a queue
-int flood_fill(const IntegerMatrix &mat, 
-                LogicalMatrix &is_marked,
-                IntegerMatrix &output,
-                IntegerMatrix nbmask,
-                std::pair<int, int> xy,
-                int fillcol,
-                bool wrap) { 
+IntegerVector flood_fill(const IntegerMatrix &mat, 
+                         LogicalMatrix &is_marked,
+                         IntegerMatrix &output,
+                         IntegerMatrix nbmask,
+                         std::pair<int, int> xy,
+                         int fillcol,
+                         bool wrap) { 
   
   // Create empty queue
   std::queue <std::pair<int, int> > to_fill;
   
-  // Keep a count of the number of cell counted
-  int total_marked = 0;
+  // Keep a count of the number of cell counted (== patch size)
+  int patch_size = 0;
+  
+  // Keep a count of the left/right/top/bottom coordinates travelled, 
+  int xmin = xy.first;
+  int xmax = xy.first;
+  int ymin = xy.second;
+  int ymax = xy.second;
+  int percolation = 0;
   
   // Add our cell to the queue
   to_fill.push(xy);
   is_marked(xy.first, xy.second) = 1; // The cell has been pushed to the queue
-  total_marked++;
+  patch_size++;
   
   while ( !to_fill.empty() ) { 
     xy = to_fill.front();
@@ -82,6 +95,11 @@ int flood_fill(const IntegerMatrix &mat,
     
     // We paint the pixel in our fill color (it always starts with vegetation)
     output(i,j) = fillcol;
+    // We update the max coordinates of the patch
+    xmin = i < xmin ? i : xmin;
+    xmax = i > xmax ? i : xmax;
+    ymin = j < ymin ? j : ymin;
+    ymax = j > ymax ? j : ymax;
     
     // We consider its neighbors
     IntegerMatrix nb = get_nb_coords(mat, xy, nbmask, wrap);
@@ -92,15 +110,22 @@ int flood_fill(const IntegerMatrix &mat,
       int newy = nb(n, 1);
       
       if ( !is_marked(newx, newy) && (mat(newx, newy) > 0) ) { 
-        // We mark this cell to know it has been put in the queue
-        is_marked(newx, newy) = 1;
-        total_marked++;
+        // Add the cell to the queue
         std::pair<int,int> xynew = std::make_pair(newx, newy);
         to_fill.push(xynew);
+        // We mark this cell to know it has been put in the queue and update
+        //   the total number of cells marked (= patch size)
+        is_marked(newx, newy) = 1;
+        patch_size++;
       }
     }
   }
-  return total_marked;
+  
+  if ( (xmax - xmin + 1) == mat.ncol() || (ymax - ymin + 1) == mat.nrow() ) { 
+    percolation = 1;
+  }
+  
+  return( IntegerVector::create(percolation, patch_size) );
 }
 
 // A function that returns the coordinates of neighboring cells in a matrix,

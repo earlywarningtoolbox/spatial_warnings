@@ -41,12 +41,20 @@ label <- function(mat,
                                     0,1,0), ncol=3), # 4way NB 
                   wrap = TRUE) {
   
-  # Handle the all empty or all full case
+  # The matrix is full
   if ( all(mat) ) { 
-    return( matrix(TRUE, nrow = nrow(mat), ncol = ncol(mat)) ) 
+    result <- matrix(1, nrow = nrow(mat), ncol = ncol(mat)) 
+    attr(result, "patchsizes") <- prod(dim(mat))
+    attr(result, "percolation") <- TRUE
+    return(result)
   } 
+  
+  # The matrix is empty
   if ( all(!mat) ) { 
-    return( matrix(FALSE, nrow = nrow(mat), ncol = ncol(mat)) ) 
+    result <- matrix(NA, nrow = nrow(mat), ncol = ncol(mat)) 
+    attr(result, "patchsizes") <- integer(0)
+    attr(result, "percolation") <- FALSE
+    return(result)
   }
   
   .label(mat, nbmask, wrap)
@@ -64,26 +72,6 @@ percolation <- function(mat, nbmask = matrix(c(0,1,0,
                                                0,1,0), ncol=3)) { 
   
   patches <- label(mat, nbmask, wrap = FALSE)
-  
-  if ( all(is.na(patches)) ) { 
-    return(NA) # logical
-  } 
-  
-  unique_patches <- seq.int(max(patches, na.rm = TRUE))
-  
-  # We scan all patches and see whether they have height or width equal 
-  #   to the size of the matrix
-  for ( patch in unique_patches ) { 
-    patch_cell_coords <- which(patches == patch, arr.ind = TRUE)
-    pos.min <- apply(patch_cell_coords, 2, min)
-    pos.max <- apply(patch_cell_coords, 2, max)
-    if ( any( (pos.max - pos.min)+1 == dim(mat)) ) { 
-      return(TRUE)
-    }
-  }
-  
-  # If we have not found any patch of such size, then there is no percolation 
-  #   so we return
-  return(FALSE)
+  return(attr(patches, "percolation"))
 }
 

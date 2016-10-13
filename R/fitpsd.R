@@ -58,6 +58,7 @@ zeta_w_xmin <- function(expo, xmins) {
 
 # PL: P(x=k)
 dpl <- function(x, expo, xmin = 1, log = FALSE) { 
+  
   const <- VGAM::zeta(expo)
   
   # Adjust constant for threshold (note that this has no effect if xmin == 1, 
@@ -85,15 +86,18 @@ dpl <- function(x, expo, xmin = 1, log = FALSE) {
 ppl <- function(x, expo, xmin = 1) { 
   const <- VGAM::zeta(expo)
   
+  is_below_xmin <- x < xmin
+  
   # Adjust constant for threshold (note that this has no effect if xmin == 1, 
   #   as expected)
   const <- const - sum_all_one_over_k(from = 1, to = xmin, expo)
   
 #   ans <- sapply(x, function(x) zeta_w_xmin(expo, x)/const)
-  ans <- zeta_w_xmin(expo, x) / const 
+  ps <- zeta_w_xmin(expo, x[!is_below_xmin]) / const 
   
   # Values below threshold are NA'ed
-  ans[x < xmin] <- NA
+  ans <- NA*x;
+  ans[!is_below_xmin] <- ps
   
   return(ans)
 }
@@ -134,18 +138,20 @@ pl_fit <- function(dat, xmin = 1, method = "auto") {
     negll <- function(expo) { - pl_ll(dat, expo, xmin) }
     
     if ( OPTIMWARNINGS ) { 
-      est <- nlm(negll, expo_estim)
+      est <- optim(expo_estim, negll, method = 'L-BFGS-B', 
+                   lower = 1 + .Machine$double.eps) # expo is always > 1
     } else { 
-      est <- suppressWarnings( nlm(negll, expo_estim) )
+      est <- suppressWarnings( optim(expo_estim, negll, method = 'L-BFGS-B', 
+                                     lower = 1 + .Machine$double.eps) )
     }
-      
-    expo_estim <- est[["estimate"]]
+    
+    expo_estim <- est[["par"]]
   }
   
   result <- list(type = 'pl',
                  method = 'll', 
                  expo = expo_estim,
-                 ll = pl_ll(dat, expo_estim, xmin),
+                 ll = pl_ll(dat, expo, xmin),
                  xmin = xmin,
                  npars = 1)
   return(result)
@@ -170,11 +176,9 @@ xmin_estim <- function(dat, bounds = range(dat)) {
   xmins <- head(xmins, length(xmins)-3)
   xmins <- xmins[xmins >= min(bounds) & xmins <= max(bounds)]
   
-  # Compute empirical cdf of data
-  cdf <- sapply(dat, function(x) mean(dat >= x) )
-  
   # Compute all kss
-  kss <- adply(xmins, 1, get_ks_dist, dat = dat, cdf = cdf)[ ,2]
+  kss <- adply(xmins, 1, get_ks_dist, dat = dat)[ ,2]
+#   plot(kss)
   
   # Note that sometimes the fit fails, especially when xmin is around the 
   #   distribution tail -> we need to remove some NAs here
@@ -183,17 +187,27 @@ xmin_estim <- function(dat, bounds = range(dat)) {
   return(xmin)
 }
 
-get_ks_dist <- function(xmin, dat, cdf) { 
-  
-  # Crop cdf and dat to values above xmin
-  cdf_empirical <- cdf[dat >= xmin]
+get_ks_dist <- function(xmin, dat) { 
+  # Crop dat to values above xmin and compute cdf
   dat <- dat[dat >= xmin]
+  cdf_empirical <- sapply(dat, function(x) mean(dat >= x) )
+  
   # Fit and retrieve cdf
   fit <- pl_fit(dat, xmin = xmin)
   cdf_fitted <- ppl(dat, fit[["expo"]], fit[["xmin"]])
   
+#   # debug
+#   plot(data.frame(dat, rbinom(length(dat), 1, .5)), type = 'n')
+#   plot(log10(data.frame(dat, cdf_empirical))) 
+#   points(log10(data.frame(dat, cdf_fitted)), col = 'red')
+#   browser()
+#   zeta.fit(dat, xmin)$exponent
+#   fit$expo
+  
   # We return the ks distance
-  return( max(abs(cdf_empirical - cdf_fitted)) )
+  maxks <- max(abs(cdf_empirical - cdf_fitted))
+#   cat(xmin, ",", max(dat), "->", maxks,  "\n" )
+  return( maxks )
 }
 
 # EXP fitting 
@@ -364,14 +378,8 @@ tpl_fit <- function(dat,
   }
   
   pars0 <- c(expo0, rate0) # rate0)
-#   q <- 1
-#   while ( !is.finite(negll(pars0))) { 
-#     q <- q+1
-#     pars0 <- c(expo0, rate0/q) 
-#   } 
-#   print(rate0)
   
-  lower_bounds  <- c(expo = 0, rate = 0 + .Machine$double.eps)
+  lower_bounds  <- c(expo = 1, rate = 0 + .Machine$double.eps)
   upper_bounds  <- c(expo = Inf, rate = rate0)
   
   if ( OPTIMWARNINGS ) { 

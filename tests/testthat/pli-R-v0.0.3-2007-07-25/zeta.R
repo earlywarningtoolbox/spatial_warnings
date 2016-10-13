@@ -45,7 +45,7 @@
 # The location of the external program calculating the zeta function
 # Used by zeta_function_once.gsl
 # zeta_function_filename <- "~/bin/zeta_function"
-zeta_function_filename <- "./testthat/pli-R-v0.0.3-2007-07-25/zeta-function/zeta_func"
+zeta_function_filename <- "./pli-R-v0.0.3-2007-07-25/zeta-function/zeta_func"
 ### EDIT THIS LOCATION!!! ####
 
 

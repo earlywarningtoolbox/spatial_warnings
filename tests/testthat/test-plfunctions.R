@@ -4,22 +4,29 @@
 #   xmin != 1
 # 
 
-test_that("PL computations work with xmins", { 
+test_that("PL estimations work with xmins", { 
   
   # Setup pli from Clauzet et al's
-  try(setwd('./tests'))
-  for ( s in dir('./testthat/pli-R-v0.0.3-2007-07-25', 
+  try(setwd('./tests/testthat'))
+          
+  for ( s in dir('./pli-R-v0.0.3-2007-07-25', 
                 full.names = TRUE, pattern = '*.R') ) { 
     source(s)
   }
+
+  # Compile auxiliary binaries
+  system("cd ./pli-R-v0.0.3-2007-07-25/zeta-function/ && make")
+  system("cd ./pli-R-v0.0.3-2007-07-25/exponential-integral/ && make")
+  system("cd ./pli-R-v0.0.3-2007-07-25/ && \
+            gcc -lm discpowerexp.c -o discpowerexp && \
+            chmod +x discpowerexp")
   
-  xmax <- 1000
-  expos <- c(1.1, 1.5, 2)
+  expos <- c(1.5, 2)
   for (expo in expos) { 
-    for (xmin in c(1, 4, 10, 100, 500)) {
-      x <- seq.int(xmax)
+    for (xmin in c(1, 10, 100, 500)) {
+      x <- seq.int(1000)
       
-      pldat <- poweRlaw::rpldis(xmax, xmin, expo)
+      pldat <- poweRlaw::rpldis(1000, xmin, expo)
       pldat <- pldat[pldat < 1e5] # squeeze tail for speed
       
       # Test dpl with xmin != 1
@@ -48,19 +55,20 @@ test_that("PL computations work with xmins", {
 
 test_that("xmins estimation is coherent", { 
   
-  parms <- expand.grid(expo      = c(1.3, 1.5, 1.8),
-                       true_xmin = round(1* 10^c(1, 1.5, 3, 6, 9, 12)))
+  parms <- expand.grid(expo      = c(1.5), 
+                       rate      = c(0.001, 0.005, 0.01, 0.1, 0.2, 0.3, 0.5, 0.7, 1, 1.2, 1.3, 1.4, 1.5, 1.7, 1.8, 2))
   
   estim_xmin <- function(df) { 
-    pldat <- poweRlaw::rpldis(1000, df[ ,'true_xmin'], df[, 'expo'])
+    pldat <- round(rpowerexp(10000, 1, df[ ,'expo'], df[, 'rate']))
+#     print(pldat)
     est_xmin <- xmin_estim(pldat)
-    print(xmax)
-    cat("\n", df[ ,'true_xmin'], ' -> ', est_xmin, "\n", sep = "")
+    
+    cat(df$rate, ' -> ', est_xmin, "\n", sep = "")
     data.frame(df, est_xmin = est_xmin)
   }
   
   if ( require(plyr) ) { 
-    xmin_ests <- ddply(parms, ~ expo + true_xmin, estim_xmin, .progress = 'time')
+    xmin_ests <- ddply(parms, ~ expo + rate, estim_xmin, .progress = 'none')
   }
   
 })

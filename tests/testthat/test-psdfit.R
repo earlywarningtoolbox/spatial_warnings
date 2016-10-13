@@ -86,183 +86,149 @@ library(ggplot2)
 
 context('Test the fitting of distributions')
 
-TEST_PSD_FITS <- FALSE
+# Setup pli from Clauzet et al's
+#   try(setwd('./tests/testthat'), 
+for ( s in dir('./pli-R-v0.0.3-2007-07-25', 
+              full.names = TRUE, pattern = '*.R') ) { 
+  source(s)
+}
 
-if ( TEST_PSD_FITS ) { 
+# Compile auxiliary binaries
+system("cd ./pli-R-v0.0.3-2007-07-25/zeta-function/ && make")
+system("cd ./pli-R-v0.0.3-2007-07-25/exponential-integral/ && make")
+system("cd ./pli-R-v0.0.3-2007-07-25/ && \
+          gcc -lm discpowerexp.c -o discpowerexp && \
+          chmod +x discpowerexp")
 
-  # Setup pli from Clauzet et al's
-  try(setwd('./tests'))
-  for ( s in dir('./testthat/pli-R-v0.0.3-2007-07-25', 
-                full.names = TRUE, pattern = '*.R') ) { 
-    source(s)
+visual <- FALSE
+
+test_that('PL fitting works', { 
+  expos <- c(1.1, 1.5, 2)
+  for ( expo in expos ) { 
+      
+      
+      dat <- seq.int(1000)
+      pldat <- poweRlaw::rpldis(1000, xmin = 1, alpha = expo)
+      # Squeeze tail a bit
+      pldat <- pldat[pldat < 1e6]
+      
+      # left: spw <-> right: pli
+      # dpl <-> dzeta
+      expect_equal(dzeta(dat,, exponent = expo), 
+                    dpl(dat, expo))
+      
+      # ppl <-> pzeta with higher tail
+      expect_equal(pzeta(dat, exponent = expo, lower.tail = FALSE), 
+                    ppl(dat, expo))
+      
+      # ppl_ll <-> zeta.loglike
+      expect_equal(zeta.loglike(dat, exponent = expo), 
+                    pl_ll(dat, expo, xmin = 1))
+      
+      # pl_fit <-> zeta.fit 
+      pl_expo <- pl_fit(pldat)[['expo']]
+      expect_equal(zeta.fit(pldat)[['exponent']], pl_expo, tol = 1e-3)
+      
+      # Look at fit
+      # plot(log10(cumpsd(pldat)))
+      # xs <- c(min(pldat), max(pldat))
+      # lines(log10(xs), log10(ppl(xs, pl_expo)), col = 'red')
+      # title('PLFIT')
+  }
+  
+})
+
+test_that('EXP fitting works', { 
+  rates <- c(1.1, 1.5, 2)
+  for ( rate in rates ) { 
+      dat <- seq.int(1000)
+      expdat <- ceiling(rexp(1000, rate = rate))
+      
+      expect_equal(ddiscexp(dat, rate, threshold = 1),
+                    ddisexp(dat, rate))
+      
+      fit <- exp_fit(expdat)
+      expect_equal(fit[['rate']],
+                    discexp.fit(expdat, threshold = 1)[["lambda"]], tol = 1e-3)
+      
+#         # Look at fit
+#         plot(log10(cumpsd(expdat)))
+#         xs <- seq(min(expdat), max(expdat), length.out = 100)
+#         lines(log10(xs), log10(pdisexp(xs, fit[["rate"]])), col = 'red')
+#         title('EXPFIT')
+    }
+})
+
+test_that('LNORM fitting works', { 
+  
+  meanlogs <- c(1, 3, 10)
+  sdlogs <- c(1, 2, 3)
+  for ( meanlog in meanlogs ) { 
+    for ( sdlog in sdlogs ) { 
+    
+      xmax <- 1000
+      dat <- seq.int(xmax)
+      lnormdat <- ceiling(rlnorm(xmax, meanlog, sdlog))
+      
+      # Test distr functions
+      expect_equal(ddislnorm(dat, meanlog, sdlog),
+                    dlnorm.tail.disc(dat, meanlog, sdlog, threshold = 1))
+      
+      # Look at fit
+#         plot(log10(cumpsd(lnormdat)))
+#         xs <- seq(min(lnormdat), max(lnormdat), length.out = 100)
+#         lines(log10(xs), 
+#               log10(pdislnorm(xs, fit[['meanlog']], fit[['sdlog']])), col = 'red')
+#         lines(log10(xs), 
+#               log10(pdislnorm(xs, fit.lnorm.disc(lnormdat, threshold = 1)[["meanlog"]], 
+#                               fit.lnorm.disc(lnormdat, threshold = 1)[["sdlog"]])), 
+#                               col = "blue")
+#         title('LNORMFIT')
+    }
   }
 
-  visual <- FALSE
+  
+})
 
-  test_that('PL fitting works', { 
-    expos <- c(1.001, 1.1, 1.5, 2, 10, 50)
-    xmaxs <- c(1, 10, 100, 1000)
+
+
+# For TPL xmax must not be too low (>3?)
+test_that('TPL fitting works', { 
+  rates <- c(1.1, 1.5)
+  expos <- c(1.1, 1.5)
+  for ( rate in rates ) { 
     for ( expo in expos ) { 
-      for ( xmax in xmaxs ) { 
-        
-        print(paste(expo, "/", xmax))
-        dat <- seq.int(xmax)
-        pldat <- poweRlaw::rpldis(1000, xmin = 1, alpha = expo)
-        # Squeeze tail a bit
-        pldat <- pldat[pldat < 1e6]
-        
-        # left: spw <-> right: pli
-        # dpl <-> dzeta
-        expect_equal(dzeta(dat,, exponent = expo), 
-                     dpl(dat, expo))
-        
-        # ppl <-> pzeta with higher tail
-        expect_equal(pzeta(dat, exponent = expo, lower.tail = FALSE), 
-                     ppl(dat, expo))
-        
-        # ppl_ll <-> zeta.loglike
-        expect_equal(zeta.loglike(dat, exponent = expo), 
-                     pl_ll(dat, expo))
-        
-        # pl_fit <-> zeta.fit 
-        pl_expo <- pl_fit(pldat)[['expo']]
-        expect_equal(zeta.fit(pldat)[['exponent']], pl_expo, tol = 1e-3)
-        
-        # Look at fit
-        plot(log10(cumpsd(pldat)))
-        xs <- c(min(pldat), max(pldat))
-        lines(log10(xs), log10(ppl(xs, pl_expo)), col = 'red')
-        title('PLFIT')
-      }
+      
+      tpldat <- round(rpowerexp(10000, 1, expo, rate))
+      dat <- seq.int(max(tpldat))
+      
+      # Normalizing coeff
+      expect_equal(discpowerexp.norm(1, expo, rate), 
+                   tplnorm(expo, rate))
+      
+      # P(X=x)
+      expect_equal(dtpl(dat, expo, rate),
+                   ddiscpowerexp(dat, expo, rate, threshold = 1))
+      
+      expect_equal(tpl_ll(tpldat, expo, rate),
+                   discpowerexp.loglike(tpldat, expo, rate, threshold = 1))
+      
+      fit <- tpl_fit(tpldat)
+      # We skip the other codebase test as they produce errors all the time
+      #  (gsl underflow)
+      
+#       fit2 <- discpowerexp.fit(tpldat, threshold = 1)
+      
+#       expect_equal(fit$expo, fit2$exponent, tol = 1e3)
+#       expect_equal(fit$ll, fit2$loglike, tol = 1e3)
+      
+#         # Look at fit
+#         plot(log10(cumpsd(tpldat)))
+#         xs <- seq(min(tpldat), max(tpldat), length.out = 100)
+#         points(log10(xs), 
+#               log10(ptpl(xs, fit[["expo"]], fit[["rate"]])), col = 'red')
+#         title('TPLFIT')
     }
-    
-  })
+  }
+})
 
-  test_that('EXP fitting works', { 
-    rates <- c(1.001, 1.01, 1.1, 1.5, 2)
-    xmaxs <- c(1, 10, 100, 1000)
-    for ( rate in rates ) { 
-      for ( xmax in xmaxs ) { 
-        
-        print(paste(rate, "/", xmax))
-        dat <- seq.int(xmax)
-        expdat <- ceiling(rexp(1000, rate = rate))
-        
-        expect_equal(ddiscexp(dat, rate, threshold = 1),
-                    ddisexp(dat, rate))
-        
-        fit <- exp_fit(expdat)
-        expect_equal(fit[['rate']],
-                    discexp.fit(expdat, threshold = 1)[["lambda"]], tol = 1e-3)
-        
-        # Look at fit
-        plot(log10(cumpsd(expdat)))
-        xs <- seq(min(expdat), max(expdat), length.out = 100)
-        lines(log10(xs), log10(pdisexp(xs, fit[["rate"]])), col = 'red')
-        title('EXPFIT')
-      }
-    }
-    
-  })
-
-  test_that('LNORM fitting works', { 
-    
-    meanlogs <- c(.5, 1, 3, 10)
-    sdlogs <- c(1, 2, 3)
-    xmaxs <- c(2, 10, 100, 1000)
-    for ( meanlog in meanlogs ) { 
-      for ( sdlog in sdlogs ) { 
-        for ( xmax in xmaxs ) { 
-        
-          print(paste(expo, "/", xmax))
-          dat <- seq.int(xmax)
-          lnormdat <- ceiling(rlnorm(xmax, meanlog, sdlog))
-          
-          # Test distr functions
-          expect_equal(ddislnorm(dat, meanlog, sdlog),
-                       dlnorm.tail.disc(dat, meanlog, sdlog, threshold = 1))
-          
-    #       expect_equal(pdislnorm(dat, meanlog, sdlog),
-          # Yields values above 1 (??!)
-    #       plnorm.tail.disc(dat, meanlog, sdlog, 
-    #                       threshold = 1, lower.tail = FALSE))
-          
-          # Test fitting function
-          fit <- lnorm_fit(lnormdat)
-          
-          
-          # We do not test yet as empirical results show that fitting is very similar
-  #         expect_equal(fit[["meanlog"]],
-  #                      fit.lnorm.disc(lnormdat, threshold = 1)[["meanlog"]], 
-  #                      tol = 1e-3)
-          
-  #         expect_equal(fit[["sdlog"]],
-  #                      fit.lnorm.disc(lnormdat, threshold = 1)[["sdlog"]], tol = 1e-3)
-          
-          # Look at fit
-          plot(log10(cumpsd(lnormdat)))
-          xs <- seq(min(lnormdat), max(lnormdat), length.out = 100)
-          lines(log10(xs), 
-                log10(pdislnorm(xs, fit[['meanlog']], fit[['sdlog']])), col = 'red')
-          lines(log10(xs), 
-                log10(pdislnorm(xs, fit.lnorm.disc(lnormdat, threshold = 1)[["meanlog"]], 
-                                fit.lnorm.disc(lnormdat, threshold = 1)[["sdlog"]])), 
-                                col = "blue")
-          title('LNORMFIT')
-        }
-      }
-    }
-    
-  })
-  
-  
-  
-  # For TPL xmax must not be too low (>3?)
-  test_that('TPL fitting works', { 
-    rates <- c(1.001, 1.01, 1.1, 2, 10)
-    expos <- c(1.1, 2, 3, 4, 10, 20)
-    for ( rate in rates ) { 
-      for ( expo in expos ) { 
-#         expo = 1.2
-#         rate = 1.2
-        
-        tpldat <- round(rpowerexp(10000, 1, expo, rate))
-        dat <- seq.int(max(tpldat))
-        save(tpldat, file = "/tmp/.tpldat.rda")
-        
-        xs <- seq(min(tpldat), max(tpldat), length.out = 100)
-        plot(log10(cumpsd(tpldat)))
-        plot(log10(xs), log10(ppowerexp(xs, 1, expo, rate, lower.tail = FALSE)), 
-             col = 'red')
-        points(log10(xs), log10(ptpl(xs, expo, rate)), col = 'blue')
-        
-        # Normalizing coeff
-        expect_equal(discpowerexp.norm(1, expo, rate), 
-                     tplsum_once(expo, rate))
-        
-        # P(X=x)
-        expect_equal(dtpl(dat, expo, rate),
-                     ddiscpowerexp(dat, expo, rate, threshold = 1))
-        
-        expect_equal(tpl_ll(tpldat, expo, rate),
-                     discpowerexp.loglike(tpldat, expo, rate, threshold = 1))
-        
-        fit <- tpl_fit(tpldat)
-        fit2 <- discpowerexp.fit(tpldat, threshold = 1)
-        
-        expect_equal(fit$expo, fit2$exponent, tol = 1e3)
-        expect_equal(fit$ll, fit2$loglike, tol = 1e3)
-        
-        # Look at fit
-        plot(log10(cumpsd(tpldat)))
-        xs <- seq(min(tpldat), max(tpldat), length.out = 100)
-        points(log10(xs), 
-              log10(ptpl(xs, fit[["expo"]], fit[["rate"]])), col = 'red')
-        title('TPLFIT')
-      }
-    }
-  })
-
-} else { # End if not testing PSD FITS
-  print('Skipped testing psd shape fitting')
-}

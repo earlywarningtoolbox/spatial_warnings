@@ -69,7 +69,7 @@ test_that("The Spectral-spews workflow works", {
     expect_true({
       capture.output({
         
-        specsp <- spectral_spews(dataset) 
+        specsp <- spectral_spews(dataset, quiet = TRUE) 
         
         print.spectral_spews(specsp)        
         

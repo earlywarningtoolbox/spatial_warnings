@@ -1,5 +1,5 @@
 
-context('Test that all indicator functions perform according to specification')
+context('Test that all single indicator functions perform correctly')
 
 test_that('indicator functions stop if provided garbage data', { 
 

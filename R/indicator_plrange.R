@@ -36,7 +36,7 @@ indicator_plrange <- function(mat,
 plrange <- function(psd, xmin_bounds) { 
   
   # If psd is empty, then return NA
-  if ( length(psd) < 1) { 
+  if ( length(unique(psd)) <= 1) { 
     return( data.frame(xmin_est = NA_real_, plrange = NA_real_) )
   } 
   

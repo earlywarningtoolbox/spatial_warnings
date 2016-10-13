@@ -58,7 +58,6 @@ zeta_w_xmin <- function(expo, xmins) {
 
 # PL: P(x=k)
 dpl <- function(x, expo, xmin = 1, log = FALSE) { 
-  
   const <- VGAM::zeta(expo)
   
   # Adjust constant for threshold (note that this has no effect if xmin == 1, 
@@ -151,7 +150,7 @@ pl_fit <- function(dat, xmin = 1, method = "auto") {
   result <- list(type = 'pl',
                  method = 'll', 
                  expo = expo_estim,
-                 ll = pl_ll(dat, expo, xmin),
+                 ll = pl_ll(dat, expo_estim, xmin),
                  xmin = xmin,
                  npars = 1)
   return(result)

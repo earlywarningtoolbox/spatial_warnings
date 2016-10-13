@@ -39,24 +39,25 @@ label <- function(mat,
                   nbmask = matrix(c(0,1,0,
                                     1,0,1,
                                     0,1,0), ncol=3), # 4way NB 
-                  wrap = TRUE) {
+                  wrap = FALSE) {
   
   # The matrix is full
   if ( all(mat) ) { 
     result <- matrix(1, nrow = nrow(mat), ncol = ncol(mat)) 
-    attr(result, "patchsizes") <- prod(dim(mat))
+    attr(result, "psd") <- prod(dim(mat))
     attr(result, "percolation") <- TRUE
     return(result)
   } 
   
   # The matrix is empty
-  if ( all(!mat) ) { 
+  if ( !any(mat) ) { 
     result <- matrix(NA, nrow = nrow(mat), ncol = ncol(mat)) 
-    attr(result, "patchsizes") <- integer(0)
+    attr(result, "psd") <- integer(0)
     attr(result, "percolation") <- FALSE
     return(result)
   }
   
+  # Otherwise we scan for patches
   .label(mat, nbmask, wrap)
 }
 
@@ -70,8 +71,61 @@ label <- function(mat,
 percolation <- function(mat, nbmask = matrix(c(0,1,0,
                                                1,0,1,
                                                0,1,0), ncol=3)) { 
-  
+  # We never wrap for percolation, by definition. 
   patches <- label(mat, nbmask, wrap = FALSE)
   return(attr(patches, "percolation"))
 }
+
+
+#' @title Get patch sizes.
+#' 
+#' @description Get the distribution of patch sizes
+#' 
+#' @param mat A logical matrix or a list of these matrices.
+#' 
+#' @return If mat is a logical matrix, then the function returns a vector of 
+#'   patch sizes. If mat is a list of logical matrices, then it returns 
+#'   a list of vectors of patch sizes: this list is flattened if merge is TRUE.
+#' 
+#' @examples
+#' data(forestdat)
+#' patchsizes(forestdat[['matrices']][[1]])
+#'
+#' @export
+patchsizes <- function(mat, 
+                       merge = FALSE,
+                       nbmask = matrix(c(0,1,0,
+                                         1,0,1,
+                                         0,1,0), ncol=3), # 4way NB 
+                       wrap = FALSE) { 
+  
+  if ( is.list(mat)) { 
+    result <- lapply(mat, patchsizes) 
+    if (merge) { 
+      # This always works even if there is only one element
+      result <- do.call(c, result)
+      names(result) <- NULL
+    }
+    return(result)
+  }
+  
+  if ( ! is.logical(mat) ) { 
+    stop('Patch-size distributions require a logical matrix',
+         '(TRUE/FALSE values): please convert your data first.')
+  }
+  
+  # We use the label function -> it returns patch sizes as attributes
+  map <- label(mat, nbmask, wrap)
+  
+  return(attr(map, "psd"))
+}
+
+# Get the higher tail cumulative distribution of a psd (P(x >= k))
+cumpsd <- function(dat) { 
+  x <- sort(unique(dat))
+  N <- length(dat)
+  y <- sapply(x, function(k) { sum(dat >= k) / N })
+  return( data.frame(patchsize = x, y = y) )
+}
+
 

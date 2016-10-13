@@ -2,22 +2,54 @@
 % Please edit documentation in R/task_patch_indic.R
 \name{patchdistr_spews}
 \alias{patchdistr_spews}
-\title{fit candidate cumulative patch size distribution functions.}
+\title{Early-warning signals based on patch size distributions}
 \usage{
-patchdistr_spews(x, best_by = "AIC", xmin_bounds = NULL, merge = FALSE,
-  ...)
+patchdistr_spews(x, merge = FALSE, fit_lnorm = FALSE, best_by = "AIC",
+  xmin_bounds = NULL, wrap = FALSE, ...)
 }
 \arguments{
-\item{x}{A binary matrix or a list of binary matrices}
+\item{x}{A logical matrix (TRUE/FALSE values) or a list of these}
+
+\item{merge}{The default behavior is to produce indicators values for each 
+matrix. If this parameter is set to TRUE then the patch size distributions 
+are pooled together for fitting.}
+
+\item{fit_lnorm}{When patch size distributions are compared, should we 
+consider lognormal type ? (see details)}
+
+\item{best_by}{The criterion to use to select the best fit (one of "AIC", 
+"BIC" or "AICc")}
+
+\item{xmin_bounds}{Bounds when estimating the xmin for power-law distributions}
+
+\item{wrap}{Whether patches are consdired to wraparound when reaching one 
+side of the matrix.}
 }
 \value{
-A list object of class 'psdfit' containing the pooled cumulative 
-  patch size distribution data, as well as the AICs and model outputs of the 
-  candidate models.
+A list object of class 'psdfit' containing among other things 
+  - the observed patch size distribution data
+  - the model outputs for the candidate distribution fits
+  - the power-law range values 
+  - the percolation values (if several matrices were provided and 
+  `merge` was TRUE, then the average percolation value is returned)
 }
 \details{
-A S3 method for \code{summary()} does exist and only returns the 
-  model summary of the most parsimonious model.
+Patterned ecosystems can exhibit a change in their spatial structure as they 
+becom more and more stressed. It has been suggested that this should be 
+reflected in changes in the observed patch size distributions (PSD). 
+The following sequence is expected to occur (Kéfi et al. 2011) as patterned 
+ecosystems become more and more degraded:
+
+  - Percolation of vegetation patches occurs (a patch has a width or height 
+  equal to the size of the system)
+  
+  - The patch-size distribution follows a power-law
+  
+  - The patch-size distribution deviates from a power-law as larger patches 
+  break down
+  
+  - The patch-size distribution follows is closer to an exponential 
+  distribution
 }
 \examples{
 
@@ -27,11 +59,16 @@ indicator_fitpsd(arid)
 }
 \references{
 Kefi, S., Rietkerk, M., Alados, C. L., Pueyo, Y., Papanastasis, 
-V. P., ElAich, A., & De Ruiter, P. C. (2007). Spatial vegetation patterns 
-and imminent desertification in Mediterranean arid ecosystems. 
-Nature, 449(7159), 213-217.
+  V. P., ElAich, A., & De Ruiter, P. C. (2007). Spatial vegetation patterns 
+  and imminent desertification in Mediterranean arid ecosystems. 
+  Nature, 449(7159), 213-217.
+
+Kéfi, S., Rietkerk, M., Roy, M., Franc, A., de Ruiter, P.C. & Pascual, M. 
+  (2011). Robust scaling in ecosystems and the meltdown of patch size 
+  distributions before extinction: Patch size distributions towards 
+  extinction. Ecology Letters, 14, 29–35.
 
 Clauset, A., Shalizi, C. R., & Newman, M. E. (2009). 
-Power-law distributions in empirical data. SIAM review, 51(4), 661-703.
+  Power-law distributions in empirical data. SIAM review, 51(4), 661-703.
 }
 

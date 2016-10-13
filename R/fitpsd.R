@@ -17,10 +17,6 @@
 
 
 
-zeta_w_xmin2 <- function(expo, xmin = 1) { 
-  VGAM::zeta(expo) - sum_all_one_over_k(from = 1, to = xmin, expo)
-}
-
 # Riemann zeta function with xmin taken into account :
 # sum(1/k^-expo for i=xmin to i = inf
 # This is vectorized over xmins so that we do sum things several times. 
@@ -56,18 +52,6 @@ zeta_w_xmin <- function(expo, xmins) {
   return(output)
 }
 
-tplsum <- function(expo, rate, xs) { 
-  perm <- order(xs)
-  xs.sorted <- xs[order(xs)]
-  
-  vals <- .tplsum(expo, rate, xs.sorted)
-  
-  # Permute values in original order
-  vals[perm] <- vals
-  
-  return(vals)
-}
-
 # PL fitting 
 # ---------------------------------------
 
@@ -85,7 +69,13 @@ dpl <- function(x, expo, xmin = 1, log = FALSE) {
     ans <- (1/const) * x^(-expo)
     ans[x < xmin] <- NA
   } else { 
-    ans <- -expo * log(x) - log(const)
+    if ( const < 0 ) { 
+      # Const can be negative as nlm finds its way: the check makes sure 
+      # no warning is produced by the log. 
+      ans <- NaN
+    } else { 
+      ans <- -expo * log(x) - log(const)
+    }
   }
   
   return(ans)
@@ -163,16 +153,22 @@ pl_fit <- function(dat, xmin = 1, method = "auto") {
 
 xmin_estim <- function(dat, bounds = range(dat)) { 
   
-  # We build a vector of possible xmins. The last three values are stripped 
-  #   away as they won't allow enough data for a fit
+  # Create a vector of possible values for xmin
   xmins <- sort(unique(dat))
-  xmins <- head(xmins, length(xmins)-3)
-  xmins <- xmins[xmins >= min(bounds) & xmins <= max(bounds)]
   
-  if ( length(xmins) <= 2 ) { 
-    warning('Not enough data points to estimate xmin, returnin NA')
+  # We need at least 3 values for a pl fit, so the last value of xmin 
+  # needs to have three points after it
+  if ( length(xmins) <= 6 ) { 
+    if ( OPTIMWARNINGS ) { 
+      warning('Not enough data points to estimate xmin, returning NA')
+    }
     return(NA_integer_)
   }
+  
+  # We build a vector of possible xmins. The last three values are stripped 
+  #   away as they won't allow enough data for a fit
+  xmins <- head(xmins, length(xmins)-3)
+  xmins <- xmins[xmins >= min(bounds) & xmins <= max(bounds)]
   
   # Compute empirical cdf of data
   cdf <- sapply(dat, function(x) mean(dat >= x) )
@@ -229,7 +225,7 @@ exp_fit <- function(dat) {
   
   rate0 <- 1 / mean(dat)
   
-  negll <- function(rate) - exp_ll(dat, rate)
+  negll <- function(rate) - exp_ll(dat, rate) 
   
   if ( OPTIMWARNINGS ) { 
     est <- nlm(negll, rate0)
@@ -299,9 +295,13 @@ lnorm_fit <- function(dat) {
     ll <- - lnorm_ll(dat, pars[1], pars[2]) 
     if ( is.finite(ll) ) ll else 1e10
   }
-  
-  est <- optim(pars0, negll, method = 'L-BFGS-B', 
-               lower = c(-Inf, .Machine$double.eps)) # sd is always > 0
+  if ( OPTIMWARNINGS ) { 
+    est <- optim(pars0, negll, method = 'L-BFGS-B', 
+                lower = c(-Inf, .Machine$double.eps)) # sd is always > 0
+  } else { 
+    est <- suppressWarnings( optim(pars0, negll, method = 'L-BFGS-B', 
+                lower = c(-Inf, .Machine$double.eps)) ) # sd is always > 0 
+  }
   
   result <- list(type = 'lnorm',
                  method = 'll', 
@@ -318,45 +318,75 @@ lnorm_fit <- function(dat) {
 # TPL fitting 
 # ---------------------------------------
 
+tplnorm <- function(expo, rate) { 
+  # Inspired from python package: normalization constant for 
+  # a discrete tpl. 
+  # -> https://github.com/jeffalstott/powerlaw/blob/master/powerlaw.py
+  VGAM::lerch(exp(-rate), expo, 1) * exp(-rate)
+}
+
 # P(x=k)
 dtpl <- function(x, expo, rate) { 
-  const <- tplsum(expo, rate, 1e6)
-#   C = ( float(exp(self.xmin * self.Lambda) /
-#             lerchphi(exp(-self.Lambda), self.alpha, self.xmin)) )
+  const <- tplnorm(expo, rate)
   
   p_equals_x <- x^(-expo) * exp(- x *rate)
+  
   return( p_equals_x / const )
 }
 
 
 # P(x>=k)
 ptpl <- function(x, expo, rate) { 
+  const <- tplnorm(expo, rate)
   
-  const <- tplsum(expo, rate, 1e6)
-  
+  # tplsum is vectorized over x
   p_inf_to_k <- tplsum(expo, rate, x) / const
   
   return( 1 - p_inf_to_k ) 
-  
 }
 
 tpl_ll <- function(x, expo, rate) { 
-  sum( log(dtpl(x, expo, rate)) )
+  ll <- sum( log(dtpl(x, expo, rate)) )
+  if ( !is.finite(ll) ) { 
+    ll <- sign(ll) * .Machine$double.xmax
+  }
+  ll
 } 
 
-tpl_fit <- function(dat) { 
+tpl_fit <- function(dat, 
+                    expo0 = pl_fit(dat, method = "approx")[['expo']], 
+                    rate0 = exp_fit(dat)[['rate']]) { 
   
-  pars0 <- c( pl_fit(dat, method = "approx")[['expo']], 1)
+  negll <- function(pars) { 
+#     print(paste0(round(pars[1], 10), ", ", 
+#                  round(pars[2], 10), " -> ", - tpl_ll(dat, pars[1], pars[2]))) 
+    - tpl_ll(dat, pars[1], pars[2])
+  }
   
-  negll <- function(pars) - tpl_ll(dat, pars[1], pars[2])
+  pars0 <- c(expo0, rate0) # rate0)
+#   q <- 1
+#   while ( !is.finite(negll(pars0))) { 
+#     q <- q+1
+#     pars0 <- c(expo0, rate0/q) 
+#   } 
+#   print(rate0)
   
-  est <- nlm(negll, pars0)
+  lower_bounds  <- c(expo = 0, rate = 0 + .Machine$double.eps)
+  upper_bounds  <- c(expo = Inf, rate = rate0)
+  
+  if ( OPTIMWARNINGS ) { 
+    est <- optim(pars0, negll, method = 'L-BFGS-B', 
+                 lower = lower_bounds, upper = upper_bounds)
+  } else { 
+    est <- suppressWarnings( optim(pars0, negll, method = 'L-BFGS-B', 
+                                   lower = lower_bounds, upper = upper_bounds) ) # rate is always >0  )
+  }
   
   result <- list(type = 'tpl',
                  method = 'll', 
-                 expo = est[['estimate']][1], 
-                 rate = est[['estimate']][2], 
-                 ll = - est[["minimum"]],
+                 expo = est[['par']][1], 
+                 rate = est[['par']][2], 
+                 ll = - est[["value"]],
                  npars = 2)
   return(result)
 }

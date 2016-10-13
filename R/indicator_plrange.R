@@ -6,17 +6,17 @@
 
 indicator_plrange <- function(mat, 
                               merge = FALSE, 
-                              xmin_range = NULL) { 
+                              xmin_bounds = NULL) { 
   
   if ( !merge && is.list(mat) ) { 
       # Returns a list of lists
-    return( lapply(mat, indicator_plrange, merge, xmin_range) )
+    return( lapply(mat, indicator_plrange, merge, xmin_bounds) )
   }
   
   psd <- patchsizes(mat, merge = merge)
   
-  if ( is.null(xmin_range) ) { 
-    xmin_range <- range(psd)
+  if ( is.null(xmin_bounds) ) { 
+    xmin_bounds <- range(psd)
   }
   
   # If there are not enough patches to work with -> return NA
@@ -25,7 +25,7 @@ indicator_plrange <- function(mat,
     result <- data.frame(NA, NA, NA)
   } else { 
     # Compute xmin and range
-    plrange_result <- plrange(psd, xmin_range) # returns xmin also
+    plrange_result <- plrange(psd, xmin_bounds) # returns xmin also
     result <- data.frame(min(psd), max(psd), plrange_result)
   }
   
@@ -33,10 +33,25 @@ indicator_plrange <- function(mat,
   return(result)
 } 
 
-plrange <- function(psd, xmin_range) { 
+plrange <- function(psd, xmin_bounds) { 
+  
+  # If psd is empty, then return NA
+  if ( length(psd) < 1) { 
+    return( data.frame(xmin_est = NA_real_, plrange = NA_real_) )
+  } 
+  
   xsmallest <- min(psd)
   xmax <- max(psd)
-  xmin <- xmin_estim(psd, bounds = xmin_range)
-  data.frame(xmin_est = xmin, 
-             plrange = 1 - (log10(xmin) - log10(xsmallest)) / (log10(xmax) - log10(xsmallest)))
+  xmin <- xmin_estim(psd, bounds = xmin_bounds)
+  
+  if ( is.na(xmin) ) { # finding xmin failed
+    result <- data.frame(NA_real_, NA_real_)
+  } else { 
+    result <- data.frame(xmin, 1 - (log10(xmin) - log10(xsmallest)) / 
+                                (log10(xmax) - log10(xsmallest)))
+  }
+  
+  names(result) <- c('xmin_est', 'plrange')
+  
+  return(result)
 }

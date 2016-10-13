@@ -62,52 +62,67 @@
 #'
 #'
 #'@export 
-indicator_psdtype <- function(input, merge = FALSE, best_by = "AIC") { 
+indicator_psdtype <- function(x, merge = FALSE, 
+                              fit_lnorm = FALSE,
+                              best_by = "AIC") { 
   
-  check_mat(input)
+  check_mat(x)
   
-  if ( !merge && is.list(input) ) { 
-    return( lapply(input, indicator_psdtype, best_by = best_by) )
+  if ( !merge && is.list(x) ) { 
+    return( lapply(x, indicator_psdtype, merge, fit_lnorm, best_by) )
   } 
   
-  multiple_matrices <- is.list(input)
-  
   # Compute psd
-  psd <- patchsizes(input, merge = merge)
+  psd <- patchsizes(x, merge = merge)
   
   # Compute percolation point. If the user requested a merge of all 
   #   patch size distributions, then we return the proportion of matrices 
   #   with percolation. 
-  if ( multiple_matrices ) { 
-    perc <- unlist( lapply(input, percolation) )
-    perc <- mean(perc) # Compute average percolation 
+  if ( is.list(x) ) { 
+    percol <- lapply(x, percolation)
+    percol <- mean(unlist(percol))
+    percol_empty <- lapply(x, function(x) percolation(!x))
+    percol_empty <- mean(unlist(percol_empty))
   } else { 
-    perc <- percolation(input)
-  }
+    percol <- percolation(x)
+    percol_empty <- percolation(!x)
+  } 
   
-  result <- data.frame(psdtype(psd, best_by = "AIC"), 
-                       percolation = perc)
+  psdtype_result <- psdtype(psd, best_by, fit_lnorm)
+  
+  result <- data.frame(psdtype_result, 
+                       percolation = percol, 
+                       percolation_empty = percol_empty)
   return(result)
 }
 
-psdtype <- function(psd, best_by = "AIC") { 
+psdtype <- function(psd, best_by, fit_lnorm) { 
   
   table_names <- c('method', 'type', 'npars', 'AIC', 'AICc', 'BIC', 'best', 
-                'expo', 'rate', 'meanlog', 'sdlog')
-  
-  # If there are not enough patches to work with -> return NA early
-  if ( length(unique(psd)) <= 2 ) { 
-    warning('Not enough different patch sizes to fit distribution: returning NA')
-    NAresult <- as.data.frame(as.list(rep(NA, length(table_names))))
-    colnames(NAresult) <- table_names
-    return(NAresult)
+                   'expo', 'rate')
+  if ( fit_lnorm ) { 
+    table_names <- c(table_names, 'meanlog', 'sdlog')
   }
   
-  # Fit a model for everyone
-  models <- list(pl  =   pl_fit(psd), 
-                 tpl =   tpl_fit(psd), 
-                 exp =   exp_fit(psd), 
-                 lnorm = lnorm_fit(psd)) 
+  # We return NA if there are not enough patches to work with 
+  if ( length(unique(psd)) <= 3 ) { 
+    NA_result <- as.data.frame(as.list(rep(NA, length(table_names))))
+    names(NA_result) <- table_names
+    return(NA_result)
+  }
+  
+  # Fit a model for everyone. Note that we store the results of the variables 
+  # here so we reuse the previous expo and rate for tpl fitting. 
+  plfit  <- pl_fit(psd)
+  expfit <- exp_fit(psd)
+  tplfit <- tpl_fit(psd, expo0 = plfit[['expo']], rate0 = expfit[['rate']])
+  
+  models <- list(pl = plfit, tpl = tplfit, exp = expfit)
+  
+  if (fit_lnorm) { 
+    lnormfit <- lnorm_fit(psd)
+    models <- c(models, list(lnorm = lnormfit))
+  }
   
   models <- lapply(models, as.data.frame)
   models <- do.call(rbind.fill, models)

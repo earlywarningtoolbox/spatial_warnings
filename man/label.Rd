@@ -6,7 +6,7 @@
 \title{Labelling of unique patches and detection of percolation.}
 \usage{
 label(mat, nbmask = matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0), ncol = 3),
-  wrap = TRUE)
+  wrap = FALSE)
 
 percolation(mat, nbmask = matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0), ncol = 3))
 }

@@ -107,22 +107,22 @@ if ( TEST_PSD_FITS ) {
         
         print(paste(expo, "/", xmax))
         dat <- seq.int(xmax)
-        pldat <- poweRlaw::rpldis(1000, xmin = 1, alpha = 1.3)
+        pldat <- poweRlaw::rpldis(1000, xmin = 1, alpha = expo)
         # Squeeze tail a bit
         pldat <- pldat[pldat < 1e6]
         
         # left: spw <-> right: pli
         # dpl <-> dzeta
         expect_equal(dzeta(dat,, exponent = expo), 
-                    dpl(dat, expo))
+                     dpl(dat, expo))
         
         # ppl <-> pzeta with higher tail
         expect_equal(pzeta(dat, exponent = expo, lower.tail = FALSE), 
-                    ppl(dat, expo))
+                     ppl(dat, expo))
         
         # ppl_ll <-> zeta.loglike
         expect_equal(zeta.loglike(dat, exponent = expo), 
-                    pl_ll(dat, expo))
+                     pl_ll(dat, expo))
         
         # pl_fit <-> zeta.fit 
         pl_expo <- pl_fit(pldat)[['expo']]
@@ -180,7 +180,7 @@ if ( TEST_PSD_FITS ) {
           
           # Test distr functions
           expect_equal(ddislnorm(dat, meanlog, sdlog),
-                      dlnorm.tail.disc(dat, meanlog, sdlog, threshold = 1))
+                       dlnorm.tail.disc(dat, meanlog, sdlog, threshold = 1))
           
     #       expect_equal(pdislnorm(dat, meanlog, sdlog),
           # Yields values above 1 (??!)
@@ -221,47 +221,44 @@ if ( TEST_PSD_FITS ) {
   test_that('TPL fitting works', { 
     rates <- c(1.001, 1.01, 1.1, 2, 10)
     expos <- c(1.1, 2, 3, 4, 10, 20)
-    xmaxs <- c(3, 10, 100, 1000, 10000)
     for ( rate in rates ) { 
       for ( expo in expos ) { 
-        for ( xmax in xmaxs ) { 
-  #         expo = 1.2
-  #         rate = 1.3
-          
-          print(paste(expo, "/", xmax))
-          dat <- seq.int(xmax)
-          tpldat <- round(rpowerexp(10000, 1, expo, rate))
-          save(tpldat, file = "/tmp/.tpldat.rda")
-          
-          xs <- seq(min(tpldat), max(tpldat), length.out = 100)
-          plot(log10(cumpsd(tpldat)))
-          plot(log10(xs), log10(ptpl(xs, expo, rate)), col = 'blue')
-          lines(log10(xs), log10(ppowerexp(xs, 1, expo, rate, lower.tail = FALSE)), col = 'red')
-          
-          # Normalizing coeff
-          expect_equal(discpowerexp.norm(1, expo, rate), 
-                      tplsum(expo, rate, from = 1, to = 1e7))
-          
-          # P(X=x)
-          expect_equal(dtpl(dat, expo, rate),
-                      ddiscpowerexp(dat, expo, rate, threshold = 1))
-          
-          expect_equal(tpl_ll(tpldat, expo, rate),
-                      discpowerexp.loglike(tpldat, expo, rate, threshold = 1))
-          
-          fit <- tpl_fit(tpldat)
-          fit2 <- discpowerexp.fit(tpldat, threshold = 1)
-          
-          expect_equal(fit$expo, fit2$exponent, tol = 1e7)
-          expect_equal(fit$ll, fit2$loglike, tol = 1e7)
-          
-          # Look at fit
-          plot(log10(cumpsd(tpldat)))
-          xs <- seq(min(tpldat), max(tpldat), length.out = 100)
-          points(log10(xs), 
-                log10(ptpl(xs, fit[["expo"]], fit[["rate"]])), col = 'red')
-          title('TPLFIT')
-        }
+#         expo = 1.2
+#         rate = 1.2
+        
+        tpldat <- round(rpowerexp(10000, 1, expo, rate))
+        dat <- seq.int(max(tpldat))
+        save(tpldat, file = "/tmp/.tpldat.rda")
+        
+        xs <- seq(min(tpldat), max(tpldat), length.out = 100)
+        plot(log10(cumpsd(tpldat)))
+        plot(log10(xs), log10(ppowerexp(xs, 1, expo, rate, lower.tail = FALSE)), 
+             col = 'red')
+        points(log10(xs), log10(ptpl(xs, expo, rate)), col = 'blue')
+        
+        # Normalizing coeff
+        expect_equal(discpowerexp.norm(1, expo, rate), 
+                     tplsum_once(expo, rate))
+        
+        # P(X=x)
+        expect_equal(dtpl(dat, expo, rate),
+                     ddiscpowerexp(dat, expo, rate, threshold = 1))
+        
+        expect_equal(tpl_ll(tpldat, expo, rate),
+                     discpowerexp.loglike(tpldat, expo, rate, threshold = 1))
+        
+        fit <- tpl_fit(tpldat)
+        fit2 <- discpowerexp.fit(tpldat, threshold = 1)
+        
+        expect_equal(fit$expo, fit2$exponent, tol = 1e3)
+        expect_equal(fit$ll, fit2$loglike, tol = 1e3)
+        
+        # Look at fit
+        plot(log10(cumpsd(tpldat)))
+        xs <- seq(min(tpldat), max(tpldat), length.out = 100)
+        points(log10(xs), 
+              log10(ptpl(xs, fit[["expo"]], fit[["rate"]])), col = 'red')
+        title('TPLFIT')
       }
     }
   })

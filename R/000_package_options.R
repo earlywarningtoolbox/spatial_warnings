@@ -27,3 +27,8 @@ linescale_spwarnings <- function() {
   scale_color_manual(values = c('#EAD710', '#EA4510', '#6E10EA', '#10EA12'))
 }
 
+fillscale_spwarnings <- function(...) { 
+#   scale_fill_manual(values = c('#F2C84A', "#F24A4A", "#734AF2", "#4AF24B"))
+  scale_fill_manual(..., values = c("#F7DC8D", "#F78D8D", "#A78DF7","#8DF78E"))
+}
+

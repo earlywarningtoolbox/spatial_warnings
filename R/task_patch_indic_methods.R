@@ -8,42 +8,110 @@
 # Plot methods
 # --------------------------------------------------
 # 
-# Note: plot will display how characteristics change along the gradient. To 
+# Note: plot will display how characteristics change along a gradient. To 
 #   have a plot of distributions, use plot_distr
 # 
 
 #'@export
 plot.patchdistr_spews_list <- function(obj, along = NULL) { 
-  browser()
+  
+  if ( 'patchdistr_spews_single' %in% class(obj) ) { 
+    stop('I cannot plot a trend with only one value !')
+  }
+  if ( !is.null(along) && (length(along) != length(obj)) ) { 
+    stop('The along values are unfit for plotting (size mismatch')
+  }
   
   obj_table <- as.data.frame(obj)
   
   # Subset table for best fits
-  obj_table <- obj_table[obj_table[['best']], ]
+  obj_table <- obj_table[is.na(obj_table[ ,'best']) | obj_table[ ,'best'], ]
   
   # If along is provided, then add it to the table
-  if ( !is.null(along) ) { 
-    obj_table[ ,"along"] <- along
+  xtitle <- as.character(substitute(along))
+  if ( is.null(along) ) { 
+    along <- as.factor(obj_table[ ,'replicate'])
+    xtitle <- "Matrix number"
+  }
+  obj_table[ ,"along"] <- along
+  
+  # Now we summarise the obj_table
+  summ <- ddply(obj_table, 'along',
+                function(df, alltypes) {
+                  type_freqs <- rep(0, length(alltypes))
+                  names(type_freqs) <- alltypes
+                  if ( ! all(is.na(df[ ,'type'])) ) { 
+                    counts <- c(table(df[ ,'type'])) 
+                    type_freqs[names(counts)] <- counts
+                    type_freqs <- type_freqs / sum(type_freqs)
+                  }
+                  data.frame(type = alltypes, type_freq = type_freqs, 
+                             percolation = mean(df[ ,'percolation']), 
+                             percolation_empty = mean(df[ ,'percolation_empty']), 
+                             plrange = mean(df[ ,'plrange']))
+                  }, alltypes = unique(na.omit(obj_table[ ,'type'])))
+  
+  # Make a data.frame with dummy facets 
+  classif_df <- data.frame(plot_type = "PSD Classif.", summ)
+  classif_df[ ,'plrange'] <- NA
+  
+  plrange_df <- ddply(summ, "along", function(df) { 
+                       data.frame(plot_type = "PL-range", 
+                                  plrange = df[1, "plrange"])
+                      })
+  
+  summ <- rbind.fill(classif_df, plrange_df)
+  
+  # Construct base plot
+  plot <- ggplot(summ) + 
+    theme_spwarnings() + 
+    fillscale_spwarnings(name = "PSD type") + 
+    facet_grid( plot_type ~ ., switch = "y") + 
+    ylab('') + 
+    xlab(xtitle)
+    
+  if ( ! is.numeric(along) ) { 
+    # Note that it is quite tricky to make ggplot produce a line over factors. 
+    # This seems to do the trick. 
+    plot <- plot + 
+      geom_bar(aes(x = along, y = type_freq, fill = type), 
+                position = "stack", stat = "identity") + 
+      stat_summary(aes(x = along, y = percolation, 
+                       linetype = "Full sites", group = 1), 
+                   fun.y = mean, geom = "line") + 
+      stat_summary(aes(x = along, y = percolation_empty, 
+                       linetype = "Empty sites", group = 1), 
+                   fun.y = mean, geom = "line") + 
+      geom_bar(aes(x = along, y = plrange, group = 1), stat = "identity")
+      
   } else { 
-    obj_table[ ,"along"] <- obj_table[ ,'replicate']
+    plot <- plot + 
+      geom_area(aes(x = along, y = type_freq, fill = type), 
+                position = "stack") + 
+      geom_line(aes(x = along, y = percolation, linetype = "Full sites"))  + 
+      geom_line(aes(x = along, y = percolation_empty, linetype = "Empty sites"), 
+                color = 'black') +
+      geom_area(aes(x = along, y = plrange, group = 1), stat = "identity") 
+      
   }
   
-  ggplot(obj_table) + 
-    geom_tile(aes(x = along, y = type, fill = type), color = 'black') 
+  plot + 
+    scale_linetype_manual(name = "Percolation", values = c(1, 2))
   
+  return(plot)
 }
 
 
 
 
 #'@export
-plot_distr <- function(obj, best_only = FALSE) { 
+plot_distr <- function(obj, best_only = TRUE) { 
   UseMethod('plot_distr')
 }
 
 #'@export
 plot_distr.patchdistr_spews_single <- function(obj, 
-                                               best_only = FALSE, 
+                                               best_only = TRUE, 
                                                plrange = TRUE) { 
   
   # Get plottable data.frames
@@ -58,27 +126,11 @@ plot_distr.patchdistr_spews_single <- function(obj,
     xlab('Patch size') + 
     ylab('Frequency (P>=x)')
   
-  # If we want plrange too, then add it to the graph 
-  if ( plrange ) { 
-  xmin <- obj[['plrange']][, "xmin_est"]
-  plot <- plot + 
-    annotate(geom = 'segment', 
-             x = xmin, xend = xmin,
-             y = with(values, obs[['y']][obs[['patchsize']] == xmin]),
-             yend = with(values, min(obs[['y']])), 
-             color = "red", linetype = "dotted") + 
-    annotate(geom = 'segment', 
-             x = xmin, xend = max(values[["obs"]][["patchsize"]]), 
-             y = with(values, min(obs[['y']])), 
-             yend = with(values, min(obs[['y']])), 
-             color = 'red', size = 2) 
-  }
-  
   return(plot)
 }
 
 #'@export
-plot_distr.patchdistr_spews_list <- function(obj, best_only = FALSE) { 
+plot_distr.patchdistr_spews_list <- function(obj, best_only = TRUE) { 
   
   # Get plottable data.frames
   values <- predict(obj, best_only = best_only)
@@ -116,7 +168,7 @@ predict.patchdistr_spews_single <- function(obj,
   
   # Bail if no fit carried out. Note that we need to set classes in the 
   # output pred df otherwise coercion when merging with existing results 
-  # goes wrong (e.g. factor converted to integer)
+  # goes wrong (e.g. factor converted to integer).
   if ( all(is.na(shptbl[ ,'type'])) ) { 
     result <- list(obs = vals_obs, 
                    pred = data.frame(type = NA_character_, 
@@ -127,9 +179,8 @@ predict.patchdistr_spews_single <- function(obj,
   
   # Create x vector of values
   if ( is.null(newdata) ) { 
-    newdata <- unique( round( seq(min(obj[["psd_obs"]]), 
-                                  max(obj[["psd_obs"]]), 
-                                  length.out = 1000) ) )
+    newdata <- unique( round(10^(seq(0, log10(max(obj[["psd_obs"]])), 
+                                     length.out = 200))) )
   }
   
   if ( best_only ) { 
@@ -147,8 +198,10 @@ predict.patchdistr_spews_single <- function(obj,
                          lnorm = pdislnorm(newdata, 
                                            shptbl[type, "meanlog"], 
                                            shptbl[type, "sdlog"])) 
+    
     vals_pred <- rbind(vals_pred, 
-                       data.frame(type = type, patchsize = newdata, y = type_yvals))
+                       data.frame(type = type, patchsize = newdata, 
+                                  y = type_yvals))
   }
   
   # Crop data to y range
@@ -165,9 +218,18 @@ predict.patchdistr_spews_list <- function(obj, newdata = NULL, best_only = FALSE
   
   dat <- lapply(obj, predict.patchdistr_spews_single, newdata, best_only)
   
+  # Add id but handle when psd is empty
+  add_id <- function(n, x) { 
+    if (nrow(x) > 0) { 
+      x <- data.frame(replicate = n, x) 
+    } else {
+      x <- data.frame(replicate = n, patchsize = NA_integer_)
+    } 
+  }
+  
   dat <- Map(function(n, x) { 
-               x[['obs']]  <- data.frame(replicate = n, x[['obs']])
-               x[['pred']] <- data.frame(replicate = n, x[['pred']])
+               x[['obs']]  <- add_id(n, x[["obs"]])
+               x[['pred']] <- add_id(n, x[["pred"]])
                x
              }, seq.int(length(dat)), dat)
   
@@ -186,7 +248,17 @@ predict.patchdistr_spews_list <- function(obj, newdata = NULL, best_only = FALSE
 
 #'@export
 as.data.frame.patchdistr_spews_single <- function(obj) { 
-  data.frame(obj[['psd_type']], obj[['plrange']]) 
+  ans <- data.frame(obj[['psd_type']], obj[['plrange']],
+                    # Add the name explicitely for these as they are single values
+                    percolation = obj[['percolation']], 
+                    percolation_empty = obj[['percolation_empty']], 
+                    cover = obj[['cover']], 
+                    npatches = obj[['npatches']],
+                    unique_patches = obj[['unique_patches']], 
+                    stringsAsFactors = FALSE)
+  # We convert the psd type to a character vector for simplicity
+  ans[ ,'type'] <- as.character(ans[ ,'type'])
+  ans
 }
 
 #'@export
@@ -207,50 +279,54 @@ as.data.frame.patchdistr_spews_list <- function(obj) {
 
 # Summary methods
 # --------------------------------------------------
-#'@export
-summary.patchdistr_spews_single <- function(obj, ...) { 
-  cat('Patch-based Early-Warnings results\n') 
-  cat('\n')
+
+prepare_summary_table <- function(obj, ...) { 
   
-  # Get and subset data.frame
   dat <- as.data.frame(obj)
-  dat <- dat[ is.na(dat[ ,'best']) | dat[ ,"best"], ]
-  dat <- dat[ ,c('type', 'plrange')]
+  # Select lines that either have no fit or select the best fit
+  dat <- dat[is.na(dat[ ,"best"]) | dat[ ,"best"], ]
   
-  # Format power-law range
-  dat[ ,'plrange'] <- paste0(round(dat[ ,'plrange'] * 100), "%")
+  # Add formated unique patch column 
+  dat[ ,'pretty_patches'] <- with(dat, 
+                                  paste0(npatches, "(", unique_patches, ")"))
+  # Add formated plrange column
+  dat[ ,'plrange'] <- with(dat, 
+                           ifelse(is.na(plrange), "", 
+                                  paste0(round(plrange * 100), "%")))
   
-  # Replace names so it is prettier
-  names(dat) <- c('Best type', 'Power-law range')
-  rownames(dat) <- NULL
+  # Add formated distribution type column
+  dat[ ,'type'] <- ifelse(is.na(dat[ ,'type']), " ", dat[ ,'type'])
   
-  print.data.frame(dat, row.names = FALSE)
-  cat('\n')
-  cat('Use as.data.frame() to retrieve values in a convenient form\n')
+  # Set the column names to extract
+  cols <- c('pretty_patches', 'cover', 'percolation', 'percolation_empty',
+            'type', 'plrange')
+  pretty_names <- c('N(uniq.)', 'Cover', 'Percl.Full', 'Percl.Empt', 'Type', 'PLR')
+  
+  # If there is a replicate column (for when several matrices were 
+  #   used at once), then add it to these columns
+  if ( "replicate" %in% names(dat) ) { 
+    cols <- c("replicate", cols)
+    pretty_names <- c('Mat. #', pretty_names)
+  }
+  
+  # Extract data and rename cols
+  dat <- dat[, cols]
+  names(dat) <- pretty_names
+  
+  return(dat)
 }
 
 #'@export
-summary.patchdistr_spews_list <- function(obj, ...) { 
+summary.patchdistr_spews <- function(obj, ...) { 
+  dat <- prepare_summary_table(obj)
+  
   cat('Patch-based Early-Warnings results\n') 
   cat('\n')
-  
-  # Get and subset data.frame
-  dat <- as.data.frame(obj)
-  dat <- dat[ is.na(dat[ ,'best']) | dat[ ,"best"], ]
-  dat <- dat[ ,c('replicate', 'type', 'plrange')]
-  
-  # Format power-law range
-  dat[ ,'plrange'] <- paste0(round(dat[ ,'plrange'] * 100), "%")
-  
-  # Replace names so it is prettier
-  names(dat) <- c('Mat. #', 'Best type', 'Power-law range')
-  rownames(dat) <- NULL
-  
   print.data.frame(dat, row.names = FALSE)
   cat('\n')
   cat('Use as.data.frame() to retrieve values in a convenient form\n')
+  invisible(dat)
 }
-
 
 
 

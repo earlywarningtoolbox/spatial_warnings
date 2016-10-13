@@ -1,8 +1,6 @@
 # 
 # 
-# This file contains the main function to compute the Generic Spews
-# 
-# 
+# This file contains the workflow function for generic EWS
 
 
 #' @title Generic Spatial Early-Warning signals
@@ -49,10 +47,10 @@
 #' Before computing the actual indicators, the matrix can be "coarse-grained". 
 #'   This process reduces the matrix by averaging the nearby cells using 
 #'   a square window defined by the \code{subsize} parameter. This helps 
-#'   removing artefactual trends in variance and skewness due to binary (1/0) grazing.results
+#'   removing artefactual trends in variance and skewness due to binary (1/0) 
 #'   data but is completely optional when using continous data. Keep in mind 
-#'   that it effectively reduces the size of the matrix by \code{subsize} on 
-#'   each dimension.
+#'   that it effectively reduces the size of the matrix by approximately 
+#'   \code{subsize} on each dimension.
 #'   
 #' The significance of generic early-warning signals can be estimated by 
 #'   reshuffling the original matrix (function \code{indictest}). Indicators 
@@ -61,6 +59,7 @@
 #'   the observered value in the null distribution. 
 #'
 #' @references 
+#' 
 #'   Kéfi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., 
 #'   Livina, V.N., et al. (2014). Early Warning Signals of Ecological 
 #'   Transitions: Methods for Spatial Patterns. PLoS ONE, 9, e92097.
@@ -73,7 +72,6 @@
 #'   skewness: leading indicators of regime shifts in spatial ecological 
 #'   systems. Theoretical Ecology, 2(1), 3–12. 
 #'   
-#'
 #' @seealso 
 #'   \code{\link{indicator_moran}}, \code{\link{indicator_variance}} and 
 #'   \code{\link{indicator_skewness}} for individual indicators. 

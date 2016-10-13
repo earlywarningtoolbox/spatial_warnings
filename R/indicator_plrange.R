@@ -22,7 +22,7 @@ indicator_plrange <- function(mat,
   # If there are not enough patches to work with -> return NA
   if ( length(unique(psd)) <= 2 ) { 
     warning('Not enough different patch sizes to estimate xmin: returning NA')
-    result <- data.frame(NA, NA, NA)
+    result <- data.frame(NA, NA, NA, NA)
   } else { 
     # Compute xmin and range
     plrange_result <- plrange(psd, xmin_bounds) # returns xmin also

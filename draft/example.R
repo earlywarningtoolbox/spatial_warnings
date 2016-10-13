@@ -28,7 +28,9 @@ library(spatialwarnings) # mind the absence of underscore !
 
 #' ## Example datasets
 #' 
-#' We will use two datasets in this example: 
+#' Several datasets are included with the package, we will use them for this 
+#' example. 
+#' 
 #'   - `forestdat`: Output from the Forest-gap model: a `list` of two things : 
 #'     - `"parameters"`: A `data.frame` containing the simulation parameters (ten rows)
 #'     - `"matrices"`: A list of 100x100 matrices, each of which corresponding 
@@ -36,12 +38,16 @@ library(spatialwarnings) # mind the absence of underscore !
 #'  For example, the first matrix corresponds to the simulation with the 
 #'  parameters given in the first row of the dataset. 
 #'   
-#'   - `arid`: A set of matrices, which is a `list` of black and white 100x100 images 
-#'  (defined with continous values)
+#'   - `forestdat2`: Another output from the Forest-gap model. It has the same 
+#'  structure as forestdat but has different parameters and matrix sizes 
+#'  (400x400 instead of 100x100). 
 #' 
-#' Both these datasets are included with the package, so we can just load them 
+#'   - `arid` A bunch of aerial pictures from Spain (more info on this?)
+#' 
+#' All these datasets are included with the package, so we can just load them 
 #' using the function `data()`
 data(forestdat)
+data(forestdat2)
 data(arid)
 
 
@@ -55,7 +61,7 @@ data(arid)
 #' indicators: Generic EWS, Spectral EWS and Patch-based EWS. For each of these
 #' families, a three-steps workflow is offered: 
 #'   1. Compute the indicators: function `*_spews` (name depends on the 
-#'   indicator considered)
+#'   indicator family considered)
 #'   2. Assess their significance: function `indictest()`
 #'   3. Plot the results: function `plot()`
 #' 
@@ -87,7 +93,7 @@ data(arid)
 #'   - the first one is a `data.frame`
 forestdat[["parameters"]]
 #'   - the second one is a list of matrices. As printing it takes too much space
-#' for our small screens and brains, we use the handy function str() that 
+#' for our small screens, we use the handy function str() that 
 #' produces a compact description of our object. 
 str(forestdat[["matrices"]], 
     list.len = 3) # Show only the three first elements
@@ -139,8 +145,16 @@ forest.gentest <- indictest(forest.genic, null_replicates = 1999)
 plot(forest.gentest) # Compare with figure above 
 
 #' Of course, at anytime during this process, we can export the values to 
-#' a `data.frame` for further plotting
+#' a `data.frame` so we can reuse them in other contexts. 
 head( as.data.frame(forest.gentest) )
+
+#' Individual indicator functions are also available. They can also work 
+#' on lists of matrices. Note that these functions are here so indicators 
+#' can be computed more easily as part of another workflow: no 
+#' plot/summary/print/etc. methods are provided. 
+forest.varic <- indicator_variance(forestdat[['matrices']])
+# See also indicator_skewness, indicator_moran, etc. 
+
 
 
 
@@ -166,20 +180,51 @@ plot(forest.spectest)
 #' `plot_spectrum`. 
 plot_spectrum(forest.spectest)
 
+#' Some options are available to alter how the indicator values are computed
+forest.specic <- spectral_spews(forestdat[["matrices"]], 
+                                sdr_low_range =  c(0, .2), 
+                                sdr_high_range = c(0, 1))
+plot(forest.specic)
+#' See also `?spectral_spews`plot(arid.psdic)
 
 
 
-#' # Patch-size distribution-based spatial indicators
+
+
+#' # PSD-based spatial indicators
 #' 
 #' 
+#' We will use forestdat2 for the first part of this example. Let's compute 
+#' these indicators. 
+#'
 data(forestdat2)
+forest.psdic <- patchdistr_spews(forestdat2[['matrices']])
 
-arid.psdic <- patchdistr_spews(forestdat2[['matrices']],
-                               .progress = 'none')
+#' See a summary of what has been fitted
+summary(forest.psdic)
 
-a <- patchsizes(forestdat2[["matrices"]])
+#' And plot the indicator values. This is quite a complex figure that 
+#' summarises percolation status + psd type + powerlaw range. It is still 
+#' a bit rough so sorry for this. 
+#'  - Colored bars (or area if the x-axis has continous values) represents the 
+#'  best distribution type (based on AIC, see ?patchdistr_spews). 
+#'  - Lines indicate percolation of full sites (continous line) and empty 
+#'  sites (dashed line). 
+#'  - Gray bars in the other facet indicate Power-law range (ranging from near 0 
+#'  to 100%)
+#'  
+#+fig.width=16,fig.height=5
+plot(forest.psdic) # try with the along parameter
 
-#' For this example, we will use aerial images of bushes (from Spain). The 
+#' We can also plot the distributions to have a better view of what is going 
+#' on. 
+#+fig.width=16,fig.height=16
+plot_distr(forest.psdic)
+
+
+
+
+#' Next example, this time using aerial images of bushes (from Spain). The 
 #' dataset is called arid (see Introduction). The first step to compute 
 #' psd-based spatial indicators is to convert the dataset to binary values. This 
 #' is enforced in this workflow by checking that all input matrices are of 
@@ -189,26 +234,29 @@ a <- patchsizes(forestdat2[["matrices"]])
 #' do not provide any specific function. So let's write our own.
 classify_one_matrix <- function(mat) { 
   # We consider vegetation to occur when:
-  a <- mat > quantile(mat, .45)
-  print(percolation(a))
-  a
+  mat > quantile(mat, .45)
 }
 
 # Now we have a thresholded dataset
 arid.bw <- lapply(arid, classify_one_matrix)
 image(arid.bw[[1]])
 
+arid.psdic <- patchdistr_spews(arid.bw)
 
-arid.psdic <- patchdistr_spews(arid.bw, .progress = "time")
-
-summary(arid.psdic)
-
-plot_distr(arid.psdic)
+plot(arid.psdic)
 
 
-forest.psdic <- patchdistr_spews(forestdat$matrices)
+#' Of course, individual indicators are also available indvidually, through 
+#' their own functions 
 
-summary(forest.psdic)
+# Not run:
+# indicator_psdtype(arid.bw)
+# indicator_plrange(forestdat2$matrices)
 
+#' That's it ! For most of these functions, documentation is available 
+#' through `?` ! It is sometimes missing though (help is gladly accepted ;) ). 
+#' This document should come with an editable R file example.R, do not hesitate
+#' to go back to that file and edit things around. 
+#' 
 
 

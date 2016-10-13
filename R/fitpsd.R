@@ -179,10 +179,15 @@ xmin_estim <- function(dat, bounds = range(dat)) {
   kss <- adply(xmins, 1, get_ks_dist, dat = dat)[ ,2]
 #   plot(kss)
   
+  if ( all(is.nan(kss)) ) { 
+    return(NA_integer_)
+  }
+  
   # Note that sometimes the fit fails, especially when xmin is around the 
   #   distribution tail -> we need to remove some NAs here
   xmin <- xmins[!is.na(kss) & kss == min(kss, na.rm = TRUE)]
   
+  # Note that xmin can be NaN
   return(xmin)
 }
 

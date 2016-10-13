@@ -111,7 +111,7 @@ pl_ll <- function(dat, expo, xmin) {
 
 # PL: Fit by MLE
 # Method is approximate if xmin > 10 (correponding to an error of 0.1% if 
-#   expo = 2.0), but that can be overridden by parameter "auto"
+#   expo = 2.0), but that can be overridden by parameter method
 pl_fit <- function(dat, xmin = 1, method = "auto") { 
   
   # Check and decide on the right method to apply

@@ -14,8 +14,9 @@
 #   with an xmin of 1 (no xmin basically), except for PL for which xmin can vary
 
 
-
-
+# Optimisation global options
+OPTIMWARNINGS <- FALSE
+TPL_MAX_EXPO <- 10 # for TPL, max expo param
 
 # Riemann zeta function with xmin taken into account :
 # sum(1/k^-expo for i=xmin to i = inf
@@ -95,7 +96,7 @@ ppl <- function(x, expo, xmin = 1) {
   ps <- zeta_w_xmin(expo, x[!is_below_xmin]) / const 
   
   # Values below threshold are NA'ed
-  ans <- NA*x;
+  ans <- NA*x
   ans[!is_below_xmin] <- ps
   
   return(ans)
@@ -214,15 +215,23 @@ get_ks_dist <- function(xmin, dat) {
   return( maxks )
 }
 
+
+
+
 # EXP fitting 
 # ---------------------------------------
 # pexp/dexp is already implemented in R
 
 # EXP: P(x = k)
-ddisexp <- function(dat, rate) { 
+ddisexp <- function(dat, rate, log = FALSE) { 
   # sum(P = k) for k = 1 to inf
-  const <- (1 - exp(-rate)) * exp(rate)
-  return( const * exp(-rate * dat) )
+  if ( log ) { 
+    const <- log(1 - exp(-rate)) + rate
+    return( const - rate * dat )
+  } else { 
+    const <- (1 - exp(-rate)) * exp(rate)
+    return( const * exp(-rate * dat) )
+  }
 }
 
 # EXP: P(x>=k)
@@ -236,25 +245,32 @@ pdisexp <- function(x, rate) {
 }
 
 exp_ll <- function(dat, rate) { 
-  sum( log(ddisexp(dat, rate)) )
+  sum( ddisexp(dat, rate, log = TRUE)) 
 }
 
 exp_fit <- function(dat) { 
   
   rate0 <- 1 / mean(dat)
   
-  negll <- function(rate) - exp_ll(dat, rate) 
+  negll <- function(rate) {
+#     print(paste0(round(rate, 10), " -> ", - exp_ll(dat, rate))) 
+    - exp_ll(dat, rate) 
+  }
   
   if ( OPTIMWARNINGS ) { 
-    est <- nlm(negll, rate0)
+    est <- optim(rate0, negll, method = 'L-BFGS-B', 
+                 lower = 0 + .Machine$double.eps)
   } else { 
-    est <- suppressWarnings( nlm(negll, rate0) )
+    est <- suppressWarnings( 
+        optim(rate0, negll, method = 'L-BFGS-B', 
+              lower = 0 + .Machine$double.eps)
+      )
   }
   
   result <- list(type = 'exp',
                  method = 'll', 
-                 rate = est[['estimate']], 
-                 ll = - est[["minimum"]],
+                 rate = est[['par']], 
+                 ll = - est[["value"]],
                  npars = 1)
   return(result)
 }
@@ -346,7 +362,7 @@ tplnorm <- function(expo, rate) {
 # P(x=k)
 dtpl <- function(x, expo, rate) { 
   const <- tplnorm(expo, rate)
-  
+  print(paste(const, "(", expo, "/", rate, ")"))
   p_equals_x <- x^(-expo) * exp(- x *rate)
   
   return( p_equals_x / const )
@@ -368,7 +384,7 @@ tpl_ll <- function(x, expo, rate) {
   if ( !is.finite(ll) ) { 
     ll <- sign(ll) * .Machine$double.xmax
   }
-  ll
+  return( ll )
 } 
 
 tpl_fit <- function(dat, 
@@ -384,7 +400,7 @@ tpl_fit <- function(dat,
   pars0 <- c(expo0, rate0) # rate0)
   
   lower_bounds  <- c(expo = 1, rate = 0 + .Machine$double.eps)
-  upper_bounds  <- c(expo = Inf, rate = rate0)
+  upper_bounds  <- c(expo = TPL_MAX_EXPO, rate = rate0)
   
   if ( OPTIMWARNINGS ) { 
     est <- optim(pars0, negll, method = 'L-BFGS-B', 

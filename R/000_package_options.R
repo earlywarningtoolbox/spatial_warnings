@@ -3,8 +3,6 @@
 # Textual output options 
 DIGITS <- 3
 
-OPTIMWARNINGS <- FALSE
-
 # A theme that gives v  isual homogenity to all the plots 
 # produced by the spatialwarnings package. It is implemented as a function so 
 # that some things are tweakable on the fly

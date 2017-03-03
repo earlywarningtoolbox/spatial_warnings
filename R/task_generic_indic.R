@@ -1,7 +1,7 @@
 # 
 # 
 # This file contains the workflow function for generic EWS
-
+# 
 
 #' @title Generic Spatial Early-Warning signals
 #' 

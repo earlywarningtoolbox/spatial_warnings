@@ -1,4 +1,4 @@
-# 
+#
 #' @title Early-warning signals based on patch size distributions
 #'
 #' @param x A logical matrix (TRUE/FALSE values) or a list of these
@@ -15,7 +15,7 @@
 #' 
 #' @param xmin_bounds Bounds when estimating the xmin for power-law distributions
 #'
-#' @param wrap Whether patches are consdired to wraparound when reaching one 
+#' @param wrap Whether patches are considered to wraparound when reaching one 
 #'   side of the matrix.  
 #' 
 #' @return A list object of class 'psdfit' containing among other things 
@@ -28,7 +28,7 @@
 #' @details 
 #' 
 #' Patterned ecosystems can exhibit a change in their spatial structure as they 
-#' becom more and more stressed. It has been suggested that this should be 
+#' become more and more stressed. It has been suggested that this should be 
 #' reflected in changes in the observed patch size distributions (PSD). 
 #' The following sequence is expected to occur (Kéfi et al. 2011) as patterned 
 #' ecosystems become more and more degraded:
@@ -41,8 +41,33 @@
 #'   - The patch-size distribution deviates from a power-law as larger patches 
 #'   break down
 #'   
-#'   - The patch-size distribution follows is closer to an exponential 
+#'   - The patch-size distribution is closer to an exponential 
 #'   distribution
+#' 
+#' Additionnally, it has been suggested that these changes in patch size 
+#' distribution shape should be reflected in the power-law range (PLR). This 
+#' function carries out all the required computations and helps display 
+#' the results in a convenient form. 
+#' 
+#' The fitting of PSDs is based on maximum-likelihood following Clauset et al.'s 
+#' procedure. The best discrete distribution is estimated among these candidates
+#' are considered: a power-law \eqn{x^\lambda}, an exponential 
+#' \eqn{exp(\alpha x)}, a truncated power-law and \eqn{x^\lambda exp(\alpha x)},
+#' and optionally, a log-normal. Each distribution parameter is estimated 
+#' using maximum-likelihood, with a minimum patch size fixed to one. The best
+#' distribution is selected based on BIC by default. 
+#' 
+#' To compute the Power-law range (PLR), power-laws are fitted with a variable 
+#' minimum patch size (xmin) and the one with the lowest ks-distance is retained. 
+#' PLR is then computed using this best-fitting xmin: 
+#' 
+#' \deqn{\frac{log(x_{max}) - log(x_{min})}{log(x_{max}) - log(x_{smallest})}}{ (log(xmax) - log(xmin))/(log(xmax) - log(xsmallest))}
+#' 
+#' Results can be displayed using the text-based \code{summary} and \code{print}, 
+#'   but graphical options are also available to plot the trends (\code{plot}) and 
+#'   the fitted distributions (\code{plot_distr}). 
+#' 
+#' @seealso \code{\link{patchsizes}}, \code{\link{label}}
 #' 
 #' @references 
 #' 
@@ -62,24 +87,31 @@
 #' @examples
 #' 
 #' data(arid)
-#' indicator_fitpsd(arid)
+#' # Arid is a list of continous-data matrices: we need to threshold them to define 
+#' # what is a patch and what is not. 
+#' arid_threshold <- lapply(arid, function(e) e > quantile(e, .5))
 #' 
+#' # Compute patch
+#' psd_indic <- patchdistr_spews(arid_threshold)
+#' 
+#' summary(psd_indic)
+#' 
+#' plot(psd_indic) 
 # 
 #' @export
 patchdistr_spews <- function(x, 
                              merge = FALSE,
                              fit_lnorm = FALSE,
-                             best_by = "AIC", 
+                             best_by = "BIC", 
                              xmin_bounds = NULL, 
-                             wrap = FALSE,
-                             ...) {
+                             wrap = FALSE) {
   
   check_mat(x) # Check input matrix
   
   # If input is a list -> apply on each element
   if ( !merge & is.list(x)) { 
     results <- llply(x, patchdistr_spews, merge, fit_lnorm, 
-                     best_by, xmin_bounds, wrap, ...)
+                     best_by, xmin_bounds, wrap)
     class(results) <- c('patchdistr_spews_list', 'patchdistr_spews', 
                         'spews_result', 'list')
     return(results)

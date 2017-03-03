@@ -9,6 +9,13 @@ patchsizes(mat, merge = FALSE, nbmask = matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0),
 }
 \arguments{
 \item{mat}{A logical matrix or a list of these matrices.}
+
+\item{nbmask}{a "neighboring mask": a matrix with odd dimensions describing
+which neighbors are to be considered as neighbors around a cell 
+(see examples).}
+
+\item{wrap}{Whether to wrap around lattice boundaries (`TRUE`/`FALSE`), 
+effectively using periodic boundaries.}
 }
 \value{
 If mat is a logical matrix, then the function returns a vector of 
@@ -22,5 +29,8 @@ Get the distribution of patch sizes
 data(forestdat)
 patchsizes(forestdat[['matrices']][[1]])
 
+}
+\seealso{
+\code{\link{label}}
 }
 

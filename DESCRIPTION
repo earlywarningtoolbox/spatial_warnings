@@ -19,7 +19,8 @@ Imports:
     VGAM,
     poweRlaw,
     reshape2,
-    tidyr
+    tidyr, 
+    stats
 Suggests:
     testthat,
     knitr

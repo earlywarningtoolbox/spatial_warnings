@@ -38,16 +38,16 @@ plot.generic_spews <- function(obj, along = NULL) {
 
 # This function works for both list and single object
 #'@export
-summary.generic_spews <- function(obj) { 
+summary.generic_spews <- function(x, ...) { 
   
   cat('Generic Spatial Early-Warnings\n') 
   cat('\n')
   
-  display_size_info(obj)
+  display_size_info(x)
   cat('\n')
   
   # Format output table
-  output <- as.data.frame(obj)
+  output <- as.data.frame(x)
   output <- reshape2::dcast(output,  replicate ~ indicator, value.var = 'value')
   names(output) <- c('Mat. #', 'Mean', 'Moran\'s I', 'Skewness', 'Variance')
   

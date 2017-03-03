@@ -53,4 +53,7 @@ nbmask8 <- matrix(c(1,1,1,
 image(label(matrices[[1]], nbmask8, wrap = FALSE))
 
 }
+\seealso{
+\code{\link{label}}
+}
 

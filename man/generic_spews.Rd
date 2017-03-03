@@ -41,7 +41,8 @@ distribution}
 \item{...}{Additional arguments passed onto methods}
 
 \item{along}{A vector providing values over which the indicator trend 
-will be plotted.}
+will be plotted. If \code{NULL} then the values are plotted sequentially 
+in their original order.}
 
 \item{what}{The trendline to be displayed. Defaults to the indicator's 
 values ("value") but other metrics can be displayed. Correct values are 

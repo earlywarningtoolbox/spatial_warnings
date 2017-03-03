@@ -19,7 +19,8 @@
 #'   \code{generic_spews} function). 
 #' 
 #' @param along A vector providing values over which the indicator trend 
-#'   will be plotted. 
+#'   will be plotted. If \code{NULL} then the values are plotted sequentially 
+#'   in their original order. 
 #' 
 #' @param what The trendline to be displayed. Defaults to the indicator's 
 #'   values ("value") but other metrics can be displayed. Correct values are 
@@ -117,12 +118,12 @@ plot.generic_spews_test <- function(obj,
 # as.data.frame methods
 # --------------------------------------------------
 #'@export
-as.data.frame.generic_spews_test <- function(obj, ...) { 
+as.data.frame.generic_spews_test <- function(x, ...) { 
   
   # The list methods actually works pretty well so we do this. However, 
   # we define the method instead of relying on automatic dispatch 
   # in case we want to change it later
-  as.data.frame.list(obj) 
+  as.data.frame.list(x) 
 }
 
 

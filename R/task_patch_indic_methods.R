@@ -8,21 +8,37 @@
 # Plot methods
 # --------------------------------------------------
 # 
+#' @title Early-warning signals based on patch size distributions
+#' 
+#' @rdname patchdistr_spews
+#' 
+#' @param along A vector providing values over which the indicator trend 
+#'   will be plotted. If \code{NULL} then the values are plotted sequentially 
+#'   in their original order. 
+#' 
+#' @method plot patchdistr_spews
+plot.patchdistr_spews <- function(x, along = NULL) { 
+  if ( 'patchdistr_spews_single' %in% class(obj) ) { 
+    stop('I cannot plot a trend with only one value')
+  }
+  
+  plot.patchdistr_spews_list(x, along)
+}
+
 # Note: plot will display how characteristics change along a gradient. To 
 #   have a plot of distributions, use plot_distr
 # 
-
 #'@export
-plot.patchdistr_spews_list <- function(obj, along = NULL) { 
+plot.patchdistr_spews_list <- function(x, along = NULL) { 
   
-  if ( 'patchdistr_spews_single' %in% class(obj) ) { 
+  if ( 'patchdistr_spews_single' %in% class(x) ) { 
     stop('I cannot plot a trend with only one value !')
   }
-  if ( !is.null(along) && (length(along) != length(obj)) ) { 
+  if ( !is.null(along) && (length(along) != length(x)) ) { 
     stop('The along values are unfit for plotting (size mismatch')
   }
   
-  obj_table <- as.data.frame(obj)
+  obj_table <- as.data.frame(x)
   
   # Subset table for best fits
   obj_table <- obj_table[is.na(obj_table[ ,'best']) | obj_table[ ,'best'], ]
@@ -103,19 +119,32 @@ plot.patchdistr_spews_list <- function(obj, along = NULL) {
 
 
 
-
-#'@export
-plot_distr <- function(obj, best_only = TRUE) { 
+#' @title Early-warning signals based on patch size distributions
+#' 
+#' @rdname patchdistr_spews
+#' 
+#' @param best_only Plot the empirical (inverse cumulative) patch-size 
+#' distribution with an overlay of the estimated fits. 
+#' 
+#' @method plot_distr patchdistr_spews
+#' 
+#' @export
+plot_distr <- function(x, best_only = TRUE) { 
   UseMethod('plot_distr')
 }
 
+#'@export 
+plot_distr.patchdistr_spews <- function(x, best_only = TRUE) { 
+  NextMethod('plot_distr')
+}
+
 #'@export
-plot_distr.patchdistr_spews_single <- function(obj, 
+plot_distr.patchdistr_spews_single <- function(x, 
                                                best_only = TRUE, 
                                                plrange = TRUE) { 
   
   # Get plottable data.frames
-  values <- predict(obj, best_only = best_only)  
+  values <- predict(x, best_only = best_only)  
   
   plot <- ggplot() + 
     geom_point(aes(x = patchsize, y = y), data = values[['obs']]) + 
@@ -130,10 +159,10 @@ plot_distr.patchdistr_spews_single <- function(obj,
 }
 
 #'@export
-plot_distr.patchdistr_spews_list <- function(obj, best_only = TRUE) { 
+plot_distr.patchdistr_spews_list <- function(x, best_only = TRUE) { 
   
   # Get plottable data.frames
-  values <- predict(obj, best_only = best_only)
+  values <- predict(x, best_only = best_only)
   
   ggplot() + 
     geom_point(aes(x = patchsize, y = y), 
@@ -156,15 +185,15 @@ plot_distr.patchdistr_spews_list <- function(obj, best_only = TRUE) {
 # --------------------------------------------------
 
 #'@export
-predict.patchdistr_spews_single <- function(obj, 
+predict.patchdistr_spews_single <- function(x, 
                                             newdata = NULL,
                                             best_only = FALSE) { 
   
   # Get observed values
-  vals_obs <- cumpsd(obj[["psd_obs"]])
+  vals_obs <- cumpsd(x[["psd_obs"]])
   
   # Shapes table
-  shptbl <- obj[['psd_type']]
+  shptbl <- x[['psd_type']]
   
   # Bail if no fit carried out. Note that we need to set classes in the 
   # output pred df otherwise coercion when merging with existing results 
@@ -179,7 +208,7 @@ predict.patchdistr_spews_single <- function(obj,
   
   # Create x vector of values
   if ( is.null(newdata) ) { 
-    newdata <- unique( round(10^(seq(0, log10(max(obj[["psd_obs"]])), 
+    newdata <- unique( round(10^(seq(0, log10(max(x[["psd_obs"]])), 
                                      length.out = 200))) )
   }
   
@@ -214,9 +243,9 @@ predict.patchdistr_spews_single <- function(obj,
 }
 
 #'@export
-predict.patchdistr_spews_list <- function(obj, newdata = NULL, best_only = FALSE) { 
+predict.patchdistr_spews_list <- function(x, newdata = NULL, best_only = FALSE) { 
   
-  dat <- lapply(obj, predict.patchdistr_spews_single, newdata, best_only)
+  dat <- lapply(x, predict.patchdistr_spews_single, newdata, best_only)
   
   # Add id but handle when psd is empty
   add_id <- function(n, x) { 
@@ -247,14 +276,14 @@ predict.patchdistr_spews_list <- function(obj, newdata = NULL, best_only = FALSE
 # --------------------------------------------------
 
 #'@export
-as.data.frame.patchdistr_spews_single <- function(obj) { 
-  ans <- data.frame(obj[['psd_type']], obj[['plrange']],
+as.data.frame.patchdistr_spews_single <- function(x, ...) { 
+  ans <- data.frame(x[['psd_type']], x[['plrange']],
                     # Add the name explicitely for these as they are single values
-                    percolation = obj[['percolation']], 
-                    percolation_empty = obj[['percolation_empty']], 
-                    cover = obj[['cover']], 
-                    npatches = obj[['npatches']],
-                    unique_patches = obj[['unique_patches']], 
+                    percolation = x[['percolation']], 
+                    percolation_empty = x[['percolation_empty']], 
+                    cover = x[['cover']], 
+                    npatches = x[['npatches']],
+                    unique_patches = x[['unique_patches']], 
                     stringsAsFactors = FALSE)
   # We convert the psd type to a character vector for simplicity
   ans[ ,'type'] <- as.character(ans[ ,'type'])
@@ -262,10 +291,10 @@ as.data.frame.patchdistr_spews_single <- function(obj) {
 }
 
 #'@export
-as.data.frame.patchdistr_spews_list <- function(obj) { 
+as.data.frame.patchdistr_spews_list <- function(x, ...) { 
   
   # Format data
-  results <- lapply(obj, as.data.frame.patchdistr_spews_single)
+  results <- lapply(x, as.data.frame.patchdistr_spews_single)
   results <- Map(function(n, df) { 
                    data.frame(replicate = n, df) 
                  }, seq.int(length(results)), results)
@@ -280,9 +309,9 @@ as.data.frame.patchdistr_spews_list <- function(obj) {
 # Summary methods
 # --------------------------------------------------
 
-prepare_summary_table <- function(obj, ...) { 
+prepare_summary_table <- function(x, ...) { 
   
-  dat <- as.data.frame(obj)
+  dat <- as.data.frame(x)
   # Select lines that either have no fit or select the best fit
   dat <- dat[is.na(dat[ ,"best"]) | dat[ ,"best"], ]
   
@@ -317,8 +346,8 @@ prepare_summary_table <- function(obj, ...) {
 }
 
 #'@export
-summary.patchdistr_spews <- function(obj, ...) { 
-  dat <- prepare_summary_table(obj)
+summary.patchdistr_spews <- function(x, ...) { 
+  dat <- prepare_summary_table(x)
   
   cat('Patch-based Early-Warnings results\n') 
   cat('\n')
@@ -337,11 +366,11 @@ summary.patchdistr_spews <- function(obj, ...) {
 #   equivalents)
 
 #'@export
-print.patchdistr_spews <- function(obj, ...) { 
+print.patchdistr_spews <- function(x, ...) { 
   cat('Patch-based Early-Warnings results\n') 
   cat('\n')
   
-  print.data.frame( as.data.frame(obj), row.names = FALSE)
+  print.data.frame( as.data.frame(x), row.names = FALSE)
   
   cat('\n')
   cat('Use as.data.frame() to retrieve values in a convenient form\n')

@@ -19,6 +19,8 @@
 #'   matrix. It returns a matrix of similar height and width, with integer 
 #'   values representing the ID of the patch. Empty cells are labeled \code{NA}.
 #' 
+#' @seealso \code{\link{label}}
+#' 
 #' @examples 
 #' 
 #' data(forestdat)
@@ -83,9 +85,18 @@ percolation <- function(mat, nbmask = matrix(c(0,1,0,
 #' 
 #' @param mat A logical matrix or a list of these matrices.
 #' 
+#' @param nbmask a "neighboring mask": a matrix with odd dimensions describing
+#'   which neighbors are to be considered as neighbors around a cell 
+#'   (see examples).
+#' 
+#' @param wrap Whether to wrap around lattice boundaries (`TRUE`/`FALSE`), 
+#'   effectively using periodic boundaries.
+#' 
 #' @return If mat is a logical matrix, then the function returns a vector of 
 #'   patch sizes. If mat is a list of logical matrices, then it returns 
 #'   a list of vectors of patch sizes: this list is flattened if merge is TRUE.
+#' 
+#' @seealso \code{\link{label}}
 #' 
 #' @examples
 #' data(forestdat)

@@ -15,7 +15,7 @@ mkdir $TMPDIR
 REMOTESVN="svn+ssh://$USER@r-forge.r-project.org/svnroot/spwarnings"
 
 CASPR_GIT='http://github.com/fdschneider/caspr'
-SPWRN_GIT='http://github.com/fdschneider/spatial_warnings'
+SPWRN_GIT='http://github.com/spatial-ews/spatialwarnings'
 
 # Check out current version
 cd ${TMPDIR}

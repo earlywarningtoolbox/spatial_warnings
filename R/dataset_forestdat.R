@@ -30,7 +30,7 @@
 # library(devtools)
 # # install_github('fdschneider/caspr')
 # library(caspr)
-# # install_github('fdschneider/spatial_warnings')
+# # install_github('spatial-ews/spatialwarnings')
 # library(spatialwarnings)
 # 
 # forestdat <- carray(forestgap, 

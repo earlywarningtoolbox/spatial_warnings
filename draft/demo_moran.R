@@ -4,7 +4,7 @@
 
 # If you want to test the up-to-date package version from github
 library(devtools)
-install_github("fdschneider/spatial_warnings")
+install_github("spatial-ews/spatialwarnings")
 library(spatialwarnings)
 
 # If you want to test the local modifications you did in your local repository

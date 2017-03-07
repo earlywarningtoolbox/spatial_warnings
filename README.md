@@ -26,7 +26,7 @@ using the `devtools` package in R:
 if ( ! require(devtools) ) { 
   install.packages("devtools")
 }
-devtools::install_github("fdschneider/spatial_warnings")
+devtools::install_github("spatial-ews/spatialwarnings")
 ```
 
 ## The spatial indicators 

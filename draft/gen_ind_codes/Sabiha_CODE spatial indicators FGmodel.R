@@ -5,7 +5,7 @@
 
 #Pre- loadings:
 library(devtools) 
-install_github('fdschneider/spatial_warnings')
+install_github('spatial-ews/spatialwarnings')
 library(spatialwarnings)
 library(ggplot2)
 

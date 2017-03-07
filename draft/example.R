@@ -22,7 +22,7 @@ if ( !require(devtools) ) {
 #   (the proxy parameters might have changed since Dec. 2015)
 # Sys.setenv(https_proxy = "proxy.iisc.ernet.in:3128")
 # Sys.setenv(http_proxy  = "proxy.iisc.ernet.in:3128")
-install_github('fdschneider/spatial_warnings')
+install_github('spatial-ews/spatialwarnings')
 library(spatialwarnings) # mind the absence of underscore ! 
 
 

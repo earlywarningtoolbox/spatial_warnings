@@ -50,16 +50,16 @@
 #' the results in a convenient form. 
 #' 
 #' The fitting of PSDs is based on maximum-likelihood following Clauset et al.'s 
-#' procedure. The best discrete distribution is estimated among these candidates
-#' are considered: a power-law \eqn{x^\lambda}, an exponential 
+#' procedure. The best discrete distribution is estimated among these 
+#' candidates: a power-law \eqn{x^\lambda}, an exponential 
 #' \eqn{exp(\alpha x)}, a truncated power-law and \eqn{x^\lambda exp(\alpha x)},
 #' and optionally, a log-normal. Each distribution parameter is estimated 
-#' using maximum-likelihood, with a minimum patch size fixed to one. The best
-#' distribution is selected based on BIC by default. 
+#' using maximum-likelihood, with a minimum patch size (xmin) fixed to one. 
+#' The best distribution is selected based on BIC by default. 
 #' 
 #' To compute the Power-law range (PLR), power-laws are fitted with a variable 
-#' minimum patch size (xmin) and the one with the lowest ks-distance is retained. 
-#' PLR is then computed using this best-fitting xmin: 
+#' minimum patch size (xmin) and the one with the lowest Kolmogorov–Smirnov
+#' statistic is retained. PLR is then computed using this best-fitting xmin: 
 #' 
 #' \deqn{\frac{log(x_{max}) - log(x_{min})}{log(x_{max}) - log(x_{smallest})}}{ (log(xmax) - log(xmin))/(log(xmax) - log(xsmallest))}
 #' 

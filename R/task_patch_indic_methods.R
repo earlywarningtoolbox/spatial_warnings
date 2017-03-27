@@ -82,6 +82,7 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
   plot <- ggplot(summ) + 
     theme_spwarnings() + 
     fillscale_spwarnings(name = "PSD type") + 
+    scale_linetype_discrete(name = "Percolation") + 
     facet_grid( plot_type ~ ., switch = "y") + 
     ylab('') + 
     xlab(xtitle)
@@ -110,9 +111,6 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
       geom_area(aes(x = along, y = plrange, group = 1), stat = "identity") 
       
   }
-  
-  plot + 
-    scale_linetype_manual(name = "Percolation", values = c(1, 2))
   
   return(plot)
 }

@@ -103,6 +103,7 @@ patchdistr_spews <- function(x,
                              merge = FALSE,
                              fit_lnorm = FALSE,
                              best_by = "BIC", 
+                             xmin = 1, # "est" option
                              xmin_bounds = NULL, 
                              wrap = FALSE) {
   
@@ -111,7 +112,7 @@ patchdistr_spews <- function(x,
   # If input is a list -> apply on each element
   if ( !merge & is.list(x)) { 
     results <- llply(x, patchdistr_spews, merge, fit_lnorm, 
-                     best_by, xmin_bounds, wrap)
+                     best_by, xmin, xmin_bounds, wrap)
     class(results) <- c('patchdistr_spews_list', 'patchdistr_spews', 
                         'spews_result', 'list')
     return(results)
@@ -123,6 +124,13 @@ patchdistr_spews <- function(x,
   # Set bounds to search for xmin
   if ( length(psd) > 0 && is.null(xmin_bounds) ) { 
     xmin_bounds <- range(psd)
+  }
+  
+  # Estimate power-law range and set xmin to the estimated value if set to 
+  # auto. 
+  plr_est <- plrange(psd, xmin_bounds)
+  if ( xmin == "estimate" ) { 
+    xmin <- plr_est['xmin_est']
   }
   
   # Compute percolation 
@@ -138,11 +146,11 @@ patchdistr_spews <- function(x,
   
   # Return object 
   result <- list(psd_obs = sort(psd), 
-                 psd_type = psdtype(psd, best_by, fit_lnorm),
+                 psd_type = psdtype(psd, xmin, best_by, fit_lnorm),
                  percolation = percol,
                  percolation_empty = percol_empty,
                  cover = mean(x),
-                 plrange = plrange(psd, xmin_bounds), 
+                 plrange = plr_est, 
                  npatches = length(psd),
                  unique_patches = length(unique(psd)))
   class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 

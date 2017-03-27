@@ -62,15 +62,28 @@
 #'
 #'
 #'@export 
-indicator_psdtype <- function(x, merge = FALSE, 
+indicator_psdtype <- function(x, 
+                              xmin = 1, 
+                              merge = FALSE, 
                               fit_lnorm = FALSE,
+                              xmin_bounds = NULL, 
                               best_by = "AIC") { 
   
   check_mat(x)
   
   if ( !merge && is.list(x) ) { 
-    return( lapply(x, indicator_psdtype, merge, fit_lnorm, best_by) )
+    return( lapply(x, indicator_psdtype, xmin, merge, fit_lnorm, best_by) )
   } 
+  
+  # Estimate power-law range and set xmin to the estimated value if set to 
+  # auto. 
+  if ( xmin == "estimate" ) { 
+    # Set bounds to search for xmin
+    if ( length(psd) > 0 && is.null(xmin_bounds) ) { 
+      xmin_bounds <- range(psd)
+    }
+    xmin <- plrange(psd)['xmin_est']
+  }
   
   # Compute psd
   psd <- patchsizes(x, merge = merge)
@@ -88,7 +101,7 @@ indicator_psdtype <- function(x, merge = FALSE,
     percol_empty <- percolation(!x)
   } 
   
-  psdtype_result <- psdtype(psd, best_by, fit_lnorm)
+  psdtype_result <- psdtype(psd, xmin, best_by, fit_lnorm)
   
   result <- data.frame(psdtype_result, 
                        percolation = percol, 
@@ -96,13 +109,16 @@ indicator_psdtype <- function(x, merge = FALSE,
   return(result)
 }
 
-psdtype <- function(psd, best_by, fit_lnorm) { 
+psdtype <- function(psd, xmin, best_by, fit_lnorm) { 
   
   table_names <- c('method', 'type', 'npars', 'AIC', 'AICc', 'BIC', 'best', 
-                   'expo', 'rate')
+                   'expo', 'rate', 'xmin_fit')
   if ( fit_lnorm ) { 
     table_names <- c(table_names, 'meanlog', 'sdlog')
   }
+  
+  # Chop off psd to what is above xmin 
+  psd <- psd[psd >= xmin]
   
   # We return NA if there are not enough patches to work with 
   if ( length(unique(psd)) <= 3 ) { 
@@ -113,14 +129,14 @@ psdtype <- function(psd, best_by, fit_lnorm) {
   
   # Fit a model for everyone. Note that we store the results of the variables 
   # here so we reuse the previous expo and rate for tpl fitting. 
-  plfit  <- pl_fit(psd)
-  expfit <- exp_fit(psd)
-  tplfit <- tpl_fit(psd, expo0 = plfit[['expo']], rate0 = expfit[['rate']])
+  plfit  <- pl_fit(psd, xmin)
+  expfit <- exp_fit(psd, xmin)
+  tplfit <- tpl_fit(psd, xmin)
   
   models <- list(pl = plfit, tpl = tplfit, exp = expfit)
   
   if (fit_lnorm) { 
-    lnormfit <- lnorm_fit(psd)
+    lnormfit <- lnorm_fit(psd, xmin)
     models <- c(models, list(lnorm = lnormfit))
   }
   
@@ -134,6 +150,10 @@ psdtype <- function(psd, best_by, fit_lnorm) {
   models[ ,'BIC'] <- get_BIC(models[ ,'ll'],  models[ ,'npars'], length(psd))
   
   models[ ,'best'] <- models[ ,best_by] == min(models[ ,best_by])
+  
+  # Add an xmin column 
+  models[ ,"xmin_fit"] <- xmin
+  
   # Reorganize columns 
   models <- models[ ,table_names]
   

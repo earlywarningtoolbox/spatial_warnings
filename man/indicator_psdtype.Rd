@@ -4,7 +4,8 @@
 \alias{indicator_psdtype}
 \title{Change in patch-size distributions types}
 \usage{
-indicator_psdtype(x, merge = FALSE, fit_lnorm = FALSE, best_by = "AIC")
+indicator_psdtype(x, xmin = 1, merge = FALSE, fit_lnorm = FALSE,
+  xmin_bounds = NULL, best_by = "AIC")
 }
 \arguments{
 \item{merge}{If input is a list, then merge all the observed patch-size

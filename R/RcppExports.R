@@ -32,8 +32,8 @@ raw_moran <- function(mat) {
     .Call('spatialwarnings_raw_moran', PACKAGE = 'spatialwarnings', mat)
 }
 
-tplsum <- function(expo, rate, xs) {
-    .Call('spatialwarnings_tplsum', PACKAGE = 'spatialwarnings', expo, rate, xs)
+tplsum <- function(expo, rate, xs, xmin) {
+    .Call('spatialwarnings_tplsum', PACKAGE = 'spatialwarnings', expo, rate, xs, xmin)
 }
 
 #' @export

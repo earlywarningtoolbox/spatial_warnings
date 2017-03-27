@@ -56,15 +56,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // tplsum
-NumericVector tplsum(double expo, double rate, IntegerVector xs);
-RcppExport SEXP spatialwarnings_tplsum(SEXP expoSEXP, SEXP rateSEXP, SEXP xsSEXP) {
+NumericVector tplsum(double expo, double rate, IntegerVector xs, int xmin);
+RcppExport SEXP spatialwarnings_tplsum(SEXP expoSEXP, SEXP rateSEXP, SEXP xsSEXP, SEXP xminSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< double >::type expo(expoSEXP);
     Rcpp::traits::input_parameter< double >::type rate(rateSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type xs(xsSEXP);
-    rcpp_result_gen = Rcpp::wrap(tplsum(expo, rate, xs));
+    Rcpp::traits::input_parameter< int >::type xmin(xminSEXP);
+    rcpp_result_gen = Rcpp::wrap(tplsum(expo, rate, xs, xmin));
     return rcpp_result_gen;
 END_RCPP
 }

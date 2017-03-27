@@ -218,13 +218,20 @@ predict.patchdistr_spews_single <- function(x,
   vals_pred <- data.frame()
   for ( type in shptbl[ ,"type"] ) { 
     type_yvals <- switch(type, 
-                         pl  = ppl(newdata, shptbl[type, "expo"]),
-                         tpl = ptpl(newdata, shptbl[type, "expo"], 
-                                    shptbl[type, "rate"]),
-                         exp = pdisexp(newdata, shptbl[type, "rate"]),
+                         pl  = ppl(newdata, 
+                                   shptbl[type, "expo"], 
+                                   shptbl[type, "xmin_fit"]),
+                         tpl = ptpl(newdata, 
+                                    shptbl[type, "expo"], 
+                                    shptbl[type, "rate"], 
+                                    shptbl[type, 'xmin_fit']),
+                         exp = pdisexp(newdata,  
+                                       shptbl[type, "rate"], 
+                                       shptbl[type, "xmin_fit"]),
                          lnorm = pdislnorm(newdata, 
                                            shptbl[type, "meanlog"], 
-                                           shptbl[type, "sdlog"])) 
+                                           shptbl[type, "sdlog"],  
+                                           shptbl[type, "xmin_fit"]))
     
     vals_pred <- rbind(vals_pred, 
                        data.frame(type = type, patchsize = newdata, 

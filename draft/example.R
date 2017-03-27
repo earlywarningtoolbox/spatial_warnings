@@ -198,7 +198,7 @@ plot(forest.specic)
 #' these indicators. 
 #'
 data(forestdat2)
-forest.psdic <- patchdistr_spews(forestdat2[['matrices']])
+forest.psdic <- patchdistr_spews(forestdat2[['matrices']], fit_lnorm = TRUE)
 
 #' See a summary of what has been fitted
 summary(forest.psdic)

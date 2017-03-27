@@ -63,4 +63,3 @@ in Mediterranean arid ecosystems. Nature, 449, 213–217.
 
 Clauset et al. #TODO
 }
-

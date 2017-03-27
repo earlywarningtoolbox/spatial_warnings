@@ -27,4 +27,3 @@ Kubo, T., Iwasa, Y., & Furumoto, N. (1996). Forest spatial dynamics with gap
   Biology, 180(3), 229–246. http://doi.org/10.1006/jtbi.1996.0099
 }
 \keyword{datasets}
-

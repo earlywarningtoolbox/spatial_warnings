@@ -37,4 +37,3 @@ Kéfi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina,
 \seealso{
 \code{\link{generic_spews}}, \code{\link{spectral_spews}}
 }
-

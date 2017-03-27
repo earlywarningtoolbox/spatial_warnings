@@ -22,4 +22,3 @@ See \link{indicator_moran} or \link{generic_spews}
 \seealso{
 \link{indicator_moran}, \link{generic_spews}
 }
-

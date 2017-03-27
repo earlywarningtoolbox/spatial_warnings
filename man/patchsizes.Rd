@@ -33,4 +33,3 @@ patchsizes(forestdat[['matrices']][[1]])
 \seealso{
 \code{\link{label}}
 }
-

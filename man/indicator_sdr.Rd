@@ -34,4 +34,3 @@ Compute the ratio of low frequencies over high frequencies
 \references{
 ? Biggs et al. 2008 ? (Vishu suggestion IIRC [Alex])
 }
-

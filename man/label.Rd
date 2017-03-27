@@ -56,4 +56,3 @@ image(label(matrices[[1]], nbmask8, wrap = FALSE))
 \seealso{
 \code{\link{label}}
 }
-

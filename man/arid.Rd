@@ -3,6 +3,7 @@
 \docType{data}
 \name{arid}
 \alias{arid}
+\alias{arid}
 \title{A list of binary matrices and their associated parameters}
 \format{A list of matrices, representing values of a black and white 
   aerial picture.}
@@ -29,4 +30,3 @@ TODO
 TODO
 }
 \keyword{datasets}
-

@@ -18,6 +18,21 @@
 OPTIMWARNINGS <- FALSE
 TPL_MAX_EXPO <- 10 # for TPL, max expo param
 
+# Bounds on parameters, these should be large and no observed should have 
+# values beyond these
+# Power-laws lambdas
+PLMIN <- 1 
+PLMAX <- 10
+# Exponential rates
+EXPMIN <- .Machine$double.eps # A very close value to, but not, zero
+EXPMAX <- 10
+
+
+# These functions are useful when doing the fit to rescale the values to 
+# a bounded range. 
+to_rescaled   <- function(x, min, max) VGAM::extlogit(x, min, max, inverse = TRUE)
+from_rescaled <- function(x, min, max) VGAM::extlogit(x, min, max)
+
 # Riemann zeta function with xmin taken into account :
 # sum(1/k^-expo for i=xmin to i = inf
 # This is vectorized over xmins so that we do sum things several times. 
@@ -113,7 +128,7 @@ pl_ll <- function(dat, expo, xmin) {
 # PL: Fit by MLE
 # Method is approximate if xmin > 10 (correponding to an error of 0.1% if 
 #   expo = 2.0), but that can be overridden by parameter method
-pl_fit <- function(dat, xmin = 1, method = "auto") { 
+pl_fit <- function(dat, xmin = 1, method = "direct") { 
   
   # Check and decide on the right method to apply
   if ( ! method %in% c("auto", "approx", "direct") ) { 
@@ -135,17 +150,12 @@ pl_fit <- function(dat, xmin = 1, method = "auto") {
   
   # If we want no approximation, then find the best fit
   if ( method == "direct") { 
-    negll <- function(expo) { - pl_ll(dat, expo, xmin) }
-    
-    if ( OPTIMWARNINGS ) { 
-      est <- optim(expo_estim, negll, method = 'L-BFGS-B', 
-                   lower = 1 + .Machine$double.eps) # expo is always > 1
-    } else { 
-      est <- suppressWarnings( optim(expo_estim, negll, method = 'L-BFGS-B', 
-                                     lower = 1 + .Machine$double.eps) )
+    negll <- function(expo) { 
+      - pl_ll(dat, to_rescaled(expo, PLMIN, PLMAX), xmin) 
     }
     
-    expo_estim <- est[["par"]]
+    est <- nlm(negll, from_rescaled(expo_estim, PLMIN, PLMAX))
+    expo_estim <- to_rescaled(est[["estimate"]], PLMIN, PLMAX)
   }
   
   result <- list(type = 'pl',
@@ -253,24 +263,15 @@ exp_fit <- function(dat) {
   rate0 <- 1 / mean(dat)
   
   negll <- function(rate) {
-#     print(paste0(round(rate, 10), " -> ", - exp_ll(dat, rate))) 
-    - exp_ll(dat, rate) 
+    - exp_ll(dat, to_rescaled(rate, EXPMIN, EXPMAX)) 
   }
   
-  if ( OPTIMWARNINGS ) { 
-    est <- optim(rate0, negll, method = 'L-BFGS-B', 
-                 lower = 0 + .Machine$double.eps)
-  } else { 
-    est <- suppressWarnings( 
-        optim(rate0, negll, method = 'L-BFGS-B', 
-              lower = 0 + .Machine$double.eps)
-      )
-  }
+  est <- nlm(negll, from_rescaled(rate0, EXPMIN, EXPMAX))
   
   result <- list(type = 'exp',
                  method = 'll', 
-                 rate = est[['par']], 
-                 ll = - est[["value"]],
+                 rate = to_rescaled(est[['estimate']], EXPMIN, EXPMAX), 
+                 ll = - est[["minimum"]],
                  npars = 1)
   return(result)
 }
@@ -356,13 +357,18 @@ tplnorm <- function(expo, rate) {
   # Inspired from python package: normalization constant for 
   # a discrete tpl. 
   # -> https://github.com/jeffalstott/powerlaw/blob/master/powerlaw.py
-  VGAM::lerch(exp(-rate), expo, 1) * exp(-rate)
+  cat(rate, " / ", expo, "\n", sep = "")
+  if ( is.infinite( exp(-rate) ) ) { 
+    return(NA_real_)
+  } else { 
+    VGAM::lerch(exp(-rate), expo, 1) * exp(-rate)
+  }
 }
 
 # P(x=k)
 dtpl <- function(x, expo, rate) { 
   const <- tplnorm(expo, rate)
-  print(paste(const, "(", expo, "/", rate, ")"))
+#   print(paste(const, "(", expo, "/", rate, ")"))
   p_equals_x <- x^(-expo) * exp(- x *rate)
   
   return( p_equals_x / const )
@@ -394,27 +400,23 @@ tpl_fit <- function(dat,
   negll <- function(pars) { 
 #     print(paste0(round(pars[1], 10), ", ", 
 #                  round(pars[2], 10), " -> ", - tpl_ll(dat, pars[1], pars[2]))) 
-    - tpl_ll(dat, pars[1], pars[2])
+#     print(pars[1])
+#     print(pars[2])
+    # pars[1] is expo, pars[2] is rate
+    - tpl_ll(dat, 
+             to_rescaled(pars[1], PLMIN, PLMAX), 
+             to_rescaled(pars[2], EXPMIN, EXPMAX))
   }
   
-  pars0 <- c(expo0, rate0) # rate0)
-  
-  lower_bounds  <- c(expo = 1, rate = 0 + .Machine$double.eps)
-  upper_bounds  <- c(expo = TPL_MAX_EXPO, rate = rate0)
-  
-  if ( OPTIMWARNINGS ) { 
-    est <- optim(pars0, negll, method = 'L-BFGS-B', 
-                 lower = lower_bounds, upper = upper_bounds)
-  } else { 
-    est <- suppressWarnings( optim(pars0, negll, method = 'L-BFGS-B', 
-                                   lower = lower_bounds, upper = upper_bounds) ) # rate is always >0  )
-  }
+  pars0 <- c(from_rescaled(expo0, PLMIN, PLMAX), 
+             from_rescaled(rate0, EXPMIN, EXPMAX))
+  est <- nlm(negll, pars0)
   
   result <- list(type = 'tpl',
                  method = 'll', 
-                 expo = est[['par']][1], 
-                 rate = est[['par']][2], 
-                 ll = - est[["value"]],
+                 expo = to_rescaled(est[['estimate']][1], PLMIN, PLMAX), 
+                 rate = to_rescaled(est[['estimate']][2], EXPMIN, EXPMAX), 
+                 ll = - est[["minimum"]],
                  npars = 2)
   return(result)
 }

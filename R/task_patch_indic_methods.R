@@ -18,7 +18,7 @@
 #' 
 #' @method plot patchdistr_spews
 plot.patchdistr_spews <- function(x, along = NULL) { 
-  if ( 'patchdistr_spews_single' %in% class(obj) ) { 
+  if ( 'patchdistr_spews_single' %in% class(x) ) { 
     stop('I cannot plot a trend with only one value')
   }
   
@@ -146,12 +146,19 @@ plot_distr.patchdistr_spews_single <- function(x,
   
   plot <- ggplot() + 
     geom_point(aes(x = patchsize, y = y), data = values[['obs']]) + 
-    geom_line(aes(x = patchsize, y = y, color = type), 
-              data = values[['pred']]) + 
     scale_y_log10() +
     scale_x_log10() + 
     xlab('Patch size') + 
     ylab('Frequency (P>=x)')
+  
+  # It can happen that no distribution have been fitted. Check for that 
+  # before plotting otherwize it produces an error. 
+  if ( any(!is.na(values[['pred']][ ,"y"])) ) { 
+    plot <- plot + geom_line(aes(x = patchsize, y = y, color = type), 
+                             data = values[['pred']]) 
+  } else { 
+    warning('No distribution has been fitted to the observed patch size distribution')
+  }
   
   return(plot)
 }
@@ -162,17 +169,25 @@ plot_distr.patchdistr_spews_list <- function(x, best_only = TRUE) {
   # Get plottable data.frames
   values <- predict(x, best_only = best_only)
   
-  ggplot() + 
+  plot <- ggplot() + 
     geom_point(aes(x = patchsize, y = y), 
                data = values[['obs']]) + 
-    geom_line(aes(x = patchsize, y = y, color = type), 
-              data = values[['pred']]) + 
     scale_y_log10() +
     scale_x_log10() + 
     facet_wrap( ~ replicate) + 
     xlab('Patch size') + 
     ylab('Frequency (P>=x)')
     
+    # It can happen that no distribution have been fitted. Check for that 
+  # before plotting otherwize it produces an error. 
+  if ( any(!is.na(values[['pred']][ ,"y"])) ) { 
+    plot <- plot + geom_line(aes(x = patchsize, y = y, color = type), 
+                             data = values[['pred']]) 
+  } else { 
+    warning('No distribution has been fitted to the observed patch size distributions')
+  }
+  
+  return(plot)
 }
 
 

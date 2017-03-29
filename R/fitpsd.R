@@ -1,21 +1,14 @@
 # 
-# 
 # This file contains code related to patch size distribution fitting. These 
 #   functions can fit Power-law (pl), Truncated Power-law (tpl), Lognormal 
 #   (lnorm) and Exponential (exp) distributions using maximum likelihood, as 
-#   per Clauset et al. 's recommendations. 
+#   per Clauset et al. 's recommendation. 
 # 
-
-
-# Notes on psd fitting
-# 
-# 
-# We want to fit four types of distributions using MLE: PL/TPL/LNORM/EXP
-#   with an xmin of 1 (no xmin basically), except for PL for which xmin can vary
-
+# In addition, it provides the estimation of xmin using the ks-distance for 
+# power-laws
 
 # Optimisation global options
-STEPMAX <- 0.01
+STEPMAX <- 1
 ITERLIM <- 1000
 
 # This is a safe version of nlm that returns a sensible result (NA) when 
@@ -30,6 +23,11 @@ nlm_safe <- function(...) {
     return( list(minimum = NA_real_, 
                  estimate = NA_real_) )
   } else { 
+    # Code results above 3 highlight a true problem, below 3 the solution 
+    # is either exact or approximate. 
+    if ( result[["code"]] > 3 ) { 
+      warning(paste0('nlm returned ', result[["code"]]))
+    }
     return(result)
   }
 }
@@ -147,18 +145,7 @@ pl_ll <- function(dat, expo, xmin) {
 # PL: Fit by MLE
 # Method is approximate if xmin > 10 (correponding to an error of 0.1% if 
 #   expo = 2.0), but that can be overridden by parameter method
-pl_fit <- function(dat, xmin = 1, method = "direct") { 
-  
-  # Check and decide on the right method to apply
-  if ( ! method %in% c("auto", "approx", "direct") ) { 
-    stop("Unknown method for power-law fitting")
-  }
-  
-  if ( method == "auto" && xmin >= 10) { 
-    method <- "approx"
-  } else { 
-    method <- "direct"
-  }
+pl_fit <- function(dat, xmin = 1) { 
   
   # Cut data to specified range
   dat <- dat[dat >= xmin] 
@@ -168,19 +155,18 @@ pl_fit <- function(dat, xmin = 1, method = "direct") {
   expo_estim <- 1 + npts / ( sum(log(dat)) - npts * log(xmin-.5) )
   
   # If we want no approximation, then find the best fit
-  if ( method == "direct") { 
-    negll <- function(expo) {
-      result <- - pl_ll(dat, to_rescaled(expo, PLMIN, PLMAX), xmin) 
-      if ( is.infinite(result) ) { 
-        return(NA_real_)
-      } else { 
-        return(result)
-      }
+  negll <- function(expo) {
+    result <- - pl_ll(dat, to_rescaled(expo, PLMIN, PLMAX), xmin) 
+    if ( is.infinite(result) ) { 
+      return(NA_real_)
+    } else { 
+      return(result)
     }
-    
-    est <- nlm_safe(negll, from_rescaled(expo_estim, PLMIN, PLMAX), stepmax = STEPMAX)
-    expo_estim <- to_rescaled(est[["estimate"]], PLMIN, PLMAX)
   }
+  
+  est <- nlm_safe(negll, from_rescaled(expo_estim, PLMIN, PLMAX), 
+                  stepmax = STEPMAX, iterlim = ITERLIM)
+  expo_estim <- to_rescaled(est[["estimate"]], PLMIN, PLMAX)
   
   result <- list(type = 'pl',
                  method = 'll', 

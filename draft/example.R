@@ -38,17 +38,13 @@ library(spatialwarnings) # mind the absence of underscore !
 #'  For example, the first matrix corresponds to the simulation with the 
 #'  parameters given in the first row of the dataset. 
 #'   
-#'   - `forestdat2`: Another output from the Forest-gap model. It has the same 
+#'   - `forestdat`: Another output from the Forest-gap model. It has the same 
 #'  structure as forestdat but has different parameters and matrix sizes 
 #'  (400x400 instead of 100x100). 
-#' 
-#'   - `arid` A bunch of aerial pictures from Spain (more info on this?)
 #' 
 #' All these datasets are included with the package, so we can just load them 
 #' using the function `data()`
 data(forestdat)
-data(forestdat2)
-data(arid)
 
 
 
@@ -185,7 +181,7 @@ forest.specic <- spectral_spews(forestdat[["matrices"]],
                                 sdr_low_range =  c(0, .2), 
                                 sdr_high_range = c(0, 1))
 plot(forest.specic)
-#' See also `?spectral_spews`plot(arid.psdic)
+#' See also `?spectral_spews`
 
 
 
@@ -194,11 +190,11 @@ plot(forest.specic)
 #' # PSD-based spatial indicators
 #' 
 #' 
-#' We will use forestdat2 for the first part of this example. Let's compute 
+#' We will use forestdat for the first part of this example. Let's compute 
 #' these indicators. 
 #'
-data(forestdat2)
-forest.psdic <- patchdistr_spews(forestdat2[['matrices']], fit_lnorm = TRUE)
+data(forestdat)
+forest.psdic <- patchdistr_spews(forestdat[['matrices']], fit_lnorm = FALSE)
 
 #' See a summary of what has been fitted
 summary(forest.psdic)
@@ -222,36 +218,11 @@ plot(forest.psdic) # try with the along parameter
 plot_distr(forest.psdic)
 
 
-
-
-#' Next example, this time using aerial images of bushes (from Spain). The 
-#' dataset is called arid (see Introduction). The first step to compute 
-#' psd-based spatial indicators is to convert the dataset to binary values. This 
-#' is enforced in this workflow by checking that all input matrices are of 
-#' logical type (TRUE/FALSE). 
-#' 
-#' The thresholding itself is a complicated matter and is left to the user: we 
-#' do not provide any specific function. So let's write our own.
-classify_one_matrix <- function(mat) { 
-  # We consider vegetation to occur when:
-  mat > quantile(mat, .45)
-}
-
-# Now we have a thresholded dataset
-arid.bw <- lapply(arid, classify_one_matrix)
-image(arid.bw[[1]])
-
-arid.psdic <- patchdistr_spews(arid.bw)
-
-plot(arid.psdic)
-
-
 #' Of course, individual indicators are also available indvidually, through 
 #' their own functions 
 
 # Not run:
-# indicator_psdtype(arid.bw)
-# indicator_plrange(forestdat2$matrices)
+# indicator_plrange(forestdat$matrices)
 
 #' That's it ! For most of these functions, documentation is available 
 #' through `?` ! It is sometimes missing though (help is gladly accepted ;) ). 

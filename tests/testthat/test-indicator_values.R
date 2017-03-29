@@ -36,8 +36,7 @@ test_that("Indicator skewness returns correct values", {
   
   expect_equal(skewf(testmat), 
                indicator_skewness(testmat, subsize = 1, 
-                                  nreplicates = 0, 
-                                  absolute = FALSE)[["value"]])
+                                  nreplicates = 0)[["value"]])
   
   for (subsize in seq.int(10)) { 
     expect_equal(skewf(coarse_grain(testmat, subsize = subsize)), 

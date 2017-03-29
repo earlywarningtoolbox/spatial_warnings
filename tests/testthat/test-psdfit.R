@@ -26,7 +26,7 @@ system("cd ./pli-R-v0.0.3-2007-07-25/ && \
 visual <- FALSE
 
 test_that('PL fitting works', { 
-  expos <- c(1.1, 1.5, 2)
+  expos <- c(1.1, 1.5, 2.5)
   xmins <- c(2, 1,  10, 100)
   for ( expo in expos ) { 
     for ( xmin in xmins ) { 
@@ -42,23 +42,23 @@ test_that('PL fitting works', {
                    dpl(dat, expo, xmin = xmin))
       
       # ppl <-> pzeta with higher tail
-        expect_equal(pzeta(dat, exponent = expo, threshold = xmin, lower.tail = FALSE), 
-                     ppl(dat, expo, xmin = xmin))
+      expect_equal(pzeta(dat, exponent = expo, threshold = xmin, lower.tail = FALSE), 
+                   ppl(dat, expo, xmin = xmin))
       
       # ppl_ll <-> zeta.loglike
-      expect_equal(zeta.loglike(dat, exponent = expo, threshold = xmin), 
-                   pl_ll(dat, expo, xmin = xmin))
+      expect_equal(zeta.loglike(pldat, exponent = expo, threshold = xmin), 
+                   pl_ll(pldat, expo, xmin = xmin))
       
       # pl_fit <-> zeta.fit 
       pl_expo <- pl_fit(pldat)[['expo']]
       expect_equal(zeta.fit(pldat)[['exponent']], pl_expo, tol = 1e-3)
       
       # Redo fit and look at it
-      pl_expo <- pl_fit(pldat)[['expo']]
-      plot(log10(cumpsd(pldat[pldat>=xmin])))
-      xs <- c(min(pldat[pldat>=xmin]), max(pldat[pldat>=xmin]))
-      lines(log10(xs), log10(ppl(xs, pl_expo, xmin = xmin)), col = 'red')
-      title('PLFIT')
+#       pl_expo <- pl_fit(pldat)[['expo']]
+#       plot(log10(cumpsd(pldat[pldat>=xmin])))
+#       xs <- c(min(pldat[pldat>=xmin]), max(pldat[pldat>=xmin]))
+#       lines(log10(xs), log10(ppl(xs, pl_expo, xmin = xmin)), col = 'red')
+#       title('PLFIT')
     }
   }
 })

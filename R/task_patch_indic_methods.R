@@ -16,8 +16,8 @@
 #'   will be plotted. If \code{NULL} then the values are plotted sequentially 
 #'   in their original order. 
 #' 
-#' @method plot patchdistr_spews
-plot.patchdistr_spews <- function(x, along = NULL) { 
+#'@method plot patchdistr_spews
+plot.patchdistr_spews <- function(x, along = NULL, ...) { 
   if ( 'patchdistr_spews_single' %in% class(x) ) { 
     stop('I cannot plot a trend with only one value')
   }
@@ -28,7 +28,7 @@ plot.patchdistr_spews <- function(x, along = NULL) {
 # Note: plot will display how characteristics change along a gradient. To 
 #   have a plot of distributions, use plot_distr
 # 
-#'@export
+#'@method plot patchdistr_spews_list
 plot.patchdistr_spews_list <- function(x, along = NULL) { 
   
   if ( 'patchdistr_spews_single' %in% class(x) ) { 
@@ -198,15 +198,15 @@ plot_distr.patchdistr_spews_list <- function(x, best_only = TRUE) {
 # --------------------------------------------------
 
 #'@export
-predict.patchdistr_spews_single <- function(x, 
+predict.patchdistr_spews_single <- function(object, 
                                             newdata = NULL,
                                             best_only = FALSE) { 
   
   # Get observed values
-  vals_obs <- cumpsd(x[["psd_obs"]])
+  vals_obs <- cumpsd(object[["psd_obs"]])
   
   # Shapes table
-  shptbl <- x[['psd_type']]
+  shptbl <- object[['psd_type']]
   
   # Bail if no fit carried out. Note that we need to set classes in the 
   # output pred df otherwise coercion when merging with existing results 
@@ -221,7 +221,7 @@ predict.patchdistr_spews_single <- function(x,
   
   # Create x vector of values
   if ( is.null(newdata) ) { 
-    newdata <- unique( round(10^(seq(0, log10(max(x[["psd_obs"]])), 
+    newdata <- unique( round(10^(seq(0, log10(max(object[["psd_obs"]])), 
                                      length.out = 200))) )
   }
   
@@ -366,8 +366,8 @@ prepare_summary_table <- function(x, ...) {
 }
 
 #'@export
-summary.patchdistr_spews <- function(x, ...) { 
-  dat <- prepare_summary_table(x)
+summary.patchdistr_spews <- function(object, ...) { 
+  dat <- prepare_summary_table(object)
   
   cat('Patch-based Early-Warnings results\n') 
   cat('\n')

@@ -4,7 +4,7 @@
 #   the published results in PLOS One (Kéfi et al., etc)
 # 
 
-context("Test that results matches those in PLOS One")
+context("Test that results match those in PLOS One")
 
 test_that('results matches those in PLOS One', { 
   

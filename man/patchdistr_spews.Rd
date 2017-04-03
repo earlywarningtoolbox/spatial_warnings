@@ -8,9 +8,9 @@
 \title{Early-warning signals based on patch size distributions}
 \usage{
 patchdistr_spews(x, merge = FALSE, fit_lnorm = FALSE, best_by = "BIC",
-  xmin_bounds = NULL, wrap = FALSE)
+  xmin = 1, xmin_bounds = NULL, wrap = FALSE)
 
-\method{plot}{patchdistr_spews}(x, along = NULL)
+\method{plot}{patchdistr_spews}(x, along = NULL, ...)
 
 \method{plot_distr}{patchdistr_spews}(x, best_only = TRUE)
 }

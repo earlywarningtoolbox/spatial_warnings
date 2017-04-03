@@ -5,3 +5,4 @@ tools
 ^.*.kate-swp$
 manuscript
 draft
+data-raw

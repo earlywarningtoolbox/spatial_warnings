@@ -74,11 +74,11 @@ test_that("the cpp implementation of the spectrum computations is correct", {
     return(shiftX)
   }
   
-  testmat <- forestdat[["matrices"]][[1]]
+  testmat <- forestdat[[10]]
   
   expect_equal(rspectrum_old(testmat), 
                rspectrum(testmat), 
-               tolerance = 2/100) # this is a big difference (difference in numerical precision ?)
+               tolerance = 1/1000) # this is a big difference (difference in numerical precision ?)
   
 })
 

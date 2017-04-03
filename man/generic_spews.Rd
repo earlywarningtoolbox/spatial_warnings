@@ -14,10 +14,10 @@ generic_spews(mat, subsize = 4, detrend = FALSE, abs_skewness = FALSE,
 
 \method{indictest}{generic_spews}(obj, null_replicates = 999, ...)
 
-\method{plot}{generic_spews_test}(obj, along = NULL, what = "value",
+\method{plot}{generic_spews_test}(x, along = NULL, what = "value",
   display_null = TRUE, ...)
 
-\method{plot}{generic_spews}(obj, along = NULL)
+\method{plot}{generic_spews}(x, along = NULL, ...)
 }
 \arguments{
 \item{mat}{A matrix (quantitative data), a binary matrix (TRUE/FALSE data), 
@@ -96,13 +96,13 @@ The significance of generic early-warning signals can be estimated by
 \examples{
 
 data(forestdat)
-gen_indic <- generic_spews(forestdat[['matrices']], subsize = 2)
+gen_indic <- generic_spews(forestdat, subsize = 2)
 
 # Display results
 summary(gen_indic)
 
 # Display trends along the varying model parameter
-plot(gen_indic, along = forestdat[['parameters']][ ,'delta'])
+plot(gen_indic, along = forestdat.pars[ ,'delta'])
 
 # Compute significance
 gen_test <- indictest(gen_indic)
@@ -111,12 +111,12 @@ print(gen_test)
 
 # Display the trend, now with a grey ribbon indicating the 5\%-95\% quantile
 # range of the null distribution
-plot(gen_test, along = forestdat[['parameters']][ ,'delta'])
+plot(gen_test, along = forestdat.pars[ ,'delta'])
 
 # Note that plot() method returns a ggplot object that can be modified
 # for convenience
 if ( require(ggplot2) ) { 
-  plot(gen_test, along = forestdat[['parameters']][ ,'delta']) + 
+  plot(gen_test, along = forestdat.pars[ ,'delta']) + 
     xlab('Delta') + 
     theme_minimal()
 }

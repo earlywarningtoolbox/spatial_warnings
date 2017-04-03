@@ -7,7 +7,7 @@
 test_that("PL estimations work with xmins", { 
   
   # Setup pli from Clauzet et al's
-  try(setwd('./tests/testthat'))
+  try(setwd('./tests/testthat'), silent = TRUE)
           
   for ( s in dir('./pli-R-v0.0.3-2007-07-25', 
                 full.names = TRUE, pattern = '*.R') ) { 
@@ -23,7 +23,7 @@ test_that("PL estimations work with xmins", {
   
   expos <- c(1.5, 2)
   for (expo in expos) { 
-    for (xmin in c(1, 10, 100, 500)) {
+    for (xmin in c(1, 10, 40)) {
       x <- seq.int(1000)
       
       pldat <- poweRlaw::rpldis(1000, xmin, expo)
@@ -52,24 +52,3 @@ test_that("PL estimations work with xmins", {
   }
   
 })
-
-test_that("xmins estimation is coherent", { 
-  
-  parms <- expand.grid(expo      = c(1.5), 
-                       rate      = c(0.001, 0.005, 0.01, 0.1, 0.2, 0.3, 0.5, 0.7, 1, 1.2, 1.3, 1.4, 1.5, 1.7, 1.8, 2))
-  
-  estim_xmin <- function(df) { 
-    pldat <- round(rpowerexp(10000, 1, df[ ,'expo'], df[, 'rate']))
-#     print(pldat)
-    est_xmin <- xmin_estim(pldat)
-    
-    cat(df$rate, ' -> ', est_xmin, "\n", sep = "")
-    data.frame(df, est_xmin = est_xmin)
-  }
-  
-  if ( require(plyr) ) { 
-    xmin_ests <- ddply(parms, ~ expo + rate, estim_xmin, .progress = 'none')
-  }
-  
-})
-

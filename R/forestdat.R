@@ -10,7 +10,7 @@
 #'   }
 #' 
 #' @source Generated using the implementation of Kubo's model in caspr 0.2.0 
-#'   \link{https://github.com/fdschneider/caspr}. 
+#'   \url{https://github.com/fdschneider/caspr}. 
 #' 
 #' @references
 #' 

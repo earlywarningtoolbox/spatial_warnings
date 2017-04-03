@@ -20,12 +20,12 @@
 #' 
 #' @method plot generic_spews
 #' @export
-plot.generic_spews <- function(obj, along = NULL) { 
-  if ( 'generic_spews_single' %in% class(obj) ) { 
+plot.generic_spews <- function(x, along = NULL, ...) { 
+  if ( 'generic_spews_single' %in% class(x) ) { 
     stop('I cannot plot a trend with only one value !')
   }
   
-  new_data <- as.data.frame(obj)
+  new_data <- as.data.frame(x)
   plot.generic_spews_test(new_data, along, display_null = FALSE)
 }
 

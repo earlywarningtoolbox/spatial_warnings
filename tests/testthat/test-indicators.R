@@ -30,10 +30,6 @@ test_that('indicator functions stop if provided garbage data', {
     # expect_error(f(garbage_notbinary))
     expect_warning(f(garbage_diffsizes))
     expect_warning(f(garbage_list_diff_types))
-    
-    # Test if the functions actually work
-    f(forestdat[['matrices']][[1]])
-    f(forestdat[['matrices']])
   }
   
 })

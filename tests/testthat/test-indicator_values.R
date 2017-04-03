@@ -5,7 +5,7 @@
 data(forestdat)
 
 
-testmat <- forestdat$matrices[[1]]
+testmat <- forestdat[[10]]
 
 
 
@@ -36,6 +36,7 @@ test_that("Indicator skewness returns correct values", {
   
   expect_equal(skewf(testmat), 
                indicator_skewness(testmat, subsize = 1, 
+                                  absolute = FALSE, 
                                   nreplicates = 0)[["value"]])
   
   for (subsize in seq.int(10)) { 

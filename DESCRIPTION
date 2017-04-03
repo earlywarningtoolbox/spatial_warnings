@@ -20,7 +20,8 @@ Imports:
     poweRlaw,
     reshape2,
     tidyr, 
-    stats
+    stats, 
+    utils
 Suggests:
     testthat,
     knitr

@@ -5,7 +5,6 @@
 // 
 
 #include <Rcpp.h>
-#define TOLERANCE 1e-64
 
 using namespace Rcpp; 
 

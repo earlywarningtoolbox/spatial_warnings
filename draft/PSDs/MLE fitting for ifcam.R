@@ -1,57 +1,95 @@
+setwd('./draft/PSDs')
+
+
+# load('./.misc_data.RData', verbose = TRUE)
+
+# Load code
+# sapply(dir('./pli/', recursive = TRUE, full.names = TRUE, pattern = "*.R"), 
+#        source)
+
+# Load packages
+library(plyr)
+library(ggplot2)
+
+# Load powerlaw-related dependencies
+library(poweRlaw)
+sapply(dir('./pli/', pattern = '*.R$', full = TRUE), source)
+
 #Choose the folder with the patch size distribution vectors
-Gallpatches<-list.files(getwd(),recursive=TRUE)
-Gallpatches1<-c(Gallpatches[9:12],Gallpatches[1:4],Gallpatches[5:8])
-Gallpatches<-Gallpatches1
-rm(Gallpatches1)
-GVps<-lapply(Gallpatches,function(x){read.csv(x,header=TRUE)[,2]})
+Gallpatches <- dir(getwd(), recursive=TRUE, pattern = '*.csv$')
+GVps <- lapply(Gallpatches,function(x){read.csv(x, header=TRUE)[ ,2]})
 
 
-GpowAf = lapply(GVps,function(x){displ$new(as.vector(t(x)))})
-Gminx = lapply(GpowAf,function(x){estimate_xmin(x)})
-for(i in 1:length(GVps)){GpowAf[[i]]$setXmin(Gminx[[i]])}
-GestPAf=lapply(GpowAf,function(x){estimate_pars(x)})
-for(i in 1:length(GVps)){GpowAf[[i]]$setPars(GestPAf[[i]]$pars)}
 
-GexpAf = lapply(GVps,function(x){disexp$new(as.vector(t(x)))})
-for(i in 1:length(GVps)){GexpAf[[i]]$setXmin(GpowAf[[i]]$getXmin())}
-GestEAf=lapply(GexpAf,function(x){estimate_pars(x)})
-for(i in 1:length(GVps)){GexpAf[[i]]$setPars(GestEAf[[i]]$pars)}
 
-GLnmAf = lapply(GVps,function(x){dislnorm$new(as.vector(t(x)))})
-for(i in 1:length(GVps)){GLnmAf[[i]]$setXmin(GpowAf[[i]]$getXmin())}
-GestLNAf=lapply(GLnmAf,function(x){estimate_pars(x)})
-for(i in 1:length(GVps)){GLnmAf[[i]]$setPars(GestLNAf[[i]]$pars)}
 
+estimate_dist_params <- function(distrib_vec, disttype, xmin = NULL) { 
+  dist <- disttype$new(distrib_vec)
+  
+  # Set xmin if unspecified
+  if ( is.null(xmin) ) { 
+    xmin <- estimate_xmin(dist)
+  }  
+  dist$setXmin(xmin)
+  
+  # Estimate PL parms
+  parms_estimate <- estimate_pars(dist)
+  dist$setPars(parms_estimate$pars)
+  
+  dist
+}
+  
+replist <- function(l, n) { list(l)[rep(1, n)] } # same as rep() but list output
+
+# We create and fit ...
+# ... a power law
+GpowAf <- llply(GVps, estimate_dist_params, displ,  .progress = 'time')
+used_mins <- lapply(GpowAf, function(x) x$getXmin()) # retrieve minimas used in PL fit
+# ... an exponential
+GexpAf <- Map(estimate_dist_params, GVps, 
+              disttype = replist(disexp, length(GVps)),
+              xmin = used_mins)
+
+# ... a lognormal
+GLnmAf <- Map(estimate_dist_params, GVps, 
+              disttype = replist(dislnorm, length(GVps)),
+              xmin = used_mins)
+
+
+# We also fit these three functions using the source code provided by 
+#   Costal & al. We will need it for the pl with cutoff. 
 GAfexp=list()
 GAfpow=list()
 GAflnorm=list()
 GAfpowexp=list()
 for (i in 1:length(GVps)){
-  GAfexp[[i]] = exp.fit(GVps[[i]],Gminx[[i]]$xmin) # exponential
-  GAfpow[[i]] = pareto.fit(GVps[[i]],Gminx[[i]]$xmin) # power law
-  GAflnorm[[i]] = lnorm.fit(GVps[[i]],Gminx[[i]]$xmin) # log-normal
-  GAfpowexp[[i]] = powerexp.fit(GVps[[i]],Gminx[[i]]$xmin) # power law with exponential cut-off
+  GAfexp[[i]]    <- exp.fit(GVps[[i]],      used_mins[[i]]) # exponential
+  GAfpow[[i]]    <- pareto.fit(GVps[[i]],   used_mins[[i]]) # pareto ( == PL)
+  GAflnorm[[i]]  <- lnorm.fit(GVps[[i]],    used_mins[[i]]) # log-normal
+  GAfpowexp[[i]] <- powerexp.fit(GVps[[i]], used_mins[[i]]) # power law with exponential cut-off
 }
+
 
 sink("GRAZINGpsdfit.txt", append=TRUE, split=TRUE) 
 for(i in 1:length(GVps)){
-  print(paste("Grazing model g",rev(gvec)[i]," m", rev(mvec)[i], sep=""))
-  ######
+#   print(paste("Grazing model g",rev(gvec)[i]," m", rev(mvec)[i], sep=""))
+  
+  
+  ## Compare distributions using the poweRlaw package for all but PLEXP
+  
+  # We compare PL and EXP
   com=compare_distributions(GpowAf[[i]], GexpAf[[i]])
-  print("com=compare_distributions(GpowAf[[i]], GexpAf[[i]])")
-  print("com$test_statistic")
-  print(com$test_statistic) # vuong test statistic (pvals calculated from this)
   print("com$p_two_sided")
   print(com$p_two_sided )
   # p = 1 implies that both distributions are equally far from the data
   # p = 0 implies that one of the distributions fits the data significantly better
   print("com$p_one_sided")
+  # p = 1 implies that the first distribution is the better fit
+  # p = 0 implies that the first distribution can be rejected in favour of the second
   print(com$p_one_sided)
-  cat("========================================\n")
+  
+  # We compare PL and LN
   com=compare_distributions(GpowAf[[i]], GLnmAf[[i]]) 
-  print("com=compare_distributions(GpowAf[[i]], GLnmAf[[i]]) ")
-  print("com$test_statistic")
-  print(com$test_statistic) # vuong test statistic (pvals calculated from this)
   print("com$p_two_sided ")
   print(com$p_two_sided)
   # p = 1 implies that both distributions are equally far from the data
@@ -60,11 +98,9 @@ for(i in 1:length(GVps)){
   print(com$p_one_sided)
   # p = 1 implies that the first distribution is the better fit
   # p = 0 implies that the first distribution can be rejected in favour of the second
-  cat("========================================\n")
+  
+  # We compare EXP and LN
   com=compare_distributions(GexpAf[[i]], GLnmAf[[i]]) 
-  print("com=compare_distributions(GexpAf[[i]], GLnmAf[[i]]) ")
-  print("com$test_statistic")
-  print(com$test_statistic) # vuong test statistic (pvals calculated from this)
   print("com$p_two_sided ")
   print(com$p_two_sided )
   # p = 1 implies that both distributions are equally far from the data
@@ -73,19 +109,28 @@ for(i in 1:length(GVps)){
   print(com$p_one_sided)
   # p = 1 implies that the first distribution is the better fit
   # p = 0 implies that the first distribution can be rejected in favour of the second
-  cat("========================================\n")
+  
+  
+  
+  
+  ## Compare distributions using the pli source code for PLEXP
+  
+  # We compare PLEXP and PL
   print("power.powerexp.lrt(GAfpow[[i]],GAfpowexp[[i]])")
-  print(power.powerexp.lrt(GAfpow[[i]],GAfpowexp[[i]]) )# compare pareto and powerexp
+  print(power.powerexp.lrt(GAfpow[[i]], GAfpowexp[[i]]) )# compare PL and PLEXP
   # gives only a single p-value. If p = 0, powerexp is better
+  
+  # We compare PLEXP and EXP
   print("exp.powerexp.lrt(GAfexp[[i]],GAfpowexp[[i]])")
-  print(exp.powerexp.lrt(GAfexp[[i]],GAfpowexp[[i]]))
+  print(exp.powerexp.lrt(GAfexp[[i]], GAfpowexp[[i]]))
+  
+  # We compare PLEXP and LNORM
+  # 
   # If it is an underlying exponential distribution (extreme case), powerexp will be chosen for
   # large sample sizes. In such a case, the rate of decline will be similar
   print("vuong(lnorm.powerexp.llr(GVps[[i]], GAflnorm[[i]], GAfpowexp[[i]], Gminx[[i]])")
-  print(vuong(lnorm.powerexp.llr(GVps[[i]], GAflnorm[[i]], GAfpowexp[[i]], Gminx[[i]]$xmin))) # compare lnorm and powerexp
+  print(vuong(lnorm.powerexp.llr(GVps[[i]], GAflnorm[[i]], GAfpowexp[[i]], used_mins[[i]]))) # compare lnorm and powerexp
   # 2 p values similar to the previous analysis
-  cat("=======================================================================\n")
-  cat("=======================================================================\n")
 }
 
 

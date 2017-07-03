@@ -36,7 +36,7 @@ tplsum <- function(expo, rate, xs, xmin) {
     .Call('spatialwarnings_tplsum', PACKAGE = 'spatialwarnings', expo, rate, xs, xmin)
 }
 
-#' @export
+#'@export
 rspectrum <- function(rmat) {
     .Call('spatialwarnings_rspectrum', PACKAGE = 'spatialwarnings', rmat)
 }

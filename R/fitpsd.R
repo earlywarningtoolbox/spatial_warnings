@@ -177,6 +177,7 @@ pl_fit <- function(dat, xmin = 1) {
   return(result)
 }
 
+#'@export
 xmin_estim <- function(dat, bounds = range(dat)) { 
   
   # Create a vector of possible values for xmin

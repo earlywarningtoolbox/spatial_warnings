@@ -10,7 +10,7 @@ using namespace arma;
 
 
 //
-//' @export
+//'@export
 // [[Rcpp::export]]
 DataFrame rspectrum(NumericMatrix rmat) { 
   
@@ -70,8 +70,8 @@ DataFrame rspectrum(NumericMatrix rmat) {
     
     // Go through the distances matrix and make a sum of the relevant ones
     total_inmask = 0;
-    for (int i=0; i<nr; i++) { 
-      for (int j=0; j<nc; j++) { 
+    for (int j=0; j<nc; j++) { 
+      for (int i=0; i<nr; i++) { 
         
         dist = sqrt( pow(i - n0x, 2) + pow(j - n0y, 2) );
         

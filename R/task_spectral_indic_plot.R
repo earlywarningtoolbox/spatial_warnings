@@ -1,6 +1,4 @@
 # 
-#' @title Spectral spatial early-warning signals: SDR plotting function
-#' 
 #' @rdname spectral_spews
 #' 
 #' @param obj An \code{spectral_spews_test} object as produced by \link{indictest}
@@ -97,6 +95,7 @@ plot.spectral_spews_list <- function(obj, along = NULL) {
                            display_null = FALSE, 
                            what = 'value')
 }
+
 
 
 

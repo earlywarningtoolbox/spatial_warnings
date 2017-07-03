@@ -3,8 +3,6 @@
 # This file contains the indictest functions for generic spews
 # 
 
-#' @title Generic Spatial Early-Warnings
-#' 
 #' @rdname generic_spews
 #' 
 #' @param ... Additional arguments passed onto methods

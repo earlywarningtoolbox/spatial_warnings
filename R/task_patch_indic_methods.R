@@ -8,8 +8,6 @@
 # Plot methods
 # --------------------------------------------------
 # 
-#' @title Early-warning signals based on patch size distributions
-#' 
 #' @rdname patchdistr_spews
 #' 
 #' @param along A vector providing values over which the indicator trend 
@@ -117,8 +115,6 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
 
 
 
-#' @title Early-warning signals based on patch size distributions
-#' 
 #' @rdname patchdistr_spews
 #' 
 #' @param best_only Plot the empirical (inverse cumulative) patch-size 

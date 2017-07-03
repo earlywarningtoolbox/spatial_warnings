@@ -3,8 +3,6 @@
 # This file contains the indictest functions for spectral spews
 # 
 
-#' @title Spectral Spatial Early-Warnings
-#' 
 #' @rdname spectral_spews
 #' 
 #' @param null_replicates The number of replicates to use to compute use in the 

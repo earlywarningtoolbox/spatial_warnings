@@ -1,6 +1,6 @@
 # 
 # 
-# This file contains function that compute, assess and display results from 
+# This file contains a function that compute, assess and display results from 
 #   spectrum-based indicators: reddening of powerspectrum, spectrum density
 #   ratio.
 # 

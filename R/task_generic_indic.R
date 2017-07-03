@@ -85,7 +85,7 @@
 #' summary(gen_indic)
 #' 
 #' # Display trends along the varying model parameter
-#' plot(gen_indic, along = forestdat.pars[ ,'delta'])
+#' plot(gen_indic, along = forestdat.pars[ ,'d'])
 #' 
 #' # Compute significance
 #' gen_test <- indictest(gen_indic)
@@ -94,12 +94,12 @@
 #' 
 #' # Display the trend, now with a grey ribbon indicating the 5%-95% quantile
 #' # range of the null distribution
-#' plot(gen_test, along = forestdat.pars[ ,'delta'])
+#' plot(gen_test, along = forestdat.pars[ ,'d'])
 #' 
 #' # Note that plot() method returns a ggplot object that can be modified
 #' # for convenience
 #' if ( require(ggplot2) ) { 
-#'   plot(gen_test, along = forestdat.pars[ ,'delta']) + 
+#'   plot(gen_test, along = forestdat.pars[ ,'d']) + 
 #'     xlab('Delta') + 
 #'     theme_minimal()
 #' }

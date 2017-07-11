@@ -82,14 +82,6 @@ indicator_skewness <- function(input,
   }
 }
 
-raw_skewness <- function(mat) { 
-  if ( length(mat) < 2 || sd(mat) == 0 ) { 
-    return(NA)
-  } else { 
-    return( moments::skewness(as.vector(mat)) )
-  }
-}
-
 raw_abs_skewness <- function(mat) { 
   abs(raw_skewness(mat)) 
 }

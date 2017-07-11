@@ -28,19 +28,8 @@ library(spatialwarnings) # mind the absence of underscore !
 
 #' ## Example datasets
 #' 
-#' Several datasets are included with the package, we will use them for this 
-#' example. 
-#' 
-#'   - `forestdat`: Output from the Forest-gap model: a `list` of two things : 
-#'     - `"parameters"`: A `data.frame` containing the simulation parameters (ten rows)
-#'     - `"matrices"`: A list of 100x100 matrices, each of which corresponding 
-#'  to one snapshot of the corresponding simulation taken around equilibrium. 
-#'  For example, the first matrix corresponds to the simulation with the 
-#'  parameters given in the first row of the dataset. 
-#'   
-#'   - `forestdat`: Another output from the Forest-gap model. It has the same 
-#'  structure as forestdat but has different parameters and matrix sizes 
-#'  (400x400 instead of 100x100). 
+#' `forestdat`: An output from the Forest-gap model. It has matrix sizes 
+#'  of 400x400. 
 #' 
 #' All these datasets are included with the package, so we can just load them 
 #' using the function `data()`
@@ -84,23 +73,23 @@ data(forestdat)
 #' 
 #' We will use the `forestdat` dataset to illustrate the computation of generic 
 #' EWS. Let's see first what the data is like: 
-  
-#' Forestdat is a list of two components: 
-#'   - the first one is a `data.frame`
-forestdat[["parameters"]]
-#'   - the second one is a list of matrices. As printing it takes too much space
+
+#' A data.frame of the parameters used for the simulations:
+forestdat.pars
+
+#' forestdat: a list of matrices. As printing takes too much space
 #' for our small screens, we use the handy function str() that 
 #' produces a compact description of our object. 
-str(forestdat[["matrices"]], 
+str(forestdat, 
     list.len = 3) # Show only the three first elements
 
 
 #' The general function is called generic_spews: let's call this function on 
 #' our list of matrices and store the result in a variable
-forest.genic <- generic_spews(forestdat[["matrices"]])
+forest.genic <- generic_spews(forestdat)
 
 #' We can now call the `summary()` method on this object to display the results. 
-#' Note that the summary method does not reflect the internal structure of the 
+#' Note that the summary method does not reflect the internal s*tructure of the 
 #' `forest.genic` object (try using `str()` on forest.genic to see what data 
 #' is kept in memory). 
 summary(forest.genic)
@@ -111,7 +100,7 @@ plot(forest.genic)
 #' Or assess significance before plotting. This is done by shuffling the 
 #' original matrix and recomputing the indicators many times. We store the 
 #' results of the significance assessement into another variable. 
-forest.gentest <- indictest(forest.genic)
+forest.gentest <- indictest(forest.genic, .progress = "time")
 
 #' And we call the summary function to see what is significant
 summary(forest.gentest)
@@ -130,14 +119,16 @@ plot(forest.gentest)
 #' value of skewness instead of its raw value. And last but not least, we can 
 #' change the coarse-graining length. 
 #' 
-forest.genic <- generic_spews(forestdat[['matrices']], 
+forest.genic <- generic_spews(forestdat, 
                               subsize = 3,
                               detrend = FALSE,
                               abs_skewness = TRUE,
                               moranI_coarse_grain = TRUE)
 
 #' We can also specify the number of replicates to use in the null distribution
-forest.gentest <- indictest(forest.genic, null_replicates = 1999)
+forest.gentest <- indictest(forest.genic, 
+                            .progress = "time", 
+                            null_replicates = 199)
 plot(forest.gentest) # Compare with figure above 
 
 #' Of course, at anytime during this process, we can export the values to 
@@ -148,10 +139,11 @@ head( as.data.frame(forest.gentest) )
 #' on lists of matrices. Note that these functions are here so indicators 
 #' can be computed more easily as part of another workflow: no 
 #' plot/summary/print/etc. methods are provided. 
-forest.varic <- indicator_variance(forestdat[['matrices']])
+forest.varic <- indicator_variance(forestdat)
 # See also indicator_skewness, indicator_moran, etc. 
 
-
+#' Parallel processing is available via setting the global option spw.threads
+options(spw.threads = 24)
 
 
 
@@ -159,7 +151,7 @@ forest.varic <- indicator_variance(forestdat[['matrices']])
 #'
 #' We will be using the same forestdat dataset to illustrate the spectral EWS
 #' workflow. It works just the same: 
-forest.specic <- spectral_spews(forestdat[["matrices"]])
+forest.specic <- spectral_spews(forestdat)
 
 #' Mind the warnings here telling us that we are using default values for SDR. 
 #' Let's see a quick summary of the results. 
@@ -177,7 +169,7 @@ plot(forest.spectest)
 plot_spectrum(forest.spectest)
 
 #' Some options are available to alter how the indicator values are computed
-forest.specic <- spectral_spews(forestdat[["matrices"]], 
+forest.specic <- spectral_spews(forestdat, 
                                 sdr_low_range =  c(0, .2), 
                                 sdr_high_range = c(0, 1))
 plot(forest.specic)
@@ -194,7 +186,14 @@ plot(forest.specic)
 #' these indicators. 
 #'
 data(forestdat)
-forest.psdic <- patchdistr_spews(forestdat[['matrices']], fit_lnorm = FALSE)
+for (i in rev(seq_along(forestdat))) { 
+  print(i)
+  patchdistr_spews(forestdat[[i]])
+}
+
+patchdistr_spews(forestdat[[35]])
+
+forest.psdic <- patchdistr_spews(forestdat, fit_lnorm = FALSE)
 
 #' See a summary of what has been fitted
 summary(forest.psdic)
@@ -222,7 +221,7 @@ plot_distr(forest.psdic)
 #' their own functions 
 
 # Not run:
-# indicator_plrange(forestdat$matrices)
+# indicator_plrange(forestdat)
 
 #' That's it ! For most of these functions, documentation is available 
 #' through `?` ! It is sometimes missing though (help is gladly accepted ;) ). 

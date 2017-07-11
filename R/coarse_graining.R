@@ -13,7 +13,7 @@ coarse_grain <- function(mat, subsize) {
     return(mat)
   }
   
-  .coarse_grain_unsafe(mat, subsize)
+  coarse_grain_cpp(mat, subsize)
   
 }
   

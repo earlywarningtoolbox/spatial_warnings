@@ -43,6 +43,11 @@ label <- function(mat,
                                     0,1,0), ncol=3), # 4way NB 
                   wrap = FALSE) {
   
+  if ( ! is.logical(mat) ) { 
+    stop('Patch-size distributions require a logical matrix',
+         '(TRUE/FALSE values): please convert your data first.')
+  }
+  
   # The matrix is full
   if ( all(mat) ) { 
     result <- matrix(1, nrow = nrow(mat), ncol = ncol(mat)) 
@@ -60,7 +65,7 @@ label <- function(mat,
   }
   
   # Otherwise we scan for patches
-  .label(mat, nbmask, wrap)
+  label_cpp(mat, nbmask, wrap)
 }
 
 #' @rdname label

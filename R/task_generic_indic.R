@@ -129,6 +129,13 @@ generic_spews <- function(mat,
     
     mat_cg <- coarse_grain(mat, subsize)
     
+    if ( sd(as.vector(mat_cg)) == 0 ) { 
+      return( c(variance = var(as.vector(mat_cg)), 
+                skewness = NA_real_, 
+                moran    = NA_real_, 
+                mean     = mean(mat)) )
+    }
+    
     # Handle detrending
     if (detrend) { 
       mat_cg <- mat_cg - mean(mat_cg)

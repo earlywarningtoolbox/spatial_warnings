@@ -8,18 +8,49 @@
 # power-laws
 
 # Optimisation global options
-STEPMAX <- 1
-ITERLIM <- 1000
+ITERLIM <- 10000
+GRADTOL <- 1e-10 
 
 # This is a safe version of nlm that returns a sensible result (NA) when 
 # the algorithm fails to converge. This can happen quite often when looking 
 # for pathological cases (e.g. fitting distribution from few points in the 
 # tails, etc.). 
-nlm_safe <- function(...) { 
-  result <- try( suppressWarnings(nlm(...)), silent = TRUE) 
+# This 
+optim_safe <- function(f, pars0) { 
+  
+  safe <- function(f) { 
+    function(pars) { 
+      ans <- f(pars) 
+      if ( is.na(ans) ) { 
+        return(1e15) 
+      } else { 
+        return(ans)
+      }
+    }
+  }
+  
+  # Try to do first a quick SANN optimisation to find a good first 
+  # approximation and get out of a possible initial local minimum (happens 
+  # with lnorm fitting). 
+  # 
+  # Note that in some pathological cases the fit fails (not enough points, etc.)
+  # This happens a lot when finding xmin as we end up fitting on very few 
+  # points in the tail of the distribution. Here, we report the fit fail but 
+  # do not stop execution. 
+  result <- try( { 
+    sann_approx <- optim(pars0, safe(f), 
+                        method = "SANN", 
+                        control = list(maxit = 100)) 
+    
+    # Now do a Newton method to find the (hopefully global) minimum. 
+    result <- nlm(safe(f), sann_approx[['par']], 
+                  iterlim = ITERLIM, gradtol = GRADTOL)
+  
+  }, silent = TRUE)
   
   if ( class(result) == "try-error" ) { 
-    warning('Optimization failed to converge, returning NA')
+    warning('Optimization failed to converge, returning NA. Error is:\n', 
+            result)
     return( list(minimum = NA_real_, 
                  estimate = NA_real_) )
   } else { 
@@ -32,24 +63,29 @@ nlm_safe <- function(...) {
   }
 }
 
-# Bounds on parameters, these should be large and no observed should have 
-# values beyond these
+# Bounds on parameters, these should be large and no observed distribution should 
+# have values beyond them
 # Power-laws lambdas
 PLMIN <- 1 
 PLMAX <- 20
 # Exponential rates
 EXPMIN <- .Machine$double.eps # A very close value to, but not, zero
 EXPMAX <- 20
-
+# Bounds for truncated power-laws
+TPL_EXPOMIN <- -1 # Taken from Clauset's code
+TPL_EXPOMAX <- 20
+TPL_RATEMIN <- 0 # Taken from Clauset's code
+TPL_RATEMAX <- 20
 
 # These functions are useful when doing the fit to rescale the values to 
-# a bounded range. 
+# a bounded range. This allows using unbounded optimization methods (sann, nlm, 
+# etc.) but still have bounded parameters. 
 to_rescaled   <- function(x, min, max) VGAM::extlogit(x, min, max, inverse = TRUE)
 from_rescaled <- function(x, min, max) VGAM::extlogit(x, min, max)
 
 # Riemann zeta function with xmin taken into account :
-# sum(1/k^-expo for i=xmin to i = inf
-# This is vectorized over xmins so that we do sum things several times. 
+# sum( 1/k^-expo ) for i=xmin to i = inf
+# This is vectorized over xmins so that we do not sum things several times. 
 zeta_w_xmin <- function(expo, xmins) { 
   perm <- order(xmins)
   xmins <- xmins[order(xmins)]
@@ -124,7 +160,6 @@ ppl <- function(x, expo, xmin = 1) {
   #   as expected)
   const <- const - sum_all_one_over_k(from = 1, to = xmin, expo)
   
-#   ans <- sapply(x, function(x) zeta_w_xmin(expo, x)/const)
   ps <- zeta_w_xmin(expo, x[!is_below_xmin]) / const 
   
   # Values below threshold are NA'ed
@@ -136,15 +171,10 @@ ppl <- function(x, expo, xmin = 1) {
 
 # PL: Log likelihood
 pl_ll <- function(dat, expo, xmin) { 
-#   a <- sum( dpl(dat, expo, xmin, log = TRUE) )  
-#   cat(length(dat), " data points (", xmin, "/", expo, ") (xmin/expo)", 
-#       " -> ", a, "\n", sep = "")
   sum( dpl(dat, expo, xmin, log = TRUE) )  
 }
 
 # PL: Fit by MLE
-# Method is approximate if xmin > 10 (correponding to an error of 0.1% if 
-#   expo = 2.0), but that can be overridden by parameter method
 pl_fit <- function(dat, xmin = 1) { 
   
   # Cut data to specified range
@@ -152,9 +182,8 @@ pl_fit <- function(dat, xmin = 1) {
   
   # Start with the approximation given in Clauset's 
   npts <- length(dat)
-  expo_estim <- 1 + npts / ( sum(log(dat)) - npts * log(xmin-.5) )
+  expo_estim <- 1 + npts / (sum(log(dat)) - npts*log(xmin-.5))
   
-  # If we want no approximation, then find the best fit
   negll <- function(expo) {
     result <- - pl_ll(dat, to_rescaled(expo, PLMIN, PLMAX), xmin) 
     if ( is.infinite(result) ) { 
@@ -164,8 +193,8 @@ pl_fit <- function(dat, xmin = 1) {
     }
   }
   
-  est <- nlm_safe(negll, from_rescaled(expo_estim, PLMIN, PLMAX), 
-                  stepmax = STEPMAX, iterlim = ITERLIM)
+  est <- optim_safe(negll, from_rescaled(expo_estim, PLMIN, PLMAX))
+  
   expo_estim <- to_rescaled(est[["estimate"]], PLMIN, PLMAX)
   
   result <- list(type = 'pl',
@@ -195,9 +224,8 @@ xmin_estim <- function(dat, bounds = range(dat)) {
   xmins <- head(xmins, length(xmins)-3)
   xmins <- xmins[xmins >= min(bounds) & xmins <= max(bounds)]
   
-  # Compute all kss
+  # Compute all ks-distances
   kss <- adply(xmins, 1, get_ks_dist, dat = dat)[ ,2]
-#   plot(kss)
   
   if ( all(is.nan(kss)) ) { 
     return(NA_integer_)
@@ -252,19 +280,20 @@ get_ks_dist <- function(xmin, dat) {
 ddisexp <- function(dat, rate, xmin = 1, log = FALSE) { 
   # sum(P = k) for k = 1 to inf
   if ( log ) { 
-    const <- log(1 - exp(-rate)) + rate * xmin
     
+    const <- log(1 - exp(-rate)) + rate * xmin
     return( ifelse(dat < xmin, NA_real_, const - rate * dat) )
   
   } else { 
-    const <- (1 - exp(-rate)) * exp(rate*xmin) 
     
+    const <- (1 - exp(-rate)) * exp(rate*xmin) 
     return( ifelse(dat < xmin, NA_real_, const * exp(-rate * dat)) )
+    
   }
 } 
-  
-# # EXP: P(x>=k)
-# # Imported and cleaned up from powerRlaw (def_disexp.R)
+
+# EXP: P(x>=k)
+# Imported and cleaned up from powerRlaw (def_disexp.R)
 pdisexp <- function(x, rate, xmin) {
   # p >= k
   p <- pexp(x + .5, rate, lower.tail = FALSE) 
@@ -287,8 +316,7 @@ exp_fit <- function(dat, xmin) {
     - exp_ll(dat, to_rescaled(rate, EXPMIN, EXPMAX), xmin)
   }
   
-  est <- nlm_safe(negll, from_rescaled(rate0, EXPMIN, EXPMAX), 
-             stepmax = STEPMAX, iterlim = ITERLIM)
+  est <- optim_safe(negll, from_rescaled(rate0, EXPMIN, EXPMAX))
   
   result <- list(type = 'exp',
                  method = 'll', 
@@ -313,12 +341,6 @@ ddislnorm <- function(x, meanlog, sdlog, xmin, log = FALSE) {
   p_equals_k <- plnorm(x-.5, meanlog, sdlog, lower.tail = FALSE) - 
                   plnorm(x+.5, meanlog, sdlog, lower.tail = FALSE)
   
-#   cat('x =>', x, ", meanlog=", meanlog, "sdlog=", sdlog, "\n")                
-#   cat('p_equals_k =>', log(p_equals_k), "\n")
-#   cat('p_over_one =>', log(p_over_one), "\n")
-#   cat('===>', log(p_equals_k) - log(p_over_one), "\n")
-#   cat("\n")
-  
   if ( !log ) { 
     return( ifelse(x<xmin, NA_real_, p_equals_k / p_over_thresh) )
   } else { 
@@ -336,9 +358,6 @@ pdislnorm <- function(x, meanlog, sdlog, xmin) {
 # LNORM: LL
 lnorm_ll <- function(x, meanlog, sdlog, xmin) { 
   x <- x[x>=xmin]
-#   cat('\n', 'LL:\n')
-#   cat("meanlog=", meanlog, "/sdlog=", sdlog, " -> ", ddislnorm(x, meanlog, sdlog, log = TRUE), "\n\n")
-  
   sum( ddislnorm(x, meanlog, sdlog, xmin, log = TRUE) ) 
 }
 
@@ -349,14 +368,12 @@ lnorm_fit <- function(dat, xmin) {
   # Pars[2] holds sd 
   pars0 <- c( mean(log(dat)), sd(log(dat)) )
   
-  # 
   negll <- function(pars) { 
     ll <- - lnorm_ll(dat, pars[1], pars[2], xmin) 
     if ( is.finite(ll) ) ll else 1e10
   }
   
-  est <- nlm_safe(negll, pars0, 
-                  stepmax = STEPMAX, iterlim = ITERLIM)
+  est <- optim_safe(negll, pars0)
   
   result <- list(type = 'lnorm',
                  method = 'll', 
@@ -377,7 +394,6 @@ tplnorm <- function(expo, rate, xmin) {
   # Inspired from python package: normalization constant for 
   # a discrete tpl. 
   # -> https://github.com/jeffalstott/powerlaw/blob/master/powerlaw.py
-#   cat(rate, " / ", expo, "\n", sep = "")
   if ( is.infinite( exp(-rate) ) ) { 
     return(NA_real_)
   } else { 
@@ -388,7 +404,6 @@ tplnorm <- function(expo, rate, xmin) {
 # P(x=k)
 dtpl <- function(x, expo, rate, xmin) { 
   const <- tplnorm(expo, rate, xmin)
-#   print(paste(const, "(", expo, "/", rate, ")"))
   p_equals_x <- x^(-expo) * exp(- x *rate)
   
   return( ifelse(x < xmin, NA_real_, p_equals_x / const) )
@@ -416,32 +431,24 @@ tpl_ll <- function(x, expo, rate, xmin) {
 
 tpl_fit <- function(dat, xmin) { 
   
-  
-  
   negll <- function(pars) { 
-#     print(paste0(round(pars[1], 10), ", ", 
-#                  round(pars[2], 10), " -> ", - tpl_ll(dat, pars[1], pars[2]))) 
-#     print(pars[1])
-#     print(pars[2])
-    # pars[1] is expo, pars[2] is rate
     - tpl_ll(dat, 
-             to_rescaled(pars[1], PLMIN, PLMAX), 
-             to_rescaled(pars[2], EXPMIN, EXPMAX), 
-             xmin)
+             to_rescaled(pars[1], TPL_EXPOMIN, TPL_EXPOMAX), 
+             to_rescaled(pars[2], TPL_RATEMIN, TPL_RATEMAX), xmin)
   }
   
   # Initialize and find minimum
   expo0 <- pl_fit(dat, xmin)[['expo']] 
   rate0 <- exp_fit(dat, xmin)[['rate']]
-  pars0 <- c(from_rescaled(expo0, PLMIN, PLMAX), 
-             from_rescaled(rate0, EXPMIN, EXPMAX))
-  est <- nlm_safe(negll, pars0, 
-                  stepmax = STEPMAX, iterlim = ITERLIM)
+  pars0 <- c(from_rescaled(expo0, TPL_EXPOMIN, TPL_EXPOMAX), 
+             from_rescaled(rate0, TPL_RATEMIN, TPL_RATEMAX))
+  
+  est <- optim_safe(negll, pars0)
   
   result <- list(type = 'tpl',
                  method = 'll', 
-                 expo = to_rescaled(est[['estimate']][1], PLMIN, PLMAX), 
-                 rate = to_rescaled(est[['estimate']][2], EXPMIN, EXPMAX), 
+                 expo = to_rescaled(est[['estimate']][1], TPL_EXPOMIN, TPL_EXPOMAX), 
+                 rate = to_rescaled(est[['estimate']][2], TPL_RATEMIN, TPL_RATEMAX), 
                  ll = - est[["minimum"]],
                  npars = 2)
   return(result)

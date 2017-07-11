@@ -8,7 +8,8 @@
 compute_indicator_with_null <- function(input, 
                                         detrending, 
                                         nreplicates, 
-                                        indicf) { 
+                                        indicf, 
+                                        nthreads = getOption("spw.threads")) { 
   
   # Check options and apply modifications --------------------
   if (detrending) { 
@@ -20,15 +21,18 @@ compute_indicator_with_null <- function(input,
   result <- list(value = value)
   
   if (nreplicates > 2) { 
-    # Compute the index on a randomized matrix
-    nulldistr <- replicate(nreplicates, 
-                           indicf(matrix(sample(input), nrow = nrow(input))) )
     
-    # If indicf returns only one value, then we need to set the dimensions of 
-    #   nulldistr explicitely so that apply functions work on the only line.
-    if ( is.null(dim(nulldistr)) ) { 
-      dim(nulldistr) <- c(1, nreplicates)
+    if ( length(unique(input)) == 1 ) { 
+      # Compute the index on the same matrix as randomization will do nothing
+      nulldistr <- matrix(rep(indicf(input), nreplicates), 
+                          nrow = 1, ncol = nreplicates)
+    } else { 
+      # Compute the index on a randomized matrix
+      nulldistr <- shuffle_and_compute(input, indicf, nreplicates, nthreads)
+      nulldistr <- t( do.call(rbind, nulldistr) )
     }
+    # Note that here nulldistr always has one or more rows and nreplicates 
+    #   columns -> it is always a matrix
     
     nullstats <- list(null_mean = apply(nulldistr, 1, mean), 
                       null_sd   = apply(nulldistr, 1, sd), 

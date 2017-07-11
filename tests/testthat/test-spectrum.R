@@ -74,11 +74,13 @@ test_that("the cpp implementation of the spectrum computations is correct", {
     return(shiftX)
   }
   
-  testmat <- forestdat[[10]]
-  
-  expect_equal(rspectrum_old(testmat), 
-               rspectrum(testmat), 
-               tolerance = 1/1000) # this is a big difference (difference in numerical precision ?)
+  for ( i in seq_along(serengeti) ) { 
+    testmat <- serengeti[[i]]
+    
+    expect_equal(rspectrum_old(testmat), 
+                 rspectrum(testmat), 
+                 tolerance = 1/1000) 
+  }
   
 })
 

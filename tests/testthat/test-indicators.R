@@ -26,8 +26,6 @@ test_that('indicator functions stop if provided garbage data', {
     expect_error(f(garbage_badclass))
     expect_error(f(garbage_has_nas))
 
-    # Do not use this test as function can accept non-binary data
-    # expect_error(f(garbage_notbinary))
     expect_warning(f(garbage_diffsizes))
     expect_warning(f(garbage_list_diff_types))
   }

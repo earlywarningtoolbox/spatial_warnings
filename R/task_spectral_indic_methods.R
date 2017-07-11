@@ -65,18 +65,18 @@ print.spectral_spews <- function(x, ...) {
 # --------------------------------------------------
 
 #'@export
-summary.spectral_spews_list <- function(x, ...) { 
+summary.spectral_spews_list <- function(object, ...) { 
   cat('Spectral Spatial Early-Warnings results\n') 
   cat('\n')
   
   # Compute correct size to display
-  display_size_info(x) 
+  display_size_info(object) 
   cat("\n")
   
   # Show only SDR and print as data frame
-  x2 <- as.data.frame(x)
-  x2 <- subset(x2, type == 'sdr')[ ,c('replicate', 'value')]
-  names(x2) <- c('Replicate #', 'SDR Value')
+  x2 <- as.data.frame(object)
+  x2 <- x2[x2[ ,"type"] == "sdr", c('replicate', 'value')]
+  names(x2) <- c('Matrix #', 'SDR Value')
   
   print.data.frame(x2, row.names = FALSE)
   
@@ -86,6 +86,6 @@ summary.spectral_spews_list <- function(x, ...) {
 }
 
 #'@export
-summary.spectral_spews_single <- function(x, ...) { 
+summary.spectral_spews_single <- function(object, ...) { 
   summary.spectral_spews_list(list(x))
 }

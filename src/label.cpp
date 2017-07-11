@@ -12,10 +12,10 @@ using namespace Rcpp;
 // Default value for non-patch cells
 #define DEFAULT_VALUE NA_INTEGER
 
-// [[Rcpp::export(name = ".label")]]
-IntegerMatrix label(IntegerMatrix mat, 
-                    IntegerMatrix nbmask,
-                    bool wrap) { 
+// [[Rcpp::export]]
+IntegerMatrix label_cpp(IntegerMatrix mat, 
+                        IntegerMatrix nbmask,
+                        bool wrap) { 
   
   int W = mat.ncol();
   int H = mat.nrow();
@@ -146,7 +146,7 @@ IntegerMatrix get_nb_coords(IntegerMatrix mat,
   int curnb = 0;
   for (int nbi=0; nbi<nbmask.nrow(); nbi++) { 
     for (int nbj=0; nbj<nbmask.ncol(); nbj++) { 
-      // If the neighbor is to be considered, record the necesary shifts
+      // If the neighbor is to be considered, record the necessary shifts
       if ( nbmask(nbi, nbj) > 0) { 
         int shift_x = nbi - ceil( (nbmask.nrow()-1)/2 );
         int shift_y = nbj - ceil( (nbmask.ncol()-1)/2 );
@@ -156,7 +156,7 @@ IntegerMatrix get_nb_coords(IntegerMatrix mat,
         int nb_y = (X.second + shift_y);
         
         // Does the neighbor fall outside the matrix ? 
-        bool is_out = nb_x < 0 | nb_x >= W | nb_y < 0 | nb_y >= H;
+        bool is_out = (nb_x < 0) | (nb_x >= W) | (nb_y < 0) | (nb_y >= H);
         
         // It is out and we don't wrap around: do not count this neighbor
         if ( !wrap && is_out ) { 

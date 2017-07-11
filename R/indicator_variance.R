@@ -48,7 +48,7 @@ indicator_variance <- function(input,
                                nreplicates = 999) {
   
   check_mat(input) # checks if binary and sensible
-      
+  
   if (is.list(input)) { 
     # Returns a list of lists
     return( lapply(input, indicator_variance, 

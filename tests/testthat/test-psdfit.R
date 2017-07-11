@@ -9,8 +9,13 @@ library(ggplot2)
 
 context('Test the fitting of distributions')
 
+# Change dir if running tests manually
+if ( file.exists('./tests/testthat') ) { 
+  library(testthat)
+  setwd('./tests/testthat') 
+}
+
 # Setup pli from Clauzet et al's
-#   try(setwd('./tests/testthat'), 
 for ( s in dir('./pli-R-v0.0.3-2007-07-25', 
               full.names = TRUE, pattern = '*.R') ) { 
   source(s)
@@ -26,15 +31,16 @@ system("cd ./pli-R-v0.0.3-2007-07-25/ && \
 visual <- FALSE
 
 test_that('PL fitting works', { 
-  expos <- c(1.1, 1.5, 2.5)
-  xmins <- c(2, 1,  10, 100)
+  
+  expos <- c(1.2, 1.5, 2.5)
+  xmins <- c(1,  10, 100)
   for ( expo in expos ) { 
     for ( xmin in xmins ) { 
       
-      dat <- seq.int(1000)
+      dat <- unique(round(seq.int(1, 1000, length.out = 100)))
       pldat <- poweRlaw::rpldis(1000, xmin = xmin, alpha = expo)
       # Squeeze tail a bit for speed
-      pldat <- pldat[pldat < 1e6]
+      pldat <- pldat[pldat < 1e5]
       
       # left: spw <-> right: pli
       # dpl <-> dzeta
@@ -50,21 +56,29 @@ test_that('PL fitting works', {
                    pl_ll(pldat, expo, xmin = xmin))
       
       # pl_fit <-> zeta.fit 
-      pl_expo <- pl_fit(pldat)[['expo']]
-      expect_equal(zeta.fit(pldat)[['exponent']], pl_expo, tol = 1e-3)
+      our_expo <- pl_fit(pldat, xmin = xmin)[['expo']]
+      clauset_expo <- zeta.fit(pldat, threshold = xmin)[['exponent']]
+      powerlaw_expo <- estimate_pars( poweRlaw::displ$new(pldat) )[["pars"]]
+      expect_equal(clauset_expo, our_expo, tol = 1e-3)
       
-      # Redo fit and look at it
-#       pl_expo <- pl_fit(pldat)[['expo']]
-#       plot(log10(cumpsd(pldat[pldat>=xmin])))
-#       xs <- c(min(pldat[pldat>=xmin]), max(pldat[pldat>=xmin]))
-#       lines(log10(xs), log10(ppl(xs, pl_expo, xmin = xmin)), col = 'red')
-#       title('PLFIT')
+      
+      # Look at fit
+      plot(log10(cumpsd(pldat[pldat>=xmin])))
+      xs <- c(min(pldat[pldat>=xmin]), max(pldat[pldat>=xmin]))
+      lines(log10(xs), log10(ppl(xs, clauset_expo, xmin = xmin)), 
+            lwd = 2, col = 'blue')
+      lines(log10(xs), log10(ppl(xs, powerlaw_expo, xmin = xmin)), 
+            lwd = 2, col = 'green')
+      lines(log10(xs), log10(ppl(xs, our_expo, xmin = xmin)), col = 'red')
+      title('PLFIT')
     }
   }
+  
 })
 
 test_that('EXP fitting works', { 
-  rates <- c(1.1, 1.5)
+  
+  rates <- c(1.1, 1.5)  
   xmins <- c(1, 2, 3)
   for (xmin in xmins) { 
     for ( rate in rates ) { 
@@ -80,11 +94,13 @@ test_that('EXP fitting works', {
         expect_equal(fit[['rate']],
                      discexp.fit(expdat, threshold = xmin)[["lambda"]], tol = 1e-3)
         
-#         # Look at fit
-#         plot(log10(cumpsd(expdat)))
-#         xs <- seq(min(expdat), max(expdat), length.out = 100)
-#         lines(log10(xs), log10(pdisexp(xs, fit[["rate"]], xmin = xmin)), col = 'red')
-#         title('EXPFIT')
+        # Look at fit
+        plot(log10(cumpsd(expdat[expdat >= xmin])))
+        xs <- seq(min(expdat), max(expdat), length.out = 100)
+        lines(log10(xs), 
+              log10(pdisexp(xs, fit[["rate"]], xmin = xmin)), 
+              col = 'red')
+        title('EXPFIT')
     }
   }
   
@@ -102,37 +118,49 @@ test_that('LNORM fitting works', {
         xmax <- 1000
         dat <- seq.int(xmax)
         lnormdat <- ceiling(rlnorm(xmax, meanlog, sdlog))
-        cat('meanlog: ', meanlog, ', sdlog: ', sdlog, ', xmin: ', xmin, "\n")
+#         cat('meanlog: ', meanlog, ', sdlog: ', sdlog, ', xmin: ', xmin, "\n")
         
         # Test distr functions
         expect_equal(ddislnorm(dat, meanlog, sdlog, xmin),
                      dlnorm.tail.disc(dat, meanlog, sdlog, threshold = xmin))
         
         # plnorm.tail.disc returns negative values (?!)
-        plnorm.tail.disc(dat, meanlog, sdlog, threshold = xmin)
-        pdislnorm(dat, meanlog, sdlog, xmin)
+#         plnorm.tail.disc(dat, meanlog, sdlog, threshold = xmin)
+#         pdislnorm(dat, meanlog, sdlog, xmin)
         
-        # Test ll function (these functions give different results but somehow 
-        # the fits are equals...)
-        expect_equal(lnorm.tail.disc.loglike(lnormdat, meanlog, sdlog, xmin),
-                     lnorm_ll(lnormdat, meanlog, sdlog, xmin))
+        # Note that dlnorm.disc assumes xmin = 0, so we cannot test it 
+        #   with variable xmin. 
+        our_dlnorm <- ddislnorm(dat, meanlog, sdlog, xmin = 0)
+        clauset_dlnorm <- dlnorm.disc(dat, meanlog, sdlog)
+        expect_equal(our_dlnorm, 
+                     clauset_dlnorm)
         
         # Test obtained fits
-        our_fit <- lnorm_fit(lnormdat, xmin = xmin)
-        clauset_fit <- fit.lnorm.disc(lnormdat, threshold = xmin)
-        expect_equal(our_fit[['meanlog']], clauset_fit[['meanlog']], tol = 1e-3)
-        expect_equal(our_fit[['sdlog']], clauset_fit[['sdlog']], tol = 1e-3)
+        our_fit <- suppressWarnings( lnorm_fit(lnormdat, xmin = xmin) )
+        clauset_fit <- suppressWarnings( fit.lnorm.disc(lnormdat, threshold = xmin) )
+#         expect_equal(our_fit[['meanlog']], clauset_fit[['meanlog']], tol = 1e-2)
+#         expect_equal(our_fit[['sdlog']], clauset_fit[['sdlog']], tol = 1e-2)
         
         # Look at fit
-  #         plot(log10(cumpsd(lnormdat)))
-  #         xs <- seq(min(lnormdat), max(lnormdat), length.out = 100)
-  #         lines(log10(xs), 
-  #               log10(pdislnorm(xs, fit[['meanlog']], fit[['sdlog']])), col = 'red')
-  #         lines(log10(xs), 
-  #               log10(pdislnorm(xs, fit.lnorm.disc(lnormdat, threshold = 1)[["meanlog"]], 
-  #                               fit.lnorm.disc(lnormdat, threshold = 1)[["sdlog"]])), 
-  #                               col = "blue")
-  #         title('LNORMFIT')
+        plot(log10(cumpsd(lnormdat[lnormdat >= xmin])))
+        xs <- seq(min(lnormdat), max(lnormdat), length.out = 10000)
+        suppressWarnings( 
+          lines(log10(xs), 
+                log10(pdislnorm(xs, 
+                                our_fit[['meanlog']], 
+                                our_fit[['sdlog']], 
+                                xmin = xmin)), col = 'red')
+        )
+        suppressWarnings(
+          lines(log10(xs), 
+                log10(pdislnorm(xs, 
+                                fit.lnorm.disc(lnormdat, threshold = xmin)[["meanlog"]], 
+                                fit.lnorm.disc(lnormdat, threshold = xmin)[["sdlog"]],
+                                xmin = xmin)), 
+                                col = "blue")
+        )
+        title('LNORMFIT')
+        
       }
     }
   }
@@ -142,47 +170,144 @@ test_that('LNORM fitting works', {
 # For TPL xmax must not be too low (>3?)
 test_that('TPL fitting works', { 
   
-  rates <- c(1.1, 1.3)
-  expos <- c(1.1, 1.3)
+  rates <- c(0.1, .5, 1.1, 1.3)
+  expos <- c(1.1, 1.3, 1.5)
   xmins <- c(1, 2, 4) 
   for (xmin in xmins) { 
     for ( rate in rates ) { 
       for ( expo in expos ) { 
         
-        tpldat <- round(rpowerexp(10000, 1, expo, rate))
-        dat <- seq.int(max(tpldat))
+        tpldat <- round(rpowerexp(1000, 1, expo, rate))
+        tpldat <- tpldat[tpldat < 1e5]
+        dat <- seq(0, 1000)
         
         # Normalizing coeff
-        expect_equal(discpowerexp.norm(xmin, expo, rate), 
-                     tplnorm(expo, rate, xmin))
+        # Here, we check that the binary called by the Clauset code actually 
+        # returns something. 
+        clauset_result <- suppressWarnings( discpowerexp.norm(xmin, expo, rate) )
+#         if (length(clauset_result) == 0) stop()
+        if (length(clauset_result) > 0) { 
+          expect_equal(clauset_result, 
+                       tplnorm(expo, rate, xmin))
+        }
         
         # P(X=x)
         # Note: we explicitely convert output from pli to numeric as if 
         # the returned values are all NAs then R thinks it's logical 
-        expect_equal(dtpl(dat, expo, rate, xmin),
-                     as.numeric( ddiscpowerexp(dat, expo, rate, threshold = xmin) ))
+        dtpl_result <- dtpl(dat, expo, rate, xmin)
+        ddpxp_result <- suppressWarnings ( 
+            as.numeric( ddiscpowerexp(dat, expo, rate, threshold = xmin) )
+          )
+        if ( ! all( is.na(dtpl_result) ) ) { 
+          expect_equal(dtpl_result, ddpxp_result)
+        }
         
-#         expect_equal(tpl_ll(tpldat, expo, rate, xmin),
-#                      discpowerexp.loglike(tpldat, expo, rate, threshold = xmin))
+        # Here, we check that the binary called by the Clauset code actually 
+        # returns something before performing the test. 
+        clauset_result <- suppressWarnings( 
+            discpowerexp.loglike(tpldat, expo, rate, threshold = xmin)
+          )
+        if (length(clauset_result) > 0) { 
+          expect_equal(tpl_ll(tpldat, expo, rate, xmin),
+                       clauset_result)
+        }
         
-        fit <- tpl_fit(tpldat, xmin)
-        # We skip the other codebase test as they produce errors all the time
-        #  (gsl underflow)
+        our_fit <- tpl_fit(tpldat, xmin = xmin)
+        clauset_fit <- discpowerexp.fit(tpldat, threshold = xmin) 
         
-  #       fit2 <- discpowerexp.fit(tpldat, threshold = 1)
+        if ( length(clauset_fit) > 0) { 
+          if ( ! (our_fit$ll < clauset_fit$loglike) ) { 
+            expect_equal(our_fit$expo, clauset_fit$exponent, tol = 5e-3)
+            expect_equal(our_fit$rate, clauset_fit$rate, tol = 5e-3)
+          }
+        }
         
-  #       expect_equal(fit$expo, fit2$exponent, tol = 1e3)
-  #       expect_equal(fit$ll, fit2$loglike, tol = 1e3)
+        # LL profile
+#         if ( abs(our_fit$expo - clauset_fit$exponent) > 5e-2 ) { 
+#           
+#           llexpos  <- seq(min(our_fit$expo, clauset_fit$exponent) - .1, 
+#                           max(our_fit$expo, clauset_fit$exponent) + .1, 
+#                           length.out = 100)
+#           llrates  <- seq(min(our_fit$rate, clauset_fit$rate) - .1, 
+#                           max(our_fit$rate, clauset_fit$rate) + .1, 
+#                           length.out = 100)
+#           
+#           llgrid <- ddply(expand.grid(llexpo = llexpos, 
+#                             llrate = llrates), ~ llexpo + llrate, 
+#                           with, data.frame(negll = - tpl_ll(tpldat, llexpo, 
+#                                                             llrate, xmin)), 
+#                           , .progress = "none")
+#           
+#           ggplot(llgrid, aes(x = llexpo, y = llrate)) + 
+#             geom_raster(aes(fill = negll))  + 
+# #             geom_tile(dat = subset(llgrid, negll < quantile(negll, .05)), 
+# #                         alpha = .2, color = "white")  + 
+#             geom_contour(aes(z = negll, color = negll), binwidth = 1) + 
+#             annotate(geom = "point", x = our_fit$expo, y = our_fit$rate, color = "red") + 
+#             annotate(geom = "point", 
+#                      x = clauset_fit$expo, 
+#                      y = clauset_fit$rate, color = "blue") 
+#             
+#         }
         
-  #         # Look at fit
-  #         plot(log10(cumpsd(tpldat)))
-  #         xs <- seq(min(tpldat), max(tpldat), length.out = 100)
-  #         points(log10(xs), 
-  #               log10(ptpl(xs, fit[["expo"]], fit[["rate"]])), col = 'red')
-  #         title('TPLFIT')
+        # Look at fit
+        plot(log10(cumpsd(tpldat[tpldat >= xmin])))
+        xs <- unique( round( seq(min(tpldat), max(tpldat), length.out = 100) )) 
+        lines(log10(xs), 
+                log10(ptpl(xs, 
+                          clauset_fit[["exponent"]], 
+                          clauset_fit[["rate"]], xmin)), col = 'blue', lwd = 2)
+        lines(log10(xs), 
+                log10(ptpl(xs, our_fit[["expo"]], our_fit[["rate"]], xmin)), col = 'red')
+        title('TPLFIT')
+        
       }
     }
   }
   
 })
+
+
+test_that("PL estimations work with xmins", { 
+  
+  expos <- c(1.5, 2)
+  for (expo in expos) { 
+    for (xmin in c(1, 10, 40)) {
+      x <- seq.int(1000)
+      
+      pldat <- poweRlaw::rpldis(1000, xmin, expo)
+      pldat <- pldat[pldat < 1e5] # squeeze tail for speed
+      
+      # Test dpl with xmin != 1
+      expect_equal(dzeta(x, xmin, expo), 
+                   dpl(x, expo, xmin))
+      
+      # Test ppl 
+      expect_equal(pzeta(x, xmin, expo, lower.tail = FALSE),
+                   ppl(x, expo, xmin))
+      
+      # Test likelihood func
+      expect_equal(zeta.loglike(pldat, xmin, expo),
+                   pl_ll(pldat, expo, xmin))
+      
+      # Test equality of fits
+      expect_equal(pl_fit(pldat, xmin = xmin)[["expo"]], 
+                   zeta.fit(pldat, xmin)[["exponent"]], 
+                   tol = 1e-3)
+      
+      # Test the estimation of xmin
+      expect_is(xmin_estim(pldat), "numeric")
+    }
+  }
+  
+})
+
+
+# Remove auxiliary binaries now that tests are done
+system("cd ./pli-R-v0.0.3-2007-07-25/zeta-function/ && rm zeta_func zeta_func.o", 
+       show.output.on.console = FALSE)
+system("cd ./pli-R-v0.0.3-2007-07-25/exponential-integral/ && rm exp_int exp_int.o",
+       show.output.on.console = FALSE)
+system("cd ./pli-R-v0.0.3-2007-07-25/ && rm discpowerexp",
+       show.output.on.console = FALSE)
 

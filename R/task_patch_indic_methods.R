@@ -29,9 +29,6 @@ plot.patchdistr_spews <- function(x, along = NULL, ...) {
 #'@method plot patchdistr_spews_list
 plot.patchdistr_spews_list <- function(x, along = NULL) { 
   
-  if ( 'patchdistr_spews_single' %in% class(x) ) { 
-    stop('I cannot plot a trend with only one value !')
-  }
   if ( !is.null(along) && (length(along) != length(x)) ) { 
     stop('The along values are unfit for plotting (size mismatch')
   }
@@ -50,20 +47,27 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
   obj_table[ ,"along"] <- along
   
   # Now we summarise the obj_table
+  alltypes <- unique(na.omit(obj_table[ ,"type"]))
+  alltypes <- ifelse(length(alltypes) == 0, NA, alltypes)
+  
   summ <- ddply(obj_table, 'along',
-                function(df, alltypes) {
+                function(df) {
                   type_freqs <- rep(0, length(alltypes))
                   names(type_freqs) <- alltypes
                   if ( ! all(is.na(df[ ,'type'])) ) { 
                     counts <- c(table(df[ ,'type'])) 
                     type_freqs[names(counts)] <- counts
                     type_freqs <- type_freqs / sum(type_freqs)
+                  } else { 
+                    # We set type freq to 1 as it will determine the scaling
+                    type_freqs <- 1 
                   }
+                  
                   data.frame(type = alltypes, type_freq = type_freqs, 
                              percolation = mean(df[ ,'percolation']), 
                              percolation_empty = mean(df[ ,'percolation_empty']), 
                              plrange = mean(df[ ,'plrange']))
-                  }, alltypes = unique(na.omit(obj_table[ ,'type'])))
+                  })
   
   # Make a data.frame with dummy facets 
   classif_df <- data.frame(plot_type = "PSD Classif.", summ)
@@ -89,24 +93,26 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
     # Note that it is quite tricky to make ggplot produce a line over factors. 
     # This seems to do the trick. 
     plot <- plot + 
-      geom_bar(aes(x = along, y = type_freq, fill = type), 
-                position = "stack", stat = "identity") + 
-      stat_summary(aes(x = along, y = percolation, 
-                       linetype = "Full sites", group = 1), 
+      geom_bar(aes_q(x = ~along, y = ~type_freq, fill = ~type), 
+               position = "stack", stat = "identity") + 
+      stat_summary(aes_q(x = ~along, y = ~percolation, 
+                         linetype = "Full sites", group = 1), 
                    fun.y = mean, geom = "line") + 
-      stat_summary(aes(x = along, y = percolation_empty, 
-                       linetype = "Empty sites", group = 1), 
+      stat_summary(aes_q(x = ~along, y = ~percolation_empty, 
+                         linetype = "Empty sites", group = 1), 
                    fun.y = mean, geom = "line") + 
-      geom_bar(aes(x = along, y = plrange, group = 1), stat = "identity")
+      geom_bar(aes_q(x = ~along, y = ~plrange, group = 1), 
+               stat = "identity")
       
   } else { 
     plot <- plot + 
-      geom_area(aes(x = along, y = type_freq, fill = type), 
+      geom_area(aes_q(x = ~along, y = ~type_freq, fill = ~type), 
                 position = "stack") + 
-      geom_line(aes(x = along, y = percolation, linetype = "Full sites"))  + 
-      geom_line(aes(x = along, y = percolation_empty, linetype = "Empty sites"), 
+      geom_line(aes_q(x = ~along, y = ~percolation, linetype = "Full sites"))  + 
+      geom_line(aes_q(x = ~along, y = ~percolation_empty, linetype = "Empty sites"), 
                 color = 'black') +
-      geom_area(aes(x = along, y = plrange, group = 1), stat = "identity") 
+      geom_area(aes_q(x = ~along, y = ~plrange, group = 1), 
+                stat = "identity") 
       
   }
   
@@ -141,7 +147,7 @@ plot_distr.patchdistr_spews_single <- function(x,
   values <- predict(x, best_only = best_only)  
   
   plot <- ggplot() + 
-    geom_point(aes(x = patchsize, y = y), data = values[['obs']]) + 
+    geom_point(aes_string(x = "patchsize", y = "y"), data = values[['obs']]) + 
     scale_y_log10() +
     scale_x_log10() + 
     xlab('Patch size') + 
@@ -150,7 +156,7 @@ plot_distr.patchdistr_spews_single <- function(x,
   # It can happen that no distribution have been fitted. Check for that 
   # before plotting otherwize it produces an error. 
   if ( any(!is.na(values[['pred']][ ,"y"])) ) { 
-    plot <- plot + geom_line(aes(x = patchsize, y = y, color = type), 
+    plot <- plot + geom_line(aes_string(x = "patchsize", y = "y", color = "type"), 
                              data = values[['pred']]) 
   } else { 
     warning('No distribution has been fitted to the observed patch size distribution')
@@ -166,7 +172,7 @@ plot_distr.patchdistr_spews_list <- function(x, best_only = TRUE) {
   values <- predict(x, best_only = best_only)
   
   plot <- ggplot() + 
-    geom_point(aes(x = patchsize, y = y), 
+    geom_point(aes_string(x = "patchsize", y = "y"), 
                data = values[['obs']]) + 
     scale_y_log10() +
     scale_x_log10() + 
@@ -177,7 +183,7 @@ plot_distr.patchdistr_spews_list <- function(x, best_only = TRUE) {
     # It can happen that no distribution have been fitted. Check for that 
   # before plotting otherwize it produces an error. 
   if ( any(!is.na(values[['pred']][ ,"y"])) ) { 
-    plot <- plot + geom_line(aes(x = patchsize, y = y, color = type), 
+    plot <- plot + geom_line(aes_string(x = "patchsize", y = "y", color = "type"), 
                              data = values[['pred']]) 
   } else { 
     warning('No distribution has been fitted to the observed patch size distributions')
@@ -259,9 +265,9 @@ predict.patchdistr_spews_single <- function(object,
 }
 
 #'@export
-predict.patchdistr_spews_list <- function(x, newdata = NULL, best_only = FALSE) { 
+predict.patchdistr_spews_list <- function(object, newdata = NULL, best_only = FALSE) { 
   
-  dat <- lapply(x, predict.patchdistr_spews_single, newdata, best_only)
+  dat <- lapply(object, predict.patchdistr_spews_single, newdata, best_only)
   
   # Add id but handle when psd is empty
   add_id <- function(n, x) { 

@@ -109,17 +109,21 @@ spectral_spews <- function(mat,
   # Check if mat is suitable
   check_mat(mat)
   
-  if ( !quiet && is.null(sdr_low_range) ) { 
-    warning("Choosing the 20% lowest frequencies for spectral density ratio ",
-            "as none was specified. Use parameter sdr_low_range to choose ", 
-            "a different value.")
+  if ( is.null(sdr_low_range) ) { 
+    if ( !quiet ) { 
+      warning("Choosing the 20% lowest frequencies for spectral density ratio ",
+              "as none was specified. Use parameter sdr_low_range to choose ", 
+              "a different value.")
+    }
     sdr_low_range <- c(0, .2)
   }
   
-  if ( !quiet && is.null(sdr_high_range) ) { 
-    warning("Choosing the 20% highest frequencies for spectral density ratio ",
-            "as none was specified. Use parameter sdr_high_range to choose ", 
-            "a different value.")
+  if ( is.null(sdr_high_range) ) { 
+    if ( !quiet ) { 
+      warning("Choosing the 20% highest frequencies for spectral density ratio ",
+              "as none was specified. Use parameter sdr_high_range to choose ", 
+              "a different value.")
+    }
     sdr_high_range <- c(.8, 1)
   }
   
@@ -135,13 +139,16 @@ spectral_spews <- function(mat,
   
   # Now the mat is always a matrix -> process it
   # Check and warn if not square
-  if ( !quiet && nrow(mat) != ncol(mat) ) { 
-    warning('The matrix is not square: only a squared subset in the left part ', 
-            'will be used.')
+  if ( nrow(mat) != ncol(mat) ) { 
+    if ( !quiet ) { 
+      warning('The matrix is not square: only a squared subset in the left part ', 
+              'will be used.')
+    }
+    
     mindim <- min(dim(mat))
     mat <- mat[seq.int(mindim), seq.int(mindim)]
   }
-    
+  
   # Compute powerspectrum
   spectrum <- rspectrum(mat)
   

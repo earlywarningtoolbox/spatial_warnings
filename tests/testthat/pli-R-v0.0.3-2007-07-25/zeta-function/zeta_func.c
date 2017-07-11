@@ -12,7 +12,7 @@
 double s, q, zeta; /* arguments to zeta, value */
 char *program_name; /* name program is invoked under, for errors */
 
-main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
   void usage(void);	/* Warn users about proper usage */
 
   program_name = argv[0];

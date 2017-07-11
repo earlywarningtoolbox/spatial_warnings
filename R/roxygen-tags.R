@@ -9,7 +9,7 @@
 # 
 #' @useDynLib spatialwarnings
 #' @importFrom Rcpp sourceCpp
-#
+# 
 # 
 # The NULL is mandatory so that devtools actually reads this file.
 NULL

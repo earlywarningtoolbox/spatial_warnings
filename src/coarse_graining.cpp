@@ -14,8 +14,8 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//[[Rcpp::export(name = ".coarse_grain_unsafe")]]
-NumericMatrix coarse_grain(NumericMatrix mat, 
+//[[Rcpp::export]]
+NumericMatrix coarse_grain_cpp(NumericMatrix mat, 
                            int subsize) {
   
   int N = mat.nrow();
@@ -24,8 +24,8 @@ NumericMatrix coarse_grain(NumericMatrix mat,
   NumericMatrix reduced_matrix = NumericMatrix(n, n);
   
   // Fill in values of the submatrix
-  for (int i=0; i<n; i++) {
-    for (int j=0; j<n; j++) { 
+  for (int j=0; j<n; j++) { 
+    for (int i=0; i<n; i++) {
       
       // Compute mean of the corresponding cells in the original matrix
       double sum = 0;

@@ -8,17 +8,15 @@
 using namespace Rcpp; 
 using namespace arma; 
 
+#define SQ(a) ( (a) * (a) )
+
+// Distance step of the r-spectrum
+#define step 1.0
 
 //
-//'@export
 // [[Rcpp::export]]
-DataFrame rspectrum(NumericMatrix rmat) { 
-  
-  // Convert input matrix to arma-understandable stuff
-  mat amat(rmat.begin(), 
-           rmat.nrow(), rmat.ncol(), 
-           false); // reuses memory and avoids extra copy
-  
+DataFrame rspectrum_cpp(arma::mat amat, 
+                        int nthreads) { 
   
   // Get number of rows and number of cols
   int nr = amat.n_rows; 
@@ -59,39 +57,45 @@ DataFrame rspectrum(NumericMatrix rmat) {
   mat_fft(n0x, n0y) = 0; 
   
   // Compute r-spectrum
-  double step = 1;
   double norm_factor = 0; 
-  double aspectr2D_ij, dist;
-  int total_inmask, shift_i, shift_j;
   
   // For all lengths
   for (int l=0; l<ray.n_elem; l++) { 
     double r = ray(l);
     
     // Go through the distances matrix and make a sum of the relevant ones
-    total_inmask = 0;
+    int total_inmask = 0;
+    double rspectr_current = 0; 
+    double normfactor_current = 0; 
+#pragma omp parallel for collapse(2) num_threads(nthreads) \
+  reduction(+:rspectr_current) \
+  reduction(+:normfactor_current) \
+  reduction(+:total_inmask)
     for (int j=0; j<nc; j++) { 
       for (int i=0; i<nr; i++) { 
         
-        dist = sqrt( pow(i - n0x, 2) + pow(j - n0y, 2) );
+        double dist = SQ(i-n0x) + SQ(j-n0y);
         
-        if ( dist >= r - step/2 && dist < r + step/2 ) { 
+        if ( dist >= SQ(r - step/2) && dist < SQ(r + step/2) ) { 
           
           // We use shifted coordinates to pick the value in mat_fft 
           // instead of making a call to arma::shift() that does a copy of 
           // the matrix
-          shift_i = (i + n0x) % nr;
-          shift_j = (j + n0y) % nc;
-          aspectr2D_ij = pow(abs(mat_fft.at(shift_i, shift_j)), 2) / pow((n0x+1) * (n0y+1), 4);
+          int shift_i = (i + n0x) % nr;
+          int shift_j = (j + n0y) % nc;
+          double aspectr2D_ij = SQ(abs(mat_fft(shift_i, shift_j))) / 
+                                  SQ( SQ((n0x+1) * (n0y+1)) );
           
-          rspectr(l) += aspectr2D_ij;
-          norm_factor += aspectr2D_ij;
+          rspectr_current += aspectr2D_ij;
+          normfactor_current += aspectr2D_ij;
           total_inmask++;
         }
         
       }
     }
-    rspectr(l) = rspectr(l) / total_inmask;
+    
+    rspectr(l) = rspectr_current / total_inmask;
+    norm_factor += normfactor_current;
   }
   rspectr = rspectr / norm_factor;
   

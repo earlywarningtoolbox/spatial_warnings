@@ -200,7 +200,7 @@ plot_distr.patchdistr_spews_list <- function(x, best_only = TRUE) {
 # --------------------------------------------------
 
 #'@export
-predict.patchdistr_spews_single <- function(object, 
+predict.patchdistr_spews_single <- function(object, ..., 
                                             newdata = NULL,
                                             best_only = FALSE) { 
   
@@ -265,7 +265,8 @@ predict.patchdistr_spews_single <- function(object,
 }
 
 #'@export
-predict.patchdistr_spews_list <- function(object, newdata = NULL, best_only = FALSE) { 
+predict.patchdistr_spews_list <- function(object, ..., 
+                                          newdata = NULL, best_only = FALSE) { 
   
   dat <- lapply(object, predict.patchdistr_spews_single, newdata, best_only)
   

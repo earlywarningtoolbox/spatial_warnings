@@ -8,8 +8,8 @@ Author: Alain Danet, Alex Genin, Vishwesha Guttal, Sonia Kefi, Sabiha Majumder,
 License: MIT + file LICENSE
 Maintainer: Alexandre Genin <alexandre.genin@univ-montp2.fr> , Florian D.
     Schneider <florian.schneider@univ-montp2.fr>
-Description: A package that provides tools to compute spatial warnings of
-    critical points.
+Description: A package that provides tools to compute spatial early-warning 
+  signals of critical points.
 Depends: R (>= 2.10)
 Imports:
     moments,

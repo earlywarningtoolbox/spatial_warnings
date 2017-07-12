@@ -1,9 +1,10 @@
 #
 # These tags are required to use functions in other packages
 # 
-#' @import poweRlaw
 #' @import ggplot2
 #' @import plyr
+#' @import stats
+#' @import utils
 # 
 # These tags are required by Rcpp
 # 

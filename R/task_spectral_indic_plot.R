@@ -15,10 +15,13 @@
 #'   the null distribution. Note that it can not be displayed when the trend 
 #'   line reflects something else than the indicator values (when \code{what} 
 #'   is not set to "value").
-#'
+#' 
+#' @param ... Ignored 
+#' 
 #' @method plot spectral_spews_test
 #' @export
 plot.spectral_spews_test <- function(x, # an indictest object
+                                     ..., 
                                      along = NULL, 
                                      what = 'value', 
                                      display_null = TRUE) { 
@@ -89,7 +92,7 @@ plot.spectral_spews_test <- function(x, # an indictest object
 
 #' @export
 #' @method plot spectral_spews_list
-plot.spectral_spews_list <- function(x, along = NULL) { 
+plot.spectral_spews_list <- function(x, ..., along = NULL) { 
   plot.spectral_spews_test(as.data.frame(x), 
                            along = along,
                            display_null = FALSE, 

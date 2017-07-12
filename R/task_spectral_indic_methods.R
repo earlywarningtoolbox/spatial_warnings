@@ -87,5 +87,5 @@ summary.spectral_spews_list <- function(object, ...) {
 
 #'@export
 summary.spectral_spews_single <- function(object, ...) { 
-  summary.spectral_spews_list(list(x))
+  summary.spectral_spews_list(list(object))
 }

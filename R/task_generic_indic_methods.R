@@ -58,8 +58,9 @@ summary.generic_spews <- function(object, ...) {
 
 # Print is currently identical to summary()
 #'@export
-print.generic_spews <- summary.generic_spews 
-
+print.generic_spews <- function(x, ...) { 
+  summary.generic_spews(x, ...)
+}
 
 
 

@@ -13,7 +13,7 @@ spectral_spews(mat, sdr_low_range = NULL, sdr_high_range = NULL,
 
 \method{indictest}{spectral_spews}(obj, null_replicates = 999, ...)
 
-\method{plot}{spectral_spews_test}(x, along = NULL, what = "value",
+\method{plot}{spectral_spews_test}(x, ..., along = NULL, what = "value",
   display_null = TRUE)
 
 plot_spectrum(obj, along = NULL, display_null = TRUE)
@@ -52,6 +52,8 @@ can be displayed. Correct values are "value", "pval" or "z_score".}
 the null distribution. Note that it can not be displayed when the trend 
 line reflects something else than the indicator values (when \code{what} 
 is not set to "value").}
+
+\item{...}{Ignored}
 }
 \value{
 Function \code{spectral_spews} object of class \code{spectral_spews_list} or 

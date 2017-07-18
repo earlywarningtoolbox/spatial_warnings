@@ -67,6 +67,7 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
                   data.frame(type = alltypes, type_freq = type_freqs, 
                              percolation = mean(df[ ,'percolation']), 
                              percolation_empty = mean(df[ ,'percolation_empty']), 
+                             cover = mean(df[ ,"cover"]), 
                              # We remove NAs as sometime the power-law range cannot 
                              # be computed (not enough points)
                              plrange = mean(df[ ,'plrange'], na.rm = TRUE))
@@ -87,22 +88,27 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
   plot <- ggplot(summ) + 
     theme_spwarnings() + 
     fillscale_spwarnings(name = "PSD type") + 
-    scale_linetype_discrete(name = "Percolation") + 
+    scale_linetype_discrete(name = "Cover") + 
     facet_grid( plot_type ~ ., switch = "y") + 
     ylab('') + 
     xlab(xtitle)
   
+  browser()
+  
   if ( ! is.numeric(along) ) { 
-    # Note that it is quite tricky to make ggplot produce a line over factors. 
-    # This seems to do the trick. 
+    # Note that it is quite tricky to make ggplot produce a line over factors: 
+    # `group=1` seems to do the trick. 
     plot <- plot + 
       geom_bar(aes_q(x = ~along, y = ~type_freq, fill = ~type), 
                position = "stack", stat = "identity") + 
       stat_summary(aes_q(x = ~along, y = ~percolation, 
-                         linetype = "Full sites", group = 1), 
+                         linetype = "Perc. (full)", group = 1), 
                    fun.y = mean, geom = "line") + 
       stat_summary(aes_q(x = ~along, y = ~percolation_empty, 
-                         linetype = "Empty sites", group = 1), 
+                         linetype = "Perc. (empty)", group = 1), 
+                   fun.y = mean, geom = "line") + 
+      stat_summary(aes_q(x = ~along, y = ~cover, 
+                         linetype = "Mean cover", group = 1), 
                    fun.y = mean, geom = "line") + 
       geom_bar(aes_q(x = ~along, y = ~plrange, group = 1), 
                stat = "identity")
@@ -111,8 +117,10 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
     plot <- plot + 
       geom_area(aes_q(x = ~along, y = ~type_freq, fill = ~type), 
                 position = "stack") + 
-      geom_line(aes_q(x = ~along, y = ~percolation, linetype = "Full sites"))  + 
-      geom_line(aes_q(x = ~along, y = ~percolation_empty, linetype = "Empty sites"), 
+      geom_line(aes_q(x = ~along, y = ~percolation, linetype = "Perc. (full)"))  + 
+      geom_line(aes_q(x = ~along, y = ~percolation_empty, linetype = "Perc. (empty)"), 
+                color = 'black') +
+      geom_line(aes_q(x = ~along, y = ~cover, linetype = "Mean cover"), 
                 color = 'black') +
       geom_area(aes_q(x = ~along, y = ~plrange, group = 1), 
                 stat = "identity") 
@@ -161,16 +169,11 @@ plot_distr.patchdistr_spews_single <- function(x,
   plrange_dat <- x[['plrange']]
   if ( plrange && !is.na(plrange_dat[ ,"plrange"]) ) { 
     plrange_dat[ ,"xmax"] <- max(values[["obs"]][ ,"patchsize"])
-    plrange_dat[ ,"ymin"] <- min(values[["obs"]][ ,"y"])
     plot <- plot + 
-      geom_segment(aes_q(x = ~xmin_est, y = ~ymin, 
-                         xend = ~xmax,  yend = ~ymin), 
+      geom_segment(aes_q(x = ~xmin_est, y = 1, 
+                         xend = ~xmax,  yend = 1), 
                    data = plrange_dat, 
-                   color = "red", 
-                   arrow = arrow(ends = "both", 
-                                 type = "closed", 
-                                 angle = 20, 
-                                 length = unit(0.1, "inches")))
+                   color = "blue")
   }
   
   # Add observed values
@@ -213,8 +216,7 @@ plot_distr.patchdistr_spews_list <- function(x,
     plrange_dat <- unique( as.data.frame(x)[ ,c("replicate", 'xmin_est')] )
     patches_minmax <- ddply(values[['obs']], "replicate", 
                           function(df) { 
-                            data.frame(xmax = max(df[ ,"patchsize"]), 
-                                        ymin = min(df[ ,'y']))
+                            data.frame(xmax = max(df[ ,"patchsize"]))
                           })
     plrange_dat <- join(plrange_dat, patches_minmax, type = "left", 
                         match = "first", by = "replicate")

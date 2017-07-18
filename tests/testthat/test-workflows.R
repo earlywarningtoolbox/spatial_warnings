@@ -8,7 +8,7 @@ context('Test workflows')
 data(forestdat)
 data(serengeti)
 
-datasets <- list(forestdat[6:7], serengeti[5:6])
+datasets <- list(forestdat[1:3], serengeti[5:6])
 
 test_that("The Generic-spews workflow works", { 
   

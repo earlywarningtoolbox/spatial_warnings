@@ -5,7 +5,7 @@
 data(forestdat)
 
 
-testmat <- forestdat[[10]]
+testmat <- forestdat[[3]]
 
 
 

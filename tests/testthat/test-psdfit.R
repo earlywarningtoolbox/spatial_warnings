@@ -25,7 +25,7 @@ for ( s in dir('./pli-R-v0.0.3-2007-07-25',
 system("cd ./pli-R-v0.0.3-2007-07-25/zeta-function/ && make")
 system("cd ./pli-R-v0.0.3-2007-07-25/exponential-integral/ && make")
 system("cd ./pli-R-v0.0.3-2007-07-25/ && \
-          gcc -lm discpowerexp.c -o discpowerexp && \
+          gcc discpowerexp.c -lm -o discpowerexp && \
           chmod +x discpowerexp")
 
 visual <- FALSE
@@ -302,12 +302,8 @@ test_that("PL estimations work with xmins", {
   
 })
 
-
 # Remove auxiliary binaries now that tests are done
-system("cd ./pli-R-v0.0.3-2007-07-25/zeta-function/ && rm zeta_func zeta_func.o", 
-       show.output.on.console = FALSE)
-system("cd ./pli-R-v0.0.3-2007-07-25/exponential-integral/ && rm exp_int exp_int.o",
-       show.output.on.console = FALSE)
-system("cd ./pli-R-v0.0.3-2007-07-25/ && rm discpowerexp",
-       show.output.on.console = FALSE)
+system("cd ./pli-R-v0.0.3-2007-07-25/zeta-function/ && rm zeta_func zeta_func.o")
+system("cd ./pli-R-v0.0.3-2007-07-25/exponential-integral/ && rm exp_int exp_int.o")
+system("cd ./pli-R-v0.0.3-2007-07-25/ && rm discpowerexp")
 

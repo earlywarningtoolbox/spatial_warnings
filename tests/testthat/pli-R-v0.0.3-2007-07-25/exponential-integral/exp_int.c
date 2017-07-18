@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <gsl/gsl_sf_expint.h>
+#include <math.h>
 
 /* Calculate the exponential integral function by invoking the GNU scientific
    library */

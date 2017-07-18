@@ -39,7 +39,7 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
   obj_table <- obj_table[is.na(obj_table[ ,'best']) | obj_table[ ,'best'], ]
   
   # If along is provided, then add it to the table
-  xtitle <- as.character(substitute(along))
+  xtitle <- deparse(substitute(along))
   if ( is.null(along) ) { 
     along <- as.factor(obj_table[ ,'replicate'])
     xtitle <- "Matrix number"
@@ -48,25 +48,28 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
   
   # Now we summarise the obj_table
   alltypes <- unique(na.omit(obj_table[ ,"type"]))
-  alltypes <- ifelse(length(alltypes) == 0, NA, alltypes)
+  alltypes <- if (length(alltypes) == 0) NA else alltypes
   
   summ <- ddply(obj_table, 'along',
                 function(df) {
                   type_freqs <- rep(0, length(alltypes))
                   names(type_freqs) <- alltypes
+                  
                   if ( ! all(is.na(df[ ,'type'])) ) { 
                     counts <- c(table(df[ ,'type'])) 
                     type_freqs[names(counts)] <- counts
                     type_freqs <- type_freqs / sum(type_freqs)
                   } else { 
                     # We set type freq to 1 as it will determine the scaling
-                    type_freqs <- 1 
+                    type_freqs <- NA_real_
                   }
                   
                   data.frame(type = alltypes, type_freq = type_freqs, 
                              percolation = mean(df[ ,'percolation']), 
                              percolation_empty = mean(df[ ,'percolation_empty']), 
-                             plrange = mean(df[ ,'plrange']))
+                             # We remove NAs as sometime the power-law range cannot 
+                             # be computed (not enough points)
+                             plrange = mean(df[ ,'plrange'], na.rm = TRUE))
                   })
   
   # Make a data.frame with dummy facets 
@@ -88,7 +91,7 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
     facet_grid( plot_type ~ ., switch = "y") + 
     ylab('') + 
     xlab(xtitle)
-    
+  
   if ( ! is.numeric(along) ) { 
     # Note that it is quite tricky to make ggplot produce a line over factors. 
     # This seems to do the trick. 
@@ -129,12 +132,12 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
 #' @method plot_distr patchdistr_spews
 #' 
 #' @export
-plot_distr <- function(x, best_only = TRUE) { 
+plot_distr <- function(x, best_only = TRUE, plrange = TRUE) { 
   UseMethod('plot_distr')
 }
 
 #'@export 
-plot_distr.patchdistr_spews <- function(x, best_only = TRUE) { 
+plot_distr.patchdistr_spews <- function(x, best_only = TRUE, plrange = TRUE) { 
   NextMethod('plot_distr')
 }
 
@@ -146,18 +149,41 @@ plot_distr.patchdistr_spews_single <- function(x,
   # Get plottable data.frames
   values <- predict(x, best_only = best_only)  
   
+  # Create base plot 
   plot <- ggplot() + 
-    geom_point(aes_string(x = "patchsize", y = "y"), data = values[['obs']]) + 
     scale_y_log10() +
     scale_x_log10() + 
     xlab('Patch size') + 
-    ylab('Frequency (P>=x)')
+    ylab('Frequency (P>=x)') + 
+    theme_spwarnings()
+  
+  # If plrange exists, then add it to the plot 
+  plrange_dat <- x[['plrange']]
+  if ( plrange && !is.na(plrange_dat[ ,"plrange"]) ) { 
+    plrange_dat[ ,"xmax"] <- max(values[["obs"]][ ,"patchsize"])
+    plrange_dat[ ,"ymin"] <- min(values[["obs"]][ ,"y"])
+    plot <- plot + 
+      geom_segment(aes_q(x = ~xmin_est, y = ~ymin, 
+                         xend = ~xmax,  yend = ~ymin), 
+                   data = plrange_dat, 
+                   color = "red", 
+                   arrow = arrow(ends = "both", 
+                                 type = "closed", 
+                                 angle = 20, 
+                                 length = unit(0.1, "inches")))
+  }
+  
+  # Add observed values
+  plot <- plot + 
+    geom_point(aes_string(x = "patchsize", y = "y"), data = values[['obs']]) 
   
   # It can happen that no distribution have been fitted. Check for that 
   # before plotting otherwize it produces an error. 
   if ( any(!is.na(values[['pred']][ ,"y"])) ) { 
-    plot <- plot + geom_line(aes_string(x = "patchsize", y = "y", color = "type"), 
-                             data = values[['pred']]) 
+    plot <- plot + 
+      geom_line(aes_string(x = "patchsize", y = "y", color = "type"), 
+                data = values[["pred"]])
+      
   } else { 
     warning('No distribution has been fitted to the observed patch size distribution')
   }
@@ -166,25 +192,57 @@ plot_distr.patchdistr_spews_single <- function(x,
 }
 
 #'@export
-plot_distr.patchdistr_spews_list <- function(x, best_only = TRUE) { 
+plot_distr.patchdistr_spews_list <- function(x, 
+                                             best_only = TRUE, 
+                                             plrange = TRUE) { 
   
   # Get plottable data.frames
   values <- predict(x, best_only = best_only)
   
   plot <- ggplot() + 
-    geom_point(aes_string(x = "patchsize", y = "y"), 
-               data = values[['obs']]) + 
     scale_y_log10() +
     scale_x_log10() + 
     facet_wrap( ~ replicate) + 
     xlab('Patch size') + 
-    ylab('Frequency (P>=x)')
+    ylab('Frequency (P>=x)') + 
+    theme_spwarnings()
+  
+  if ( plrange ) { 
+    # Add plrange to the plot. We need to extract info 
+    # from the observed psd so that we can place the segment on the plot. 
+    plrange_dat <- unique( as.data.frame(x)[ ,c("replicate", 'xmin_est')] )
+    patches_minmax <- ddply(values[['obs']], "replicate", 
+                          function(df) { 
+                            data.frame(xmax = max(df[ ,"patchsize"]), 
+                                        ymin = min(df[ ,'y']))
+                          })
+    plrange_dat <- join(plrange_dat, patches_minmax, type = "left", 
+                        match = "first", by = "replicate")
     
-    # It can happen that no distribution have been fitted. Check for that 
+    plot <- plot + 
+      geom_segment(aes_q(x = ~xmin_est, y = 1, 
+                          xend = ~xmax,  yend = 1), 
+                    data = plrange_dat, 
+                    color = "blue") 
+  
+  }
+  
+  # Add observed values
+  plot <- plot + 
+    geom_point(aes_string(x = "patchsize", y = "y"), 
+               data = values[['obs']]) 
+  
+  # It can happen that no distribution have been fitted. Check for that 
   # before plotting otherwize it produces an error. 
   if ( any(!is.na(values[['pred']][ ,"y"])) ) { 
-    plot <- plot + geom_line(aes_string(x = "patchsize", y = "y", color = "type"), 
-                             data = values[['pred']]) 
+    # Get data and remove NAs (where no fit has been carried out
+    pred_values <- values[["pred"]]
+    pred_values <- pred_values[!is.na(pred_values[ ,"type"]), ]
+    
+    plot <- plot + 
+              geom_line(aes_string(x = "patchsize", y = "y", color = "type"), 
+                        data = pred_values)
+
   } else { 
     warning('No distribution has been fitted to the observed patch size distributions')
   }
@@ -268,7 +326,8 @@ predict.patchdistr_spews_single <- function(object, ...,
 predict.patchdistr_spews_list <- function(object, ..., 
                                           newdata = NULL, best_only = FALSE) { 
   
-  dat <- lapply(object, predict.patchdistr_spews_single, newdata, best_only)
+  dat <- lapply(object, predict.patchdistr_spews_single, 
+                newdata = newdata, best_only = best_only)
   
   # Add id but handle when psd is empty
   add_id <- function(n, x) { 

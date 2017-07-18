@@ -18,6 +18,7 @@ GRADTOL <- 1e-10
 # This 
 optim_safe <- function(f, pars0) { 
   
+  # Wrap a neg ll objective function so that it does not return NAs
   safe <- function(f) { 
     function(pars) { 
       ans <- f(pars) 
@@ -35,8 +36,9 @@ optim_safe <- function(f, pars0) {
   # 
   # Note that in some pathological cases the fit fails (not enough points, etc.)
   # This happens a lot when finding xmin as we end up fitting on very few 
-  # points in the tail of the distribution. Here, we report the fit fail but 
-  # do not stop execution. 
+  # points in the tail of the distribution. Here, we report the fit failed but 
+  # do not stop execution. In most of those cases it has no consequences on the 
+  # result. 
   result <- try( { 
     sann_approx <- optim(pars0, safe(f), 
                         method = "SANN", 

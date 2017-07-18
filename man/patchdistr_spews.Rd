@@ -12,7 +12,7 @@ patchdistr_spews(x, merge = FALSE, fit_lnorm = FALSE, best_by = "BIC",
 
 \method{plot}{patchdistr_spews}(x, along = NULL, ...)
 
-\method{plot_distr}{patchdistr_spews}(x, best_only = TRUE)
+\method{plot_distr}{patchdistr_spews}(x, best_only = TRUE, plrange = TRUE)
 }
 \arguments{
 \item{x}{A logical matrix (TRUE/FALSE values) or a list of these}

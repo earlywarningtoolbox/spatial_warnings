@@ -11,7 +11,7 @@
 spectral_spews(mat, sdr_low_range = NULL, sdr_high_range = NULL,
   quiet = FALSE)
 
-\method{indictest}{spectral_spews}(obj, null_replicates = 999, ...)
+\method{indictest}{spectral_spews}(obj, nperm = 999, ...)
 
 \method{plot}{spectral_spews_test}(x, ..., along = NULL, what = "value",
   display_null = TRUE)
@@ -35,7 +35,7 @@ c(.8, 1). See also the Details section.}
 
 \item{obj}{An \code{spectral_spews_test} object as produced by \link{indictest}}
 
-\item{null_replicates}{The number of replicates to use to compute use in the 
+\item{nperm}{The number of replicates to use to compute use in the 
 null distribution}
 
 \item{...}{Further arguments passed onto methods}

@@ -12,7 +12,7 @@
 generic_spews(mat, subsize = 4, detrend = FALSE, abs_skewness = FALSE,
   moranI_coarse_grain = FALSE)
 
-\method{indictest}{generic_spews}(obj, null_replicates = 999, ...)
+\method{indictest}{generic_spews}(obj, nperm = 999, ...)
 
 \method{plot}{generic_spews_test}(x, along = NULL, what = "value",
   display_null = TRUE, ...)
@@ -37,7 +37,7 @@ computing the Moran's I indicator value ?}
 \item{obj}{A \code{generic_spews} object (as provided by the 
 \code{generic_spews} function).}
 
-\item{null_replicates}{The number of replicates to use to compute a null 
+\item{nperm}{The number of replicates to use to compute a null 
 distribution}
 
 \item{...}{Additional arguments passed onto methods}

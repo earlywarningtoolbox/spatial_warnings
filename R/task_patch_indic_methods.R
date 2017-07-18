@@ -93,8 +93,6 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
     ylab('') + 
     xlab(xtitle)
   
-  browser()
-  
   if ( ! is.numeric(along) ) { 
     # Note that it is quite tricky to make ggplot produce a line over factors: 
     # `group=1` seems to do the trick. 

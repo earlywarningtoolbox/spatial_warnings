@@ -4,13 +4,13 @@
 \alias{indictest}
 \title{Significance-assessment of spatial early-warning signals}
 \usage{
-indictest(obj, null_replicates = 999, ...)
+indictest(obj, nperm = 999, ...)
 }
 \arguments{
 \item{obj}{A spatial warning object such as one produced by the *_spews 
 function family}
 
-\item{null_replicates}{How many times should the input matrix be randomized
+\item{nperm}{How many times should the input matrix be randomized
 to create the null distribution ?}
 
 \item{...}{Additionnal arguments passed to methods}

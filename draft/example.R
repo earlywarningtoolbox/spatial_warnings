@@ -128,7 +128,7 @@ forest.genic <- generic_spews(forestdat,
 #' We can also specify the number of replicates to use in the null distribution
 forest.gentest <- indictest(forest.genic, 
                             .progress = "time", 
-                            null_replicates = 199)
+                            nperm = 199)
 plot(forest.gentest) # Compare with figure above 
 
 #' Of course, at anytime during this process, we can export the values to 

@@ -11,7 +11,7 @@
 #' @param obj A spatial warning object such as one produced by the *_spews 
 #'   function family
 #' 
-#' @param null_replicates How many times should the input matrix be randomized
+#' @param nperm How many times should the input matrix be randomized
 #'   to create the null distribution ?
 #' 
 #' @param ... Additionnal arguments passed to methods 
@@ -37,7 +37,7 @@
 # 
 # Define global method
 #'@export
-indictest <- function(obj, null_replicates = 999, ...) { 
+indictest <- function(obj, nperm = 999, ...) { 
   UseMethod('indictest')
 }
 

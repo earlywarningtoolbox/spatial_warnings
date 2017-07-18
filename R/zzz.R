@@ -12,7 +12,7 @@
                         utils::packageDescription("spatialwarnings", 
                                                   fields = "Version"), 
                         appendLF = TRUE)
-  packageStartupMessage("Use options(spw.threads = <n>) to set up multi-core processing")
+  packageStartupMessage("Use options(mc.cores = <n>) to set up multi-core processing (unix only)")
 }
 
 

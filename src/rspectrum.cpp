@@ -67,10 +67,6 @@ DataFrame rspectrum_cpp(arma::mat amat,
     int total_inmask = 0;
     double rspectr_current = 0; 
     double normfactor_current = 0; 
-#pragma omp parallel for collapse(2) num_threads(nthreads) \
-  reduction(+:rspectr_current) \
-  reduction(+:normfactor_current) \
-  reduction(+:total_inmask)
     for (int j=0; j<nc; j++) { 
       for (int i=0; i<nr; i++) { 
         

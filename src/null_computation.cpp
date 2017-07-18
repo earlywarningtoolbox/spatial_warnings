@@ -4,16 +4,14 @@
 //   of values for an indicator.
 // 
 
-
-#include <omp.h> // openMP
 #include <Rcpp.h>
 #include "headers.h"  // Needs to be included afeter Rcpp.h
 
 using namespace Rcpp;
 
-// Generate random integer between min and max (no bias)
-#define RANDN(min, max, seed) \
-  floor( min + ((double)(rand_r(&seed)) / RAND_MAX) * (max - min) )
+// Generate random integer between min and max 
+#define RANDN(min, max) \
+  floor( min + unif_rand() * (max - min) ); 
 
 //[[Rcpp::export]]
 List shuffle_and_compute(NumericMatrix& mat, 
@@ -22,6 +20,9 @@ List shuffle_and_compute(NumericMatrix& mat,
                          int nthreads) { 
   
   NumericMatrix shuffmat = mat; 
+  
+  // RNG stuff
+  GetRNGstate(); 
   
   // Allocate indicator results
   List nulldistr = List(nrep);
@@ -36,10 +37,8 @@ List shuffle_and_compute(NumericMatrix& mat,
     
     // Shuffle the matrix. Note that we can only parallelize the shuffling as 
     //   the indicf function is not safe to be called from the threads. 
-#pragma omp parallel for num_threads(nthreads)
     for (int k = 0; k<=kmax; k++) { 
-      unsigned seed = 6653 + omp_get_thread_num()*2; 
-      int j = RANDN(k, kmax-1, seed); 
+      int j = RANDN(k, kmax-1); 
       // j between k and nc*nr - 1
       
       // As we are in a matrix we need to compute the 2D coordinates of the 
@@ -59,6 +58,10 @@ List shuffle_and_compute(NumericMatrix& mat,
     nulldistr(i) = indic(shuffmat);
     
   }
+  
+  // Store the RNG state back
+  PutRNGstate(); 
+  
   return nulldistr;
 }
 

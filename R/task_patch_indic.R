@@ -111,8 +111,8 @@ patchdistr_spews <- function(x,
   
   # If input is a list -> apply on each element
   if ( !merge & is.list(x)) { 
-    results <- llply(x, patchdistr_spews, merge, fit_lnorm, 
-                     best_by, xmin, xmin_bounds, wrap)
+    results <- parallel::mclapply(x, patchdistr_spews, merge, fit_lnorm, 
+                                  best_by, xmin, xmin_bounds, wrap)
     class(results) <- c('patchdistr_spews_list', 'patchdistr_spews', 
                         'spews_result', 'list')
     return(results)

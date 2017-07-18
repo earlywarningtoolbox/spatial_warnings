@@ -21,7 +21,8 @@ Imports:
     reshape2,
     tidyr, 
     stats, 
-    utils
+    utils, 
+    parallel
 Suggests:
     testthat,
     knitr

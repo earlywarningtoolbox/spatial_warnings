@@ -216,7 +216,7 @@ xmin_estim <- function(dat, bounds = range(dat)) {
   
   # We need at least 3 values for a pl fit, so the last value of xmin 
   # needs to have three points after it
-  if ( length(xmins) <= 6 ) { 
+  if ( length(xmins) <= 3 ) { 
     warning('Not enough data points to estimate xmin, returning NA')
     return(NA_integer_)
   }

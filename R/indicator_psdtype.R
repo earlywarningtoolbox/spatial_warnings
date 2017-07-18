@@ -149,7 +149,9 @@ psdtype <- function(psd, xmin, best_by, fit_lnorm) {
   models[ ,'AICc'] <- get_AICc(models[ ,'ll'], models[ ,'npars'], length(psd))
   models[ ,'BIC'] <- get_BIC(models[ ,'ll'],  models[ ,'npars'], length(psd))
   
-  models[ ,'best'] <- models[ ,best_by] == min(models[ ,best_by])
+  # We need to remove NA's here as sometimes one of the fits fails and its "best"
+  # column is NA. 
+  models[ ,'best'] <- models[ ,best_by] == min(models[ ,best_by], na.rm = TRUE)
   
   # Add an xmin column 
   models[ ,"xmin_fit"] <- xmin

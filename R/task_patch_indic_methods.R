@@ -314,8 +314,7 @@ predict.patchdistr_spews_single <- function(object, ...,
   }
   
   # Crop data to y range
-  vals_pred <- vals_pred[ vals_pred[ ,'y'] >= min(vals_obs[ ,'y']) & 
-                            vals_pred[ ,'y'] <= max(vals_obs[ ,'y']), ] 
+  vals_pred <- vals_pred[ vals_pred[ ,'y'] >= min(vals_obs[ ,'y']), ] 
   
   # Return data
   return( list(obs = vals_obs, 

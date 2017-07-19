@@ -2,15 +2,15 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 coarse_grain_cpp <- function(mat, subsize) {
-    .Call('spatialwarnings_coarse_grain_cpp', PACKAGE = 'spatialwarnings', mat, subsize)
+    .Call('_spatialwarnings_coarse_grain_cpp', PACKAGE = 'spatialwarnings', mat, subsize)
 }
 
 discpowerexp_norm <- function(expo, rate, xmin) {
-    .Call('spatialwarnings_discpowerexp_norm', PACKAGE = 'spatialwarnings', expo, rate, xmin)
+    .Call('_spatialwarnings_discpowerexp_norm', PACKAGE = 'spatialwarnings', expo, rate, xmin)
 }
 
 label_cpp <- function(mat, nbmask, wrap) {
-    .Call('spatialwarnings_label_cpp', PACKAGE = 'spatialwarnings', mat, nbmask, wrap)
+    .Call('_spatialwarnings_label_cpp', PACKAGE = 'spatialwarnings', mat, nbmask, wrap)
 }
 
 #' 
@@ -29,31 +29,31 @@ label_cpp <- function(mat, nbmask, wrap) {
 #' 
 #' @export
 raw_moran <- function(mat) {
-    .Call('spatialwarnings_raw_moran', PACKAGE = 'spatialwarnings', mat)
+    .Call('_spatialwarnings_raw_moran', PACKAGE = 'spatialwarnings', mat)
 }
 
 tplsum <- function(expo, rate, xs, xmin) {
-    .Call('spatialwarnings_tplsum', PACKAGE = 'spatialwarnings', expo, rate, xs, xmin)
+    .Call('_spatialwarnings_tplsum', PACKAGE = 'spatialwarnings', expo, rate, xs, xmin)
 }
 
 shuffle_and_compute <- function(mat, indic, nrep, nthreads) {
-    .Call('spatialwarnings_shuffle_and_compute', PACKAGE = 'spatialwarnings', mat, indic, nrep, nthreads)
+    .Call('_spatialwarnings_shuffle_and_compute', PACKAGE = 'spatialwarnings', mat, indic, nrep, nthreads)
 }
 
 rspectrum_cpp <- function(amat, nthreads) {
-    .Call('spatialwarnings_rspectrum_cpp', PACKAGE = 'spatialwarnings', amat, nthreads)
+    .Call('_spatialwarnings_rspectrum_cpp', PACKAGE = 'spatialwarnings', amat, nthreads)
 }
 
 #'@export
 raw_skewness <- function(X) {
-    .Call('spatialwarnings_raw_skewness', PACKAGE = 'spatialwarnings', X)
+    .Call('_spatialwarnings_raw_skewness', PACKAGE = 'spatialwarnings', X)
 }
 
 sum_all_one_over_k <- function(from, to, expo) {
-    .Call('spatialwarnings_sum_all_one_over_k', PACKAGE = 'spatialwarnings', from, to, expo)
+    .Call('_spatialwarnings_sum_all_one_over_k', PACKAGE = 'spatialwarnings', from, to, expo)
 }
 
 sum_all_one_over_k_before <- function(n, expo) {
-    .Call('spatialwarnings_sum_all_one_over_k_before', PACKAGE = 'spatialwarnings', n, expo)
+    .Call('_spatialwarnings_sum_all_one_over_k_before', PACKAGE = 'spatialwarnings', n, expo)
 }
 

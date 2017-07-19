@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // coarse_grain_cpp
 NumericMatrix coarse_grain_cpp(NumericMatrix mat, int subsize);
-RcppExport SEXP spatialwarnings_coarse_grain_cpp(SEXP matSEXP, SEXP subsizeSEXP) {
+RcppExport SEXP _spatialwarnings_coarse_grain_cpp(SEXP matSEXP, SEXP subsizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,7 +20,7 @@ END_RCPP
 }
 // discpowerexp_norm
 double discpowerexp_norm(double expo, double rate, int xmin);
-RcppExport SEXP spatialwarnings_discpowerexp_norm(SEXP expoSEXP, SEXP rateSEXP, SEXP xminSEXP) {
+RcppExport SEXP _spatialwarnings_discpowerexp_norm(SEXP expoSEXP, SEXP rateSEXP, SEXP xminSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -33,7 +33,7 @@ END_RCPP
 }
 // label_cpp
 IntegerMatrix label_cpp(IntegerMatrix mat, IntegerMatrix nbmask, bool wrap);
-RcppExport SEXP spatialwarnings_label_cpp(SEXP matSEXP, SEXP nbmaskSEXP, SEXP wrapSEXP) {
+RcppExport SEXP _spatialwarnings_label_cpp(SEXP matSEXP, SEXP nbmaskSEXP, SEXP wrapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -46,7 +46,7 @@ END_RCPP
 }
 // raw_moran
 double raw_moran(NumericMatrix mat);
-RcppExport SEXP spatialwarnings_raw_moran(SEXP matSEXP) {
+RcppExport SEXP _spatialwarnings_raw_moran(SEXP matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -57,7 +57,7 @@ END_RCPP
 }
 // tplsum
 NumericVector tplsum(double expo, double rate, IntegerVector xs, int xmin);
-RcppExport SEXP spatialwarnings_tplsum(SEXP expoSEXP, SEXP rateSEXP, SEXP xsSEXP, SEXP xminSEXP) {
+RcppExport SEXP _spatialwarnings_tplsum(SEXP expoSEXP, SEXP rateSEXP, SEXP xsSEXP, SEXP xminSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -71,7 +71,7 @@ END_RCPP
 }
 // shuffle_and_compute
 List shuffle_and_compute(NumericMatrix& mat, Function indic, int nrep, int nthreads);
-RcppExport SEXP spatialwarnings_shuffle_and_compute(SEXP matSEXP, SEXP indicSEXP, SEXP nrepSEXP, SEXP nthreadsSEXP) {
+RcppExport SEXP _spatialwarnings_shuffle_and_compute(SEXP matSEXP, SEXP indicSEXP, SEXP nrepSEXP, SEXP nthreadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -85,7 +85,7 @@ END_RCPP
 }
 // rspectrum_cpp
 DataFrame rspectrum_cpp(arma::mat amat, int nthreads);
-RcppExport SEXP spatialwarnings_rspectrum_cpp(SEXP amatSEXP, SEXP nthreadsSEXP) {
+RcppExport SEXP _spatialwarnings_rspectrum_cpp(SEXP amatSEXP, SEXP nthreadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -97,7 +97,7 @@ END_RCPP
 }
 // raw_skewness
 double raw_skewness(arma::vec X);
-RcppExport SEXP spatialwarnings_raw_skewness(SEXP XSEXP) {
+RcppExport SEXP _spatialwarnings_raw_skewness(SEXP XSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -108,7 +108,7 @@ END_RCPP
 }
 // sum_all_one_over_k
 double sum_all_one_over_k(int from, int to, double expo);
-RcppExport SEXP spatialwarnings_sum_all_one_over_k(SEXP fromSEXP, SEXP toSEXP, SEXP expoSEXP) {
+RcppExport SEXP _spatialwarnings_sum_all_one_over_k(SEXP fromSEXP, SEXP toSEXP, SEXP expoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -121,7 +121,7 @@ END_RCPP
 }
 // sum_all_one_over_k_before
 double sum_all_one_over_k_before(int n, double expo);
-RcppExport SEXP spatialwarnings_sum_all_one_over_k_before(SEXP nSEXP, SEXP expoSEXP) {
+RcppExport SEXP _spatialwarnings_sum_all_one_over_k_before(SEXP nSEXP, SEXP expoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -133,16 +133,16 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"spatialwarnings_coarse_grain_cpp", (DL_FUNC) &spatialwarnings_coarse_grain_cpp, 2},
-    {"spatialwarnings_discpowerexp_norm", (DL_FUNC) &spatialwarnings_discpowerexp_norm, 3},
-    {"spatialwarnings_label_cpp", (DL_FUNC) &spatialwarnings_label_cpp, 3},
-    {"spatialwarnings_raw_moran", (DL_FUNC) &spatialwarnings_raw_moran, 1},
-    {"spatialwarnings_tplsum", (DL_FUNC) &spatialwarnings_tplsum, 4},
-    {"spatialwarnings_shuffle_and_compute", (DL_FUNC) &spatialwarnings_shuffle_and_compute, 4},
-    {"spatialwarnings_rspectrum_cpp", (DL_FUNC) &spatialwarnings_rspectrum_cpp, 2},
-    {"spatialwarnings_raw_skewness", (DL_FUNC) &spatialwarnings_raw_skewness, 1},
-    {"spatialwarnings_sum_all_one_over_k", (DL_FUNC) &spatialwarnings_sum_all_one_over_k, 3},
-    {"spatialwarnings_sum_all_one_over_k_before", (DL_FUNC) &spatialwarnings_sum_all_one_over_k_before, 2},
+    {"_spatialwarnings_coarse_grain_cpp", (DL_FUNC) &_spatialwarnings_coarse_grain_cpp, 2},
+    {"_spatialwarnings_discpowerexp_norm", (DL_FUNC) &_spatialwarnings_discpowerexp_norm, 3},
+    {"_spatialwarnings_label_cpp", (DL_FUNC) &_spatialwarnings_label_cpp, 3},
+    {"_spatialwarnings_raw_moran", (DL_FUNC) &_spatialwarnings_raw_moran, 1},
+    {"_spatialwarnings_tplsum", (DL_FUNC) &_spatialwarnings_tplsum, 4},
+    {"_spatialwarnings_shuffle_and_compute", (DL_FUNC) &_spatialwarnings_shuffle_and_compute, 4},
+    {"_spatialwarnings_rspectrum_cpp", (DL_FUNC) &_spatialwarnings_rspectrum_cpp, 2},
+    {"_spatialwarnings_raw_skewness", (DL_FUNC) &_spatialwarnings_raw_skewness, 1},
+    {"_spatialwarnings_sum_all_one_over_k", (DL_FUNC) &_spatialwarnings_sum_all_one_over_k, 3},
+    {"_spatialwarnings_sum_all_one_over_k_before", (DL_FUNC) &_spatialwarnings_sum_all_one_over_k_before, 2},
     {NULL, NULL, 0}
 };
 

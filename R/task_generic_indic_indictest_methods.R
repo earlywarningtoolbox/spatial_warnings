@@ -93,11 +93,9 @@ plot.generic_spews_test <- function(x,
   # Add the trend on the graph (Note that we add it over the null trend)
   plot <- plot + 
     ggplot2::geom_point(ggplot2::aes_string(x = 'gradient', 
-                                            y = what,
-                                            color = 'indicator')) + 
+                                            y = what)) + 
     ggplot2::geom_line(ggplot2::aes_string(x = 'gradient', 
                                            y = what,
-                                           color = 'indicator', 
                                            group = 'indicator'))
   
   # Add facets 

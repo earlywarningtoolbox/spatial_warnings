@@ -16,7 +16,7 @@ using namespace Rcpp;
 
 //[[Rcpp::export]]
 NumericMatrix coarse_grain_cpp(NumericMatrix mat, 
-                           int subsize) {
+                               int subsize) {
   
   int N = mat.nrow();
   int n = floor(N / subsize); 

@@ -103,26 +103,26 @@ The trend of SDR values can be plotted using the \code{plot()} method.
 }
 \examples{
 
-data(forestdat) 
+data(forestgap) 
 
-spec_indic <- spectral_spews(forestdat[['matrices']], 
+spec_indic <- spectral_spews(forestgap[['matrices']], 
                              sdr_low_range  = c(0, .2), 
                              sdr_high_range = c(.8, 1))
 
 summary(spec_indic)
 
 # Display trends along the varying model parameter
-plot(spec_indic, along = forestdat[['parameters']][ ,'delta'])
+plot(spec_indic, along = forestgap[['parameters']][ ,'delta'])
 
 # Assess significance
 spec_test <- indictest(spec_indic)
 summary(spec_test)
 
 # Display trends, now with a grey 5\%-95\% quantiles of the null distribution
-plot(spec_test, along = forestdat[['parameters']][ ,'delta'])
+plot(spec_test, along = forestgap[['parameters']][ ,'delta'])
 
 # Display radial-spectra
-plot_spectrum(spec_test, along = forestdat[['parameters']][ ,'delta'])
+plot_spectrum(spec_test, along = forestgap[['parameters']][ ,'delta'])
 
 }
 \references{

@@ -23,8 +23,8 @@
 #' 
 #' @examples 
 #' 
-#' data(forestdat)
-#' attach(forestdat)
+#' data(forestgap)
+#' attach(forestgap)
 #' 
 #' par(mfrow=c(1, 2))
 #' image(matrices[[1]])
@@ -104,8 +104,8 @@ percolation <- function(mat, nbmask = matrix(c(0,1,0,
 #' @seealso \code{\link{label}}
 #' 
 #' @examples
-#' data(forestdat)
-#' patchsizes(forestdat[['matrices']][[1]])
+#' data(forestgap)
+#' patchsizes(forestgap[['matrices']][[1]])
 #'
 #' @export
 patchsizes <- function(mat, 

@@ -2,10 +2,10 @@
 # This file tests whether the indicators are producing correct values
 # 
 
-data(forestdat)
+data(forestgap)
 
 
-testmat <- forestdat[[3]]
+testmat <- forestgap[[3]]
 
 
 

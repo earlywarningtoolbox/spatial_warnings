@@ -18,7 +18,7 @@ test_that('indicator functions stop if provided garbage data', {
   
   garbage_list_diff_types <- list(garbage_notbinary,
                                     garbage_notbinary == 3)
-  data(forestdat)
+  data(forestgap)
 
   # This reflects checks in check_mat
   for (f in indicator_functions) { 

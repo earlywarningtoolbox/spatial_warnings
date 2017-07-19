@@ -28,12 +28,12 @@ library(spatialwarnings) # mind the absence of underscore !
 
 #' ## Example datasets
 #' 
-#' `forestdat`: An output from the Forest-gap model. It has matrix sizes 
+#' `forestgap`: An output from the Forest-gap model. It has matrix sizes 
 #'  of 400x400. 
 #' 
 #' All these datasets are included with the package, so we can just load them 
 #' using the function `data()`
-data(forestdat)
+data(forestgap)
 
 
 
@@ -71,22 +71,22 @@ data(forestdat)
 
 #' # Generic EWS
 #' 
-#' We will use the `forestdat` dataset to illustrate the computation of generic 
+#' We will use the `forestgap` dataset to illustrate the computation of generic 
 #' EWS. Let's see first what the data is like: 
 
 #' A data.frame of the parameters used for the simulations:
-forestdat.pars
+forestgap.pars
 
-#' forestdat: a list of matrices. As printing takes too much space
+#' forestgap: a list of matrices. As printing takes too much space
 #' for our small screens, we use the handy function str() that 
 #' produces a compact description of our object. 
-str(forestdat, 
+str(forestgap, 
     list.len = 3) # Show only the three first elements
 
 
 #' The general function is called generic_spews: let's call this function on 
 #' our list of matrices and store the result in a variable
-forest.genic <- generic_spews(forestdat)
+forest.genic <- generic_spews(forestgap)
 
 #' We can now call the `summary()` method on this object to display the results. 
 #' Note that the summary method does not reflect the internal s*tructure of the 
@@ -119,7 +119,7 @@ plot(forest.gentest)
 #' value of skewness instead of its raw value. And last but not least, we can 
 #' change the coarse-graining length. 
 #' 
-forest.genic <- generic_spews(forestdat, 
+forest.genic <- generic_spews(forestgap, 
                               subsize = 3,
                               detrend = FALSE,
                               abs_skewness = TRUE,
@@ -139,7 +139,7 @@ head( as.data.frame(forest.gentest) )
 #' on lists of matrices. Note that these functions are here so indicators 
 #' can be computed more easily as part of another workflow: no 
 #' plot/summary/print/etc. methods are provided. 
-forest.varic <- indicator_variance(forestdat)
+forest.varic <- indicator_variance(forestgap)
 # See also indicator_skewness, indicator_moran, etc. 
 
 #' Parallel processing is available via setting the global option spw.threads
@@ -149,9 +149,9 @@ options(spw.threads = 24)
 
 #' # Spectral EWS
 #'
-#' We will be using the same forestdat dataset to illustrate the spectral EWS
+#' We will be using the same forestgap dataset to illustrate the spectral EWS
 #' workflow. It works just the same: 
-forest.specic <- spectral_spews(forestdat)
+forest.specic <- spectral_spews(forestgap)
 
 #' Mind the warnings here telling us that we are using default values for SDR. 
 #' Let's see a quick summary of the results. 
@@ -169,7 +169,7 @@ plot(forest.spectest)
 plot_spectrum(forest.spectest)
 
 #' Some options are available to alter how the indicator values are computed
-forest.specic <- spectral_spews(forestdat, 
+forest.specic <- spectral_spews(forestgap, 
                                 sdr_low_range =  c(0, .2), 
                                 sdr_high_range = c(0, 1))
 plot(forest.specic)
@@ -182,18 +182,18 @@ plot(forest.specic)
 #' # PSD-based spatial indicators
 #' 
 #' 
-#' We will use forestdat for the first part of this example. Let's compute 
+#' We will use forestgap for the first part of this example. Let's compute 
 #' these indicators. 
 #'
-data(forestdat)
-for (i in rev(seq_along(forestdat))) { 
+data(forestgap)
+for (i in rev(seq_along(forestgap))) { 
   print(i)
-  patchdistr_spews(forestdat[[i]])
+  patchdistr_spews(forestgap[[i]])
 }
 
-patchdistr_spews(forestdat[[35]])
+patchdistr_spews(forestgap[[35]])
 
-forest.psdic <- patchdistr_spews(forestdat, fit_lnorm = FALSE)
+forest.psdic <- patchdistr_spews(forestgap, fit_lnorm = FALSE)
 
 #' See a summary of what has been fitted
 summary(forest.psdic)
@@ -221,7 +221,7 @@ plot_distr(forest.psdic)
 #' their own functions 
 
 # Not run:
-# indicator_plrange(forestdat)
+# indicator_plrange(forestgap)
 
 #' That's it ! For most of these functions, documentation is available 
 #' through `?` ! It is sometimes missing though (help is gladly accepted ;) ). 

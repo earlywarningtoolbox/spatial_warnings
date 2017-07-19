@@ -5,10 +5,10 @@
 
 context('Test workflows') 
 
-data(forestdat)
+data(forestgap)
 data(serengeti)
 
-datasets <- list(forestdat[1:3], serengeti[5:6])
+datasets <- list(forestgap[1:3], serengeti[5:6])
 
 test_that("The Generic-spews workflow works", { 
   

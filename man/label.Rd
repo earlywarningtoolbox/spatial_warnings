@@ -39,8 +39,8 @@ The \code{label} function "labels" the patches of a binary (1/0)
 }
 \examples{
 
-data(forestdat)
-attach(forestdat)
+data(forestgap)
+attach(forestgap)
 
 par(mfrow=c(1, 2))
 image(matrices[[1]])

@@ -95,14 +95,14 @@ The significance of generic early-warning signals can be estimated by
 }
 \examples{
 
-data(forestdat)
-gen_indic <- generic_spews(forestdat, subsize = 2)
+data(forestgap)
+gen_indic <- generic_spews(forestgap, subsize = 2)
 
 # Display results
 summary(gen_indic)
 
 # Display trends along the varying model parameter
-plot(gen_indic, along = forestdat.pars[ ,'d'])
+plot(gen_indic, along = forestgap.pars[ ,'d'])
 
 # Compute significance
 gen_test <- indictest(gen_indic)
@@ -111,12 +111,12 @@ print(gen_test)
 
 # Display the trend, now with a grey ribbon indicating the 5\%-95\% quantile
 # range of the null distribution
-plot(gen_test, along = forestdat.pars[ ,'d'])
+plot(gen_test, along = forestgap.pars[ ,'d'])
 
 # Note that plot() method returns a ggplot object that can be modified
 # for convenience
 if ( require(ggplot2) ) { 
-  plot(gen_test, along = forestdat.pars[ ,'d']) + 
+  plot(gen_test, along = forestgap.pars[ ,'d']) + 
     xlab('Delta') + 
     theme_minimal()
 }

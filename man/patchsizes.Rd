@@ -26,8 +26,8 @@ If mat is a logical matrix, then the function returns a vector of
 Get the distribution of patch sizes
 }
 \examples{
-data(forestdat)
-patchsizes(forestdat[['matrices']][[1]])
+data(forestgap)
+patchsizes(forestgap[['matrices']][[1]])
 
 }
 \seealso{

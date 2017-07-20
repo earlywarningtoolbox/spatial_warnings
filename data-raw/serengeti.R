@@ -43,7 +43,7 @@ for (n in seq(0, floor(nrow(serengeti.dat)/250)-1, by = 0.5)) {
     nrow_max <- (80+(n+1)*250)
     rain_min <- floor( nrow_min / nrow(serengeti.dat) * nrow(raindat)) 
     rain_max <- floor( nrow_max / nrow(serengeti.dat) * nrow(raindat)) 
-    rainlvl <- mean(raindat[rain_min:rain_max, ])
+    rainlvl <- round( mean(raindat[rain_min:rain_max, ]) )
     if (rainlvl <= 730 && rainlvl >= 591) { 
       serengeti.rain <- append(serengeti.rain, rainlvl)
       serengeti <- c(serengeti, list(serengeti.dat[nrow_min:nrow_max, 1:250] > 0))
@@ -59,24 +59,23 @@ plop <- indictest( generic_spews(serengeti, subsize = 5,
 plot(plop)
 plot(plop, along = serengeti.rain)
 
-
-# Recompute moran's values with z-score
-serengeti.moran <- unlist( lapply(serengeti, function(m) { 
-    m <- coarse_grain(m, 5)
-    m <- (m - mean(m)) / sd(m)
-    raw_moran(m)
-  }) )
-
-plopdf <- as.data.frame(plop)
-plopdf[with(plopdf, indicator == "moran"), "value"] <- serengeti.moran
-
-ggplot(plopdf) + 
-  geom_point(aes(x = rep(serengeti.rain, 4), y = value)) + 
-  facet_grid( indicator ~ ., scales = "free_y")
+# # Recompute moran's values with z-score
+# serengeti.moran <- unlist( lapply(serengeti, function(m) { 
+#     m <- coarse_grain(m, 5)
+#     m <- (m - mean(m)) / sd(m)
+#     raw_moran(m)
+#   }) )
+# 
+# plopdf <- as.data.frame(plop)
+# plopdf[with(plopdf, indicator == "moran"), "value"] <- serengeti.moran
+# 
+# ggplot(plopdf) + 
+#   geom_point(aes(x = rep(serengeti.rain, 4), y = value)) + 
+#   facet_grid( indicator ~ ., scales = "free_y")
 
 plot(plop)
 
 # Save datasets
-use_data(serengeti)
-use_data(serengeti.rain)
+use_data(serengeti, overwrite = TRUE)
+use_data(serengeti.rain, overwrite = TRUE)
 

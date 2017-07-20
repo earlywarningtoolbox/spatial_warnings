@@ -6,20 +6,31 @@
 #include <RcppArmadillo.h>
 
 using namespace Rcpp; 
-using namespace arma; 
 
 #define SQ(a) ( (a) * (a) )
 
 // Distance step of the r-spectrum
 #define step 1.0
 
-//'@export
+// 
+//' @title r-spectrum 
+//' 
+//' @description Compute the r-spectrum of a matrix 
+//' 
+//' @param mat A matrix of logical or numeric values 
+//' 
+//' @return A data.frame with two columns: \code{dist}, the wave number and 
+//'   \code{rspec}, the normalized value of the r-spectrum
+//' 
+//' @seealso \code{\link{spectral_spews}}, \code{\link{indicator_sdr}}
+//' 
+//' @export
 // [[Rcpp::export]]
-DataFrame rspectrum(arma::mat amat) { 
+DataFrame rspectrum(arma::mat mat) { 
   
   // Get number of rows and number of cols
-  int nr = amat.n_rows; 
-  int nc = amat.n_cols; 
+  int nr = mat.n_rows; 
+  int nc = mat.n_cols; 
   
   // Middle point of matrix
   int n0x = floor(nc/2); 
@@ -30,14 +41,14 @@ DataFrame rspectrum(arma::mat amat) {
   int ma = 1 + (n0x < n0y ? n0x : n0y);
 
   // Initialize the variables that will hold the spectrum values
-  vec ray = linspace(mi, ma, ma-mi+1); // +1 ?
-  vec rspectr = zeros(ma-mi+1); 
+  arma::vec ray = arma::linspace(mi, ma, ma-mi+1); // +1 ?
+  arma::vec rspectr = arma::zeros(ma-mi+1); 
   
   // We check whether there is more than one value in the supplied matrix
   bool more_than_two_values = false;
   int i=1;
-  while ( !more_than_two_values && i<amat.n_elem ) {
-    if ( amat(i-1) != amat(i) ) { 
+  while ( !more_than_two_values && i<mat.n_elem ) {
+    if ( mat(i-1) != mat(i) ) { 
       more_than_two_values = true;
     }
     i++;
@@ -50,7 +61,7 @@ DataFrame rspectrum(arma::mat amat) {
   }
   
   // Compute and shift DFT
-  cx_mat mat_fft = fft2(amat); 
+  arma::cx_mat mat_fft = arma::fft2(mat); 
   
   // Compute aspectr2D and normalize it
   mat_fft(n0x, n0y) = 0; 

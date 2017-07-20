@@ -56,7 +56,7 @@
 #' distributions before extinction: Patch size distributions towards 
 #' extinction. Ecology Letters, 14, 29-35.
 #' 
-#' Kéfi, S., Rietkerk, M., Alados, C.L., Pueyo, Y., Papanastasis, V.P., ElAich,
+#' Kefi, S., Rietkerk, M., Alados, C.L., Pueyo, Y., Papanastasis, V.P., ElAich,
 #' A., et al. (2007). Spatial vegetation patterns and imminent desertification
 #' in Mediterranean arid ecosystems. Nature, 449, 213-217.
 #' 
@@ -81,7 +81,8 @@ indicator_psdtype <- function(x,
   check_mat(x)
   
   if ( !merge && is.list(x) ) { 
-    return( lapply(x, indicator_psdtype, xmin, merge, fit_lnorm, best_by, wrap) )
+    return( lapply(x, indicator_psdtype, xmin, merge, fit_lnorm, xmin_bounds, 
+                   best_by, wrap) )
   } 
   
   # Estimate power-law range and set xmin to the estimated value if set to 
@@ -156,7 +157,7 @@ psdtype <- function(psd, xmin, best_by, fit_lnorm) {
   # Compute AICs
   models[ ,'AIC']  <- get_AIC(models[ ,'ll'],  models[ ,'npars'])
   models[ ,'AICc'] <- get_AICc(models[ ,'ll'], models[ ,'npars'], length(psd))
-  models[ ,'BIC'] <- get_BIC(models[ ,'ll'],  models[ ,'npars'], length(psd))
+  models[ ,'BIC']  <- get_BIC(models[ ,'ll'],  models[ ,'npars'], length(psd))
   
   # We need to remove NA's here as sometimes one of the fits fails and its "best"
   # column is NA. 

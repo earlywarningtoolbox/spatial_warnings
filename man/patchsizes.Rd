@@ -10,6 +10,9 @@ patchsizes(mat, merge = FALSE, nbmask = matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0),
 \arguments{
 \item{mat}{A logical matrix or a list of these matrices.}
 
+\item{merge}{Controls whether the obtained patch size distributions are to 
+be pooled together if mat is a list of matrices.}
+
 \item{nbmask}{a "neighboring mask": a matrix with odd dimensions describing
 which neighbors are to be considered as neighbors around a cell 
 (see examples).}
@@ -27,7 +30,7 @@ Get the distribution of patch sizes
 }
 \examples{
 data(forestgap)
-patchsizes(forestgap[['matrices']][[1]])
+patchsizes(forestgap[[5]])
 
 }
 \seealso{

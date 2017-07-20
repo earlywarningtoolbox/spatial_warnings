@@ -8,7 +8,7 @@
 #' 
 #' @description Assess the significance of spatial early-warning values
 #' 
-#' @param obj A spatial warning object such as one produced by the *_spews 
+#' @param x A spatial warning object such as one produced by the *_spews 
 #'   function family
 #' 
 #' @param nperm How many times should the input matrix be randomized
@@ -30,6 +30,7 @@
 #' @seealso \code{\link{generic_spews}}, \code{\link{spectral_spews}}
 #'   
 #' @references 
+#' 
 #'   Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 
 #'   V.N., et al. (2014). Early Warning Signals of Ecological Transitions: 
 #'   Methods for Spatial Patterns. PLoS ONE, 9, e92097
@@ -37,7 +38,7 @@
 # 
 # Define global method
 #'@export
-indictest <- function(obj, nperm = 999, ...) { 
+indictest <- function(x, nperm = 999, ...) { 
   UseMethod('indictest')
 }
 

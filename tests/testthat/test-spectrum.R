@@ -77,9 +77,16 @@ test_that("the cpp implementation of the spectrum computations is correct", {
   for ( i in seq_along(serengeti) ) { 
     testmat <- serengeti[[i]]
     
+    # Test if there is more than one value in the matrix, because the behavior 
+    # is to return NA whereas the old code just compute things 
+    if ( length(unique(as.vector(testmat))) > 1 ) { 
+    
     expect_equal(rspectrum_old(testmat), 
                  rspectrum(testmat), 
                  tolerance = 1/1000) 
+    }
+      
+      
   }
   
 })

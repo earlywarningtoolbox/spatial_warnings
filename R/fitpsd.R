@@ -208,6 +208,36 @@ pl_fit <- function(dat, xmin = 1) {
   return(result)
 }
 
+#' @title Estimate the minimum patch size of a power-law distribution 
+#' 
+#' @description When fitting a power-law to a discrete distribution, it might 
+#'   be worth discarding points below a certain threshold (xmin) to improve 
+#'   the fit. This function estimates the optimal xmin based on the 
+#'   Kolmogorov-Smirnoff distance between the fit and the empirical 
+#'   distribution, as suggested by Clauset et al. (2009). 
+#' 
+#' @param dat A vector of integer values
+#' 
+#' @param bounds A bounds 
+#' 
+#' @return The estimated xmin as an integer value 
+#' 
+#' @details The function returns NA if \code{dat} has only three unique values 
+#'   or if the power-law fit failed. 
+#' 
+#' @seealso \code{\link{patchdistr_spews}}, \code{\link{patchsizes}}, 
+#'   \code{\link{indicator_psdtype}}
+#' 
+#' @references 
+#' 
+#' Clauset, A., Shalizi, C. R., & Newman, M. E. (2009). 
+#'   Power-law distributions in empirical data. SIAM review, 51(4), 661-703.
+#' 
+#' @examples 
+#' 
+#' psd <- patchsizes(forestgap[[5]])
+#' xmin_estim(psd)
+#' 
 #'@export
 xmin_estim <- function(dat, bounds = range(dat)) { 
   

@@ -1,6 +1,9 @@
 #
 #' @title Early-warning signals based on patch size distributions
-#'
+#' 
+#' @description Compute early-warnings based on patch size distributions 
+#'   and review/plot the results
+#' 
 #' @param x A logical matrix (TRUE/FALSE values) or a list of these
 #' 
 #' @param merge The default behavior is to produce indicators values for each 
@@ -35,7 +38,7 @@
 #' Patterned ecosystems can exhibit a change in their spatial structure as they 
 #' become more and more stressed. It has been suggested that this should be 
 #' reflected in changes in the observed patch size distributions (PSD). 
-#' The following sequence is expected to occur (Kéfi et al. 2011) as patterned 
+#' The following sequence is expected to occur (Kefi et al. 2011) as patterned 
 #' ecosystems become more and more degraded:
 #' 
 #'   - Percolation of vegetation patches occurs (a patch has a width or height 
@@ -115,7 +118,7 @@ patchdistr_spews <- function(x,
     results <- parallel::mclapply(x, patchdistr_spews, merge, fit_lnorm, 
                                   best_by, xmin, xmin_bounds, wrap)
     class(results) <- c('patchdistr_spews_list', 'patchdistr_spews', 
-                        'spews_result', 'list')
+                        'spews_result_list', 'list')
     return(results)
   } 
   
@@ -155,7 +158,7 @@ patchdistr_spews <- function(x,
                  npatches = length(psd),
                  unique_patches = length(unique(psd)))
   class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 
-                     'spews_result', 'list')
+                     'spews_result_single', 'list')
   
   return(result)
 }

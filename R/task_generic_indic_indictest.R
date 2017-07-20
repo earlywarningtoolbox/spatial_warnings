@@ -4,19 +4,20 @@
 # 
 
 #' @rdname generic_spews
-#' 
-#' @param ... Additional arguments passed onto methods
+# /!\ Do not document x here as it already document in plot()
 #' 
 #' @param nperm The number of replicates to use to compute a null 
 #'   distribution
+#'   
+#' @param ... Additional arguments passed onto methods
 #' 
 #' @export
-indictest.generic_spews <- function(obj, nperm = 999, ...) { 
+indictest.generic_spews <- function(x, nperm = 999, ...) { 
   NextMethod('indictest')
 }
 
-#'@export
-indictest.generic_spews_single <- function(obj, nperm = 999, ...) { 
+#'@export 
+indictest.generic_spews_single <- function(x, nperm = 999, ...) { 
   
   # We do not support low numbers of replicates
   if ( nperm < 3 ) { 
@@ -25,10 +26,10 @@ indictest.generic_spews_single <- function(obj, nperm = 999, ...) {
   }
   
   # Compute a distribution of null values
-  null_values <- compute_indicator_with_null(obj[["orig_data"]],
-                                             detrending = obj[["detrend"]], 
+  null_values <- compute_indicator_with_null(x[["orig_data"]],
+                                             detrending = x[["detrend"]], 
                                              nreplicates = nperm, 
-                                             indicf = obj[["indicf"]])
+                                             indicf = x[["indicf"]])
   
   results <- as.data.frame(null_values)
   
@@ -47,9 +48,9 @@ indictest.generic_spews_single <- function(obj, nperm = 999, ...) {
 
 # Summary function for many replicates
 #'@export
-indictest.generic_spews_list <- function(obj, nperm = 999, ...) { 
+indictest.generic_spews_list <- function(x, nperm = 999, ...) { 
   
-  results <- parallel::mclapply(obj, indictest.generic_spews_single, 
+  results <- parallel::mclapply(x, indictest.generic_spews_single, 
                                 nperm, ...)
   
   # Replace replicate column with correct number

@@ -24,17 +24,17 @@
 #' @examples 
 #' 
 #' data(forestgap)
-#' attach(forestgap)
 #' 
 #' par(mfrow=c(1, 2))
-#' image(matrices[[1]])
-#' image(label(matrices[[1]]))
+#' rmat <- matrix(rnorm(100) > .1, ncol = 10)
+#' image(rmat)
+#' image(label(rmat))
 #' 
 #' # With 8-way neighborhood mask and no wrapping around borders
 #' nbmask8 <- matrix(c(1,1,1,
 #'                     1,0,1,
 #'                     1,1,1), ncol=3)
-#' image(label(matrices[[1]], nbmask8, wrap = FALSE))
+#' image(label(rmat, nbmask8, wrap = FALSE))
 #' 
 #' @export
 label <- function(mat, 
@@ -90,6 +90,9 @@ percolation <- function(mat, nbmask = matrix(c(0,1,0,
 #' 
 #' @param mat A logical matrix or a list of these matrices.
 #' 
+#' @param merge Controls whether the obtained patch size distributions are to 
+#'   be pooled together if mat is a list of matrices. 
+#' 
 #' @param nbmask a "neighboring mask": a matrix with odd dimensions describing
 #'   which neighbors are to be considered as neighbors around a cell 
 #'   (see examples).
@@ -105,7 +108,7 @@ percolation <- function(mat, nbmask = matrix(c(0,1,0,
 #' 
 #' @examples
 #' data(forestgap)
-#' patchsizes(forestgap[['matrices']][[1]])
+#' patchsizes(forestgap[[5]])
 #'
 #' @export
 patchsizes <- function(mat, 

@@ -15,12 +15,9 @@
 #' 
 #' @rdname generic_spews
 #'
-#' @param obj A \code{generic_spews} object (as provided by the 
-#'   \code{generic_spews} function). 
 #' 
-#' @param along A vector providing values over which the indicator trend 
-#'   will be plotted. If \code{NULL} then the values are plotted sequentially 
-#'   in their original order. 
+# /!\ along is already documented elswhere !
+# /!\ x is already documented elswhere !
 #' 
 #' @param what The trendline to be displayed. Defaults to the indicator's 
 #'   values ("value") but other metrics can be displayed. Correct values are 

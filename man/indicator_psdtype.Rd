@@ -66,7 +66,7 @@ Kefi, S., Rietkerk, M., Roy, M., Franc, A., de Ruiter, P.C. & Pascual, M.
 distributions before extinction: Patch size distributions towards 
 extinction. Ecology Letters, 14, 29-35.
 
-Kéfi, S., Rietkerk, M., Alados, C.L., Pueyo, Y., Papanastasis, V.P., ElAich,
+Kefi, S., Rietkerk, M., Alados, C.L., Pueyo, Y., Papanastasis, V.P., ElAich,
 A., et al. (2007). Spatial vegetation patterns and imminent desertification
 in Mediterranean arid ecosystems. Nature, 449, 213-217.
 

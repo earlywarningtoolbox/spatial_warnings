@@ -44,7 +44,7 @@ This functions computes the spatial variance critical point indicator.
 \examples{
 
 data(forestgap)
-indicator_variance(forestgap[['matrices']])
+indicator_variance(forestgap)
 
 
 }

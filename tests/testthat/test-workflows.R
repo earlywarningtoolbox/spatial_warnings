@@ -8,7 +8,8 @@ context('Test workflows')
 data(forestgap)
 data(serengeti)
 
-datasets <- list(forestgap[1:3], serengeti[5:6])
+datasets <- list(forestgap[[3]], 
+                 forestgap[1:3], serengeti[5:6])
 
 test_that("The Generic-spews workflow works", { 
   
@@ -19,22 +20,19 @@ test_that("The Generic-spews workflow works", {
         
         gensp <- generic_spews(dataset) 
         
-        print.generic_spews(gensp)        
-        summary.generic_spews(gensp)      
+        print(gensp)        
+        summary(gensp)      
         as.data.frame(gensp) 
-        as.data.frame(gensp) 
         
+        gensp.test <- indictest(gensp, nperm = 29)
         
-        gensp.test <- indictest(gensp, null_replicates = 29)
-        
-        print.generic_spews_test(gensp.test)        
-        summary.generic_spews_test(gensp.test)      
-        as.data.frame.generic_spews_test(gensp.test)
+        print(gensp.test)        
+        summary(gensp.test)      
+        as.data.frame(gensp.test) 
         
         if ( ! is.matrix(dataset) ) { 
-          
-          plot.generic_spews_test(gensp.test)  
-          plot.generic_spews(gensp)            
+          suppressWarnings( print( plot(gensp.test) ) )
+          suppressWarnings( print( plot(gensp) ) )
         }
         
       })
@@ -56,28 +54,19 @@ test_that("The Spectral-spews workflow works", {
         
         specsp <- spectral_spews(dataset, quiet = TRUE) 
         
-        print.spectral_spews(specsp)        
+        print(specsp)        
+        summary(specsp)
+        as.data.frame(specsp)
+        
+        specsp.test <- indictest(specsp, nperm = 29)
+        
+        print(specsp.test)
+        summary(specsp.test)      
+        as.data.frame(specsp.test)
         
         if ( ! is.matrix(dataset) ) { 
-          summary.spectral_spews_list(specsp)      
-          as.data.frame.spectral_spews_list(specsp) 
-        } else { 
-          summary.spectral_spews_single(specsp)      
-          as.data.frame.spectral_spews_single(specsp) 
-        }
-        
-        
-        specsp.test <- indictest(specsp, null_replicates = 29)
-        
-        print.spectral_spews_test(specsp.test)
-        
-        # Missing functions !
-        # summary.spectral_spews_test(specsp.test)      
-        # as.data.frame.spectral_spews_test(specsp.test)
-        print('NOTE: 2 methods missing')
-        
-        if ( ! is.matrix(dataset) ) { 
-          plot.spectral_spews_test(specsp.test)  
+          suppressWarnings( print( plot(specsp.test) ) )
+          suppressWarnings( print( plot(specsp) ) )
         }
         
       })
@@ -98,20 +87,17 @@ test_that("The PSD-spews workflow works", {
       
       capture.output({
         
-        specsp <- suppressWarnings( patchdistr_spews(dataset, fit_lnorm = TRUE) )
         specsp <- suppressWarnings( patchdistr_spews(dataset) )
+        specsp <- suppressWarnings( patchdistr_spews(dataset, fit_lnorm = TRUE) )
         
-        print.patchdistr_spews(specsp)        
+        print(specsp)        
+        summary(specsp)      
+        as.data.frame(specsp) 
         
-        summary.patchdistr_spews(specsp)      
-        if ( is.matrix(dataset) ) { 
-          as.data.frame.patchdistr_spews_single(specsp) 
-        } else { 
-          as.data.frame.patchdistr_spews_list(specsp) 
+        if ( ! is.matrix(dataset) ) { 
+          # This produces warnings because of some NAs
+          suppressWarnings( print( plot.patchdistr_spews(specsp) ) )
         }
-        
-        # This produces warnings because of some NAs
-        suppressWarnings( print( plot.patchdistr_spews(specsp) ) )
         
       })
       

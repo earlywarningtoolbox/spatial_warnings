@@ -15,10 +15,12 @@ The Moran's I numeric value as a numeric number.
 \description{
 This function computes the Moran'I value at lag 1.
 }
-\details{
-See \link{indicator_moran} or \link{generic_spews} 
-  for more information
+\examples{
+
+rmat <- matrix(runif(1000) > .5, ncol = 100)
+raw_moran(rmat) # close to zero
+
 }
 \seealso{
-\link{indicator_moran}, \link{generic_spews}
+\code{\link{indicator_moran}}, \code{\link{generic_spews}}
 }

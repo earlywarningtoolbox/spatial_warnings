@@ -11,12 +11,12 @@
 spectral_spews(mat, sdr_low_range = NULL, sdr_high_range = NULL,
   quiet = FALSE)
 
-\method{indictest}{spectral_spews}(obj, nperm = 999, ...)
+\method{indictest}{spectral_spews}(x, nperm = 999, ...)
 
 \method{plot}{spectral_spews_test}(x, ..., along = NULL, what = "value",
   display_null = TRUE)
 
-plot_spectrum(obj, along = NULL, display_null = TRUE)
+plot_spectrum(x, along = NULL, display_null = TRUE)
 }
 \arguments{
 \item{mat}{The input matrix or a list of matrices.}
@@ -33,16 +33,16 @@ c(.8, 1). See also the Details section.}
 
 \item{quiet}{Do not display some warnings}
 
-\item{obj}{An \code{spectral_spews_test} object as produced by \link{indictest}}
+\item{x}{A \code{spectral_spews_test} object as produced by \link{indictest}}
 
 \item{nperm}{The number of replicates to use to compute use in the 
 null distribution}
 
-\item{...}{Further arguments passed onto methods}
+\item{...}{Ignored}
 
 \item{along}{An optional vector of values along which the trend is to be 
 displayed. The length of the vector must be equal to the number of 
-indicator values provided in the object \code{obj}.}
+indicator values provided in the object \code{x}.}
 
 \item{what}{What the trend-line to be displayed should represent about the 
 indicator. Defaults to the indicator's values ("value") but other metrics 
@@ -52,8 +52,6 @@ can be displayed. Correct values are "value", "pval" or "z_score".}
 the null distribution. Note that it can not be displayed when the trend 
 line reflects something else than the indicator values (when \code{what} 
 is not set to "value").}
-
-\item{...}{Ignored}
 }
 \value{
 Function \code{spectral_spews} object of class \code{spectral_spews_list} or 
@@ -70,9 +68,9 @@ Computation of spatial early warning signals based on spectral
   properties.
 }
 \details{
-Spectral early warning signals are based on the fact that some dynamical 
-  systems can exhibit an change in some characteristics of their spatial 
-  structure when approaching a transition. In particular, long-range 
+Spectral early warning signals are based on the fact that some 
+  dynamical systems can exhibit an change in some characteristics of their 
+  spatial structure when approaching a transition. In particular, long-range 
   correlations are expected to have an increased importance. 
 
 This is expected to be reflected in the spectrum of the spatial structure
@@ -103,26 +101,34 @@ The trend of SDR values can be plotted using the \code{plot()} method.
 }
 \examples{
 
-data(forestgap) 
+data(serengeti) 
+data(serengeti.rain) 
 
-spec_indic <- spectral_spews(forestgap[['matrices']], 
+spec_indic <- spectral_spews(serengeti, 
                              sdr_low_range  = c(0, .2), 
                              sdr_high_range = c(.8, 1))
 
 summary(spec_indic)
 
 # Display trends along the varying model parameter
-plot(spec_indic, along = forestgap[['parameters']][ ,'delta'])
+plot(spec_indic, along = serengeti.rain)
 
 # Assess significance
-spec_test <- indictest(spec_indic)
+spec_test <- indictest(spec_indic, nperm = 499)
 summary(spec_test)
 
-# Display trends, now with a grey 5\%-95\% quantiles of the null distribution
-plot(spec_test, along = forestgap[['parameters']][ ,'delta'])
+# Display the SDR trend, now with a grey ribbon representing 5\%-95\% 
+# quantiles of the null distribution
+plot(spec_test, along = serengeti.rain)
 
 # Display radial-spectra
-plot_spectrum(spec_test, along = forestgap[['parameters']][ ,'delta'])
+plot_spectrum(spec_test, along = serengeti.rain)
+
+# Graphics can be modified using ggplot2 functions
+if (require(ggplot2)) { 
+  plot_spectrum(spec_test, along = serengeti.rain) + 
+    scale_y_log10()
+}
 
 }
 \references{

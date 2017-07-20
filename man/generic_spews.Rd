@@ -12,7 +12,7 @@
 generic_spews(mat, subsize = 4, detrend = FALSE, abs_skewness = FALSE,
   moranI_coarse_grain = FALSE)
 
-\method{indictest}{generic_spews}(obj, nperm = 999, ...)
+\method{indictest}{generic_spews}(x, nperm = 999, ...)
 
 \method{plot}{generic_spews_test}(x, along = NULL, what = "value",
   display_null = TRUE, ...)
@@ -34,15 +34,13 @@ raw values ?}
 \item{moranI_coarse_grain}{Should the input matrix be coarse-grained before
 computing the Moran's I indicator value ?}
 
-\item{obj}{A \code{generic_spews} object (as provided by the 
+\item{x}{A \code{generic_spews} object (as provided by the 
 \code{generic_spews} function).}
 
 \item{nperm}{The number of replicates to use to compute a null 
 distribution}
 
 \item{...}{Additional arguments passed onto methods}
-
-\item{x}{An object produced by \code{generic_spews}}
 
 \item{along}{A vector providing values over which the indicator trend 
 will be plotted. If \code{NULL} then the values are plotted sequentially 
@@ -56,8 +54,6 @@ values ("value") but other metrics can be displayed. Correct values are
 the null distribution. Note that it can not be displayed when the trend 
 line reflects something else than the indicator values (when \code{what} 
 is not set to "value").}
-
-\item{along}{}
 }
 \value{
 \code{generic_spews} returns an object of class \code{generic_spews_single}

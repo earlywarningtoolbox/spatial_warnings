@@ -15,19 +15,21 @@ label_cpp <- function(mat, nbmask, wrap) {
 
 #' 
 #' @title Compute the Moran's I at lag 1
+#'
+#' @description This function computes the Moran'I value at lag 1.
 #' 
 #' @param mat A matrix
-#' 
-#' @description This function computes the Moran'I value at lag 1.
-#'
-#' @details See \link{indicator_moran} or \link{generic_spews} 
-#'   for more information
 #'
 #' @return The Moran's I numeric value as a numeric number.
 #' 
-#' @seealso \link{indicator_moran}, \link{generic_spews} 
+#' @seealso \code{\link{indicator_moran}}, \code{\link{generic_spews}} 
 #' 
-#' @export
+#' @examples
+#' 
+#' rmat <- matrix(runif(1000) > .5, ncol = 100)
+#' raw_moran(rmat) # close to zero
+#' 
+#'@export
 raw_moran <- function(mat) {
     .Call('spatialwarnings_raw_moran', PACKAGE = 'spatialwarnings', mat)
 }
@@ -40,9 +42,20 @@ shuffle_and_compute <- function(mat, indic, nrep, nthreads) {
     .Call('spatialwarnings_shuffle_and_compute', PACKAGE = 'spatialwarnings', mat, indic, nrep, nthreads)
 }
 
-#'@export
-rspectrum <- function(amat) {
-    .Call('spatialwarnings_rspectrum', PACKAGE = 'spatialwarnings', amat)
+#' @title r-spectrum 
+#' 
+#' @description Compute the r-spectrum of a matrix 
+#' 
+#' @param mat A matrix of logical or numeric values 
+#' 
+#' @return A data.frame with two columns: \code{dist}, the wave number and 
+#'   \code{rspec}, the normalized value of the r-spectrum
+#' 
+#' @seealso \code{\link{spectral_spews}}, \code{\link{indicator_sdr}}
+#' 
+#' @export
+rspectrum <- function(mat) {
+    .Call('spatialwarnings_rspectrum', PACKAGE = 'spatialwarnings', mat)
 }
 
 #' 

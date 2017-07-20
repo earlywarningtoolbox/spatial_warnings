@@ -2,9 +2,10 @@
 # 
 #' @rdname spatialwarnings
 #' 
+#' 
 #' @title Early Spatial-Warnings of Ecosystem Degradation
 #' 
-#' @section can split the help page into several sections to show 
+#' @description Compute spatial early-warning signals of ecosystem degradation
 #' 
 #' @docType package
 #' @name spatialwarnings

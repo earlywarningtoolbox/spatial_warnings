@@ -6,7 +6,6 @@
 \alias{spatialwarnings-package}
 \alias{spatialwarnings-package}
 \title{Early Spatial-Warnings of Ecosystem Degradation}
-\section{can split the help page into several sections to show}{
-NA
+\description{
+Compute spatial early-warning signals of ecosystem degradation
 }
-

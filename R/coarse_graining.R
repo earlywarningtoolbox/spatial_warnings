@@ -4,6 +4,16 @@
 #   the case when subsize = 0 that crashes R otherwise. 
 # 
 
+#' @title Matrix coarse-graining
+#' 
+#' @description Reduce a matrix size by coarse-graining 
+#' 
+#' @param mat TODO
+#' 
+#' @param subsize TODO
+#' 
+#' @return TODO
+#'
 #'@export
 coarse_grain <- function(mat, subsize) { 
   

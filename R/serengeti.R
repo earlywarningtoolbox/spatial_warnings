@@ -6,6 +6,9 @@
 # 
 #' @title Serengeti dataset
 #' 
+#' @description A set of aerial photography taken along a rainfall gradient 
+#'   in Tanzania. 
+#' 
 #' @format A list of logical matrices 
 #' 
 #' @source Extraceted from Eby's et al (2017) supplementary material 

@@ -5,7 +5,7 @@
 
 
 # Note: we reuse the print method for spectral spews that works well
-#' @method print spectral_spews_test
+#'@method print spectral_spews_test
 #'@export 
 print.spectral_spews_test <- function(x, ...) { 
   print.spectral_spews(x, ...)

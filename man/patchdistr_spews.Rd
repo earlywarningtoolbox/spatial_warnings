@@ -12,7 +12,7 @@ patchdistr_spews(x, merge = FALSE, fit_lnorm = FALSE, best_by = "BIC",
 
 \method{plot}{patchdistr_spews}(x, along = NULL, ...)
 
-\method{plot_distr}{patchdistr_spews}(x, best_only = TRUE, plrange = TRUE)
+plot_distr(x, best_only = TRUE, plrange = TRUE)
 }
 \arguments{
 \item{x}{A logical matrix (TRUE/FALSE values) or a list of these}
@@ -39,8 +39,12 @@ reaching one side of the matrix.}
 will be plotted. If \code{NULL} then the values are plotted sequentially 
 in their original order.}
 
+\item{...}{Further arguments passed to methods}
+
 \item{best_only}{Plot the empirical (inverse cumulative) patch-size 
 distribution with an overlay of the estimated fits.}
+
+\item{plrange}{Plot the power-law range}
 }
 \value{
 A list object of class 'psdfit' containing among other things 
@@ -50,11 +54,15 @@ A list object of class 'psdfit' containing among other things
   - the percolation values (if several matrices were provided and 
   `merge` was TRUE, then the average percolation value is returned)
 }
+\description{
+Compute early-warnings based on patch size distributions 
+  and review/plot the results
+}
 \details{
 Patterned ecosystems can exhibit a change in their spatial structure as they 
 become more and more stressed. It has been suggested that this should be 
 reflected in changes in the observed patch size distributions (PSD). 
-The following sequence is expected to occur (Kéfi et al. 2011) as patterned 
+The following sequence is expected to occur (Kefi et al. 2011) as patterned 
 ecosystems become more and more degraded:
 
   - Percolation of vegetation patches occurs (a patch has a width or height 

@@ -119,8 +119,14 @@ generic_spews <- function(mat,
     results <- lapply(mat, generic_spews, subsize, detrend, abs_skewness,
                       moranI_coarse_grain)
     class(results) <- c('generic_spews_list', 'generic_spews', 
-                        'spews_result', 'list')
+                        'spews_result_list', 'list')
     return(results)
+  }
+  
+  # Warn if the matrix is continous but we will coarse grain anyway
+  if ( is.numeric(mat) && subsize > 1 ) { 
+    warning(paste('Input matrix has continous values but will be coarse-grained', 
+                  'anyway. Set subsize=1 to disable coarse graining.'))
   }
   
   # Build the right indicator function (closure) that take into accounts the 
@@ -169,7 +175,7 @@ generic_spews <- function(mat,
                   detrend = detrend)
   
   class(results) <- c('generic_spews_single', 'generic_spews',
-                      'spews_result', 'list')
+                      'spews_result_single', 'list')
   return(results)
 }
 

@@ -84,13 +84,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // rspectrum
-DataFrame rspectrum(arma::mat amat);
-RcppExport SEXP spatialwarnings_rspectrum(SEXP amatSEXP) {
+DataFrame rspectrum(arma::mat mat);
+RcppExport SEXP spatialwarnings_rspectrum(SEXP matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type amat(amatSEXP);
-    rcpp_result_gen = Rcpp::wrap(rspectrum(amat));
+    Rcpp::traits::input_parameter< arma::mat >::type mat(matSEXP);
+    rcpp_result_gen = Rcpp::wrap(rspectrum(mat));
     return rcpp_result_gen;
 END_RCPP
 }

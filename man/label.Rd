@@ -40,17 +40,17 @@ The \code{label} function "labels" the patches of a binary (1/0)
 \examples{
 
 data(forestgap)
-attach(forestgap)
 
 par(mfrow=c(1, 2))
-image(matrices[[1]])
-image(label(matrices[[1]]))
+rmat <- matrix(rnorm(100) > .1, ncol = 10)
+image(rmat)
+image(label(rmat))
 
 # With 8-way neighborhood mask and no wrapping around borders
 nbmask8 <- matrix(c(1,1,1,
                     1,0,1,
                     1,1,1), ncol=3)
-image(label(matrices[[1]], nbmask8, wrap = FALSE))
+image(label(rmat, nbmask8, wrap = FALSE))
 
 }
 \seealso{

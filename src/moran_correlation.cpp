@@ -7,19 +7,21 @@ using namespace Rcpp;
 
 //' 
 //' @title Compute the Moran's I at lag 1
+//'
+//' @description This function computes the Moran'I value at lag 1.
 //' 
 //' @param mat A matrix
-//' 
-//' @description This function computes the Moran'I value at lag 1.
-//'
-//' @details See \link{indicator_moran} or \link{generic_spews} 
-//'   for more information
 //'
 //' @return The Moran's I numeric value as a numeric number.
 //' 
-//' @seealso \link{indicator_moran}, \link{generic_spews} 
+//' @seealso \code{\link{indicator_moran}}, \code{\link{generic_spews}} 
 //' 
-//' @export
+//' @examples
+//' 
+//' rmat <- matrix(runif(1000) > .5, ncol = 100)
+//' raw_moran(rmat) # close to zero
+//' 
+//'@export
 //[[Rcpp::export]]
 double raw_moran(NumericMatrix mat) { 
   

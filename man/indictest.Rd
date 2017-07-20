@@ -4,10 +4,10 @@
 \alias{indictest}
 \title{Significance-assessment of spatial early-warning signals}
 \usage{
-indictest(obj, nperm = 999, ...)
+indictest(x, nperm = 999, ...)
 }
 \arguments{
-\item{obj}{A spatial warning object such as one produced by the *_spews 
+\item{x}{A spatial warning object such as one produced by the *_spews 
 function family}
 
 \item{nperm}{How many times should the input matrix be randomized

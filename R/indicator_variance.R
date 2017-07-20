@@ -38,7 +38,7 @@
 #' @examples
 #' 
 #' data(forestgap)
-#' indicator_variance(forestgap[['matrices']])
+#' indicator_variance(forestgap)
 #' 
 #' 
 #'@export

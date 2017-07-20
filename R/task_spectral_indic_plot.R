@@ -1,11 +1,11 @@
 # 
 #' @rdname spectral_spews
 #' 
-#' @param obj An \code{spectral_spews_test} object as produced by \link{indictest}
+#' @param x A \code{spectral_spews_test} object as produced by \link{indictest}
 #' 
 #' @param along An optional vector of values along which the trend is to be 
 #'   displayed. The length of the vector must be equal to the number of 
-#'   indicator values provided in the object \code{obj}.
+#'   indicator values provided in the object \code{x}.
 #' 
 #' @param what What the trend-line to be displayed should represent about the 
 #'   indicator. Defaults to the indicator's values ("value") but other metrics 
@@ -112,30 +112,30 @@ plot.spectral_spews_list <- function(x, ..., along = NULL) {
 #' @rdname spectral_spews
 #' 
 #' @export
-plot_spectrum <- function(obj, along = NULL, display_null = TRUE) { 
+plot_spectrum <- function(x, along = NULL, display_null = TRUE) { 
   UseMethod("plot_spectrum")
 }
 
 # Method for indictest output
 #' @export
-plot_spectrum.spectral_spews_test <- function(obj, 
+plot_spectrum.spectral_spews_test <- function(x, 
                                               along = NULL, 
                                               display_null = TRUE) { 
   
   # If along is not provided, then use the replicate number
   set_default_xlab <- FALSE 
   if ( is.null(along) ) { 
-    along <- unique(obj[ ,"replicate"])
+    along <- unique(x[ ,"replicate"])
   }
   
   # We subset the original object to use only rspectrum-related variables and 
   # add the gradient variable to it. We also add a replicate column 
-  is_rspec <- obj[ ,'type'] == 'rspectrum'
-  obj <- data.frame(obj[is_rspec, ], 
-                    gradient = along[obj[is_rspec, 'replicate']])
+  is_rspec <- x[ ,'type'] == 'rspectrum'
+  x <- data.frame(x[is_rspec, ], 
+                    gradient = along[x[is_rspec, 'replicate']])
   
   # Create base plot. 
-  plot <- ggplot(obj) +
+  plot <- ggplot(x) +
             ylab('r-spectrum value') + 
             xlab('Distance (cell size unit)') + 
             theme_spwarnings()
@@ -161,7 +161,7 @@ plot_spectrum.spectral_spews_test <- function(obj,
                                   name = 'Spectral \nDensity \nRatio') 
    
   # Add facets if multiple replicates are present
-  if ( length(unique(obj[ ,"replicate"])) > 1 ) {
+  if ( length(unique(x[ ,"replicate"])) > 1 ) {
     plot <- plot + facet_wrap( ~ gradient ) 
   }
   
@@ -170,17 +170,17 @@ plot_spectrum.spectral_spews_test <- function(obj,
 
 # Method for spectral_spews output (list object)
 #' @export
-plot_spectrum.spectral_spews_list <- function(obj, 
+plot_spectrum.spectral_spews_list <- function(x, 
                                               along = NULL, 
                                               ...) { 
-  data_as_df <- as.data.frame(obj)
+  data_as_df <- as.data.frame(x)
   plot_spectrum.spectral_spews_test(data_as_df, along = along, 
                                     display_null = FALSE)
 }
 
 # Method for spectral_spews output (single object)
 #' @export
-plot_spectrum.spectral_spews_single <- function(obj, ...) { 
-  data_as_df <- as.data.frame(obj)
+plot_spectrum.spectral_spews_single <- function(x, ...) { 
+  data_as_df <- as.data.frame(x)
   plot_spectrum.spectral_spews_test(data_as_df, display_null = FALSE)
 }

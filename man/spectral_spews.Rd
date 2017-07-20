@@ -104,6 +104,7 @@ The trend of SDR values can be plotted using the \code{plot()} method.
 data(serengeti) 
 data(serengeti.rain) 
 
+
 spec_indic <- spectral_spews(serengeti, 
                              sdr_low_range  = c(0, .2), 
                              sdr_high_range = c(.8, 1))
@@ -112,6 +113,9 @@ summary(spec_indic)
 
 # Display trends along the varying model parameter
 plot(spec_indic, along = serengeti.rain)
+
+# Computing spectra many times is expensive, consider setting parallel 
+# computing using: options(mc.cores = n)
 
 # Assess significance
 spec_test <- indictest(spec_indic, nperm = 499)

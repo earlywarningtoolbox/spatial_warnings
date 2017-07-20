@@ -18,6 +18,14 @@
 #  
 #' @rdname generic_spews
 #' 
+#' @param x An object produced by \code{generic_spews}
+#' 
+#' @param along 
+#' 
+#' @details Note that the produced plot is adjusted depending on whether 
+#'   \code{along} is numeric or not. 
+#' 
+#' 
 #' @method plot generic_spews
 #' @export
 plot.generic_spews <- function(x, along = NULL, ...) { 

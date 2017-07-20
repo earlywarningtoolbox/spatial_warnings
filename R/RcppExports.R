@@ -40,6 +40,7 @@ shuffle_and_compute <- function(mat, indic, nrep, nthreads) {
     .Call('spatialwarnings_shuffle_and_compute', PACKAGE = 'spatialwarnings', mat, indic, nrep, nthreads)
 }
 
+#'@export
 rspectrum <- function(amat) {
     .Call('spatialwarnings_rspectrum', PACKAGE = 'spatialwarnings', amat)
 }

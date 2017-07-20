@@ -38,8 +38,8 @@
 #'
 #' @examples 
 #' 
-#' data(arid)
-#' indicator_moran(arid)
+#' data(serengeti)
+#' indicator_moran(serengeti)
 #'
 #' 
 #'@export  

@@ -5,19 +5,30 @@
 \title{Change in patch-size distributions types}
 \usage{
 indicator_psdtype(x, xmin = 1, merge = FALSE, fit_lnorm = FALSE,
-  xmin_bounds = NULL, best_by = "AIC")
+  xmin_bounds = NULL, best_by = "AIC", wrap = FALSE)
 }
 \arguments{
+\item{x}{A logical (TRUE/FALSE values) matrix or a list of these.}
+
+\item{xmin}{The xmin to be used to fit the patch size distributions. Use 
+the special values "estimate" to use an estimated xmin for each fit}
+
 \item{merge}{If input is a list, then merge all the observed patch-size
 distributions in a single one to obtain a better fit.}
+
+\item{fit_lnorm}{Fit also a log-normal distribution}
+
+\item{xmin_bounds}{Restrict the possible xmins in this range (defaults to 
+the whole range of observed patch sizes)}
 
 \item{best_by}{The criterion used to select the best distribution type 
 (one of \code{"AIC"}, \code{"BIC"} or \code{"AICc"}).}
 
-\item{input}{A logical (TRUE/FALSE values) matrix or a list of these.}
+\item{wrap}{Detemines whether patches are considered to wraparound when 
+reaching one side of the matrix.}
 }
 \value{
-A data.frame (or a list of these if input was a list) with the 
+A data.frame (or a list of these if x is a list) with the 
   following columns:
     \itemize{
       \item `method` the method used for fitting (currently: only 
@@ -43,24 +54,21 @@ This functions fits different patch size distributions
 }
 \examples{
 
-data(arid)
+data(forestgap)
 
-# Computing patch-size distributions can only work on binary (TRUE/FALSE)
-#   data: we threshold the aerial images first. 
-arid.bw <- arid[[1]] > mean(arid[[1]])
-indicator_psdtype(arid.bw)
+indicator_psdtype(forestgap)
 
 
 }
 \references{
-Kéfi, S., Rietkerk, M., Roy, M., Franc, A., de Ruiter, P.C. & Pascual, M.
+Kefi, S., Rietkerk, M., Roy, M., Franc, A., de Ruiter, P.C. & Pascual, M.
 (2011). Robust scaling in ecosystems and the meltdown of patch size
 distributions before extinction: Patch size distributions towards 
-extinction. Ecology Letters, 14, 29–35.
+extinction. Ecology Letters, 14, 29-35.
 
 Kéfi, S., Rietkerk, M., Alados, C.L., Pueyo, Y., Papanastasis, V.P., ElAich,
 A., et al. (2007). Spatial vegetation patterns and imminent desertification
-in Mediterranean arid ecosystems. Nature, 449, 213–217.
+in Mediterranean arid ecosystems. Nature, 449, 213-217.
 
 Clauset et al. #TODO
 }

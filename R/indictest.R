@@ -14,7 +14,7 @@
 #' @param nperm How many times should the input matrix be randomized
 #'   to create the null distribution ?
 #' 
-#' @param ... Additionnal arguments passed to methods 
+#' @param ... Additional arguments passed to methods 
 #' 
 #' @return An object of class \code{*_spews_test} depending on the input object
 #'   (actually, a data.frame)
@@ -30,7 +30,7 @@
 #' @seealso \code{\link{generic_spews}}, \code{\link{spectral_spews}}
 #'   
 #' @references 
-#'   Kéfi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 
+#'   Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 
 #'   V.N., et al. (2014). Early Warning Signals of Ecological Transitions: 
 #'   Methods for Spatial Patterns. PLoS ONE, 9, e92097
 # 

@@ -73,7 +73,7 @@
 #' 
 #' @references 
 #' 
-#'   Kéfi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., 
+#'   Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., 
 #'   Livina, V.N., et al. (2014). Early Warning Signals of Ecological 
 #'   Transitions: Methods for Spatial Patterns. PLoS ONE, 9, e92097.
 #' 

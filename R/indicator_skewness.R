@@ -40,8 +40,8 @@
 #' 
 #' @examples 
 #' 
-#' data(arid)
-#' indicator_skewness(arid)
+#' data(serengeti)
+#' indicator_skewness(serengeti)
 #' 
 #' 
 #'@export

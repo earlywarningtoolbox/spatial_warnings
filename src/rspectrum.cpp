@@ -13,7 +13,7 @@ using namespace arma;
 // Distance step of the r-spectrum
 #define step 1.0
 
-//
+//'@export
 // [[Rcpp::export]]
 DataFrame rspectrum(arma::mat amat) { 
   

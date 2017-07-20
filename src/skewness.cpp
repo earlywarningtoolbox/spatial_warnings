@@ -10,6 +10,15 @@ using namespace arma;
 
 
 // 
+//' 
+//' @title Skewness
+//' 
+//' @description Compute the skewness of a given set of values 
+//' 
+//' @param X A vector of values
+//' 
+//' @seealso \code{\link[moments]{skewness}}
+//' 
 //'@export
 //[[Rcpp::export]]
 double raw_skewness(arma::vec X) { 

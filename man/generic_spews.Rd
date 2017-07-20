@@ -42,6 +42,8 @@ distribution}
 
 \item{...}{Additional arguments passed onto methods}
 
+\item{x}{An object produced by \code{generic_spews}}
+
 \item{along}{A vector providing values over which the indicator trend 
 will be plotted. If \code{NULL} then the values are plotted sequentially 
 in their original order.}
@@ -54,6 +56,8 @@ values ("value") but other metrics can be displayed. Correct values are
 the null distribution. Note that it can not be displayed when the trend 
 line reflects something else than the indicator values (when \code{what} 
 is not set to "value").}
+
+\item{along}{}
 }
 \value{
 \code{generic_spews} returns an object of class \code{generic_spews_single}
@@ -92,17 +96,20 @@ The significance of generic early-warning signals can be estimated by
   are then recomputed on the shuffled matrices and the values obtained are 
   used as a null distribution. P-values are obtained based on the rank of 
   the observered value in the null distribution.
+
+Note that the produced plot is adjusted depending on whether 
+  \code{along} is numeric or not.
 }
 \examples{
 
-data(forestgap)
-gen_indic <- generic_spews(forestgap, subsize = 2)
+data(serengeti)
+gen_indic <- generic_spews(serengeti, subsize = 2)
 
 # Display results
 summary(gen_indic)
 
 # Display trends along the varying model parameter
-plot(gen_indic, along = forestgap.pars[ ,'d'])
+plot(gen_indic, along = serengeti.rain)
 
 # Compute significance
 gen_test <- indictest(gen_indic)
@@ -111,19 +118,19 @@ print(gen_test)
 
 # Display the trend, now with a grey ribbon indicating the 5\%-95\% quantile
 # range of the null distribution
-plot(gen_test, along = forestgap.pars[ ,'d'])
+plot(gen_test, along = serengeti.rain)
 
 # Note that plot() method returns a ggplot object that can be modified
 # for convenience
 if ( require(ggplot2) ) { 
-  plot(gen_test, along = forestgap.pars[ ,'d']) + 
-    xlab('Delta') + 
+  plot(gen_test, along = serengeti.rain) + 
+    xlab('Annual rainfall') + 
     theme_minimal()
 }
 
 }
 \references{
-Kéfi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., 
+Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., 
   Livina, V.N., et al. (2014). Early Warning Signals of Ecological 
   Transitions: Methods for Spatial Patterns. PLoS ONE, 9, e92097.
   
@@ -133,7 +140,7 @@ Kéfi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M.,
   
   Guttal, V., & Jayaprakash, C. (2008). Spatial variance and spatial 
   skewness: leading indicators of regime shifts in spatial ecological 
-  systems. Theoretical Ecology, 2(1), 3–12.
+  systems. Theoretical Ecology, 2(1), 3-12.
 }
 \seealso{
 \code{\link{indicator_moran}}, \code{\link{indicator_variance}} and 

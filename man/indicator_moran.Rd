@@ -43,8 +43,8 @@ This functions computes the Moran's spatial correlation index
 }
 \examples{
 
-data(arid)
-indicator_moran(arid)
+data(serengeti)
+indicator_moran(serengeti)
 
 
 }

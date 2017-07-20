@@ -2,13 +2,13 @@ Package: spatialwarnings
 Type: Package
 Title: Spatial Early Warning Signals
 Version: 1.0
-Date: 2015-06-12
-Author: Alain Danet, Alex Genin, Vishwesha Guttal, Sonia Kefi, Sabiha Majumder,
-    Sumithra Sankaran, Florian Schneider (Maintainer)
+Date: 2017-09-01
+Author: Alain Danet, Alexandre Genin, Vishwesha Guttal, Sonia Kefi, 
+  Sabiha Majumder, Sumithra Sankaran, Florian Schneider
 License: MIT + file LICENSE
 Maintainer: Alexandre Genin <alexandre.genin@univ-montp2.fr>
-Description: A package that provides tools to compute spatial early-warning 
-  signals of critical points.
+Description: Compute spatial early-warning signals of critical points on raster 
+  datasets.
 Depends: R (>= 2.10)
 Imports:
     moments,

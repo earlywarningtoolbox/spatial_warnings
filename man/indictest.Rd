@@ -13,7 +13,7 @@ function family}
 \item{nperm}{How many times should the input matrix be randomized
 to create the null distribution ?}
 
-\item{...}{Additionnal arguments passed to methods}
+\item{...}{Additional arguments passed to methods}
 }
 \value{
 An object of class \code{*_spews_test} depending on the input object
@@ -30,7 +30,7 @@ The significance of many early-warning signals can be estimated by
   value in the null distribution.
 }
 \references{
-Kéfi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 
+Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 
   V.N., et al. (2014). Early Warning Signals of Ecological Transitions: 
   Methods for Spatial Patterns. PLoS ONE, 9, e92097
 }

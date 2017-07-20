@@ -15,8 +15,7 @@ using namespace arma;
 
 //
 // [[Rcpp::export]]
-DataFrame rspectrum_cpp(arma::mat amat, 
-                        int nthreads) { 
+DataFrame rspectrum(arma::mat amat) { 
   
   // Get number of rows and number of cols
   int nr = amat.n_rows; 
@@ -31,7 +30,7 @@ DataFrame rspectrum_cpp(arma::mat amat,
   int ma = 1 + (n0x < n0y ? n0x : n0y);
 
   // Initialize the variables that will hold the spectrum values
-  vec ray = linspace(mi, ma, ma-mi+1);
+  vec ray = linspace(mi, ma, ma-mi+1); // +1 ?
   vec rspectr = zeros(ma-mi+1); 
   
   // We check whether there is more than one value in the supplied matrix
@@ -63,13 +62,15 @@ DataFrame rspectrum_cpp(arma::mat amat,
   for (int l=0; l<ray.n_elem; l++) { 
     double r = ray(l);
     
-    // Go through the distances matrix and make a sum of the relevant ones
+    // Go through the matrix and make a sum of relevant fft coefficients
     int total_inmask = 0;
-    double rspectr_current = 0; 
-    double normfactor_current = 0; 
-    for (int j=0; j<nc; j++) { 
-      for (int i=0; i<nr; i++) { 
+    
+    // Note that we do not loop over cells that will not be in the correct 
+    // distance range. 
+    for (int j=(n0y - r - 1); j<(n0y + r + 1); j++) { 
+      for (int i=(n0x - r - 1); i<(n0x + r + 1); i++) { 
         
+        // Squared distance to center
         double dist = SQ(i-n0x) + SQ(j-n0y);
         
         if ( dist >= SQ(r - step/2) && dist < SQ(r + step/2) ) { 
@@ -79,20 +80,22 @@ DataFrame rspectrum_cpp(arma::mat amat,
           // the matrix
           int shift_i = (i + n0x) % nr;
           int shift_j = (j + n0y) % nc;
-          double aspectr2D_ij = SQ(abs(mat_fft(shift_i, shift_j))) / 
-                                  SQ( SQ((n0x+1) * (n0y+1)) );
+          double aspectr2D_ij = SQ( abs(mat_fft(shift_i, shift_j)) ) / 
+                                  SQ(SQ( (n0x+1) * (n0y+1) ));
           
-          rspectr_current += aspectr2D_ij;
-          normfactor_current += aspectr2D_ij;
+          rspectr(l) += aspectr2D_ij;
+          norm_factor += aspectr2D_ij;
           total_inmask++;
         }
         
       }
     }
     
-    rspectr(l) = rspectr_current / total_inmask;
-    norm_factor += normfactor_current;
+//     Rcout << "dist: " << r << " -> total_inmask: " << total_inmask << "\n"; 
+    
+    rspectr(l) = rspectr(l) / total_inmask;
   }
+  
   rspectr = rspectr / norm_factor;
   
   return DataFrame::create(_["dist"]  = ray, 

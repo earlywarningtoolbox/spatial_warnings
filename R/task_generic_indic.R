@@ -79,7 +79,8 @@
 #' @examples
 #' 
 #' data(serengeti)
-#' gen_indic <- generic_spews(serengeti, subsize = 2)
+#' gen_indic <- generic_spews(serengeti, subsize = 5, 
+#'                            moranI_coarse_grain = TRUE)
 #' 
 #' # Display results
 #' summary(gen_indic)
@@ -96,10 +97,14 @@
 #' # range of the null distribution
 #' plot(gen_test, along = serengeti.rain)
 #' 
+#' # Display the effect size compared to null distribution 
+#' plot(gen_test, along = serengeti.rain, what = "z_score")
+#' 
 #' # Note that plot() method returns a ggplot object that can be modified
 #' # for convenience
 #' if ( require(ggplot2) ) { 
 #'   plot(gen_test, along = serengeti.rain) + 
+#'     geom_vline(xintercept = 593, color = "red", linetype = "dashed") +
 #'     xlab('Annual rainfall') + 
 #'     theme_minimal()
 #' }

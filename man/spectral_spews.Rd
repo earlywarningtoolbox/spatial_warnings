@@ -125,6 +125,13 @@ summary(spec_test)
 # quantiles of the null distribution
 plot(spec_test, along = serengeti.rain)
 
+# Add a line highlighting the shift 
+if (require(ggplot2)) {
+  plot(spec_test, along = serengeti.rain) + 
+    geom_vline(xintercept = 590, color = "red", linetype = "dashed")
+}
+
+
 # Display radial-spectra
 plot_spectrum(spec_test, along = serengeti.rain)
 

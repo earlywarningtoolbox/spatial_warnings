@@ -33,13 +33,12 @@ compute_indicator_with_null <- function(input,
     }
     # Note that here nulldistr always has one or more rows and nreplicates 
     #   columns -> it is always a matrix
-    
     nullstats <- list(null_mean = apply(nulldistr, 1, mean), 
                       null_sd   = apply(nulldistr, 1, sd), 
                       null_95   = apply(nulldistr, 1, safe_quantile, .95), 
                       null_05   = apply(nulldistr, 1, safe_quantile, .05), 
                       z_score   = apply(cbind(value, nulldistr), 1, 
-                                        function(X) (X[1] - mean(X[-1]) / sd(X[-1]))),
+                                        function(X) (X[1] - mean(X[-1])) / sd(X[-1])),
                       pval      = apply(cbind(value, nulldistr), 1, 
                                         function(X) 1 - rank(X)[1] / length(X)))
     result <- append(result, nullstats)

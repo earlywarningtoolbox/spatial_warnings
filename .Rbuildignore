@@ -6,3 +6,4 @@ tools
 manuscript
 draft
 data-raw
+^.travis\.yml$

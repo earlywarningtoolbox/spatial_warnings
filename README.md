@@ -1,16 +1,18 @@
+[![Build Status](https://travis-ci.org/spatial-ews/spatialwarnings.svg?branch=master)](https://travis-ci.org/spatial-ews/spatialwarnings)
+
 Spatial early warning signs - R package
 =======================================
 
-The package provided here helps computing spatial early warning signals of 
-critical transitions. This is part of a collaborative project between [Sonia 
-Kefi's group](http://sonia.kefi.fr/) (Institut de Sciences d'Evolution, CNRS, 
-IRD, Université Montpellier, France) and [Vishwesha 
-Guttal's](https://teelabiisc.wordpress.com/) (Center for Ecological Sciences, 
+The package provided here helps computing spatial early warning signals of
+critical transitions. This is part of a collaborative project between [Sonia
+Kefi's group](http://sonia.kefi.fr/) (Institut de Sciences d'Evolution, CNRS,
+IRD, Université Montpellier, France) and [Vishwesha
+Guttal's](https://teelabiisc.wordpress.com/) (Center for Ecological Sciences,
 Indian Institute of Science, Bangalore, India).
 
-The R package provides several sets of functions related to the computation of 
-early warning signals of irreversible transitions (also known as *catastrophic 
-shifts*). In particular, it facilitates computing those indicators, assess their 
+The R package provides several sets of functions related to the computation of
+early warning signals of irreversible transitions (also known as *catastrophic
+shifts*). In particular, it facilitates computing those indicators, assess their
 significance and plot their trends.
 
 ## Contributors
@@ -19,48 +21,48 @@ Alain Danet, [Alex Genin](mailto:alexandre.genin@umontpellier.fr), Vishwesha Gut
 
 ## Installation
 
-This package is still under heavy development: the best way to install it is 
-using the `devtools` package in R: 
-  
+This package is still under heavy development: the best way to install it is
+using the `devtools` package in R:
+
 ```
-if ( ! require(devtools) ) { 
+if ( ! require(devtools) ) {
   install.packages("devtools")
 }
 devtools::install_github("spatial-ews/spatialwarnings")
 ```
 
-## The spatial indicators 
+## The spatial indicators
 
-Ecological systems can suffer drastic transitions such as desertification or 
-eutrophication after a slight change in one or more external parameters, such as 
-aridity or nutrient input. These qualitative changes in the behavior of a system 
-at a threshold represents a critical or bifurcation point, and can give rise to 
-*catastrophic shifts* when associated with irreversibility. A growing body of 
-litterature suggests that a dynamical system should exhibit certain measurable 
-properties around those critical points. 
+Ecological systems can suffer drastic transitions such as desertification or
+eutrophication after a slight change in one or more external parameters, such as
+aridity or nutrient input. These qualitative changes in the behavior of a system
+at a threshold represents a critical or bifurcation point, and can give rise to
+*catastrophic shifts* when associated with irreversibility. A growing body of
+litterature suggests that a dynamical system should exhibit certain measurable
+properties around those critical points.
 
-This package aims at providing a preactical set of tools for the detection of 
-upcoming critical points in spatial datasets, by using indicators based on those 
-properties. Those indicators fall within broad categories around which the 
-package is centered: 
+This package aims at providing a preactical set of tools for the detection of
+upcoming critical points in spatial datasets, by using indicators based on those
+properties. Those indicators fall within broad categories around which the
+package is centered:
 
   * "Generic" spatial indicators
   * Patch-size distribution
   * Fractal and periodic geometry
 
-More extensive information is provided in the vignette file included in the 
+More extensive information is provided in the vignette file included in the
 package.
 
 ## Original authors and License
 
-This package is derived from the [Dakos et al.'s work](https://github.com/earlywarningtoolbox/spatial_warnings) on early warnings signals (see also the 
+This package is derived from the [Dakos et al.'s work](https://github.com/earlywarningtoolbox/spatial_warnings) on early warnings signals (see also the
 reference website for the [early-warnings signals toolbox](http://www.early-warning-signals.org/)).
 
 ### License
 
-This work is licensed under an MIT license. Some code included in unit tests has 
-been written by Cosma Rohilla Shalizi [http://bactra.org/](http://bactra.org/) 
-and is redistributed in its entirety with the R package as specified in the 
+This work is licensed under an MIT license. Some code included in unit tests has
+been written by Cosma Rohilla Shalizi [http://bactra.org/](http://bactra.org/)
+and is redistributed in its entirety with the R package as specified in the
 README file that comes with it.
 
 The MIT License (MIT)

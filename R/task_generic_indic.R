@@ -134,6 +134,11 @@ generic_spews <- function(mat,
                   'anyway. Set subsize=1 to disable coarse graining.'))
   }
   
+  if ( is.logical(mat) && subsize == 1 ) { 
+    warning(paste('Input matrix is binary but no coarse-graining will be',
+                  'performed.'))
+  }
+  
   # Build the right indicator function (closure) that take into accounts the 
   #   above options. 
   indicf <- function(mat) { 

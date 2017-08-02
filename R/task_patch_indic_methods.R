@@ -110,9 +110,7 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
                    fun.y = mean, geom = "line") + 
       stat_summary(aes_q(x = ~along, y = ~cover, 
                          linetype = "Mean cover", group = 1), 
-                   fun.y = mean, geom = "line") + 
-      geom_bar(aes_q(x = ~along, y = ~plrange, group = 1), 
-               stat = "identity")
+                   fun.y = mean, geom = "line") 
       
   } else { 
     plot <- plot + 
@@ -122,11 +120,16 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
       geom_line(aes_q(x = ~along, y = ~percolation_empty, linetype = "Perc. (empty)"), 
                 color = 'black') +
       geom_line(aes_q(x = ~along, y = ~cover, linetype = "Mean cover"), 
-                color = 'black') +
-      geom_area(aes_q(x = ~along, y = ~plrange, group = 1), 
-                stat = "identity") 
+                color = 'black') 
       
   }
+  
+  # Add plrange to the graph
+  plot <- plot + 
+      geom_point(aes_q(x = ~along, y = ~plrange, group = 1), 
+                stat = "identity") + 
+      geom_line(aes_q(x = ~along, y = ~plrange, group = 1), 
+                stat = "identity") 
   
   return(plot)
 }

@@ -3,7 +3,7 @@
 #   (how much of the data behaves like a power law?)
 # 
 # 
-
+#'@export
 indicator_plrange <- function(mat, 
                               merge = FALSE, 
                               xmin_bounds = NULL) { 

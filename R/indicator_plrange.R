@@ -2,7 +2,22 @@
 # This file contains the indicator function based on the power-law range 
 #   (how much of the data behaves like a power law?)
 # 
-# 
+#' @title TODO
+#' 
+#' @description TODO
+#' 
+#' @references TODO
+#' 
+#' @param mat TODO
+#' 
+#' @param merge TODO
+#' 
+#' @param xmin_bounds TODO
+#' 
+#' @return TODO 
+#' 
+#' @examples TODO
+#' 
 #'@export
 indicator_plrange <- function(mat, 
                               merge = FALSE, 

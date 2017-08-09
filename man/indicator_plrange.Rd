@@ -19,10 +19,6 @@ TODO
 \description{
 TODO
 }
-\examples{
-TODO
-
-}
 \references{
 TODO
 }

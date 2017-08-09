@@ -75,7 +75,9 @@ plot.spectral_spews_test <- function(x, # an indictest object
   }
   
   # Add the trend on the graph (Note that we add it over the null trend)
-  plot <- plot + geom_line(aes_string(x = 'gradient', y = what))
+  plot <- plot + 
+    geom_point(aes_string(x = 'gradient', y = what)) + 
+    geom_line(aes_string(x = 'gradient', y = what))
   
   # Add ylabs
   plot <- plot + ylab('Spectral density ratio')

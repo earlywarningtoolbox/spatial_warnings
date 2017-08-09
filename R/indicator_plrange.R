@@ -18,7 +18,7 @@
 #'
 #' @examples
 #'
-#' '# TODO
+#' # TODO
 #'
 #'@export
 indicator_plrange <- function(mat,

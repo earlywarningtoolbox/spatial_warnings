@@ -123,6 +123,7 @@ generic_spews <- function(mat,
   if ( is.list(mat) ) { 
     results <- lapply(mat, generic_spews, subsize, detrend, abs_skewness,
                       moranI_coarse_grain)
+    names(results) <- names(mat) # import list names
     class(results) <- c('generic_spews_list', 'generic_spews', 
                         'spews_result_list', 'list')
     return(results)

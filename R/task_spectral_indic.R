@@ -147,6 +147,7 @@ spectral_spews <- function(mat,
   # Handle list case
   if ( is.list(mat) ) { 
     results <- lapply(mat, spectral_spews, sdr_low_range, sdr_high_range, quiet)
+    names(results) <- names(mat)
     class(results) <- c('spectral_spews_list',  'spectral_spews', 
                         'spews_result_list', 'list')
     return(results)

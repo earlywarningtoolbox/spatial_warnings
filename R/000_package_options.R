@@ -1,7 +1,7 @@
 # 
 # 
 # Textual output options 
-DIGITS <- 3
+DIGITS <- 2
 
 # Default thread number 
 

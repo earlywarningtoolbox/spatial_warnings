@@ -33,7 +33,7 @@ plot.patchdistr_spews <- function(x, along = NULL, ...) {
 plot.patchdistr_spews_list <- function(x, along = NULL) { 
   
   if ( !is.null(along) && (length(along) != length(x)) ) { 
-    stop('The along values are unfit for plotting (size mismatch')
+    stop('The along values are unfit for plotting (size mismatch)')
   }
   
   obj_table <- as.data.frame(x)
@@ -47,26 +47,21 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
     along <- as.factor(obj_table[ ,'replicate'])
     xtitle <- "Matrix number"
   }
+  
   obj_table[ ,"along"] <- along
   
   # Now we summarise the obj_table
-  alltypes <- unique(na.omit(obj_table[ ,"type"]))
-  alltypes <- if (length(alltypes) == 0) NA else alltypes
+  alltypes <- na.omit(unique(obj_table[ ,"type"]))
   
   summ <- ddply(obj_table, 'along',
-                function(df) {
-                  type_freqs <- rep(0, length(alltypes))
-                  names(type_freqs) <- alltypes
-                  
-                  if ( ! all(is.na(df[ ,'type'])) ) { 
-                    counts <- c(table(df[ ,'type'])) 
-                    type_freqs[names(counts)] <- counts
-                    type_freqs <- type_freqs / sum(type_freqs)
-                  } else { 
-                    # We set type freq to 1 as it will determine the scaling
-                    type_freqs <- NA_real_
-                  }
-                  
+                function(df) { 
+                  type_freqs <- sapply(alltypes, 
+                         function(current_type) { 
+                           sum(!is.na(df[ ,'type']) & df[ 'type'] == current_type)
+                         })
+                  type_freqs <- type_freqs / ifelse(sum(type_freqs) > 0, 
+                                                    sum(type_freqs), 1)
+
                   data.frame(type = alltypes, type_freq = type_freqs, 
                              percolation = mean(df[ ,'percolation']), 
                              percolation_empty = mean(df[ ,'percolation_empty']), 
@@ -138,20 +133,28 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
 
 #' @rdname patchdistr_spews
 #' 
+#' @param Vector of values to use in facets
+#' 
 #' @param best_only Plot the empirical (inverse cumulative) patch-size 
 #' distribution with an overlay of the estimated fits. 
 #' 
 #' @param plrange Plot the power-law range 
 #'
 #'@export
-plot_distr <- function(x, best_only = TRUE, plrange = TRUE) { 
+plot_distr <- function(x, along = NULL, best_only = TRUE, plrange = TRUE) { 
   UseMethod('plot_distr')
 }
 
 #'@export
 plot_distr.patchdistr_spews_single <- function(x, 
+                                               along = NULL, 
                                                best_only = TRUE, 
                                                plrange = TRUE) { 
+  
+  if ( !is.null(along) ) { 
+    warning('Ignoring along parameter when plotting only one patch-size', 
+            'distribution')
+  }
   
   # Get plottable data.frames
   values <- predict(x, best_only = best_only)  
@@ -195,11 +198,21 @@ plot_distr.patchdistr_spews_single <- function(x,
 
 #'@export
 plot_distr.patchdistr_spews_list <- function(x, 
+                                             along = NULL, 
                                              best_only = TRUE, 
                                              plrange = TRUE) { 
   
+  if ( !is.null(along) && (length(along) != length(x)) ) { 
+    stop('The along values are unfit for plotting (size mismatch)')
+  }
+  
   # Get plottable data.frames
   values <- predict(x, best_only = best_only)
+  # Modify replicate column if necessary and reorder values
+  if ( ! is.null(along) ) { 
+    values[['obs']][ ,'replicate']  <- along[values[["obs"]][ ,'replicate']]
+    values[['pred']][ ,'replicate'] <- along[values[["pred"]][ ,'replicate']]
+  }
   
   plot <- ggplot() + 
     scale_y_log10() +
@@ -213,6 +226,10 @@ plot_distr.patchdistr_spews_list <- function(x,
     # Add plrange to the plot. We need to extract info 
     # from the observed psd so that we can place the segment on the plot. 
     plrange_dat <- unique( as.data.frame(x)[ ,c("replicate", 'xmin_est')] )
+    if ( ! is.null(along) ) { 
+      plrange_dat[ ,"replicate"] <- along[plrange_dat[ ,"replicate"]]
+    }
+    
     patches_minmax <- ddply(values[['obs']], "replicate", 
                           function(df) { 
                             data.frame(xmax = max(df[ ,"patchsize"]))
@@ -433,7 +450,7 @@ summary.patchdistr_spews <- function(object, ...) {
   
   cat('Patch-based Early-Warnings results\n') 
   cat('\n')
-  print.data.frame(dat, row.names = FALSE)
+  print.data.frame(dat, row.names = FALSE, digits = DIGITS)
   cat('\n')
   cat('Use as.data.frame() to retrieve values in a convenient form\n')
   invisible(dat)

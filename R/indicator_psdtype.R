@@ -160,8 +160,9 @@ psdtype <- function(psd, xmin, best_by, fit_lnorm) {
   models[ ,'BIC']  <- get_BIC(models[ ,'ll'],  models[ ,'npars'], length(psd))
   
   # We need to remove NA's here as sometimes one of the fits fails and its "best"
-  # column is NA. 
+  # column is NA. We do not consider failed fit as good solutions. 
   models[ ,'best'] <- models[ ,best_by] == min(models[ ,best_by], na.rm = TRUE)
+  models[ ,'best'] <- models[ ,'best'] & ! is.na(models[ ,'best']) 
   
   # Add an xmin column 
   models[ ,"xmin_fit"] <- xmin

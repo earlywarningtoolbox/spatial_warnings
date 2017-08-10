@@ -12,7 +12,7 @@ patchdistr_spews(x, merge = FALSE, fit_lnorm = FALSE, best_by = "BIC",
 
 \method{plot}{patchdistr_spews}(x, along = NULL, ...)
 
-plot_distr(x, best_only = TRUE, plrange = TRUE)
+plot_distr(x, along = NULL, best_only = TRUE, plrange = TRUE)
 }
 \arguments{
 \item{x}{A logical matrix (TRUE/FALSE values) or a list of these}
@@ -45,6 +45,8 @@ in their original order.}
 distribution with an overlay of the estimated fits.}
 
 \item{plrange}{Plot the power-law range}
+
+\item{Vector}{of values to use in facets}
 }
 \value{
 A list object of class 'psdfit' containing among other things 

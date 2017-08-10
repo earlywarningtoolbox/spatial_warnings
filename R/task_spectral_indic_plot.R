@@ -125,6 +125,10 @@ plot_spectrum.spectral_spews_test <- function(x,
                                               display_null = TRUE) { 
   
   # If along is not provided, then use the replicate number
+  if ( !is.null(along) && (length(along) != length(x)) ) { 
+    stop('The along values are unfit for plotting (size mismatch)')
+  }
+  
   set_default_xlab <- FALSE 
   if ( is.null(along) ) { 
     along <- unique(x[ ,"replicate"])

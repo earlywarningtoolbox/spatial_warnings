@@ -12,7 +12,7 @@
 #' 
 #' @param mat A square matrix
 #' 
-#' @param subsize Dimetion of the submatrix. This has to be a positive integer smaller than the dimetion of input matrix. 
+#' @param subsize Dimetion of the submatrix. This has to be a positive integer smaller than the dimention of input matrix. 
 #' 
 #' @return A square matrix of reduced dimention.
 #'

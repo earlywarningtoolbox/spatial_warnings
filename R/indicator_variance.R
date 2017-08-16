@@ -1,6 +1,6 @@
 #' @title Spatial variance indicator
 #'
-#' @description This functions computes the spatial variance critical point indicator. 
+#' @description This functions computes the spatial variance of spatial data. 
 #'   It also computes a null value obtained by randomizing 
 #'   the matrix.
 #' 
@@ -8,13 +8,15 @@
 #' spatial skewness: leading indicators of regime shifts in spatial 
 #' ecological systems. Theoretical Ecology, 2(1), 3-12.
 #' 
-#' @param input A square binary matrix or a list of square binary matrices. 
+#' @param input A square matrix or a list of square matrices. The matrix entires can be binary, representing 0 (empty) or 1 (occupied). 
+#' The entries can also be continuous (like NDVI or EVI data). 
 #' 
-#' @param subsize logical. Dimension of the submatrix used to coarse-grain the 
-#'   original matrix.
+#' @param subsize Dimension of the submatrix used to coarse-grain the 
+#'   original matrix. This must be an integer less than size of the full matrix. Coarse-graining reduces the size
+#' of the matrix by a factor subsize in each dimension of the matrix. Variance is calculated on the coarse-grained matrix. 
 #' 
 #' @param detrending If TRUE data are detrended by removing the spatial mean. 
-#'   (Default is FALSE).
+#'   (Default is FALSE). 
 #' 
 #' @param nreplicates Number of replicates to produce to estimate null 
 #'   distribution of index.
@@ -23,7 +25,7 @@
 #'   components:
 #'     \itemize{
 #'       \item `mean`: Landscape mean cover
-#'       \item `value`: Spatial autocorrelation of the matrix
+#'       \item `value`: Spatial variance of the matrix
 #'     }
 #'   If nreplicates was above 2, then the list has the following additional 
 #'   components : 

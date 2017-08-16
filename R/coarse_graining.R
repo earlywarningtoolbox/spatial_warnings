@@ -6,13 +6,15 @@
 
 #' @title Matrix coarse-graining
 #' 
-#' @description Reduce a matrix size by coarse-graining 
+#' @description This function coarse-grains the matrix. 
+#' The matrix is divided into submatrices of dimention subsize and the spatial data in these submatrices is averaged.
+#' The dimention of resultant matrix is reduced by a factor of subsize.
 #' 
-#' @param mat TODO
+#' @param mat A square matrix
 #' 
-#' @param subsize TODO
+#' @param subsize Dimetion of the submatrix. This has to be a positive integer smaller than the dimetion of input matrix. 
 #' 
-#' @return TODO
+#' @return A square matrix of reduced dimention.
 #'
 #'@export
 coarse_grain <- function(mat, subsize) { 

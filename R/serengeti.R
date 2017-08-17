@@ -7,10 +7,12 @@
 #' @title Serengeti dataset
 #' 
 #' @description Vegetation data along a rainfall gradient in Serengeti national park. 
-#' The data-set consists of a recatangular area of size 7.5 km x 90 km. This data is represented as a list of matrices.
-#' Each matrix is a moving window of 7.5 km x 7.5 km which moves my 2.5 km. Each entry in the matrix is vegetation data classified into binary units with 0(grass) and 1(wood).
 #' 
-#' @details The resolution of vegetation data is 30m and that of rainfall data is 2.5km.    
+#' @details The data-set consists of a rectangular area of size 7.5 km x 90 km. This data is represented as a list of matrices.
+#' Each matrix is a moving window of 7.5 km x 7.5 km which moves my 2.5 km along the length of the rectangular data-set. 
+#' Each entry in the matrix is vegetation data at a resolution of 30m as classified into binary units with 0(grass) and 1(wood).
+#' The rainfall data provided here is the average rainfall (mm/yr) 
+#' of a moving window of dimention 7.5km which moves my 2.5 km along the length of the rectangular data-set.   
 #' 
 #' @format A list of logical matrices 
 #' 

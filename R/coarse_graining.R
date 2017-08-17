@@ -6,9 +6,10 @@
 
 #' @title Matrix coarse-graining
 #' 
-#' @description This function coarse-grains the matrix. 
-#' The matrix is divided into submatrices of dimention subsize and the spatial data in these submatrices is averaged.
-#' The dimention of resultant matrix is reduced by a factor of subsize.
+#' @description This function averages the spatial data locally. 
+
+#' @details This function divides the input matrix into submatrices of dimention subsize and averages the spatial data in these submatrices.
+#' By doing this, the dimention of resultant matrix is reduced by a factor of subsize.
 #' 
 #' @param mat A square matrix
 #' 

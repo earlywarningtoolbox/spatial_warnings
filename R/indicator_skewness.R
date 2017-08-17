@@ -21,7 +21,7 @@
 #' 
 #' @param subsize  Dimension of the submatrix used to coarse-grain the 
 #'   original matrix. This must be an integer less than size of the full matrix. Coarse-graining reduces the size
-#' of the matrix by a factor subsize in each dimension of the matrix. Variance is calculated on the coarse-grained matrix. 
+#' of the matrix by a factor subsize in each dimension of the matrix. Skewness is calculated on the coarse-grained matrix. 
 #' 
 #' @param detrending If TRUE data are detrended by removing the spatial mean. 
 #'   (Default is FALSE).

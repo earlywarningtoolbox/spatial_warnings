@@ -125,7 +125,7 @@ plot_spectrum.spectral_spews_test <- function(x,
                                               display_null = TRUE) { 
   
   # If along is not provided, then use the replicate number
-  if ( !is.null(along) && (length(along) != length(x)) ) { 
+  if ( !is.null(along) && (length(along) != max(x[ ,'replicate'])) ) { 
     stop('The along values are unfit for plotting (size mismatch)')
   }
   

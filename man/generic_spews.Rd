@@ -54,9 +54,6 @@ values ("value") but other metrics can be displayed. Correct values are
 the null distribution. Note that it can not be displayed when the trend 
 line reflects something else than the indicator values (when \code{what} 
 is not set to "value").}
-
-\item{usenames}{If the original list of matrices has names set, use them 
-for plotting on the x-axis instead of matrix number.}
 }
 \value{
 \code{generic_spews} returns an object of class \code{generic_spews_single}

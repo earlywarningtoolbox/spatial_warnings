@@ -133,7 +133,7 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
 
 #' @rdname patchdistr_spews
 #' 
-#' @param Vector of values to use in facets
+#' @param along Vector of values to use in facets
 #' 
 #' @param best_only Plot the empirical (inverse cumulative) patch-size 
 #' distribution with an overlay of the estimated fits. 

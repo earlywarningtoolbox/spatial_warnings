@@ -28,9 +28,6 @@
 #'   line reflects something else than the indicator values (when \code{what} 
 #'   is not set to "value").
 #' 
-#' @param usenames If the original list of matrices has names set, use them 
-#'   for plotting on the x-axis instead of matrix number. 
-#' 
 #' @method plot generic_spews_test
 #' @export
 plot.generic_spews_test <- function(x, 

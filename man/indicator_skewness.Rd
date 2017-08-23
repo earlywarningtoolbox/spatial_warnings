@@ -8,10 +8,12 @@ indicator_skewness(input, subsize = 5, detrending = FALSE,
   absolute = TRUE, nreplicates = 999)
 }
 \arguments{
-\item{input}{A square binary matrix or a list of square binary matrices.}
+\item{input}{A square matrix or a list of square matrices. The matrix entires can be binary, representing 0 (empty) or 1 (occupied). 
+The entries can also be continuous (like NDVI or EVI data).}
 
-\item{subsize}{logical. Dimension of the submatrix used to coarse-grain the 
-original matrix.}
+\item{subsize}{Dimension of the submatrix used to coarse-grain the 
+  original matrix. This must be an integer less than size of the full matrix. Coarse-graining reduces the size
+of the matrix by a factor subsize in each dimension of the matrix. Skewness is calculated on the coarse-grained matrix.}
 
 \item{detrending}{If TRUE data are detrended by removing the spatial mean. 
 (Default is FALSE).}
@@ -40,9 +42,24 @@ A list (or a list of lists if input was a list of matrices) with
     }
 }
 \description{
-This functions computes the skewness critical point indicator. 
+This functions computes the spatial skewness of spatial data. 
   It also computes a null value obtained by randomizing 
   the matrix.
+}
+\details{
+Spatial skewness is a measure of fluctuations in space; specifically, it measures if fluctuations are getting biased (skewed) in one direction. Based on the theory of critical slowing down, when systems approach critical points
+they are expected to show increased fluctuations in space. Thus, increasing spatial skewness is proposed as an early warning signal of impending critical transitions. 
+
+Computing spatial skewness is straightforward. The function uses moments package to calcualte skewness. However, detecting trends of skewness that correspond to critical slowing down can be tricky, espeically if data come from discrete classification of state variable.
+For example, many high resolution spatial data are classified are 0 (empty) or 1 (occupied by plant). In such cases, spatial skewness captures just the skewness in data, but not that of spatial structure. 
+To resolve the issue, this function employs a method called coarse-graining, proposed in Kefi et al 2014 and described in detail in Sanakaran et al 2017. 
+Therefore, one must specify subsize for binary valued data sets. 
+
+Input matrices can be either binary valued, or continuous data (numeric). 
+
+subsize has to be an integer. It has to be less than or equal to half of matrix size (N). subsize must also be preferably a divisor of N. 
+
+Null model evaluations are also done on coarse-grained matrices.
 }
 \examples{
 
@@ -55,4 +72,11 @@ indicator_skewness(serengeti)
 Guttal, V., and Jayaprakash, C. (2009). Spatial variance and 
 spatial skewness: leading indicators of regime shifts in spatial 
 ecological systems. Theoretical Ecology, 2(1), 3-12.
+
+Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., 
+Livina, V.N., et al. (2014). Early Warning Signals of Ecological 
+Transitions: Methods for Spatial Patterns. PLoS ONE, 9, e92097.
+
+Sankaran, S., Majumder, S., Kefi, S., and Guttal, V. (2017). Implication of being discrete and spatial in detecting early warning signals
+of regime shifts
 }

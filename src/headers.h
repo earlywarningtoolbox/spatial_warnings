@@ -6,7 +6,7 @@
 #ifndef HEADERS_INCLUDED
 #define HEADERS_INCLUDED
 
-using namespace Rcpp;; 
+using namespace Rcpp;
 
 IntegerMatrix get_nb_coords(IntegerMatrix mat, 
                             std::pair<int,int> X,

@@ -16,7 +16,8 @@ Skewness as a numeric value.
 Compute the skewness of a given set of values
 }
 \details{
-If the values provided have zero variance, then \code{NA} is returned.
+If the values provided have zero variance, then \code{NA} 
+  is returned.
 }
 \seealso{
 \code{\link[moments]{skewness}}

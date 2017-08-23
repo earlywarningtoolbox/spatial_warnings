@@ -44,6 +44,10 @@ tplsum <- function(expo, rate, xs, xmin) {
     .Call('_spatialwarnings_tplsum', PACKAGE = 'spatialwarnings', expo, rate, xs, xmin)
 }
 
+shuffle_matrix <- function(mat) {
+    .Call('_spatialwarnings_shuffle_matrix', PACKAGE = 'spatialwarnings', mat)
+}
+
 shuffle_and_compute <- function(mat, indic, nrep, nthreads) {
     .Call('_spatialwarnings_shuffle_and_compute', PACKAGE = 'spatialwarnings', mat, indic, nrep, nthreads)
 }
@@ -95,7 +99,8 @@ rspectrum <- function(mat) {
 #' 
 #' @return Skewness as a numeric value. 
 #' 
-#' @details If the values provided have zero variance, then \code{NA} is returned. 
+#' @details If the values provided have zero variance, then \code{NA} 
+#'   is returned. 
 #' 
 #' @param X A vector of values
 #' 

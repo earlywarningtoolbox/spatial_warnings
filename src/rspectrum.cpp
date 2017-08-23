@@ -7,7 +7,7 @@
 
 using namespace Rcpp; 
 
-#define SQ(a) ( (a) * (a) )
+#define SQ(a) ( (double)(a) * (double)(a) )
 
 // Distance step of the r-spectrum
 #define step 1.0

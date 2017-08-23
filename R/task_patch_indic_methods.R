@@ -9,6 +9,7 @@
 # --------------------------------------------------
 # 
 #' @rdname patchdistr_spews_plot
+#' @name patchdistr_spews_plot
 #' 
 #' @title Early-warning signals based on patch size distributions
 #' 
@@ -43,6 +44,8 @@
 #'    cumbersome when working with a high number of matrices but displays the 
 #'    full shape of the distributions. 
 #'  
+#' @seealso \code{\link{patchdistr_spews}}
+#' 
 #' @examples
 #' 
 #' data(forestgap)
@@ -170,9 +173,7 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
 }
 
 
-
 #' @rdname patchdistr_spews_plot
-#' @name patchdistr_spews_plot
 #' 
 # // along arg is already documented in plot() method
 #' 
@@ -181,11 +182,11 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
 #' 
 #' @param plrange Plot the power-law range 
 #'
-#'@method plot_distr patchdistr_spews
 #'@export
 plot_distr <- function(x, along = NULL, best_only = TRUE, plrange = TRUE) { 
   UseMethod('plot_distr')
 }
+
 #'@export
 plot_distr.patchdistr_spews <- function(x, along = NULL, best_only = TRUE, 
                                         plrange = TRUE) { 

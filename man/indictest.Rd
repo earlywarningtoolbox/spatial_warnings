@@ -7,11 +7,11 @@
 indictest(x, nperm = 999, ...)
 }
 \arguments{
-\item{x}{A spatial warning object such as one produced by the *_spews 
+\item{x}{A spatial warning object such as one produced by the \code{*_spews} 
 function family}
 
-\item{nperm}{How many times should the input matrix be randomized
-to create the null distribution ?}
+\item{nperm}{The number of permutations to carry out to produce the null 
+distribution}
 
 \item{...}{Additional arguments passed to methods}
 }

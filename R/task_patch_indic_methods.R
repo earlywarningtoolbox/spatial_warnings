@@ -40,7 +40,8 @@
 #'  The \code{plot_spectrum} function displays each distribution in an 
 #'    individual facet, with an overlay of the best distribution fit and a blue 
 #'    bar showing the power-law range. This mode of representation can be 
-#'    cumbersome when working with a high number of matrices. 
+#'    cumbersome when working with a high number of matrices but displays the 
+#'    full shape of the distributions. 
 #'  
 #' @examples
 #' 
@@ -171,6 +172,7 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
 
 
 #' @rdname patchdistr_spews_plot
+#' @name patchdistr_spews_plot
 #' 
 # // along arg is already documented in plot() method
 #' 
@@ -183,6 +185,11 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
 #'@export
 plot_distr <- function(x, along = NULL, best_only = TRUE, plrange = TRUE) { 
   UseMethod('plot_distr')
+}
+#'@export
+plot_distr.patchdistr_spews <- function(x, along = NULL, best_only = TRUE, 
+                                        plrange = TRUE) { 
+  NextMethod('plot_distr')
 }
 
 #'@export

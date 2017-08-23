@@ -21,8 +21,8 @@
 #' 
 #' @param xmin_bounds Bounds when estimating the xmin for power-law distributions
 #'
-#' @param wrap Determines whether patches are considered to wraparound when 
-#' reaching one side of the matrix.  
+#' @param wrap Determines whether patches are considered to wrap around the 
+#'  matrix when reaching the side 
 #' 
 #' @return A list object of class 'psdfit' containing among other things 
 #'   - the observed patch size distribution data
@@ -31,7 +31,6 @@
 #'   - the percolation values (if several matrices were provided and 
 #'   `merge` was TRUE, then the average percolation value is returned)
 #' 
-#' @seealso \code{\link{indicator_psdtype}}
 #' 
 #' @details 
 #' 
@@ -76,8 +75,9 @@
 #'   the fitted distributions (\code{plot_distr}). Plotting functions are 
 #'   documented in a \link[=patchdistr_spews_plot]{separate page}. 
 #' 
-#' @seealso \code{\link{patchsizes}}, \code{\link{label}}, 
-#'   \link[=patchdistr_spews_plot]{Plotting patch-based EWS}
+#' @seealso \code{\link{indicator_psdtype}}, \code{\link{patchsizes}}, 
+#'   \code{\link[=patchdistr_spews_plot]{plot}}, 
+#'   \code{\link[=patchdistr_spews_plot]{plot_distr}}
 #' 
 #' @references 
 #' 

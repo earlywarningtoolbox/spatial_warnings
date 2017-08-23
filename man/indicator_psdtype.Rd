@@ -13,8 +13,9 @@ indicator_psdtype(x, xmin = 1, merge = FALSE, fit_lnorm = FALSE,
 \item{xmin}{The xmin to be used to fit the patch size distributions. Use 
 the special values "estimate" to use an estimated xmin for each fit}
 
-\item{merge}{If input is a list, then merge all the observed patch-size
-distributions in a single one to obtain a better fit.}
+\item{merge}{The default behavior is to produce indicators values for each 
+matrix. If this parameter is set to TRUE then the patch size distributions 
+are pooled together for fitting.}
 
 \item{fit_lnorm}{Fit also a log-normal distribution}
 
@@ -24,8 +25,8 @@ the whole range of observed patch sizes)}
 \item{best_by}{The criterion used to select the best distribution type 
 (one of \code{"AIC"}, \code{"BIC"} or \code{"AICc"}).}
 
-\item{wrap}{Detemines whether patches are considered to wraparound when 
-reaching one side of the matrix.}
+\item{wrap}{Determines whether patches are considered to wrap around the 
+matrix when reaching the side}
 }
 \value{
 A data.frame (or a list of these if x is a list) with the 
@@ -70,5 +71,9 @@ Kefi, S., Rietkerk, M., Alados, C.L., Pueyo, Y., Papanastasis, V.P., ElAich,
 A., et al. (2007). Spatial vegetation patterns and imminent desertification
 in Mediterranean arid ecosystems. Nature, 449, 213-217.
 
-Clauset et al. #TODO
+Clauset, A., Shalizi, C. R., & Newman, M. E. (2009). 
+  Power-law distributions in empirical data. SIAM review, 51(4), 661-703.
+}
+\seealso{
+\code{\link{patchdistr_spews}}
 }

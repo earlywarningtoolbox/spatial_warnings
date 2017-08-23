@@ -25,8 +25,8 @@ the special values "estimate" to use an estimated xmin for each fit}
 
 \item{xmin_bounds}{Bounds when estimating the xmin for power-law distributions}
 
-\item{wrap}{Determines whether patches are considered to wraparound when 
-reaching one side of the matrix.}
+\item{wrap}{Determines whether patches are considered to wrap around the 
+matrix when reaching the side}
 }
 \value{
 A list object of class 'psdfit' containing among other things 
@@ -106,8 +106,7 @@ Clauset, A., Shalizi, C. R., & Newman, M. E. (2009).
   Power-law distributions in empirical data. SIAM review, 51(4), 661-703.
 }
 \seealso{
-\code{\link{indicator_psdtype}}
-
-\code{\link{patchsizes}}, \code{\link{label}}, 
-  \link[=patchdistr_spews_plot]{Plotting patch-based EWS}
+\code{\link{indicator_psdtype}}, \code{\link{patchsizes}}, 
+  \code{\link[=patchdistr_spews_plot]{plot}}, 
+  \code{\link[=patchdistr_spews_plot]{plot_distr}}
 }

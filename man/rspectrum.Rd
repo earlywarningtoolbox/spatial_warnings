@@ -7,7 +7,7 @@
 rspectrum(mat)
 }
 \arguments{
-\item{mat}{A matrix of logical or numeric values}
+\item{mat}{A matrix with logical or numeric values}
 }
 \value{
 A data.frame with two columns: \code{dist}, the wave number and 
@@ -15,6 +15,32 @@ A data.frame with two columns: \code{dist}, the wave number and
 }
 \description{
 Compute the r-spectrum of a matrix
+}
+\details{
+This functions returns a data.frame with \code{NA}s in the rspec 
+  column if the input matrix has zero variance. Note that if the matrix 
+  is not square, then only the largest square matrix fitting in the upper 
+  right corner is used.
+}
+\examples{
+
+# Spectrum of white noise
+rmat <- matrix(runif(100*100) > .5, ncol = 100)
+spec <- rspectrum(rmat) 
+plot(spec, type = "l")
+
+# Add some spatial correlation and compare the two spectra
+rmat.cor <- rmat
+for (i in seq(1, nrow(rmat)-1)) { 
+  for (j in seq(1, nrow(rmat)-1)) { 
+    rmat.cor[i,j] <- mean(rmat[(i-1):(i+1), (j-1):(j+1)])
+  }
+}
+spec.cor <- rspectrum(rmat.cor)
+plot(spec.cor, type = "n")
+lines(spec, col = "black")
+lines(spec.cor, col = "blue")
+
 }
 \seealso{
 \code{\link{spectral_spews}}, \code{\link{indicator_sdr}}

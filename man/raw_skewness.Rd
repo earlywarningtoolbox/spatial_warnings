@@ -9,8 +9,14 @@ raw_skewness(X)
 \arguments{
 \item{X}{A vector of values}
 }
+\value{
+Skewness as a numeric value.
+}
 \description{
 Compute the skewness of a given set of values
+}
+\details{
+If the values provided have zero variance, then \code{NA} is returned.
 }
 \seealso{
 \code{\link[moments]{skewness}}

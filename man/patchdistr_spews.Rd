@@ -45,8 +45,6 @@ in their original order.}
 distribution with an overlay of the estimated fits.}
 
 \item{plrange}{Plot the power-law range}
-
-\item{along}{Vector of values to use in facets}
 }
 \value{
 A list object of class 'psdfit' containing among other things 

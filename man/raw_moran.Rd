@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{raw_moran}
 \alias{raw_moran}
-\title{Compute the Moran's I at lag 1}
+\title{Spatial correlation at lag 1}
 \usage{
 raw_moran(mat)
 }
@@ -13,12 +13,19 @@ raw_moran(mat)
 The Moran's I numeric value as a numeric number.
 }
 \description{
-This function computes the Moran'I value at lag 1.
+This function computes the Moran's I index of spatial 
+  correlation at lag 1.
+}
+\details{
+This function returns the spatial correlation as measured by 
+  the Moran's I index. If the variance of the matrix is zero, then 
+  \code{NaN} is returned.
 }
 \examples{
 
+# Spatial correlation of white noise is close to zero
 rmat <- matrix(runif(1000) > .5, ncol = 100)
-raw_moran(rmat) # close to zero
+raw_moran(rmat) 
 
 }
 \seealso{

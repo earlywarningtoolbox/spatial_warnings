@@ -17,12 +17,36 @@ using namespace Rcpp;
 //' 
 //' @description Compute the r-spectrum of a matrix 
 //' 
-//' @param mat A matrix of logical or numeric values 
+//' @param mat A matrix with logical or numeric values 
 //' 
 //' @return A data.frame with two columns: \code{dist}, the wave number and 
 //'   \code{rspec}, the normalized value of the r-spectrum
 //' 
+//' @details This functions returns a data.frame with \code{NA}s in the rspec 
+//'   column if the input matrix has zero variance. Note that if the matrix 
+//'   is not square, then only the largest square matrix fitting in the upper 
+//'   right corner is used. 
+//' 
 //' @seealso \code{\link{spectral_spews}}, \code{\link{indicator_sdr}}
+//' 
+//' @examples 
+//' 
+//' # Spectrum of white noise
+//' rmat <- matrix(runif(100*100) > .5, ncol = 100)
+//' spec <- rspectrum(rmat) 
+//' plot(spec, type = "l")
+//' 
+//' # Add some spatial correlation and compare the two spectra
+//' rmat.cor <- rmat
+//' for (i in seq(1, nrow(rmat)-1)) { 
+//'   for (j in seq(1, nrow(rmat)-1)) { 
+//'     rmat.cor[i,j] <- mean(rmat[(i-1):(i+1), (j-1):(j+1)])
+//'   }
+//' }
+//' spec.cor <- rspectrum(rmat.cor)
+//' plot(spec.cor, type = "n")
+//' lines(spec, col = "black")
+//' lines(spec.cor, col = "blue")
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -45,17 +69,17 @@ DataFrame rspectrum(arma::mat mat) {
   arma::vec rspectr = arma::zeros(ma-mi+1); 
   
   // We check whether there is more than one value in the supplied matrix
-  bool more_than_two_values = false;
+  bool nonzero_variance = false;
   int i=1;
-  while ( !more_than_two_values && i<mat.n_elem ) {
+  while ( !nonzero_variance && i<mat.n_elem ) {
     if ( mat(i-1) != mat(i) ) { 
-      more_than_two_values = true;
+      nonzero_variance = true;
     }
     i++;
   } 
   
   // We have not found more than two values -> return early
-  if ( !more_than_two_values ) { 
+  if ( !nonzero_variance ) { 
     return DataFrame::create(_["dist"]  = ray, 
                              _["rspec"] = NumericVector::create(NumericVector::get_na()));
   }

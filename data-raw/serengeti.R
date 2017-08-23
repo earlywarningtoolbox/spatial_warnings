@@ -47,7 +47,9 @@ plot(ics.test, rain) +
 
 # Save datasets 
 serengeti <- matrices 
+names(serengeti) <- NULL 
 serengeti.rain <- rain 
+
 use_data(serengeti, overwrite = TRUE)
 use_data(serengeti.rain, overwrite = TRUE)
 

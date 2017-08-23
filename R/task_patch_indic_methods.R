@@ -8,13 +8,52 @@
 # Plot methods
 # --------------------------------------------------
 # 
-#' @rdname patchdistr_spews
+#' @rdname patchdistr_spews_plot
+#' 
+#' @title Early-warning signals based on patch size distributions
+#' 
+#' @description Plot early-warning signals based on patch size distributions 
+#' 
+#' @param x An object as produced by \code{\link{spectral_spews}}
 #' 
 #' @param along A vector providing values over which the indicator trend 
 #'   will be plotted. If \code{NULL} then the values are plotted sequentially 
 #'   in their original order. 
 #' 
 #' @param ... Further arguments passed to methods
+#' 
+#' @details 
+#'   
+#'   The \code{plot} function will produce a complex figure summarizing the change 
+#'   in patch size distributions along a set of values. The figure has two 
+#'   panels: 
+#'   \itemize{ 
+#'      \item the upper panel shows the percolation status of empty 
+#'        (\code{FALSE}) and occupied cells (\code{TRUE}), and shows the mean 
+#'        value (proportion of \code{TRUE} values). The background shows 
+#'        the proportion of each type of distribution for each unique values 
+#'        of the \code{along} vector. 
+#'        
+#'      \item the bottom panel displays the power-law range
+#'   }
+#'  
+#'  The \code{plot_spectrum} function displays each distribution in an 
+#'    individual facet, with an overlay of the best distribution fit and a blue 
+#'    bar showing the power-law range. This mode of representation can be 
+#'    cumbersome when working with a high number of matrices. 
+#'  
+#' @examples
+#' 
+#' data(forestgap)
+#' psd_indic <- patchdistr_spews(forestgap)
+#' 
+#' plot(psd_indic, along = forestgap.pars[ ,"d"]) 
+#' 
+#' # When along is non-numeric, bars are used for display
+#' plot(psd_indic, along = as.factor(forestgap.pars[ ,"d"]))
+#' 
+#' # Display individual distributions
+#' plot_distr(psd_indic, along = forestgap.pars[ ,"d"])
 #' 
 #'@method plot patchdistr_spews
 #'@export
@@ -131,15 +170,16 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
 
 
 
-#' @rdname patchdistr_spews
+#' @rdname patchdistr_spews_plot
 #' 
 # // along arg is already documented in plot() method
 #' 
-#' @param best_only Plot the empirical (inverse cumulative) patch-size 
-#' distribution with an overlay of the estimated fits. 
+#' @param best_only Plot only the best fit the empirical (inverse cumulative) patch-size 
+#'   distribution with an overlay of the estimated fits. 
 #' 
 #' @param plrange Plot the power-law range 
 #'
+#'@method plot_distr patchdistr_spews
 #'@export
 plot_distr <- function(x, along = NULL, best_only = TRUE, plrange = TRUE) { 
   UseMethod('plot_distr')

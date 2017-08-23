@@ -73,9 +73,11 @@
 #' 
 #' Results can be displayed using the text-based \code{summary} and \code{print}, 
 #'   but graphical options are also available to plot the trends (\code{plot}) and 
-#'   the fitted distributions (\code{plot_distr}). 
+#'   the fitted distributions (\code{plot_distr}). Plotting functions are 
+#'   documented in a \link[=patchdistr_spews_plot]{separate page}. 
 #' 
-#' @seealso \code{\link{patchsizes}}, \code{\link{label}}
+#' @seealso \code{\link{patchsizes}}, \code{\link{label}}, 
+#'   \link[=patchdistr_spews_plot]{Plotting patch-based EWS}
 #' 
 #' @references 
 #' 
@@ -100,8 +102,6 @@
 #' 
 #' summary(psd_indic)
 #' 
-#' plot(psd_indic) 
-# 
 #' @export
 patchdistr_spews <- function(x, 
                              merge = FALSE,

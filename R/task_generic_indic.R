@@ -46,17 +46,19 @@
 #' 
 #' Before computing the actual indicators, the matrix can be "coarse-grained". 
 #'   This process reduces the matrix by averaging the nearby cells using 
-#'   a square window defined by the \code{subsize} parameter. This helps 
-#'   removing artefactual trends in variance and skewness due to binary (1/0) 
-#'   data but is completely optional when using continous data. Keep in mind 
-#'   that it effectively reduces the size of the matrix by approximately 
-#'   \code{subsize} on each dimension.
+#'   a square window defined by the \code{subsize} parameter. This makes spatial  
+#'   variance and skewness reflect actual spatial patterns when working with 
+#'   binary (\code{TRUE}/\code{FALSE} data), but is optional when using 
+#'   continous data. Keep in mind that it effectively reduces the size of 
+#'   the matrix by approximately \code{subsize} on each dimension. 
 #'   
 #' The significance of generic early-warning signals can be estimated by 
 #'   reshuffling the original matrix (function \code{indictest}). Indicators 
 #'   are then recomputed on the shuffled matrices and the values obtained are 
 #'   used as a null distribution. P-values are obtained based on the rank of 
-#'   the observered value in the null distribution. 
+#'   the observered value in the null distribution. A small P-value means 
+#'   that the indicator is significantly above the null values, as expected 
+#'   before a critical point. 
 #'
 #' @references 
 #' 

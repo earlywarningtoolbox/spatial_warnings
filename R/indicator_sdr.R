@@ -9,13 +9,13 @@
 #' 
 #' @param sdr_low_range The range of values (in proportion) to 
 #'   use for the computation of the spectral density ratio.
-#'   For example, for the lowest 20% (default value), set sdr_low_range to 
-#'   c(0, .2).
+#'   For example, for the lowest 20\% (default value), set \code{sdr_low_range}
+#'   to \code{c(0, .2)}.
 #'  
 #' @param sdr_high_range The range of values (in proportion) to 
 #'   use for the computation of the spectral density ratio. For example, for 
-#'   the higher 20% (default value), set sdr_high_range to 
-#'   c(.8, 1). 
+#'   the highest 20\% (default value), set \code{sdr_high_range} to 
+#'   \code{c(.8, 1)}. 
 #' 
 #' @param nreplicates The number of replicates to compute for the null 
 #'   distribution

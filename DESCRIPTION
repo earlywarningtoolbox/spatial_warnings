@@ -20,6 +20,7 @@ Imports:
     tidyr, 
     stats, 
     utils, 
+    poweRlaw, 
     parallel
 Suggests:
     testthat,

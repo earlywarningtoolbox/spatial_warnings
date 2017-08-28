@@ -80,7 +80,9 @@ statistic is retained. PLR is then computed using this best-fitting xmin:
 Results can be displayed using the text-based \code{summary} and \code{print}, 
   but graphical options are also available to plot the trends (\code{plot}) and 
   the fitted distributions (\code{plot_distr}). Plotting functions are 
-  documented in a \link[=patchdistr_spews_plot]{separate page}.
+  documented in a \link[=patchdistr_spews_plot]{separate page}. Observed and 
+  fitted distributions can be produced using the \code{predict} function, 
+  as documented in \link[=patchdistr_spews_predict]{this page}.
 }
 \examples{
 
@@ -108,5 +110,6 @@ Clauset, A., Shalizi, C. R., & Newman, M. E. (2009).
 \seealso{
 \code{\link{indicator_psdtype}}, \code{\link{patchsizes}}, 
   \code{\link[=patchdistr_spews_plot]{plot}}, 
-  \code{\link[=patchdistr_spews_plot]{plot_distr}}
+  \code{\link[=patchdistr_spews_plot]{plot_distr}}, 
+  \code{\link[=patchdistr_spews_predict]{predict}}
 }

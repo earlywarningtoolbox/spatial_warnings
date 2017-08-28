@@ -322,7 +322,42 @@ plot_distr.patchdistr_spews_list <- function(x,
 
 # Predict methods 
 # --------------------------------------------------
-
+#' @rdname patchdistr_spews_predict
+#' @name patchdistr_spews_predict
+#' 
+#' @title predict method for patchdistr_spews objects
+#' 
+#' @description Export the observed and fitted patch size distributions 
+#' 
+#' @param object An \code{\link{patchdistr_spews}} object 
+#' 
+#' @param newdata A vector of patch sizes at which the fit is returned (default 
+#'   to 200 regularly-spaced values). 
+#' 
+#' @param ... Ignored additionnal arguments
+#' 
+#' @param best_only Return values for only the best fit of each element (matrix)
+#'   in \code{object}, or return the values for all fitted distribution. 
+#' 
+#' @return A list with component obs, a data.frame containing the observed 
+#'   distribution values and pred, a data.frame containing the fitted 
+#'   values. 
+#' 
+#' @details The function \code{\link{patchdistr_spews}} fits competing 
+#'   distribution models to the observed patch size distributions. This 
+#'   functions is able to export the observed values and the fitted values 
+#'   altogether. 
+#' 
+#' @examples 
+#' 
+#' patch_indics <- patchdistr_spews(forestgap)
+#' 
+#' predict(patch_indics)
+#' 
+#' @seealso \code{\link{patchdistr_spews}}, 
+#'   \code{\link[=patchdistr_spews_plot]{plot}}, 
+#'   \code{\link[=patchdistr_spews_plot]{plot_distr}}, 
+#' 
 #'@export
 predict.patchdistr_spews_single <- function(object, ..., 
                                             newdata = NULL,

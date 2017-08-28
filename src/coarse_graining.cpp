@@ -11,28 +11,26 @@
 // Converted to c++ by Alexandre Génin
 //
 
-#include <Rcpp.h>
+#include <RcppArmadillo.h>
 using namespace Rcpp;
 
 //[[Rcpp::export]]
-NumericMatrix coarse_grain_cpp(NumericMatrix mat, 
-                               int subsize) {
+arma::mat coarse_grain_cpp(arma::umat mat, int subsize) {
   
-  int N = mat.nrow();
-  int n = floor(N / subsize); 
+  int nr = floor(mat.n_rows / subsize); 
+  int nc = floor(mat.n_cols / subsize); 
   
-  NumericMatrix reduced_matrix = NumericMatrix(n, n);
+  arma::mat reduced_matrix = arma::mat(nr, nc);
   
   // Fill in values of the submatrix
-  for (int j=0; j<n; j++) { 
-    for (int i=0; i<n; i++) {
+  for (int j=0; j<nc; j++) { 
+    for (int i=0; i<nr; i++) {
       
       // Compute mean of the corresponding cells in the original matrix
       double sum = 0;
-      for ( int k=(i*subsize); k< (i+1)*subsize; k++ ) { 
-        for ( int l=(j*subsize); l< (j+1)*subsize; l++ ) { 
+      for ( int l=(j*subsize); l< (j+1)*subsize; l++ ) { 
+        for ( int k=(i*subsize); k< (i+1)*subsize; k++ ) { 
           sum += mat(k,l);
-          // Rcout << k << "-" << l << ":" << mat(k,l) << "->" << sum << std::endl;
         }
       }
       

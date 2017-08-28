@@ -14,7 +14,7 @@ percolation(mat, nbmask = matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0), ncol = 3))
 \item{mat}{A binary matrix}
 
 \item{nbmask}{a "neighboring mask": a matrix with odd dimensions describing
-which neighbors are to be considered as neighbors around a cell 
+which cells are to be considered as neighbors around a cell 
 (see examples).}
 
 \item{wrap}{Whether to wrap around lattice boundaries (`TRUE`/`FALSE`), 
@@ -22,20 +22,23 @@ effectively using periodic boundaries.}
 }
 \value{
 A matrix containing ID numbers for each connected patch. Default 
-  parameters assume 4-cell neighborhood and periodic boundaries.
+  parameters assume 4-cell neighborhood and periodic boundaries. The 
+  distribution of patch sizes is returned as the attribute "psd" and the 
+  percolation status as "percolation" (whether a TRUE patch has a width 
+  or height equal to the size of the matrix).
 }
 \description{
-Label each patch with a number in a TRUE/FALSE matrix using 
-  flood fill algorithm
+Label each patch with a number in a binary matrix
 
 \code{percolation()} detects whether percolation occurs in the
   matrix (i.e. a patch has a width or a height equal to the size of the 
   matrix)
 }
 \details{
-The \code{label} function "labels" the patches of a binary (1/0) 
+The \code{label} function "labels" the patches of a binary (TRUE/FALSE) 
   matrix. It returns a matrix of similar height and width, with integer 
-  values representing the ID of the patch. Empty cells are labeled \code{NA}.
+  values representing the ID of each unique patch (contiguous cells). 
+  Empty cells are labeled as \code{NA}.
 }
 \examples{
 
@@ -54,5 +57,5 @@ image(label(rmat, nbmask8, wrap = FALSE))
 
 }
 \seealso{
-\code{\link{label}}
+\code{\link{patchsizes}}
 }

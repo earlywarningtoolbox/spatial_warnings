@@ -557,3 +557,17 @@ print.patchdistr_spews <- function(x, ...) {
   cat('\n')
   cat('Use as.data.frame() to retrieve values in a convenient form\n')
 }
+
+
+
+# Helper function 
+# ---------------
+# Get the inverse cumulative distribution of a psd (P(x >= k))
+cumpsd <- function(dat) { 
+  x <- sort(unique(dat))
+  N <- length(dat)
+  y <- sapply(x, function(k) { sum(dat >= k) / N })
+  return( data.frame(patchsize = x, y = y) )
+}
+
+

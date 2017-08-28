@@ -50,6 +50,31 @@
 #'         \code{\link{percolation}} in the system. 
 #'     }
 #' 
+#' @details 
+#' 
+#' Patterned ecosystems can exhibit a change in their spatial structure as they 
+#' become more and more stressed. It has been suggested that this should be 
+#' reflected in changes in the observed patch size distributions (PSD). 
+#' The following sequence is expected to occur (Kefi et al. 2011) as patterned 
+#' ecosystems become more and more degraded:
+#' 
+#'   - Percolation of vegetation patches occurs (a patch has a width or height 
+#'   equal to the size of the system)
+#'   
+#'   - The patch-size distribution follows a power-law
+#'   
+#'   - The patch-size distribution deviates from a power-law as larger patches 
+#'   break down
+#'   
+#'   - The patch-size distribution is closer to an exponential 
+#'   distribution
+#' 
+#' This indicator fits the observed patch size distribution based on 
+#' maximum-likelihood (following Clauset et al. 2009 recommendations), then 
+#' select the best model using AIC, BIC (default) or AICc. 
+#' 
+#' @seealso \code{\link{patchdistr_spews}}
+#' 
 #' @references
 #' 
 #' Kefi, S., Rietkerk, M., Roy, M., Franc, A., de Ruiter, P.C. & Pascual, M.

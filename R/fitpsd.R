@@ -37,12 +37,12 @@ optim_safe <- function(f, pars0) {
   # Note that in some pathological cases the fit fails (not enough points, etc.)
   # This happens a lot when finding xmin as we end up fitting on very few 
   # points in the tail of the distribution. Here, we report the fit failed but 
-  # do not stop execution. In most of those cases it has no consequences on the 
-  # result. 
+  # do not stop execution. In most (all?) of those cases it has no 
+  # consequences on the results. 
   result <- try( { 
     sann_approx <- optim(pars0, safe(f), 
-                        method = "SANN", 
-                        control = list(maxit = 100)) 
+                         method = "SANN", 
+                         control = list(maxit = 100)) 
     
     # Now do a Newton method to find the (hopefully global) minimum. 
     result <- nlm(safe(f), sann_approx[['par']], 
@@ -338,7 +338,7 @@ exp_ll <- function(dat, rate, xmin) {
   sum( ddisexp(dat, rate, xmin, log = TRUE)) 
 }
 
-exp_fit <- function(dat, xmin) { 
+exp_fit <- function(dat, xmin = 1) { 
   
   dat <- dat[dat>=xmin]
   
@@ -394,7 +394,7 @@ lnorm_ll <- function(x, meanlog, sdlog, xmin) {
 }
 
 # LNORM: fit
-lnorm_fit <- function(dat, xmin) { 
+lnorm_fit <- function(dat, xmin = 1) { 
   
   # Pars[1] holds mean of log-transformed data
   # Pars[2] holds sd 
@@ -461,7 +461,7 @@ tpl_ll <- function(x, expo, rate, xmin) {
   return( ll )
 } 
 
-tpl_fit <- function(dat, xmin) { 
+tpl_fit <- function(dat, xmin = 1) { 
   
   negll <- function(pars) { 
     - tpl_ll(dat, 

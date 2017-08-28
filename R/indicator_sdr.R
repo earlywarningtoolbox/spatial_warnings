@@ -20,9 +20,30 @@
 #' @param nreplicates The number of replicates to compute for the null 
 #'   distribution
 #' 
-#' @return A single value containing the SDR value 
+#' @return A list (or a list of lists if input was a list of matrices) with 
+#'   components:
+#'     \itemize{
+#'       \item `value`: SDR of the matrix
+#'     }
+#'   If nreplicates is above 2, then the list has the following additional 
+#'   components : 
+#'     \itemize{
+#'       \item `null_mean`: Mean SDR of the null distribution
+#'       \item `null_sd`: SD of SDR in the null distribution
+#'       \item `z_score`: Z-score of the observed value in the null distribution 
+#'                          (value minus the null mean and divided by null 
+#'                          standard deviation)
+#'       \item `pval`: p-value based on the rank of the observed SDR
+#'                       in the null distribution. A low p-value means that 
+#'                       the indicator value is significantly higher than the 
+#'                       null values. 
+#'     }
 #' 
-#' @references ? Biggs et al. 2008 ? (Vishu suggestion IIRC [Alex])
+#' @references 
+#' 
+#' Carpenter, S.R. & Brock, W.A. (2010). Early warnings of regime shifts in 
+#' spatial dynamics using the discrete Fourier transform. Ecosphere, 1, art10
+#' 
 #'
 #' @export
 indicator_sdr <- function(input, 

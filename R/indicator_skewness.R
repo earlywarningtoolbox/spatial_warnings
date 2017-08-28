@@ -23,7 +23,6 @@
 #' @return A list (or a list of lists if input was a list of matrices) with 
 #'   components:
 #'     \itemize{
-#'       \item `mean`: Landscape mean cover
 #'       \item `value`: Spatial skewness of the matrix
 #'     }
 #'   If nreplicates is above 2, then the list has the following additional 

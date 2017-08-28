@@ -1,25 +1,28 @@
 #' @title Labelling of unique patches and detection of percolation. 
 #' 
-#' @description Label each patch with a number in a TRUE/FALSE matrix using 
-#'   flood fill algorithm
+#' @description Label each patch with a number in a binary matrix 
 #' 
 #' @param mat A binary matrix
 #' 
 #' @param nbmask a "neighboring mask": a matrix with odd dimensions describing
-#'   which neighbors are to be considered as neighbors around a cell 
+#'   which cells are to be considered as neighbors around a cell 
 #'   (see examples).
 #' 
 #' @param wrap Whether to wrap around lattice boundaries (`TRUE`/`FALSE`), 
 #'   effectively using periodic boundaries.
 #'
 #' @return A matrix containing ID numbers for each connected patch. Default 
-#'   parameters assume 4-cell neighborhood and periodic boundaries.
+#'   parameters assume 4-cell neighborhood and periodic boundaries. The 
+#'   distribution of patch sizes is returned as the attribute "psd" and the 
+#'   percolation status as "percolation" (whether a TRUE patch has a width 
+#'   or height equal to the size of the matrix). 
 #' 
-#' @details The \code{label} function "labels" the patches of a binary (1/0) 
+#' @details The \code{label} function "labels" the patches of a binary (TRUE/FALSE) 
 #'   matrix. It returns a matrix of similar height and width, with integer 
-#'   values representing the ID of the patch. Empty cells are labeled \code{NA}.
+#'   values representing the ID of each unique patch (contiguous cells). 
+#'   Empty cells are labeled as \code{NA}.
 #' 
-#' @seealso \code{\link{label}}
+#' @seealso \code{\link{patchsizes}}
 #' 
 #' @examples 
 #' 
@@ -44,7 +47,7 @@ label <- function(mat,
                   wrap = FALSE) {
   
   if ( ! is.logical(mat) ) { 
-    stop('Patch-size distributions require a logical matrix',
+    stop('Labelling of patches requirese a logical matrix',
          '(TRUE/FALSE values): please convert your data first.')
   }
   
@@ -86,7 +89,7 @@ percolation <- function(mat, nbmask = matrix(c(0,1,0,
 
 #' @title Get patch sizes.
 #' 
-#' @description Get the distribution of patch sizes
+#' @description Get the distribution of patch sizes of a logical matrix
 #' 
 #' @param mat A logical matrix or a list of these matrices.
 #' 
@@ -129,7 +132,7 @@ patchsizes <- function(mat,
   }
   
   if ( ! is.logical(mat) ) { 
-    stop('Patch-size distributions require a logical matrix',
+    stop('Computing patch-size distributions requires a logical matrix',
          '(TRUE/FALSE values): please convert your data first.')
   }
   
@@ -138,13 +141,3 @@ patchsizes <- function(mat,
   
   return(attr(map, "psd"))
 }
-
-# Get the higher tail cumulative distribution of a psd (P(x >= k))
-cumpsd <- function(dat) { 
-  x <- sort(unique(dat))
-  N <- length(dat)
-  y <- sapply(x, function(k) { sum(dat >= k) / N })
-  return( data.frame(patchsize = x, y = y) )
-}
-
-

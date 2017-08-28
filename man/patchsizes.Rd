@@ -26,7 +26,7 @@ If mat is a logical matrix, then the function returns a vector of
   a list of vectors of patch sizes: this list is flattened if merge is TRUE.
 }
 \description{
-Get the distribution of patch sizes
+Get the distribution of patch sizes of a logical matrix
 }
 \examples{
 data(forestgap)

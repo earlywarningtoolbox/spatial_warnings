@@ -90,7 +90,10 @@ The significance of generic early-warning signals can be estimated by
   used as a null distribution. P-values are obtained based on the rank of 
   the observered value in the null distribution. A small P-value means 
   that the indicator is significantly above the null values, as expected 
-  before a critical point.
+  before a critical point. 
+
+The \code{plot} method can displays the results graphically. A text summary 
+  can be obtained using the \code{summary} method.
 
 Note that the produced plot is adjusted depending on whether 
   \code{along} is numeric or not.

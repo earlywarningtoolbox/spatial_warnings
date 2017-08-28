@@ -57,6 +57,9 @@
 #'   that the indicator is significantly above the null values, as expected 
 #'   before a critical point. 
 #'
+#' The \code{plot} method can displays the results graphically. A text summary 
+#'   can be obtained using the \code{summary} method. 
+#' 
 #' @references 
 #' 
 #'   Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., 

@@ -14,9 +14,6 @@
 #'   \code{subsize} in each dimension of the matrix. Variance is calculated 
 #'   on the coarse-grained matrix. 
 #' 
-#' @param detrending If TRUE data are detrended by removing the spatial mean. 
-#'   (Default is FALSE). 
-#' 
 #' @param nreplicates Number of replicates to produce to estimate null 
 #'   distribution of index.
 #' 
@@ -86,15 +83,13 @@
 #'@export
 indicator_variance <- function(input, 
                                subsize     = 5, 
-                               detrending  = FALSE, 
                                nreplicates = 999) {
   
   check_mat(input) # checks data input
   
   if (is.list(input)) { 
     # Returns a list of lists
-    return( lapply(input, indicator_variance, 
-                   subsize, detrending, nreplicates) )
+    return( lapply(input, indicator_variance, subsize, nreplicates) )
   } else { 
     
     # We alter the raw_variance function so it includes coarse_graining 
@@ -105,8 +100,7 @@ indicator_variance <- function(input,
     } 
     
     # Compute and return indicator
-    return( compute_indicator_with_null(input, detrending, 
-                                        nreplicates, indicf) ) 
+    return( compute_indicator_with_null(input, nreplicates, indicf) ) 
     
   }
 }

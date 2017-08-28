@@ -57,8 +57,6 @@ indictest.spectral_spews_single <- function(x, nperm = 999, ...) {
   # Compute a distribution of null values for SDR
   null_values_sdr <- 
     compute_indicator_with_null(x[['orig_data']], 
-                                # We do not make use of detrending for SDR
-                                detrending = FALSE,
                                 nreplicates = nperm, 
                                 indicf = sdr_indicf)
   

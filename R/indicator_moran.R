@@ -14,9 +14,6 @@
 #' @param subsize logical. Dimension of the submatrix used to coarse-grain the 
 #'   original matrix (set to 1 for no coarse-graining).
 #' 
-#' @param detrending If TRUE data are detrended by removing the spatial mean. 
-#'   (Default is FALSE)
-#' 
 #' @param nreplicates Number of replicates to produce to estimate null 
 #'   distribution of index (default: 999).
 #' 
@@ -45,7 +42,6 @@
 #'@export  
 indicator_moran <- function(input, 
                             subsize     = 1, # default = no cg
-                            detrending  = FALSE, 
                             nreplicates = 999) {
   
   check_mat(input) # checks if binary and sensible
@@ -53,8 +49,7 @@ indicator_moran <- function(input,
   
   if (is.list(input)) {
     # Returns a list of lists
-    return( lapply(input, indicator_moran, 
-                   subsize, detrending, nreplicates) )
+    return( lapply(input, indicator_moran, subsize, nreplicates) )
   } else { 
     
     # We alter the moran function to do coarse_graining if the user asked for it
@@ -65,8 +60,7 @@ indicator_moran <- function(input,
       indicf <- raw_moran
     }
     
-    return( compute_indicator_with_null(input, detrending, 
-                                        nreplicates, indicf) ) 
+    return( compute_indicator_with_null(input, nreplicates, indicf) ) 
     
     
   }

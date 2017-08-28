@@ -9,7 +9,7 @@
 \alias{plot.generic_spews}
 \title{Generic Spatial Early-Warning signals}
 \usage{
-generic_spews(mat, subsize = 4, detrend = FALSE, abs_skewness = FALSE,
+generic_spews(mat, subsize = 4, abs_skewness = FALSE,
   moranI_coarse_grain = FALSE)
 
 \method{indictest}{generic_spews}(x, nperm = 999, ...)
@@ -24,9 +24,6 @@ generic_spews(mat, subsize = 4, detrend = FALSE, abs_skewness = FALSE,
 or a list of those}
 
 \item{subsize}{The subsize used for the coarse-graining phase (see Details)}
-
-\item{detrend}{Should the values be detrended by removing the spatial mean
-of the matrix ?}
 
 \item{abs_skewness}{Should the absolute skewness be used instead of its 
 raw values ?}

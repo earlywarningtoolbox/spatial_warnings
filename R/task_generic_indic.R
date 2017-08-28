@@ -13,9 +13,6 @@
 #' 
 #' @param subsize The subsize used for the coarse-graining phase (see Details)
 #'   
-#' @param detrend Should the values be detrended by removing the spatial mean
-#'   of the matrix ?
-#'   
 #' @param abs_skewness Should the absolute skewness be used instead of its 
 #'   raw values ? 
 #' 
@@ -114,7 +111,6 @@
 #' @export
 generic_spews <- function(mat, 
                           subsize = 4,
-                          detrend = FALSE,
                           abs_skewness = FALSE,
                           moranI_coarse_grain = FALSE) {
   
@@ -123,7 +119,7 @@ generic_spews <- function(mat,
   orig_mat <- mat
   
   if ( is.list(mat) ) { 
-    results <- lapply(mat, generic_spews, subsize, detrend, abs_skewness,
+    results <- lapply(mat, generic_spews, subsize, abs_skewness,
                       moranI_coarse_grain)
     names(results) <- names(mat) # import list names
     class(results) <- c('generic_spews_list', 'generic_spews', 
@@ -155,11 +151,6 @@ generic_spews <- function(mat,
                 mean     = mean(mat)) )
     }
     
-    # Handle detrending
-    if (detrend) { 
-      mat_cg <- mat_cg - mean(mat_cg)
-    }
-    
     if (moranI_coarse_grain) { 
       moran_value <- raw_moran(mat_cg) 
     } else { 
@@ -184,8 +175,7 @@ generic_spews <- function(mat,
                   subsize = subsize, 
                   indicf  = indicf, 
                   abs_skewness = abs_skewness, 
-                  moranI_coarse_grain = moranI_coarse_grain,
-                  detrend = detrend)
+                  moranI_coarse_grain = moranI_coarse_grain)
   
   class(results) <- c('generic_spews_single', 'generic_spews',
                       'spews_result_single', 'list')

@@ -14,9 +14,6 @@
 #'   \code{subsize} in each dimension of the matrix. Skewness is calculated 
 #'   on the coarse-grained matrix. 
 #' 
-#' @param detrending If TRUE data are detrended by removing the spatial mean. 
-#'   (Default is FALSE).
-#' 
 #' @param absolute Should the function return the absolute value or raw value 
 #'   of skewness ?
 #' 
@@ -94,7 +91,6 @@
 #'@export
 indicator_skewness <- function(input, 
                                subsize     = 5, 
-                               detrending  = FALSE, 
                                absolute = TRUE,
                                nreplicates = 999) {
   
@@ -103,7 +99,7 @@ indicator_skewness <- function(input,
   if ( is.list(input) ) {
     # Returns a list of lists
     return( lapply(input, indicator_skewness, 
-                   subsize, detrending, absolute, nreplicates) )
+                   subsize, absolute, nreplicates) )
   } else { 
     
     # We choose the function depending on whether we want the absolute value 
@@ -123,8 +119,7 @@ indicator_skewness <- function(input,
     }
     
     # Compute and return the indicator
-    return( compute_indicator_with_null(input, detrending, 
-                                        nreplicates, indicf) ) 
+    return( compute_indicator_with_null(input, nreplicates, indicf) ) 
     
   }
 }

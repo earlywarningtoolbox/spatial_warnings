@@ -21,6 +21,6 @@ indicator_moran(L)
 
 
 # Parameters test:
-indicator_moran(B, subsize = 2, detrending = FALSE, discrete = TRUE)$MoranCorr 
+indicator_moran(B, subsize = 2, discrete = TRUE)$MoranCorr 
  
 

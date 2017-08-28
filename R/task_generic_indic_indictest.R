@@ -27,7 +27,6 @@ indictest.generic_spews_single <- function(x, nperm = 999, ...) {
   
   # Compute a distribution of null values
   null_values <- compute_indicator_with_null(x[["orig_data"]],
-                                             detrending = x[["detrend"]], 
                                              nreplicates = nperm, 
                                              indicf = x[["indicf"]])
   

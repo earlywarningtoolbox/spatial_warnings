@@ -4,8 +4,7 @@
 \alias{indicator_variance}
 \title{Spatial variance indicator}
 \usage{
-indicator_variance(input, subsize = 5, detrending = FALSE,
-  nreplicates = 999)
+indicator_variance(input, subsize = 5, nreplicates = 999)
 }
 \arguments{
 \item{input}{A matrix or a list of matrices. The matrix 
@@ -17,9 +16,6 @@ original matrix. This must be an integer less than size of the full
 matrix. Coarse-graining reduces the size of the matrix by a factor 
 \code{subsize} in each dimension of the matrix. Variance is calculated 
 on the coarse-grained matrix.}
-
-\item{detrending}{If TRUE data are detrended by removing the spatial mean. 
-(Default is FALSE).}
 
 \item{nreplicates}{Number of replicates to produce to estimate null 
 distribution of index.}

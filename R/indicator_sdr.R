@@ -65,7 +65,6 @@ indicator_sdr <- function(input,
   
   return( 
     compute_indicator_with_null(input, 
-                                detrending = FALSE, 
                                 nreplicates = nreplicates, 
                                 indicf = indicf)
   )

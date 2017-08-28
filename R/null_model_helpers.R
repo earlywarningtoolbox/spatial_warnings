@@ -6,17 +6,11 @@
 #   GRAIN OR NOT
 # 
 compute_indicator_with_null <- function(input, 
-                                        detrending, 
                                         nreplicates, 
                                         indicf, 
                                         nthreads = getOption("spw.threads")) { 
   
-  # Check options and apply modifications --------------------
-  if (detrending) { 
-    input <- input - mean(input)
-  }
-  
-  # Compute the indicator_function
+  # Compute the observed value
   value  <- indicf(input)
   result <- list(value = value)
   

@@ -113,15 +113,13 @@ plot(forest.gentest)
 #' a bit. A unique help page gathers all the information needed for the 
 #' Generic EWS workflow: see `?generic_spews` 
 #' 
-#' For example, we can decide to use detrending (mean of matrix is substracted 
-#' after coarse-graining), or that the computation of the Moran's I index 
+#' For example, we can that the computation of the Moran's I index 
 #' should be carried out on coarse-grained data. We can also use the absolute 
 #' value of skewness instead of its raw value. And last but not least, we can 
 #' change the coarse-graining length. 
 #' 
 forest.genic <- generic_spews(forestgap, 
                               subsize = 3,
-                              detrend = FALSE,
                               abs_skewness = TRUE,
                               moranI_coarse_grain = TRUE)
 

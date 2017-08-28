@@ -4,7 +4,7 @@
 \alias{indicator_moran}
 \title{Moran's Index at lag of 1}
 \usage{
-indicator_moran(input, subsize = 1, detrending = FALSE, nreplicates = 999)
+indicator_moran(input, subsize = 1, nreplicates = 999)
 }
 \arguments{
 \item{input}{An matrix or a list of matrix object. It should 
@@ -12,9 +12,6 @@ be a square matrix}
 
 \item{subsize}{logical. Dimension of the submatrix used to coarse-grain the 
 original matrix (set to 1 for no coarse-graining).}
-
-\item{detrending}{If TRUE data are detrended by removing the spatial mean. 
-(Default is FALSE)}
 
 \item{nreplicates}{Number of replicates to produce to estimate null 
 distribution of index (default: 999).}

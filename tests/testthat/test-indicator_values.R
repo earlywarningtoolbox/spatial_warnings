@@ -82,7 +82,6 @@ test_that('Generic indicator task function returns correct values', {
   # Parameters
   size <- 4
   moran_do_cg <- FALSE
-  detrending <- FALSE
   moran_do_cg <- FALSE
   
   genindic_result <- generic_spews(testmat, 
@@ -99,7 +98,6 @@ test_that('Generic indicator task function returns correct values', {
   expect_equal(genindic_result[['results']][['skewness']],
                indicator_skewness(testmat, 
                                   subsize = size, 
-                                  detrending = detrending,
                                   absolute = FALSE, 
                                   nreplicates = 0)[['value']])
   
@@ -107,7 +105,6 @@ test_that('Generic indicator task function returns correct values', {
   expect_equal(genindic_result[['results']][['variance']],
                indicator_variance(testmat, 
                                   subsize = size, 
-                                  detrending = detrending,
                                   nreplicates = 0)[['value']])
   
 })

@@ -4,10 +4,15 @@
 #'   (with lag one). It also computes a null value obtained by randomizing 
 #'   the matrix.
 #'
-#' @references Dakos, V., van Nes, E. H., Donangelo, R., Fort, H., & 
+#' @references 
+#'
+#' Dakos, V., van Nes, E. H., Donangelo, R., Fort, H., & 
 #' Scheffer, M. (2010). Spatial correlation as leading indicator of 
 #' catastrophic shifts. Theoretical Ecology, 3(3), 163-174.
-#' 
+#'
+#' Legendre, P., & Legendre, L. F. J. (2012). Numerical Ecology.
+#' Elsevier Science.
+#'
 #' @param input An matrix or a list of matrix object. It should 
 #'   be a square matrix 
 #' 
@@ -20,7 +25,7 @@
 #' @return A list (or a list of those if input is a list of matrix 
 #'   object) of:
 #'     \itemize{
-#'       \item `corr`: Spatial autocorrelation of the matrix
+#'       \item `value`: Spatial autocorrelation of the matrix
 #'     }
 #'   If nreplicates is above 2, then the list has the following additional 
 #'   components : 
@@ -38,7 +43,7 @@
 #' indicator_moran(serengeti)
 #'
 #' 
-#'@export  
+#'@export
 indicator_moran <- function(input, 
                             subsize     = 1, # default = no cg
                             nreplicates = 999) {
@@ -59,7 +64,7 @@ indicator_moran <- function(input,
       indicf <- raw_moran
     }
     
-    return( compute_indicator_with_null(input, nreplicates, indicf) ) 
+    return( compute_indicator_with_null(input, nreplicates, indicf) )
     
     
   }

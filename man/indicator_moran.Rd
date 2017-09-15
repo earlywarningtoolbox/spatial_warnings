@@ -48,4 +48,7 @@ indicator_moran(serengeti)
 Dakos, V., van Nes, E. H., Donangelo, R., Fort, H., & 
 Scheffer, M. (2010). Spatial correlation as leading indicator of 
 catastrophic shifts. Theoretical Ecology, 3(3), 163-174.
+
+Legendre, P., & Legendre, L. F. J. (2012). Numerical Ecology.
+Elsevier Science.
 }

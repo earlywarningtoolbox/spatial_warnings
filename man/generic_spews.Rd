@@ -110,7 +110,8 @@ summary(gen_indic)
 # Display trends along the varying model parameter
 plot(gen_indic, along = serengeti.rain)
 
-# Compute significance
+# Compute significance (long)
+\dontrun{
 gen_test <- indictest(gen_indic)
 
 print(gen_test)
@@ -129,6 +130,8 @@ if ( require(ggplot2) ) {
     geom_vline(xintercept = 593, color = "red", linetype = "dashed") +
     xlab('Annual rainfall') + 
     theme_minimal()
+}
+
 }
 
 }

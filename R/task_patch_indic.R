@@ -101,6 +101,7 @@
 #' 
 #' data(forestgap)
 #' 
+#' \dontrun{
 #' psd_indic <- patchdistr_spews(forestgap)
 #' 
 #' summary(psd_indic)
@@ -110,6 +111,7 @@
 #' if ( require(ggplot2) ) { 
 #'   plot(psd_indic) + 
 #'     theme_minimal()
+#' }
 #' }
 #' @export
 patchdistr_spews <- function(x, 

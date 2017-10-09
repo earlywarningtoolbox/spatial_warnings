@@ -63,8 +63,10 @@
 #' 
 #' @examples 
 #' 
+#' \dontrun{ 
 #' serengeti.sdr <- indicator_sdr(serengeti, nreplicates = 499)
 #' do.call(rbind, serengeti.sdr) # convert results to data.frame
+#' }
 #' 
 #' @export
 indicator_sdr <- function(input, 

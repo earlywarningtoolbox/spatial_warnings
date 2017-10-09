@@ -118,7 +118,8 @@ plot(spec_indic, along = serengeti.rain)
 # computing using: options(mc.cores = n)
 
 # Assess significance
-spec_test <- indictest(spec_indic, nperm = 499)
+\dontrun{
+spec_test <- indictest(spec_indic)
 summary(spec_test)
 
 # Display the SDR trend, now with a grey ribbon representing 5\%-95\% 
@@ -131,13 +132,14 @@ if (require(ggplot2)) {
     geom_vline(xintercept = 590, color = "red", linetype = "dashed")
 }
 
+}
 
 # Display radial-spectra
-plot_spectrum(spec_test, along = serengeti.rain)
+plot_spectrum(spec_indic, along = serengeti.rain)
 
 # Graphics can be modified using ggplot2 functions
 if (require(ggplot2)) { 
-  plot_spectrum(spec_test, along = serengeti.rain) + 
+  plot_spectrum(spec_indic, along = serengeti.rain) + 
     scale_y_log10()
 }
 

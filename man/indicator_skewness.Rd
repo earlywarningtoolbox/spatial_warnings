@@ -78,8 +78,9 @@ Null model evaluations are also done on coarse-grained matrices.
 \examples{
 
 data(serengeti)
+\dontrun{
 indicator_skewness(serengeti)
-
+}
 
 }
 \references{

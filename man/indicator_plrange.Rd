@@ -44,14 +44,14 @@ where \eqn{x_{max}}{x_max} is the maximum observed patch size, and
 \eqn{x_{smallest}}{x_smallest} is the minimum observed patch size.
 }
 \examples{
-
+\dontrun{
 forestgap.plr <- indicator_plrange(forestgap) 
 do.call(rbind, forestgap.plr) # convert results to data.frame
 
 # Restrict to small xmins 
 forestgap.plr2 <- indicator_plrange(forestgap, xmin_bounds = c(1, 10)) 
 do.call(rbind, forestgap.plr2) 
-
+}
 }
 \references{
 Clauset, A., Shalizi, C. R., & Newman, M. E. (2009). 

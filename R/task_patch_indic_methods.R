@@ -48,6 +48,7 @@
 #' 
 #' @examples
 #' 
+#' \dontrun{ 
 #' data(forestgap)
 #' psd_indic <- patchdistr_spews(forestgap)
 #' 
@@ -58,6 +59,7 @@
 #' 
 #' # Display individual distributions
 #' plot_distr(psd_indic, along = forestgap.pars[ ,"d"])
+#' }
 #' 
 #'@method plot patchdistr_spews
 #'@export
@@ -350,9 +352,12 @@ plot_distr.patchdistr_spews_list <- function(x,
 #' 
 #' @examples 
 #' 
+#' \dontrun{ 
 #' patch_indics <- patchdistr_spews(forestgap)
 #' 
 #' predict(patch_indics)
+#' 
+#' }
 #' 
 #' @seealso \code{\link{patchdistr_spews}}, 
 #'   \code{\link[=patchdistr_spews_plot]{plot}}, 

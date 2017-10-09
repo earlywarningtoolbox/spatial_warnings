@@ -79,8 +79,13 @@ select the best model using AIC, BIC (default) or AICc.
 
 data(forestgap)
 
-indicator_psdtype(forestgap)
+# One logical matrix only
+indicator_psdtype(forestgap[1])
 
+# A list of these matrices
+\dontrun{ 
+indicator_psdtype(forestgap)
+}
 
 }
 \references{

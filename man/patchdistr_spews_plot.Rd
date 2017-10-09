@@ -49,6 +49,7 @@ The \code{plot} function will produce a complex figure summarizing the change
 }
 \examples{
 
+\dontrun{ 
 data(forestgap)
 psd_indic <- patchdistr_spews(forestgap)
 
@@ -59,6 +60,7 @@ plot(psd_indic, along = as.factor(forestgap.pars[ ,"d"]))
 
 # Display individual distributions
 plot_distr(psd_indic, along = forestgap.pars[ ,"d"])
+}
 
 }
 \seealso{

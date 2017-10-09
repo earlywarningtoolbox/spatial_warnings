@@ -89,6 +89,7 @@ Results can be displayed using the text-based \code{summary} and \code{print},
 
 data(forestgap)
 
+\dontrun{
 psd_indic <- patchdistr_spews(forestgap)
 
 summary(psd_indic)
@@ -98,6 +99,7 @@ plot(psd_indic)
 if ( require(ggplot2) ) { 
   plot(psd_indic) + 
     theme_minimal()
+}
 }
 }
 \references{

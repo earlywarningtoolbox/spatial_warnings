@@ -95,8 +95,13 @@
 #' 
 #' data(forestgap)
 #' 
+#' # One logical matrix only
+#' indicator_psdtype(forestgap[1])
+#' 
+#' # A list of these matrices
+#' \dontrun{ 
 #' indicator_psdtype(forestgap)
-#'
+#' }
 #'
 #'@export 
 indicator_psdtype <- function(x, 

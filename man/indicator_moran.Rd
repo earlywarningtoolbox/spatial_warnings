@@ -40,8 +40,14 @@ This functions computes the Moran's spatial correlation index
 \examples{
 
 data(serengeti)
-indicator_moran(serengeti)
 
+# One matrix
+indicator_moran(serengeti[1])
+
+# Several matrices
+\dontrun{
+indicator_moran(serengeti)
+}
 
 }
 \references{

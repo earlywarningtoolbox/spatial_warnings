@@ -76,8 +76,9 @@
 #' @examples
 #' 
 #' data(serengeti)
-#' indicator_variance(serengeti)
-#' 
+#' \dontrun{
+#' indicator_variance(serengeti, nreplicates = 499)
+#' }
 #' 
 #'@export
 indicator_variance <- function(input, 

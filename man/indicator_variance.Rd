@@ -70,8 +70,9 @@ Null model evaluations are also done on coarse-grained matrices.
 \examples{
 
 data(serengeti)
-indicator_variance(serengeti)
-
+\dontrun{
+indicator_variance(serengeti, nreplicates = 499)
+}
 
 }
 \references{

@@ -35,9 +35,12 @@ The function \code{\link{patchdistr_spews}} fits competing
 }
 \examples{
 
+\dontrun{ 
 patch_indics <- patchdistr_spews(forestgap)
 
 predict(patch_indics)
+
+}
 
 }
 \seealso{

@@ -52,14 +52,14 @@
 #' @seealso \code{\link{patchdistr_spews}}
 #' 
 #' @examples
-#'
+#' \dontrun{
 #' forestgap.plr <- indicator_plrange(forestgap) 
 #' do.call(rbind, forestgap.plr) # convert results to data.frame
 #' 
 #' # Restrict to small xmins 
 #' forestgap.plr2 <- indicator_plrange(forestgap, xmin_bounds = c(1, 10)) 
 #' do.call(rbind, forestgap.plr2) 
-#' 
+#' }
 #'@export
 indicator_plrange <- function(mat,
                               merge = FALSE,

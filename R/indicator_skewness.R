@@ -84,8 +84,9 @@
 #' @examples 
 #' 
 #' data(serengeti)
+#' \dontrun{
 #' indicator_skewness(serengeti)
-#' 
+#' }
 #' 
 #'@export
 indicator_skewness <- function(input, 

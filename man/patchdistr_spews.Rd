@@ -73,7 +73,8 @@ The best distribution is selected based on BIC by default.
 
 To compute the Power-law range (PLR), power-laws are fitted with a variable 
 minimum patch size (xmin) and the one with the lowest Kolmogorov-Smirnov
-statistic is retained. PLR is then computed using this best-fitting xmin: 
+distance to the empirical distribution is retained. PLR is then computed 
+using this best-fitting xmin: 
 
 \deqn{\frac{log(x_{max}) - log(x_{min})}{log(x_{max}) - log(x_{smallest})}}{ (log(xmax) - log(xmin))/(log(xmax) - log(xsmallest))}
 
@@ -91,7 +92,13 @@ data(forestgap)
 psd_indic <- patchdistr_spews(forestgap)
 
 summary(psd_indic)
+plot(psd_indic)
 
+# Plots can be modified using ggplot2 directives 
+if ( require(ggplot2) ) { 
+  plot(psd_indic) + 
+    theme_minimal()
+}
 }
 \references{
 Kefi, S., Rietkerk, M., Alados, C. L., Pueyo, Y., Papanastasis, 

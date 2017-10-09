@@ -1,7 +1,8 @@
 #' A list of binary matrices and their associated parameters 
 #'
 #' @format A list of logical matrices which are the end results of simulations 
-#'   from Kubo's Forest Gap model (see references). 
+#'   from Kubo's Forest Gap model along a gradient of increasing values of 
+#'   stress (see references). 
 #' 
 #' @source Generated using the implementation of Kubo's model in caspr 0.2.0 
 #'   \url{https://github.com/fdschneider/caspr}. 
@@ -17,6 +18,11 @@
 #' @rdname forestgap
 #' 
 #' @format The parameters used for the simulations, as a data frame. 
+#' 
+#' @details Kubo's forest gap model has three parameters, \eqn{\alpha}{alpha} 
+#'   that controls the reproductive rate of trees, \eqn{d}{d} controls the 
+#'   non-spatialized mortality and \eqn{\delta}{delta} the increased mortality 
+#'   due to the presence of a neighboring gap. 
 #' 
 "forestgap.pars"
 

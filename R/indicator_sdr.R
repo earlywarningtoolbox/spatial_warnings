@@ -39,12 +39,33 @@
 #'                       null values. 
 #'     }
 #' 
+#' @details 
+#' 
+#' SDR measures the increase in long-range correlations before a critical point. 
+#'   It is the ratio of the average low frequency value over high frequency 
+#'   values. In this implementation, an increase in SDR implies a "reddening" 
+#'   of the \link[=rspectrum]{r-spectrum}. See also \code{\link{spectral_spews}} for 
+#'   a more complete description. 
+#' 
+#' Low and high frequencies are averaged in order to compute the SDR. The 
+#'   parameters \code{sdr_low_range} and \code{sdr_high_range} control which 
+#'   frequencies are selected for averaging. For example 
+#'   \code{sdr_low_range = c(0, .2)} (default) uses the lower 20% to compute 
+#'   the average of low frequencies. \code{sdr_high_range = c(.8, 1)} uses the 
+#'   higher 20% for the average of high frequencies. 
+#' 
+#' @seealso spectral_spews, rspectrum
+#' 
 #' @references 
 #' 
 #' Carpenter, S.R. & Brock, W.A. (2010). Early warnings of regime shifts in 
-#' spatial dynamics using the discrete Fourier transform. Ecosphere, 1, art10
+#'   spatial dynamics using the discrete Fourier transform. Ecosphere
 #' 
-#'
+#' @examples 
+#' 
+#' serengeti.sdr <- indicator_sdr(serengeti, nreplicates = 499)
+#' do.call(rbind, serengeti.sdr) # convert results to data.frame
+#' 
 #' @export
 indicator_sdr <- function(input, 
                           sdr_low_range  = NULL, 

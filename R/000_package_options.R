@@ -6,10 +6,8 @@ DIGITS <- 2
 # Default thread number 
 
 
-# A theme that gives v  isual homogenity to all the plots 
-# produced by the spatialwarnings package. It is implemented as a function so 
-# that some things are tweakable on the fly
-# 
+# A function returning a theme that gives visual homogenity to all the plots 
+# produced by the spatialwarnings package. 
 theme_spwarnings <- function() { 
   lightgray <- "#DCDAD5"
   lightgray_darker <- "#B6B5B1"

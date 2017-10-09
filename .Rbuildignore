@@ -8,3 +8,4 @@ draft
 data-raw
 ^.travis\.yml$
 web
+README.md

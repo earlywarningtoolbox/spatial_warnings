@@ -11,7 +11,7 @@
 #' variance and skewness can give spurious results irrelevant to the proximity 
 #' to transition. Therefore, discrete data should be 'coarse-grained' before 
 #' calculating the spatial early warning signals. However, this can also be 
-#' applied to continuous state data.  
+#' applied to continuous state data. 
 #' 
 #' @references 
 #' 

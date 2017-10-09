@@ -2,24 +2,64 @@
 # This file contains the indicator function based on the power-law range
 #   (how much of the data behaves like a power law?)
 #
-#' @title TODO
+#' @title Power-law range indicator
+#' 
+#' @description Compute the power-law range of a matrix 
+#' 
+#' @param mat A logical matrix, or a list of logical matrices 
 #'
-#' @description TODO
+#' @param merge Controls whether the patch-size distributions of the input 
+#'   matrices are merged together before computing the power-law range. Setting 
+#'   this value to \code{TRUE} makes the function return a single value even 
+#'   if multiple matrices are given as input. 
 #'
-#' @references TODO
-#'
-#' @param mat TODO
-#'
-#' @param merge TODO
-#'
-#' @param xmin_bounds TODO
-#'
-#' @return TODO
-#'
+#' @param xmin_bounds A vector of two integer values, defining a range in which 
+#'   to search for the best xmin (see Details). 
+#' 
+#' 
+#' @details 
+#' 
+#' Some ecosystems show typical changes in their patch-size 
+#' distribution as they become more and more degraded. In particular, an 
+#' increase in the truncation of the patch-size distribution (PSD) is expected 
+#' to occur. The power-law range (PLR) measures the truncation of the PSD in a single 
+#' value (see also \code{\link{patchdistr_spews}} for more details). 
+#' 
+#' To compute the PLR, power-laws are fitted with a variable 
+#' minimum patch size (xmin) and the one with the lowest Kolmogorov-Smirnov
+#' distance to the empirical distribution is retained. PLR is then computed 
+#' using this best-fitting xmin: 
+#' 
+#' \deqn{\frac{log(x_{max}) - log(x_{min})}{log(x_{max}) - log(x_{smallest})}}{ (log(xmax) - log(xmin))/(log(xmax) - log(xsmallest))}
+#' 
+#' where \eqn{x_{max}}{x_max} is the maximum observed patch size, and 
+#' \eqn{x_{smallest}}{x_smallest} is the minimum observed patch size. 
+#' 
+#' @references 
+#' 
+#' Clauset, A., Shalizi, C. R., & Newman, M. E. (2009). 
+#'   Power-law distributions in empirical data. SIAM review, 51(4), 661-703.
+#' 
+#' Berdugo, M., Kefi, S., Soliveres, S. & Maestre, F.T. (2017). Plant spatial 
+#' patterns identify alternative ecosystem multifunctionality states in 
+#' global drylands. Nature in Ecology and Evolution.
+#' 
+#' @return A data.frame with columns minsize, maxsize which are the observed 
+#'   minimum and maximum patch sizes. The estimated \eqn{x_{min}}{x_min} and the 
+#'   value of the power-law range. If multiple matrices were provided, then 
+#'   a list of data.frames is returned
+#' 
+#' @seealso \code{\link{patchdistr_spews}}
+#' 
 #' @examples
 #'
-#' # TODO
-#'
+#' forestgap.plr <- indicator_plrange(forestgap) 
+#' do.call(rbind, forestgap.plr) # convert results to data.frame
+#' 
+#' # Restrict to small xmins 
+#' forestgap.plr2 <- indicator_plrange(forestgap, xmin_bounds = c(1, 10)) 
+#' do.call(rbind, forestgap.plr2) 
+#' 
 #'@export
 indicator_plrange <- function(mat,
                               merge = FALSE,
@@ -37,9 +77,9 @@ indicator_plrange <- function(mat,
   }
 
   # If there are not enough patches to work with -> return NA
-  if ( length(unique(psd)) <= 2 ) {
+  if ( length(unique(psd)) <= 2 ) { 
     warning('Not enough different patch sizes to estimate xmin: returning NA')
-    result <- data.frame(NA, NA, NA, NA)
+    result <- data.frame(min(psd), max(psd), NA, NA)
   } else {
     # Compute xmin and range
     plrange_result <- plrange(psd, xmin_bounds) # returns xmin also

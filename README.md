@@ -18,7 +18,8 @@ their trends.
 
 ## Contributors
 
-Alain Danet, [Alex Genin (Maintainer)](mailto:alexandre.genin@umontpellier.fr), Vishwesha Guttal, Sonia Kefi, Sabiha Majumder, Sumithra Sankaran, [Florian Schneider](mailto:florian.schneider@univ-montp2.fr)
+Alain Danet, [Alex Genin (Maintainer)](mailto:alexandre.genin@umontpellier.fr), 
+Vishwesha Guttal, Sonia Kefi, Sabiha Majumder, Sumithra Sankaran, [Florian Schneider](mailto:florian.schneider@univ-montp2.fr)
 
 ## Installation
 
@@ -36,13 +37,13 @@ CRAN version coming soon. Stay tuned.
 
 ## The spatial indicators
 
-Ecological systems can suffer drastic transitions such as desertification or
-eutrophication, sometimes even after a slight change in one or more external parameters, such as
-aridity or nutrient input. These qualitative changes in the behavior of a system
-at a threshold represents a critical or bifurcation point, and can give rise to
-*catastrophic shifts* when associated with irreversibility. A growing body of
-litterature suggests that a dynamical system should exhibit certain measurable
-properties around those critical points.
+Ecological systems can suffer drastic transitions such as desertification or 
+eutrophication, sometimes even after a slight change in one or more external 
+parameters, such as aridity or nutrient input. These qualitative changes in the 
+behavior of a system at a threshold represents a critical or bifurcation point, 
+and can give rise to *catastrophic shifts* when associated with irreversibility. 
+A growing body of litterature suggests that a dynamical system should exhibit 
+certain measurable properties around those critical points.
 
 This package aims at providing a practical set of tools for the detection of 
 these upcoming critical points in spatial datasets, by using indicators based on 
@@ -78,8 +79,8 @@ plot(serengeti.test, along = serengeti.rain) +
 ```
 ![Example result](./web/serengeti_example.png)
 
-More extensive information is provided in the vignette file included in the
-package.
+<!-- More extensive information is provided in the vignette file included in the
+package. TODO: ADD PUBLICATION WHEN DONE -->
 
 ## Original authors and License
 
@@ -90,8 +91,8 @@ reference website for the [early-warnings signals toolbox](http://www.early-warn
 
 This work is licensed under an MIT license. Some code included in unit tests has
 been written by Cosma Rohilla Shalizi [http://bactra.org/](http://bactra.org/)
-and is redistributed in its entirety with the R package as specified in the
-README file that comes with it.
+and is redistributed in its entirety with the R package as specified in its
+README file. 
 
 The MIT License (MIT)
 
@@ -120,5 +121,4 @@ THE SOFTWARE.
 [Kéfi S, Guttal V, Brock WA, Carpenter SR, Ellison AM, et al. (2014) 
 Early Warning Signals of Ecological Transitions: Methods for Spatial Patterns. 
 PLoS ONE 9(3): e92097. doi:10.1371/journal.pone.0092097](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0092097)
-
 

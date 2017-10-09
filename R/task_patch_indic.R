@@ -31,7 +31,6 @@
 #'   - the percolation values (if several matrices were provided and 
 #'   `merge` was TRUE, then the average percolation value is returned)
 #' 
-#' 
 #' @details 
 #' 
 #' Patterned ecosystems can exhibit a change in their spatial structure as they 
@@ -66,7 +65,8 @@
 #' 
 #' To compute the Power-law range (PLR), power-laws are fitted with a variable 
 #' minimum patch size (xmin) and the one with the lowest Kolmogorov-Smirnov
-#' statistic is retained. PLR is then computed using this best-fitting xmin: 
+#' distance to the empirical distribution is retained. PLR is then computed 
+#' using this best-fitting xmin: 
 #' 
 #' \deqn{\frac{log(x_{max}) - log(x_{min})}{log(x_{max}) - log(x_{smallest})}}{ (log(xmax) - log(xmin))/(log(xmax) - log(xsmallest))}
 #' 
@@ -104,7 +104,13 @@
 #' psd_indic <- patchdistr_spews(forestgap)
 #' 
 #' summary(psd_indic)
+#' plot(psd_indic)
 #' 
+#' # Plots can be modified using ggplot2 directives 
+#' if ( require(ggplot2) ) { 
+#'   plot(psd_indic) + 
+#'     theme_minimal()
+#' }
 #' @export
 patchdistr_spews <- function(x, 
                              merge = FALSE,

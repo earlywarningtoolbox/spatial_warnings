@@ -1,7 +1,12 @@
 # 
-# 
 # This file reads the raw data for the serengeti dataset, and convert it 
 # to a form that is compatible with ditributing it within and R package. 
+# 
+# Note that ideally it would convert raw data into R-ready data, but we 
+# actually start from intermediate files. 
+# 
+# See also: https://github.com/tee-lab/spacetime-csd/
+# 
 # 
 
 options(mc.cores = 4)
@@ -22,17 +27,21 @@ matrices <- matrices[minn:maxn]
 
 ics <- generic_spews(matrices, 
                      subsize = 5, 
-                     detrend = FALSE, 
                      abs_skewness = FALSE, 
                      moranI_coarse_grain = TRUE)
-ics.test <- indictest(ics)
 
 # Read rain data 
 rain <- read.csv(paste0(datdir, 'serengeti_rain.dat'), header = FALSE)
 rain <- rain[minn:maxn, "V1"]
 
-plot(ics.test, rain) + 
-  geom_vline(xintercept = 590)
+# Note: we compensate a shift in water values here as transect 5 shifts at 
+# 730 mm/y and not 590. Ideally we would start from the raw data but for 
+# illustration purposes this is good enough and the slicing of matrices is hard 
+# to reproduce exactly (see article). 
+rain <- rain + (730 - 590)
+
+plot(ics, rain) + 
+  geom_vline(xintercept = 730)
 
 # Compute indicators for testing
 # spcs <- spectral_spews(matrices, 
@@ -42,7 +51,7 @@ plot(ics.test, rain) +
 # 
 # plot(spcs, along = rain)
 # plot(spcs.test, along = rain) + 
-#   geom_vline(xintercept = 590, color = "red", linetype = "dashed") 
+#   geom_vline(xintercept = 730, color = "red", linetype = "dashed") 
 
 
 # Save datasets 
@@ -53,12 +62,3 @@ serengeti.rain <- rain
 use_data(serengeti, overwrite = TRUE)
 use_data(serengeti.rain, overwrite = TRUE)
 
-# 
-# # Do moran with z-score (does not change anything)
-# moranz <- unlist( lapply(matrices, function(o) { 
-#   o <- coarse_grain(o, subsize = 5)
-#   o[] <- (o - mean(o)) / sd(o)
-#   raw_moran(o)
-# }) )
-# 
-# plot( subset(ics.test, indicator == "moran")[ ,"value"], moranz)

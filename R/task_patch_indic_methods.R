@@ -225,6 +225,8 @@ plot_distr.patchdistr_spews_single <- function(x,
       geom_segment(aes_q(x = ~xmin_est, y = 1, 
                          xend = ~xmax,  yend = 1), 
                    data = plrange_dat, 
+                   arrow = arrow(ends = "both", type = "open", 
+                                 length = unit(0.05, "inches")), 
                    color = "blue")
   }
   
@@ -291,6 +293,8 @@ plot_distr.patchdistr_spews_list <- function(x,
       geom_segment(aes_q(x = ~xmin_est, y = 1, 
                           xend = ~xmax,  yend = 1), 
                     data = plrange_dat, 
+                    arrow = arrow(ends = "both", type = "open", 
+                                  length = unit(0.05, "inches")), 
                     color = "blue") 
   
   }

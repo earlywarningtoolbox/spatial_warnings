@@ -6,6 +6,7 @@
 #include <RcppArmadillo.h>
 
 using namespace Rcpp; 
+using namespace arma; 
 
 #define SQ(a) ( (double)(a) * (double)(a) )
 
@@ -70,7 +71,7 @@ DataFrame rspectrum(arma::mat mat) {
   
   // We check whether there is more than one value in the supplied matrix
   bool nonzero_variance = false;
-  int i=1;
+  uword i=1;
   while ( !nonzero_variance && i<mat.n_elem ) {
     if ( mat(i-1) != mat(i) ) { 
       nonzero_variance = true;
@@ -78,7 +79,7 @@ DataFrame rspectrum(arma::mat mat) {
     i++;
   } 
   
-  // We have not found more than two values -> return early
+  // We have not found more than one value -> return early
   if ( !nonzero_variance ) { 
     return DataFrame::create(_["dist"]  = ray, 
                              _["rspec"] = NumericVector::create(NumericVector::get_na()));
@@ -94,7 +95,7 @@ DataFrame rspectrum(arma::mat mat) {
   double norm_factor = 0; 
   
   // For all lengths
-  for (int l=0; l<ray.n_elem; l++) { 
+  for (uword l=0; l<ray.n_elem; l++) { 
     double r = ray(l);
     
     // Go through the matrix and make a sum of relevant fft coefficients

@@ -1,12 +1,12 @@
 Package: spatialwarnings
 Type: Package
-Title: Spatial Early Warning Signals
+Title: Spatial Early Warning Signals of Ecosystem Degradation
 Version: 1.0
 Date: 2017-10-09
 Author: Alain Danet, Alexandre Genin, Vishwesha Guttal, Sonia Kefi, 
   Sabiha Majumder, Sumithra Sankaran, Florian Schneider
 License: MIT + file LICENSE
-Maintainer: Alexandre Genin <alexandre.genin@univ-montp2.fr>
+Maintainer:   Alexandre Genin <alexandre.genin@univ-montp2.fr>
 Description: Compute spatial early-warning signals of critical points on raster 
   data sets.
 Depends: R (>= 2.10)

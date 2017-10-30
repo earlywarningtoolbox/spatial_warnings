@@ -27,14 +27,14 @@ IntegerMatrix label_cpp(IntegerMatrix mat,
   
   std::vector<int> patchsizes;
   IntegerVector patch;
-  bool percolation;
+  bool percolation = false;
   
   for (int i=0; i<W; i++) { 
     for (int j=0; j<H; j++) { 
       // We consider the cell (i,j).
       
       // Default value is NA if not in a patch
-      if ( ! mat(i,j) > 0) { 
+      if ( ! (mat(i,j) > 0) ) { 
         output(i,j) = DEFAULT_VALUE;
         is_marked(i,j) = 1;
       }

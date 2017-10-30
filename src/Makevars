@@ -1,0 +1,3 @@
+
+# Add -fopenmp for Armadillo
+PKG_CXXFLAGS = $(PKG_CPPFLAGS) -fopenmp

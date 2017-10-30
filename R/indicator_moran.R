@@ -39,13 +39,13 @@
 #'
 #' @examples 
 #' 
+#' \dontrun{
 #' data(serengeti)
 #' 
 #' # One matrix
 #' indicator_moran(serengeti[1])
 #' 
 #' # Several matrices
-#' \dontrun{
 #' indicator_moran(serengeti)
 #' }
 #' 

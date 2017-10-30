@@ -9,3 +9,4 @@ data-raw
 ^.travis\.yml$
 web
 README.md
+cran-comments.md

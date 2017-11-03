@@ -11,19 +11,19 @@ Guttal's](https://teelabiisc.wordpress.com/) (Center for Ecological Sciences,
 Indian Institute of Science, Bangalore, India).
 
 The R package provides several sets of functions related to the computation of
-early warning signals of ecosystem tipping points and irreversible 
-transitions (also known as *catastrophic shifts*). In particular, it 
-facilitates computing those indicators, assess their significance and plot 
+early warning signals of ecosystem tipping points and irreversible
+transitions (also known as *catastrophic shifts*). In particular, it
+facilitates computing those indicators, assess their significance and plot
 their trends.
 
 ## Contributors
 
-Alain Danet, [Alex Genin (Maintainer)](mailto:alexandre.genin@umontpellier.fr), 
+Alain Danet, [Alex Genin (Maintainer)](mailto:alexandre.genin@umontpellier.fr),
 Vishwesha Guttal, Sonia Kefi, Sabiha Majumder, Sumithra Sankaran, [Florian Schneider](mailto:florian.schneider@univ-montp2.fr)
 
 ## Installation
 
-The developement version of this package can be installed using the 
+The developement version of this package can be installed using the
 `devtools` package in R:
 
 ```
@@ -33,50 +33,80 @@ if ( ! require(devtools) ) {
 devtools::install_github("spatial-ews/spatialwarnings")
 ```
 
-CRAN version coming soon. Stay tuned. 
+CRAN version coming soon. Stay tuned.
 
 ## The spatial indicators
 
-Ecological systems can suffer drastic transitions such as desertification or 
-eutrophication, sometimes even after a slight change in one or more external 
-parameters, such as aridity or nutrient input. These qualitative changes in the 
-behavior of a system at a threshold represents a critical or bifurcation point, 
-and can give rise to *catastrophic shifts* when associated with irreversibility. 
-A growing body of litterature suggests that a dynamical system should exhibit 
+Ecological systems can suffer drastic transitions such as desertification or
+eutrophication, sometimes even after a slight change in one or more external
+parameters, such as aridity or nutrient input. These qualitative changes in the
+behavior of a system at a threshold represents a critical or bifurcation point,
+and can give rise to *catastrophic shifts* when associated with irreversibility.
+A growing body of litterature suggests that a dynamical system should exhibit
 certain measurable properties around those critical points.
 
-This package aims at providing a practical set of tools for the detection of 
-these upcoming critical points in spatial datasets, by using indicators based on 
-those properties. Those indicators fall within broad families around which the 
+This package aims at providing a practical set of tools for the detection of
+these upcoming critical points in spatial datasets, by using indicators based on
+those properties. Those indicators fall within broad families around which the
 package is centered:
 
   * "Generic" spatial indicators
   * Spectrum-based indicators
   * Indicators based on patch-size distributions
 
-Each of these indicator types can be computed with this package. Their 
-significance can be assessed using permutation-based tests and results can 
-be displayed using familiar summary/plot methods. 
+Each of these indicator types can be computed with this package. Their
+significance can be assessed using permutation-based tests and results can
+be displayed using familiar summary/plot methods.
 
-## Code sample 
+## Code sample
 
 ```r
-library(ggplot2)
-library(spatialwarnings)
+> library(ggplot2)
+> library(spatialwarnings)
+> 
+> # Compute indicators
+> serengeti.ic <- generic_spews(serengeti,
+>                               subsize = 5,
+>                               moranI_coarse_grain = TRUE)
+> serengeti.test <- indictest(serengeti.ic)
+ 
+```
 
-serengeti.ic <- generic_spews(serengeti, 
-                              subsize = 5, 
-                              moranI_coarse_grain = TRUE)
-serengeti.test <- indictest(serengeti.ic)
+```r
+> # Textual summary of trends
+> summary(serengeti.test)
+Generic Spatial Early-Warnings
 
-plot(serengeti.test, along = serengeti.rain) + 
-  geom_vline(xintercept = 593, color = "red", linetype = "dashed") + 
-  labs(x = "Annual rainfall", 
-       y = "Mean cover/indicator value", 
-       title = "Early warning signals of a shift in tree cover in Serengeti, Tanzania (Eby et al. 2016)", 
-       subtitle = "Grey ribbons indicate the 5-95% quantiles of the null distribution") 
+ Mat. # Mean Moran's I P>null     Skewness P>null     Variance P>null    
+      1 0.98      0.58 <1e-03 ***    -6.94  0.999        0.011 <1e-03 ***
+      2 0.98      0.62 <1e-03 ***    -6.17  0.999        0.012 <1e-03 ***
+      3 0.97      0.51 <1e-03 ***    -5.59  0.999        0.015 <1e-03 ***
+      4 0.96      0.68 <1e-03 ***    -4.56  0.999        0.022 <1e-03 ***
+      5 0.96      0.66 <1e-03 ***    -4.37  0.999        0.024 <1e-03 ***
+      6 0.95      0.62 <1e-03 ***    -3.84  0.999        0.031 <1e-03 ***
+      7 0.95      0.79 <1e-03 ***    -3.96  0.999        0.034 <1e-03 ***
+      8 0.94      0.75 <1e-03 ***    -3.40  0.999        0.041 <1e-03 ***
+      9 0.93      0.66 <1e-03 ***    -3.26  0.999        0.040 <1e-03 ***
+     10 0.93      0.58 <1e-03 ***    -3.02  0.999        0.040 <1e-03 ***
+     11 0.89      0.58 <1e-03 ***    -2.29  0.999        0.054 <1e-03 ***
+     12 0.85      0.62 <1e-03 ***    -1.75  0.999        0.074 <1e-03 ***
+     13 0.71      0.72 <1e-03 ***    -0.87  0.999        0.131 <1e-03 ***
+
+ Significance tested against 999 randomly shuffled matrices
+ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 
 ```
+
+```r
+> # Plot trends
+> plot(serengeti.test, along = serengeti.rain) +
+>  geom_vline(xintercept = 593, color = "red", linetype = "dashed") +
+>  labs(x = "Annual rainfall",
+>       y = "Mean cover/indicator value",
+>       title = "Early warning signals of a shift in tree cover in Serengeti, Tanzania (Eby et al. 2016)",
+>       subtitle = "Grey ribbons indicate the 5-95% quantiles of the null distribution")
+```
+
 ![Example result](./web/serengeti_example.png)
 
 <!-- More extensive information is provided in the vignette file included in the
@@ -92,7 +122,7 @@ reference website for the [early-warnings signals toolbox](http://www.early-warn
 This work is licensed under an MIT license. Some code included in unit tests has
 been written by Cosma Rohilla Shalizi [http://bactra.org/](http://bactra.org/)
 and is redistributed in its entirety with the R package as specified in its
-README file. 
+README file.
 
 The MIT License (MIT)
 
@@ -118,7 +148,7 @@ THE SOFTWARE.
 
 ## References
 
-[Kéfi S, Guttal V, Brock WA, Carpenter SR, Ellison AM, et al. (2014) 
-Early Warning Signals of Ecological Transitions: Methods for Spatial Patterns. 
+[Kéfi S, Guttal V, Brock WA, Carpenter SR, Ellison AM, et al. (2014)
+Early Warning Signals of Ecological Transitions: Methods for Spatial Patterns.
 PLoS ONE 9(3): e92097. doi:10.1371/journal.pone.0092097](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0092097)
 

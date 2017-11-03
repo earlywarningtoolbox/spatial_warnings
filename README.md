@@ -23,6 +23,12 @@ Vishwesha Guttal, Sonia Kefi, Sabiha Majumder, Sumithra Sankaran, [Florian Schne
 
 ## Installation
 
+`spatialwarnings` is available on CRAN and can be installed through: 
+
+```r 
+install.packages('spatialwarnings')
+```
+
 The developement version of this package can be installed using the
 `devtools` package in R:
 

@@ -11,7 +11,6 @@ Description: Tools to compute and assess significance of early-warnings signals 
 URL: https://github.com/spatial-ews/spatialwarnings
 Depends: R (>= 3.0)
 Imports:
-    moments,
     Rcpp,
     ggplot2 (>= 1.0.0),
     plyr,
@@ -20,9 +19,10 @@ Imports:
     tidyr, 
     stats, 
     utils, 
-    poweRlaw, 
     parallel
 Suggests:
+    moments,
+    poweRlaw, 
     testthat,
     knitr
 LinkingTo: Rcpp, RcppArmadillo

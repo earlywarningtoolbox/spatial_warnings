@@ -13,9 +13,10 @@ patchsizes(mat, merge = FALSE, nbmask = matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0),
 \item{merge}{Controls whether the obtained patch size distributions are to 
 be pooled together if mat is a list of matrices.}
 
-\item{nbmask}{a "neighboring mask": a matrix with odd dimensions describing
-which neighbors are to be considered as neighbors around a cell 
-(see examples).}
+\item{nbmask}{a square matrix with an odd number of lines and columns that 
+describes which neighbors are to be considered around a cell. Default 
+is 4-way neighborhood (the neighborhood of a cell comprises the cell 
+above, below, on the right and on the left of the target cell).}
 
 \item{wrap}{Whether to wrap around lattice boundaries (`TRUE`/`FALSE`), 
 effectively using periodic boundaries.}
@@ -29,8 +30,20 @@ If mat is a logical matrix, then the function returns a vector of
 Get the distribution of patch sizes of a logical matrix
 }
 \examples{
+
 data(forestgap)
-patchsizes(forestgap[[5]])
+patchsizes(forestgap[[5]]) # Use a single matrix
+
+# Compute the average patch size of each matrix
+list_patches <- patchsizes(forestgap) # get the patch size for each matrix
+print( sapply(list_patches, mean)) # print the average patch size 
+
+# Example with 8-way neighborhood
+nbmask8 <- matrix(c(1,1,1,
+                    1,0,1,
+                    1,1,1), ncol = 3)
+patchsizes(forestgap[[5]], nbmask = nbmask8)
+
 
 }
 \seealso{

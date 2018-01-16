@@ -21,7 +21,9 @@ consider lognormal type ? (see details)}
 "BIC" or "AICc")}
 
 \item{xmin}{The xmin to be used to fit the patch size distributions. Use 
-the special values "estimate" to use an estimated xmin for each fit}
+the special value "estimate" to compute first the xmin that produces 
+the best power-law fit, then use this estimated value to fit all 
+distributions.}
 
 \item{xmin_bounds}{Bounds when estimating the xmin for power-law distributions}
 
@@ -69,7 +71,9 @@ candidates: a power-law \eqn{x^\lambda}, an exponential
 \eqn{exp(\alpha x)}, a truncated power-law and \eqn{x^\lambda exp(\alpha x)},
 and optionally, a log-normal. Each distribution parameter is estimated 
 using maximum-likelihood, with a minimum patch size (xmin) fixed to one. 
-The best distribution is selected based on BIC by default. 
+The best distribution is selected based on BIC by default. In raw results, 
+\code{expo} refers to the power-law exponent \eqn{\lambda} in the previous 
+equations and \code{rate} referes to the exponential decay rate \eqn{\alpha}. 
 
 To compute the Power-law range (PLR), power-laws are fitted with a variable 
 minimum patch size (xmin) and the one with the lowest Kolmogorov-Smirnov
@@ -79,11 +83,11 @@ using this best-fitting xmin:
 \deqn{\frac{log(x_{max}) - log(x_{min})}{log(x_{max}) - log(x_{smallest})}}{ (log(xmax) - log(xmin))/(log(xmax) - log(xsmallest))}
 
 Results can be displayed using the text-based \code{summary} and \code{print}, 
-  but graphical options are also available to plot the trends (\code{plot}) and 
-  the fitted distributions (\code{plot_distr}). Plotting functions are 
-  documented in a \link[=patchdistr_spews_plot]{separate page}. Observed and 
-  fitted distributions can be produced using the \code{predict} function, 
-  as documented in \link[=patchdistr_spews_predict]{this page}.
+but graphical options are also available to plot the trends (\code{plot}) and 
+the fitted distributions (\code{plot_distr}). Plotting functions are 
+documented in a \link[=patchdistr_spews_plot]{separate page}. Observed and 
+fitted distributions can be produced using the \code{predict} function, 
+as documented in \link[=patchdistr_spews_predict]{this page}.
 }
 \examples{
 
@@ -100,6 +104,11 @@ if ( require(ggplot2) ) {
   plot(psd_indic) + 
     theme_minimal()
 }
+
+# Export results to a data.frame
+psd_indic_export <- as.data.frame(psd_indic) 
+head(psd_indic_export)
+
 }
 }
 \references{

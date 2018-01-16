@@ -24,9 +24,9 @@ test_that("Coarse-graining works", {
   
   for (size in c(1, 3, 10, 100, 1000)) { 
     for ( subsize in c(1, 2, 3, 4, 5) ) { 
-    testdiag <- diag(size)
-    ref <- diag(floor(size/subsize)) / subsize
-    expect_equal(coarse_grain(testdiag, subsize), ref)
+      testdiag <- diag(size)
+      ref <- diag(floor(size/subsize)) / subsize
+      expect_equal(coarse_grain(testdiag, subsize), ref)
     }
   }
   

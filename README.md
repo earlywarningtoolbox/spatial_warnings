@@ -23,9 +23,9 @@ Vishwesha Guttal, Sonia Kefi, Sabiha Majumder, Sumithra Sankaran, [Florian Schne
 
 ## Installation
 
-`spatialwarnings` is available on CRAN and can be installed through: 
+`spatialwarnings` is available on CRAN and can be installed through:
 
-```r 
+```r
 install.packages('spatialwarnings')
 ```
 
@@ -38,8 +38,6 @@ if ( ! require(devtools) ) {
 }
 devtools::install_github("spatial-ews/spatialwarnings")
 ```
-
-CRAN version coming soon. Stay tuned.
 
 ## The spatial indicators
 
@@ -69,13 +67,13 @@ be displayed using familiar summary/plot methods.
 ```r
 > library(ggplot2)
 > library(spatialwarnings)
-> 
+>
 > # Compute indicators
 > serengeti.ic <- generic_spews(serengeti,
 >                               subsize = 5,
 >                               moranI_coarse_grain = TRUE)
 > serengeti.test <- indictest(serengeti.ic)
- 
+
 ```
 
 ```r
@@ -83,7 +81,7 @@ be displayed using familiar summary/plot methods.
 > summary(serengeti.test)
 Generic Spatial Early-Warnings
 
- Mat. # Mean Moran's I P>null     Skewness P>null     Variance P>null    
+ Mat. # Mean Moran's I P>null     Skewness P>null     Variance P>null
       1 0.98      0.58 <1e-03 ***    -6.94  0.999        0.011 <1e-03 ***
       2 0.98      0.62 <1e-03 ***    -6.17  0.999        0.012 <1e-03 ***
       3 0.97      0.51 <1e-03 ***    -5.59  0.999        0.015 <1e-03 ***
@@ -99,7 +97,7 @@ Generic Spatial Early-Warnings
      13 0.71      0.72 <1e-03 ***    -0.87  0.999        0.131 <1e-03 ***
 
  Significance tested against 999 randomly shuffled matrices
- Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ```
 

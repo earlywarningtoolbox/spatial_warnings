@@ -132,6 +132,12 @@ indicator_sdr_do_ratio <- function(spectrum, low_range, high_range) {
   high_subset <- with(spectrum, dist <= max(high_range) & 
                                   dist >= min(high_range))
   
+  # If the number of values to estimate means is very low, then warn. 
+  if ( sum(low_subset) < 3 || sum(high_subset) < 3 ) { 
+    warning('The number of values used to compute the SDR ratio is very low ', 
+            'it may be unreliable')
+  }
+  
   # Return ratio of means
   return( with(spectrum, mean(rspec[low_subset]) / mean(rspec[high_subset])) )
   

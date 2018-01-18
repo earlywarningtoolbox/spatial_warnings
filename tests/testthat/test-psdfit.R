@@ -9,6 +9,8 @@ library(ggplot2)
 
 context('Test the fitting of distributions')
 
+# Do not run this test automatically as compilation can fail on other 
+# computers (e.g. when the gsl is absent). 
 TEST_PSDFIT <- FALSE
 
 if ( TEST_PSDFIT ) { 

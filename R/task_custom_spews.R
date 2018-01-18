@@ -111,10 +111,11 @@ create_indicator <- function(fun) {
 
 # as.df methods
 # ---------------
+#'@export
 as.data.frame.custom_spews_single <- function(x, ...) { 
   as.data.frame.custom_spews_list( list(x) )
 }
-
+#'@export
 as.data.frame.custom_spews_list <- function(x, ...) { 
   output <- Map(function(n, o) data.frame(replicate = n, value = o[['value']], 
                                           fun.name = o[['fun.name']]), 
@@ -127,9 +128,11 @@ as.data.frame.custom_spews_list <- function(x, ...) {
 
 # Print methods
 # ---------------
+#'@export
 print.custom_spews_single <- function(x, ...) { 
   print.custom_spews_list(list(x), ...)
 }
+#'@export
 print.custom_spews_list <- function(x, ...) { 
   summary.custom_spews_list(x, ...)
 }
@@ -138,10 +141,11 @@ print.custom_spews_list <- function(x, ...) {
 
 # Summary methods
 # ---------------
+#'@export
 summary.custom_spews_single <- function(object, ...) { 
   summary.custom_spews_list( list(object) )
 }
-
+#'@export
 summary.custom_spews_list <- function(object, ...) { 
   
   # Get function name. Note that we only take the first element as there is no
@@ -179,7 +183,7 @@ summary.custom_spews_list <- function(object, ...) {
 #' 
 #' @param ... Ignored
 #' 
-#' @export
+#'@export
 plot.custom_spews_list <- function(x, along = NULL, ...) { 
   plot.custom_spews_test_list(x, along = along, display_null = FALSE)
 }

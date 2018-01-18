@@ -2,7 +2,7 @@
 context('Test that xmin estimations are correct')
 
 # We do not test on CRAN because this requires compilation of external code. 
-TEST_XMIN <- TRUE
+TEST_XMIN <- FALSE
 GRAPHICAL <- FALSE # Plot some diagnostics. 
 
 

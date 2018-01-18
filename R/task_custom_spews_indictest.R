@@ -13,7 +13,7 @@
 indictest.custom_spews <- function(x, nperm = 999, ...) { 
   NextMethod('indictest')
 }
-
+#'@export
 indictest.custom_spews_single <- function(x, nperm = 999, ...) { 
   
   # We do not support low numbers of replicates
@@ -37,7 +37,7 @@ indictest.custom_spews_single <- function(x, nperm = 999, ...) {
   
   return(results)
 }
-
+#'@export
 indictest.custom_spews_list <- function(x, nperm = 999, ...) { 
   
   results <- parallel::mclapply(x, indictest.custom_spews_single, 
@@ -53,12 +53,13 @@ indictest.custom_spews_list <- function(x, nperm = 999, ...) {
 }
 
 
-
+#'@export
 as.data.frame.custom_spews_test_single <- function(x, ...) { 
   # We need to explicitely add a `replicate` column because it will 
   # be used by funs down the stream. 
   data.frame(replicate = 1, as.data.frame.list(x))
 }
+#'@export
 as.data.frame.custom_spews_test_list <- function(x, ...) { 
   tab <- ldply(x, as.data.frame.list)
   # Reorder cols
@@ -69,10 +70,11 @@ as.data.frame.custom_spews_test_list <- function(x, ...) {
 
 
 
-
+#'@export
 summary.custom_spews_test_single <- function(object, ...) { 
   summary.custom_spews_test_list( list(object) )
 }
+#'@export
 summary.custom_spews_test_list <- function(object, ...) { 
   
   tab <- as.data.frame(object)
@@ -101,10 +103,11 @@ summary.custom_spews_test_list <- function(object, ...) {
 
 
 
-
+#'@export
 print.custom_spews_test_single <- function(x, ...) { 
   summary.custom_spews_test_single(x, ...)
 }
+#'@export
 print.custom_spews_test_list <- function(x, ...) { 
   summary.custom_spews_test_list(x, ...)
 }

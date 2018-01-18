@@ -7,8 +7,7 @@
 # 
 compute_indicator_with_null <- function(input, 
                                         nreplicates, 
-                                        indicf, 
-                                        nthreads = getOption("spw.threads")) { 
+                                        indicf) { 
   
   # Compute the observed value
   value  <- indicf(input)
@@ -22,7 +21,7 @@ compute_indicator_with_null <- function(input,
                           nrow = 1, ncol = nreplicates)
     } else { 
       # Compute the index on a randomized matrix
-      nulldistr <- shuffle_and_compute(input, indicf, nreplicates, nthreads)
+      nulldistr <- shuffle_and_compute(input, indicf, nreplicates)
       nulldistr <- t( do.call(rbind, nulldistr) )
     }
     # Note that here nulldistr always has one or more rows and nreplicates 

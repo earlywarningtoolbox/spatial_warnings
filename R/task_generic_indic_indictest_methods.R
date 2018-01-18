@@ -131,7 +131,7 @@ as.data.frame.generic_spews_test <- function(x, ...) {
 
 # Print method
 # --------------------------------------------------
- 
+
 #'@export
 print.generic_spews_test <- function(x, ...) { 
   cat('Generic Spatial Early-Warnings\n') 

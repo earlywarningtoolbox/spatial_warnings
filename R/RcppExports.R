@@ -48,8 +48,8 @@ shuffle_matrix <- function(mat) {
     .Call('_spatialwarnings_shuffle_matrix', PACKAGE = 'spatialwarnings', mat)
 }
 
-shuffle_and_compute <- function(mat, indic, nrep, nthreads) {
-    .Call('_spatialwarnings_shuffle_and_compute', PACKAGE = 'spatialwarnings', mat, indic, nrep, nthreads)
+shuffle_and_compute <- function(mat, indic, nrep) {
+    .Call('_spatialwarnings_shuffle_and_compute', PACKAGE = 'spatialwarnings', mat, indic, nrep)
 }
 
 #' @title r-spectrum 

@@ -45,7 +45,6 @@ indictest.generic_spews_single <- function(x, nperm = 999, ...) {
   results
 }
 
-# Summary function for many replicates
 #'@export
 indictest.generic_spews_list <- function(x, nperm = 999, ...) { 
   

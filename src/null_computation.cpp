@@ -59,8 +59,7 @@ arma::mat shuffle_matrix(arma::mat& mat) {
 //[[Rcpp::export]]
 List shuffle_and_compute(arma::mat& mat, 
                          Function indic, 
-                         int nrep, 
-                         int nthreads) { 
+                         int nrep) { 
   
   arma::mat shuffmat = mat; 
     
@@ -73,7 +72,7 @@ List shuffle_and_compute(arma::mat& mat,
   
   for (int i=0; i < nrep; i++) { 
     // Shuffle matrix and compute indicator value. Note that indicf is an R 
-    // function ant thus is not thread safe. 
+    // function and as a result is not thread safe. 
     shuffle_matrix_internal(shuffmat, nr, nc); 
     nulldistr(i) = indic( shuffmat );
   }

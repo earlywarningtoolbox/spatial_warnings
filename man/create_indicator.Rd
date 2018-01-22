@@ -18,8 +18,8 @@ create_indicator(fun)
   display_null = TRUE, ...)
 }
 \arguments{
-\item{fun}{A function that takes a matrix as input and returns a single, 
-numerical value.}
+\item{fun}{A function that takes a real-valued matrix as input and returns 
+a single, numerical value.}
 
 \item{x}{A \code{custom_spews} object (as provided by the 
 custom indicator function created by \code{create_indicator}).}
@@ -52,8 +52,8 @@ Computation, significance assessment and display of trends
 }
 \details{
 Spatial Early-warning signals (EWS) are metrics that are based on the 
-  spatial structure of a system and measure the distance 
-  to a critical point. The package \code{spatialwarnings} provides 
+  spatial structure of a system and measure the degradation of an ecological 
+  system. The package \code{spatialwarnings} provides 
   generic indicators (\code{\link{generic_spews}}), spectrum-based 
   indicators (\code{\link{spectral_spews}}) and indicators based on patch 
   size distributions (\code{\link{patchdistr_spews}}). 
@@ -68,7 +68,9 @@ Spatial Early-warning signals (EWS) are metrics that are based on the
 \code{fun} should be a function that takes as input a matrix and possibly
   more arguments, and return a single numeric value. Note that the matrix 
   is converted internally to numeric values, as a side effect of using 
-  c++ code when assessing significance.
+  c++ code when assessing significance. When working with logical matrices 
+  (e.g. when computing patch size distributions), the matrix has to be 
+  explicitely converted to logical within function `fun`.
 }
 \examples{
 
@@ -79,10 +81,10 @@ maxpatchsize <- function(mat) {
   max(patchsizes(mat > 0))
 }
 
-# Create our indicator function
+# Create the indicator function
 maxpatch_spews <- create_indicator(maxpatchsize)
 
-# Then work with this function as if it were functions from the *_spews 
+# Then work with this function as if it were a function from the *_spews 
 # family. 
 mp_indic <- maxpatch_spews(forestgap)
 summary(mp_indic)
@@ -96,7 +98,8 @@ plot(mp_test)
 
 
 
-# Try spatial coefficient of variation as a spatial EWS
+# Try spatial coefficient of variation as a spatial EWS. This function can 
+# have arguments. 
 spatial_cv <- function(mat, subsize) { 
   matc <- coarse_grain(mat, subsize)
   return( sd(matc) / mean(matc) )

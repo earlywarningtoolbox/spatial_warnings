@@ -2,10 +2,10 @@
 # This file contains code related to patch size distribution fitting. These 
 #   functions can fit Power-law (pl), Truncated Power-law (tpl), Lognormal 
 #   (lnorm) and Exponential (exp) distributions using maximum likelihood, as 
-#   per Clauset et al. 's recommendation. 
+#   per Clauset et al. 's recommendations. 
 # 
 # In addition, it provides the estimation of xmin using the ks-distance for 
-# power-laws
+# power-laws (same, following Clauset et al. 2007)
 
 # Optimisation global options
 ITERLIM <- 10000
@@ -13,9 +13,8 @@ GRADTOL <- 1e-10
 
 # This is a safe version of nlm that returns a sensible result (NA) when 
 # the algorithm fails to converge. This can happen quite often when looking 
-# for pathological cases (e.g. fitting distribution from few points in the 
+# for pathological cases (e.g. fitting distribution based on few points in the 
 # tails, etc.). 
-# This 
 optim_safe <- function(f, pars0) { 
   
   # Wrap a neg ll objective function so that it does not return NAs
@@ -56,7 +55,7 @@ optim_safe <- function(f, pars0) {
     return( list(minimum = NA_real_, 
                  estimate = NA_real_) )
   } else { 
-    # Code results above 3 highlight a true problem, below 3 the solution 
+    # Code results above 3 means a true problem, below 3 the solution 
     # is either exact or approximate. 
     if ( result[["code"]] > 3 ) { 
       warning(paste0('nlm returned ', result[["code"]]))

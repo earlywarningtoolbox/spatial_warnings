@@ -31,14 +31,14 @@ optim_safe <- function(f, pars0) {
   
   # Try to do first a quick SANN optimisation to find a good first 
   # approximation and get out of a possible initial local minimum (happens 
-  # with lnorm fitting). 
+  # sometimes with lnorm fitting). 
   # 
   # Note that in some pathological cases the fit fails (not enough points, etc.)
   # This happens a lot when finding xmin as we end up fitting on very few 
   # points in the tail of the distribution. Here, we report the fit failed but 
   # do not stop execution. In most (all?) of those cases it has no 
   # consequences on the results. 
-  result <- try( { 
+  result <- try({ 
     sann_approx <- optim(pars0, safe(f), 
                          method = "SANN", 
                          control = list(maxit = 100)) 
@@ -58,7 +58,8 @@ optim_safe <- function(f, pars0) {
     # Code results above 3 means a true problem, below 3 the solution 
     # is either exact or approximate. 
     if ( result[["code"]] > 3 ) { 
-      warning(paste0('nlm returned ', result[["code"]]))
+      warning(paste0('nlm returned an error (error code:', result[["code"]], ").\n", 
+                     "See ?nlm for more information"))
     }
     return(result)
   }

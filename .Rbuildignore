@@ -10,3 +10,4 @@ data-raw
 web
 README.md
 cran-comments.md
+^codecov\.yml$

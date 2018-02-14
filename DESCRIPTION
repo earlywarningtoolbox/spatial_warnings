@@ -20,11 +20,12 @@ Imports:
     stats, 
     utils, 
     parallel
-Suggests:
+Suggests: 
     moments,
-    poweRlaw, 
+    poweRlaw,
     testthat,
-    knitr
+    knitr,
+    covr
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
 RoxygenNote: 6.0.1

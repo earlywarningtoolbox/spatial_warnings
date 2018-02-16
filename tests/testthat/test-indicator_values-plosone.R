@@ -1,7 +1,7 @@
 # 
 # 
 # This file contains code that tests the generic indicator result against 
-#   the published results in PLOS One (Kéfi et al., etc)
+#   the published results in PLOS One (Kéfi et al. 2014)
 # 
 
 context("Test that results match those in PLOS One")
@@ -40,9 +40,7 @@ test_that('results matches those in PLOS One', {
                                  moranI_coarse_grain = TRUE)
   test_reshaped <- acast(as.data.frame(test_results), 
                          replicate ~ indicator)
-  
-  test_reshaped
-  
+    
   # Now test for concordance
   ref_results <- cbind(mean = mean_reduced,  # ! order matters !
                        corr = corr_reduced, 

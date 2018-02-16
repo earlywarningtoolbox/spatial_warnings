@@ -14,26 +14,26 @@ context('Test the fitting of distributions')
 TEST_PSDFIT <- FALSE
 
 if ( TEST_PSDFIT ) { 
-
+  
   # Change dir if running tests manually
   if ( file.exists('./tests/testthat') ) { 
     library(testthat)
     setwd('./tests/testthat') 
   }
-
-  # Setup pli from Clauzet et al's
+  
+  # Setup pli from Clauzet et al
   for ( s in dir('./pli-R-v0.0.3-2007-07-25', 
                 full.names = TRUE, pattern = '*.R') ) { 
     source(s)
   }
-
+  
   # Compile auxiliary binaries
   system("cd ./pli-R-v0.0.3-2007-07-25/zeta-function/ && make")
   system("cd ./pli-R-v0.0.3-2007-07-25/exponential-integral/ && make")
   system("cd ./pli-R-v0.0.3-2007-07-25/ && \
             gcc discpowerexp.c -lm -o discpowerexp && \
             chmod +x discpowerexp")
-
+  
   test_that('PL fitting works', { 
     
     expos <- c(1.2, 1.5, 2.5)
@@ -46,18 +46,18 @@ if ( TEST_PSDFIT ) {
         # Squeeze tail a bit for speed
         pldat <- pldat[pldat < 1e5]
         
-        # left: spw <-> right: pli
+        # left: pli <-> right: spw
         # dpl <-> dzeta
         expect_equal(dzeta(dat,, exponent = expo, threshold = xmin), 
-                    dpl(dat, expo, xmin = xmin))
+                     dpl(dat, expo, xmin = xmin))
         
         # ppl <-> pzeta with higher tail
         expect_equal(pzeta(dat, exponent = expo, threshold = xmin, lower.tail = FALSE), 
-                    ppl(dat, expo, xmin = xmin))
+                     ppl(dat, expo, xmin = xmin))
         
         # ppl_ll <-> zeta.loglike
         expect_equal(zeta.loglike(pldat, exponent = expo, threshold = xmin), 
-                    pl_ll(pldat, expo, xmin = xmin))
+                     pl_ll(pldat, expo, xmin = xmin))
         
         # pl_fit <-> zeta.fit 
         our_expo <- pl_fit(pldat, xmin = xmin)[['expo']]
@@ -90,13 +90,13 @@ if ( TEST_PSDFIT ) {
           expdat <- ceiling(rexp(1000, rate = rate))
           
           expect_equal(ddiscexp(dat, rate, threshold = xmin),
-                      ddisexp(dat, rate, xmin = xmin))
+                       ddisexp(dat, rate, xmin = xmin))
           
           pdisexp(dat, rate, xmin = xmin)
           
           fit <- exp_fit(expdat, xmin = xmin)
           expect_equal(fit[['rate']],
-                      discexp.fit(expdat, threshold = xmin)[["lambda"]], tol = 1e-3)
+                       discexp.fit(expdat, threshold = xmin)[["lambda"]], tol = 1e-3)
           
           # Look at fit
           plot(log10(cumpsd(expdat[expdat >= xmin])))
@@ -109,7 +109,7 @@ if ( TEST_PSDFIT ) {
     }
     
   })
-
+  
   test_that('LNORM fitting works', { 
     
     meanlogs <- c(1, 3, 10)
@@ -126,7 +126,7 @@ if ( TEST_PSDFIT ) {
           
           # Test distr functions
           expect_equal(ddislnorm(dat, meanlog, sdlog, xmin),
-                      dlnorm.tail.disc(dat, meanlog, sdlog, threshold = xmin))
+                       dlnorm.tail.disc(dat, meanlog, sdlog, threshold = xmin))
           
           # plnorm.tail.disc returns negative values (?!)
   #         plnorm.tail.disc(dat, meanlog, sdlog, threshold = xmin)
@@ -137,7 +137,7 @@ if ( TEST_PSDFIT ) {
           our_dlnorm <- ddislnorm(dat, meanlog, sdlog, xmin = 0)
           clauset_dlnorm <- dlnorm.disc(dat, meanlog, sdlog)
           expect_equal(our_dlnorm, 
-                      clauset_dlnorm)
+                       clauset_dlnorm)
           
           # Test obtained fits
           our_fit <- suppressWarnings( lnorm_fit(lnormdat, xmin = xmin) )
@@ -217,14 +217,16 @@ if ( TEST_PSDFIT ) {
           }
           
           our_fit <- tpl_fit(tpldat, xmin = xmin)
-          clauset_fit <- discpowerexp.fit(tpldat, threshold = xmin) 
           
-          if ( length(clauset_fit) > 0) { 
-            if ( ! (our_fit$ll < clauset_fit$loglike) ) { 
+          # The fit with pli can fail, so we check only the results 
+          # when it succeeds 
+          clauset_fit <- tryNULL(discpowerexp.fit(tpldat, threshold = xmin))
+          
+          if ( !is.null(clauset_fit) ) { 
+#             if ( ! (our_fit$ll < clauset_fit$loglike) ) { 
               expect_equal(our_fit$expo, clauset_fit$exponent, tol = 5e-3)
               expect_equal(our_fit$rate, clauset_fit$rate, tol = 5e-3)
-            }
-          }
+#             }
           
           # Look at fit
           plot(log10(cumpsd(tpldat[tpldat >= xmin])))
@@ -236,6 +238,7 @@ if ( TEST_PSDFIT ) {
           lines(log10(xs), 
                   log10(ptpl(xs, our_fit[["expo"]], our_fit[["rate"]], xmin)), col = 'red')
           title('TPLFIT')
+          }
           
         }
       }

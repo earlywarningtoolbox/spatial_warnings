@@ -9,98 +9,87 @@ data(forestgap)
 data(serengeti)
 
 datasets <- list(forestgap[[3]], 
-                 forestgap[1:3], serengeti[5:6])
+                 forestgap[2:4], 
+                 serengeti[5:6])
 
-test_that("The Generic-spews workflow works", { 
+test_that("The workflow functions work", { 
   
-    for ( dataset in datasets ) { 
+  for ( dataset in datasets ) { 
       
+    # Generic indicators
     expect_true({
       capture.output({
         
-        gensp <- generic_spews(dataset) 
+        indics <- generic_spews(dataset) 
         
-        print(gensp)        
-        summary(gensp)      
-        as.data.frame(gensp) 
+        print(indics)
+        summary(indics)
+        as.data.frame(indics) 
         
-        gensp.test <- indictest(gensp, nperm = 29)
+        indics.test <- indictest(indics, nperm = 29)
+        print(indics.test)        
+        summary(indics.test)      
+        as.data.frame(indics.test) 
         
-        print(gensp.test)        
-        summary(gensp.test)      
-        as.data.frame(gensp.test) 
-        
-        if ( ! is.matrix(dataset) ) { 
-          suppressWarnings( print( plot(gensp.test) ) )
-          suppressWarnings( print( plot(gensp) ) )
+        if ( ! is.matrix(dataset) ) { # multiple values
+          suppressWarnings( print( plot(indics.test) ) )
+          suppressWarnings( print( plot(indics) ) )
         }
         
       })
-    
-    # Return true 
-    TRUE})
-        
-  }
-  
-})
-
-
-test_that("The Spectral-spews workflow works", { 
-  
-    for ( dataset in datasets ) { 
-      
-    expect_true({
-      capture.output({
-        
-        specsp <- spectral_spews(dataset, quiet = TRUE) 
-        
-        print(specsp)        
-        summary(specsp)
-        as.data.frame(specsp)
-        
-        specsp.test <- indictest(specsp, nperm = 29)
-        
-        print(specsp.test)
-        summary(specsp.test)      
-        as.data.frame(specsp.test)
-        
-        if ( ! is.matrix(dataset) ) { 
-          suppressWarnings( print( plot(specsp.test) ) )
-          suppressWarnings( print( plot(specsp) ) )
-        }
-        
-      })
-    
     # Return true 
     TRUE})
     
-  }
-  
-})
-
-
-test_that("The PSD-spews workflow works", { 
-  
-    for ( dataset in datasets ) { 
     
+    # Spectral-based indicators
     expect_true({
-      
       capture.output({
         
-        specsp <- suppressWarnings( patchdistr_spews(dataset) )
-        specsp <- suppressWarnings( patchdistr_spews(dataset, fit_lnorm = TRUE) )
+        indics <- spectral_spews(dataset, 
+                                 sdr_low_range  = c(0,  0.2), 
+                                 sdr_high_range = c(.8, 1)) 
         
-        print(specsp)        
-        summary(specsp)      
-        as.data.frame(specsp) 
+        print(indics)
+        summary(indics)
+        as.data.frame(indics) 
+        
+        indics.test <- indictest(indics, nperm = 29)
+        print(indics.test)        
+        summary(indics.test)      
+        as.data.frame(indics.test) 
         
         if ( ! is.matrix(dataset) ) { 
-          # This produces warnings because of some NAs
-          suppressWarnings( print( plot.patchdistr_spews(specsp) ) )
+          suppressWarnings( print( plot(indics.test) ) )
+          suppressWarnings( print( plot(indics) ) )
         }
         
+        suppressWarnings( plot_spectrum(indics)      )
+        suppressWarnings( plot_spectrum(indics.test) )
+        
       })
-      
+        
+    # Return true 
+    TRUE})
+    
+    # PSD-based indicators
+    expect_true({
+      capture.output({
+        
+        indics <- patchdistr_spews(dataset) 
+        
+        print(indics)
+        summary(indics)
+        as.data.frame(indics) 
+        
+        if ( ! is.matrix(dataset) ) { 
+          suppressWarnings( print( plot(indics) ) )
+        }
+        
+        predict(indics)
+        
+        suppressWarnings( plot_distr(indics) )
+        
+      })
     # Return true 
     TRUE})
     

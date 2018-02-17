@@ -85,6 +85,7 @@ test_that("The workflow functions work", {
           suppressWarnings( print( plot(indics) ) )
         }
         
+        # This test can sometimes fail (?! something to investigate ?)
         predict(indics)
         
         suppressWarnings( plot_distr(indics) )

@@ -77,6 +77,21 @@ test_that('Indicator Moran returns a correct value', {
 
 
 
+test_that('Indicator plrange returns a correct value', { 
+  
+  # Test that workflow function and individual function return the same thing
+  indiv_ic_plrange <- indicator_plrange(forestgap, merge = TRUE)$plrange 
+  workflow_plrange <- patchdistr_spews(forestgap, merge = TRUE)$plrange$plrange
+  
+  expect_true( abs(indiv_ic_plrange - 0.8153096) < 0.001 )
+  expect_true( abs(workflow_plrange - 0.8153096) < 0.001 )
+  expect_true( abs(workflow_plrange - indiv_ic_plrange) < 0.001 )
+  
+})
+
+
+
+
 test_that('Generic indicator task function returns correct values', { 
   
   # Parameters

@@ -22,6 +22,8 @@ test_that("Coarse-graining works", {
   expect_equal(unique(as.vector(coarse_grain(checkerboard, subsize = 2))), 
                0.5)
   
+  expect_warning(coarse_grain(checkerboard, subsize = 0))
+  
   for (size in c(1, 3, 10, 100, 1000)) { 
     for ( subsize in c(1, 2, 3, 4, 5) ) { 
       testdiag <- diag(size)

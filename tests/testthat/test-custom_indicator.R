@@ -28,14 +28,19 @@ test_that('Custom indicators work', {
         as.data.frame(a) 
         as.data.frame(a[[1]]) 
         
+        plot(a)
+        
         indictest(a[[1]], nperm = 9)
+        summary(a[[1]])
+        as.data.frame(a[[1]])
+        print(a[[1]])
         
         options(mc.cores = 2)
         b <- indictest(a, nperm = 19)
-        
+
         summary(b)
         print(b)
-        
+        plot(b)
       })
       
       TRUE

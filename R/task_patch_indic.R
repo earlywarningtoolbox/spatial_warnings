@@ -168,12 +168,19 @@ patchdistr_spews <- function(x,
     percol_empty <- percolation(!x)
   } 
   
+  # Compute the mean cover 
+  if ( is.list(x) ) { 
+    meancover <- mean(laply(x, mean))
+  } else { 
+    meancover <- mean(x)
+  }
+  
   # Return object 
   result <- list(psd_obs = sort(psd), 
                  psd_type = psdtype(psd, xmin, best_by, fit_lnorm),
                  percolation = percol,
                  percolation_empty = percol_empty,
-                 cover = mean(x),
+                 cover = meancover,
                  plrange = plr_est, 
                  npatches = length(psd),
                  unique_patches = length(unique(psd)))

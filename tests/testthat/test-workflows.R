@@ -45,9 +45,12 @@ test_that("The workflow functions work", {
     expect_true({
       capture.output({
         
+        # These two comands should produce the same thing
         indics <- spectral_spews(dataset, 
                                  sdr_low_range  = c(0,  0.2), 
                                  sdr_high_range = c(.8, 1)) 
+        
+        indics <- spectral_spews(dataset, quiet = TRUE) 
         
         print(indics)
         summary(indics)

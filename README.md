@@ -114,9 +114,6 @@ Generic Spatial Early-Warnings
 
 ![Example result](./web/serengeti_example.png)
 
-<!-- More extensive information is provided in the vignette file included in the
-package. TODO: ADD PUBLICATION WHEN DONE -->
-
 ## Original authors and License
 
 This package is derived from the [Dakos et al.'s work](https://github.com/earlywarningtoolbox/spatial_warnings) on early warnings signals (see also the

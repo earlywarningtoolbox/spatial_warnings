@@ -50,7 +50,7 @@ test_that("Indicator skewness returns correct values", {
 
 
 
-test_that('Indicator Moran returns a correct value', { 
+test_that('Indicator Moran returns correct values', { 
   
   # Test first the raw function
   
@@ -76,8 +76,24 @@ test_that('Indicator Moran returns a correct value', {
 
 
 
+test_that('Indicator psdtype returns correct values', { 
+    
+    # Test one fit on the whole dataset
+    expect_true(with(indicator_psdtype(forestgap, merge = TRUE), 
+                     as.character(type[best])) == "pl") 
+    
+    # Test individual fits
+    a <- sapply(indicator_psdtype(forestgap, best_by = 'BIC'), 
+                with, as.character(type[best]))
+    expect_true(all(c(is.na(a[1]), 
+                      a[-1] == c("pl", "pl", "pl", "tpl", "tpl", "tpl", 
+                                 "tpl", "exp"))))
+    
+})
 
-test_that('Indicator plrange returns a correct value', { 
+
+
+test_that('Indicator plrange returns correct values', { 
   
   # Test that workflow function and individual function return the same thing
   indiv_ic_plrange <- indicator_plrange(forestgap, merge = TRUE)$plrange 

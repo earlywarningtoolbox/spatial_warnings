@@ -78,7 +78,7 @@ test_that("The workflow functions work", {
     expect_true({
       capture.output({
         
-        indics <- patchdistr_spews(dataset) 
+        indics <- patchdistr_spews(dataset, fit_lnorm = TRUE) 
         
         print(indics)
         summary(indics)

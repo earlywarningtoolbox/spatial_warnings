@@ -10,7 +10,7 @@ test_that("Patch counting works and handles weird matrices", {
     expect_error(label(diag(10)))
     
     # Fail if not a matrix
-    expect_error(seq.int(10))
+    expect_error(label(seq.int(10)))
     
     # Return things
     expect_true( all(is.na(label(diag(10) == 2))) )

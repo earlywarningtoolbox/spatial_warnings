@@ -1,3 +1,17 @@
+
+spatialwarnings v1.1 (Release date: unknown)
+===============================================
+
+New features: 
+  * Support for custom indicators (see ?create_indicator)
+  
+Minor changes: 
+  * Documentation improvements 
+  * Safer handling of small matrices in SDR computation
+
+Bug fixes 
+  * Counting matrices with 1 line or 1 column does not crash R anymore
+  
 spatialwarnings v1.0 (Release date: 2017-11-03)
 ===============================================
 

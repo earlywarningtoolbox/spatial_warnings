@@ -10,7 +10,8 @@ Minor changes:
   * Safer handling of small matrices in SDR computation
 
 Bug fixes 
-  * Counting matrices with 1 line or 1 column does not crash R anymore
+  * Counting patches in matrices with 1 line or 1 column 
+    does not crash R anymore
   
 spatialwarnings v1.0 (Release date: 2017-11-03)
 ===============================================

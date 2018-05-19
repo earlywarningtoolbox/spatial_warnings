@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/spatial-ews/spatialwarnings.svg?branch=master)](https://travis-ci.org/spatial-ews/spatialwarnings) 
-[![Coverage status](https://codecov.io/gh/spatial-ews/spatialwarnings/branch/master/graph/badge.svg)](https://codecov.io/github/spatial-ews/spatialwarnings?branch=master)
+[![Coverage 
+status](https://codecov.io/gh/spatial-ews/spatialwarnings/branch/master/graph/badge.svg)](https://codecov.io/github/spatial-ews/spatialwarnings?branch=master) 
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/spatialwarnings)](https://cran.r-project.org/package=spatialwarnings) 
 
 Spatial early warning signs - R package
 =======================================

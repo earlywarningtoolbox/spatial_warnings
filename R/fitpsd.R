@@ -225,7 +225,7 @@ pl_fit <- function(dat, xmin = 1) {
 #' @details The function returns NA if \code{dat} has only three unique values 
 #'   or if the power-law fit failed. 
 #' 
-#' @seealso \code{\link{patchdistr_spews}}, \code{\link{patchsizes}}, 
+#' @seealso \code{\link{patchdistr_sews}}, \code{\link{patchsizes}}, 
 #'   \code{\link{indicator_psdtype}}
 #' 
 #' @references 

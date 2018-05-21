@@ -50,6 +50,7 @@ if ( TEST_XMIN ) {
         # a small difference in xmin. So we have an acceptable error here. 
         expect_true( abs(est_xmin - est_xmin_plpkg) <= 2 )
         
+        # In this case, inspect the fit provided by the poweRlaw package
         if ( GRAPHICAL && est_xmin != est_xmin_plpkg ) { 
           
           plot(log10(cumpsd(pldat[pldat >= est_xmin])))
@@ -73,7 +74,7 @@ if ( TEST_XMIN ) {
     }
     
     if ( require(plyr) ) { 
-      xmin_ests <- ddply(parms, ~ expo + rate, estim_xmin, .progress = 'none')
+      xmin_ests <- ddply(parms, ~ expo + rate, estim_xmin)
     }
     
   })

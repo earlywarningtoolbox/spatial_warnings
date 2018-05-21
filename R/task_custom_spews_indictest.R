@@ -10,11 +10,11 @@
 #'   null distribution
 #' 
 #' @export
-indictest.custom_spews <- function(x, nperm = 999, ...) { 
+indictest.custom_sews <- function(x, nperm = 999, ...) { 
   NextMethod('indictest')
 }
 #'@export
-indictest.custom_spews_single <- function(x, nperm = 999, ...) { 
+indictest.custom_sews_single <- function(x, nperm = 999, ...) { 
   
   # We do not support low numbers of replicates
   if ( nperm < 3 ) { 
@@ -33,14 +33,14 @@ indictest.custom_spews_single <- function(x, nperm = 999, ...) {
   
   # Format result
   results <- c(null_values, x["fun.name"], list(nperm = nperm))
-  class(results) <- c('custom_spews_test_single', 'spews_test', 'list')
+  class(results) <- c('custom_sews_test_single', 'sews_test', 'list')
   
   return(results)
 }
 #'@export
-indictest.custom_spews_list <- function(x, nperm = 999, ...) { 
+indictest.custom_sews_list <- function(x, nperm = 999, ...) { 
   
-  results <- parallel::mclapply(x, indictest.custom_spews_single, 
+  results <- parallel::mclapply(x, indictest.custom_sews_single, 
                                 nperm, ...)
   
   # Add replicate column with correct replicate number
@@ -48,19 +48,19 @@ indictest.custom_spews_list <- function(x, nperm = 999, ...) {
     results[[nb]][['replicate']] <- nb
   }
   
-  class(results) <- c('custom_spews_test_list', 'spews_test', 'list')
+  class(results) <- c('custom_sews_test_list', 'sews_test', 'list')
   return(results)
 }
 
 
 #'@export
-as.data.frame.custom_spews_test_single <- function(x, ...) { 
+as.data.frame.custom_sews_test_single <- function(x, ...) { 
   # We need to explicitely add a `replicate` column because it will 
   # be used by funs down the stream. 
   data.frame(replicate = 1, as.data.frame.list(x))
 }
 #'@export
-as.data.frame.custom_spews_test_list <- function(x, ...) { 
+as.data.frame.custom_sews_test_list <- function(x, ...) { 
   tab <- ldply(x, as.data.frame.list)
   # Reorder cols
   tab <- data.frame(replicate = tab[ ,'replicate'], 
@@ -71,11 +71,11 @@ as.data.frame.custom_spews_test_list <- function(x, ...) {
 
 
 #'@export
-summary.custom_spews_test_single <- function(object, ...) { 
-  summary.custom_spews_test_list( list(object) )
+summary.custom_sews_test_single <- function(object, ...) { 
+  summary.custom_sews_test_list( list(object) )
 }
 #'@export
-summary.custom_spews_test_list <- function(object, ...) { 
+summary.custom_sews_test_list <- function(object, ...) { 
   
   tab <- as.data.frame(object)
   
@@ -104,12 +104,12 @@ summary.custom_spews_test_list <- function(object, ...) {
 
 
 #'@export
-print.custom_spews_test_single <- function(x, ...) { 
-  summary.custom_spews_test_single(x, ...)
+print.custom_sews_test_single <- function(x, ...) { 
+  summary.custom_sews_test_single(x, ...)
 }
 #'@export
-print.custom_spews_test_list <- function(x, ...) { 
-  summary.custom_spews_test_list(x, ...)
+print.custom_sews_test_list <- function(x, ...) { 
+  summary.custom_sews_test_list(x, ...)
 }
 
 
@@ -127,9 +127,9 @@ print.custom_spews_test_list <- function(x, ...) {
 #'   line reflects something else than the indicator values (when \code{what} 
 #'   is not set to "value").
 #' 
-#' @method plot custom_spews_test
+#' @method plot custom_sews_test
 #' @export
-plot.custom_spews_test <- function(x, 
+plot.custom_sews_test <- function(x, 
                                    along = NULL,
                                    what = "value", 
                                    display_null = TRUE, 
@@ -137,8 +137,9 @@ plot.custom_spews_test <- function(x,
   NextMethod('plot')
 }
 
+#' @method plot custom_sews_test_single
 #'@export
-plot.custom_spews_test_single <- function(x, 
+plot.custom_sews_test_single <- function(x, 
                                           along = NULL, 
                                           what = "value", 
                                           display_null = TRUE, 
@@ -146,8 +147,9 @@ plot.custom_spews_test_single <- function(x,
   stop('I cannot plot a trend with only one value')
 }
 
+#' @method plot custom_sews_test_list
 #'@export
-plot.custom_spews_test_list <- function(x, 
+plot.custom_sews_test_list <- function(x, 
                                         along = NULL, 
                                         what = "value", 
                                         display_null = TRUE, 

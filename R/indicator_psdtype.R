@@ -73,7 +73,7 @@
 #' maximum-likelihood (following Clauset et al. 2009 recommendations), then 
 #' select the best model using AIC, BIC (default) or AICc. 
 #' 
-#' @seealso \code{\link{patchdistr_spews}}
+#' @seealso \code{\link{patchdistr_sews}}
 #' 
 #' @references
 #' 
@@ -89,7 +89,7 @@
 #' Clauset, A., Shalizi, C. R., & Newman, M. E. (2009). 
 #'   Power-law distributions in empirical data. SIAM review, 51(4), 661-703.
 #' 
-#' @seealso \code{\link{patchdistr_spews}}
+#' @seealso \code{\link{patchdistr_sews}}
 #' 
 #' @examples
 #' 

@@ -1,26 +1,26 @@
 # 
 # 
-# This file contains the indictest functions for spectral spews
+# This file contains the indictest functions for spectral sews
 # 
 
-#' @rdname spectral_spews
+#' @rdname spectral_sews
 #' 
 #' @param nperm The number of replicates to use to compute use in the 
 #'   null distribution
 #' 
 #' @export
-indictest.spectral_spews <- function(x, nperm = 999, ...) { 
+indictest.spectral_sews <- function(x, nperm = 999, ...) { 
   NextMethod('indictest')
 }
 
 # 
-# Indictest functions for spectral_spews objects.
-#' @method indictest spectral_spews_list
+# Indictest functions for spectral_sews objects.
+#' @method indictest spectral_sews_list
 #' @export
-indictest.spectral_spews_list <- function(x, nperm = 999, ...) { 
+indictest.spectral_sews_list <- function(x, nperm = 999, ...) { 
   
   # Compute a distribution of null values for SDR
-  results <- parallel::mclapply(x, indictest.spectral_spews_single, 
+  results <- parallel::mclapply(x, indictest.spectral_sews_single, 
                                 nperm, ...)
   
   # Transfer names 
@@ -35,14 +35,14 @@ indictest.spectral_spews_list <- function(x, nperm = 999, ...) {
   
   # Format and return output
   attr(results, "nreplicates") <- nperm
-  class(results) <- c('spectral_spews_test', 'spews_test', 'data.frame')
+  class(results) <- c('spectral_sews_test', 'sews_test', 'data.frame')
   
   return(results)
 }
 
-#' @method indictest spectral_spews_single
+#' @method indictest spectral_sews_single
 #' @export
-indictest.spectral_spews_single <- function(x, nperm = 999, ...) { 
+indictest.spectral_sews_single <- function(x, nperm = 999, ...) { 
   
   # Build closure passed to compute_indicator_with_null that uses the correct
   #   high and low ranges, and is compatible with the use of replicate(). 
@@ -73,7 +73,7 @@ indictest.spectral_spews_single <- function(x, nperm = 999, ...) {
   
   # Format output
   attr(results, "nreplicates") <- nperm
-  class(results) <- c('spectral_spews_test', 'spews_test', 'data.frame')
+  class(results) <- c('spectral_sews_test', 'sews_test', 'data.frame')
   
   return(results)
 }

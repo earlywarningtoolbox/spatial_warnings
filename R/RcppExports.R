@@ -27,7 +27,7 @@ label_cpp <- function(mat, nbmask, wrap) {
 #'   the Moran's I index. If the variance of the matrix is zero, then 
 #'   \code{NaN} is returned. 
 #' 
-#' @seealso \code{\link{indicator_moran}}, \code{\link{generic_spews}} 
+#' @seealso \code{\link{indicator_moran}}, \code{\link{generic_sews}} 
 #' 
 #' @examples
 #' 
@@ -66,7 +66,7 @@ shuffle_and_compute <- function(mat, indic, nrep) {
 #'   is not square, then only the largest square matrix fitting in the upper 
 #'   right corner is used. 
 #' 
-#' @seealso \code{\link{spectral_spews}}, \code{\link{indicator_sdr}}
+#' @seealso \code{\link{spectral_sews}}, \code{\link{indicator_sdr}}
 #' 
 #' @examples 
 #' 

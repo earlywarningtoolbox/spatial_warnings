@@ -19,7 +19,7 @@ using namespace Rcpp;
 //'   the Moran's I index. If the variance of the matrix is zero, then 
 //'   \code{NaN} is returned. 
 //' 
-//' @seealso \code{\link{indicator_moran}}, \code{\link{generic_spews}} 
+//' @seealso \code{\link{indicator_moran}}, \code{\link{generic_sews}} 
 //' 
 //' @examples
 //' 

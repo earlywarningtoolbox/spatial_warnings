@@ -26,7 +26,7 @@
 #' 
 #' @return A matrix of reduced dimension.
 #' 
-#' @seealso \code{\link{generic_spews}}
+#' @seealso \code{\link{generic_sews}}
 #' 
 #' @examples 
 #' rmat <- matrix(runif(20*10) > .5, 

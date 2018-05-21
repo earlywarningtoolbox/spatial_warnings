@@ -23,7 +23,7 @@
 #' distribution as they become more and more degraded. In particular, an 
 #' increase in the truncation of the patch-size distribution (PSD) is expected 
 #' to occur. The power-law range (PLR) measures the truncation of the PSD in a single 
-#' value (see also \code{\link{patchdistr_spews}} for more details). 
+#' value (see also \code{\link{patchdistr_sews}} for more details). 
 #' 
 #' To compute the PLR, power-laws are fitted with a variable 
 #' minimum patch size (xmin) and the one with the lowest Kolmogorov-Smirnov
@@ -49,7 +49,7 @@
 #'   value of the power-law range. If multiple matrices were provided, then 
 #'   a list of data.frames is returned
 #' 
-#' @seealso \code{\link{patchdistr_spews}}
+#' @seealso \code{\link{patchdistr_sews}}
 #' 
 #' @examples
 #' \dontrun{

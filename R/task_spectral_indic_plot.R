@@ -1,7 +1,7 @@
 # 
-#' @rdname spectral_spews
+#' @rdname spectral_sews
 #' 
-#' @param x A \code{spectral_spews_test} object as produced by \link{indictest}
+#' @param x A \code{spectral_sews_test} object as produced by \link{indictest}
 #' 
 #' @param along An optional vector of values along which the trend is to be 
 #'   displayed. The length of the vector must be equal to the number of 
@@ -18,9 +18,9 @@
 #' 
 #' @param ... Ignored 
 #' 
-#' @method plot spectral_spews_test
+#' @method plot spectral_sews_test
 #' @export
-plot.spectral_spews_test <- function(x, # an indictest object
+plot.spectral_sews_test <- function(x, # an indictest object
                                      ..., 
                                      along = NULL, 
                                      what = 'value', 
@@ -93,9 +93,9 @@ plot.spectral_spews_test <- function(x, # an indictest object
 }
 
 #' @export
-#' @method plot spectral_spews_list
-plot.spectral_spews_list <- function(x, ..., along = NULL) { 
-  plot.spectral_spews_test(as.data.frame(x), 
+#' @method plot spectral_sews_list
+plot.spectral_sews_list <- function(x, ..., along = NULL) { 
+  plot.spectral_sews_test(as.data.frame(x), 
                            along = along,
                            display_null = FALSE, 
                            what = 'value')
@@ -111,7 +111,7 @@ plot.spectral_spews_list <- function(x, ..., along = NULL) {
 # 
 #' @title Spectrum plot
 #'
-#' @rdname spectral_spews
+#' @rdname spectral_sews
 #' 
 #' @export
 plot_spectrum <- function(x, along = NULL, display_null = TRUE) { 
@@ -120,7 +120,7 @@ plot_spectrum <- function(x, along = NULL, display_null = TRUE) {
 
 # Method for indictest output
 #' @export
-plot_spectrum.spectral_spews_test <- function(x, 
+plot_spectrum.spectral_sews_test <- function(x, 
                                               along = NULL, 
                                               display_null = TRUE) { 
   
@@ -174,19 +174,19 @@ plot_spectrum.spectral_spews_test <- function(x,
   return(plot) 
 }
 
-# Method for spectral_spews output (list object)
+# Method for spectral_sews output (list object)
 #' @export
-plot_spectrum.spectral_spews_list <- function(x, 
+plot_spectrum.spectral_sews_list <- function(x, 
                                               along = NULL, 
                                               ...) { 
   data_as_df <- as.data.frame(x)
-  plot_spectrum.spectral_spews_test(data_as_df, along = along, 
+  plot_spectrum.spectral_sews_test(data_as_df, along = along, 
                                     display_null = FALSE)
 }
 
-# Method for spectral_spews output (single object)
+# Method for spectral_sews output (single object)
 #' @export
-plot_spectrum.spectral_spews_single <- function(x, ...) { 
+plot_spectrum.spectral_sews_single <- function(x, ...) { 
   data_as_df <- as.data.frame(x)
-  plot_spectrum.spectral_spews_test(data_as_df, display_null = FALSE)
+  plot_spectrum.spectral_sews_test(data_as_df, display_null = FALSE)
 }

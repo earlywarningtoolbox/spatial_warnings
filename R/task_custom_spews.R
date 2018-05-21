@@ -8,26 +8,31 @@
 #' @param fun A function that takes a real-valued matrix as input and returns 
 #'   a single, numerical value. 
 #' 
+#' @param fun.name The indicator name (optional, used for plots and textual 
+#'   summaries)
+#' 
 #' @return 
 #' 
 #' \code{create_indicator} returns a function that can be used in the same way 
-#'   than the other \code{*_spews} functions (e.g. \code{generic_spews})
+#'   than the other \code{*_sews} functions (e.g. \code{generic_sews})
 #' 
 #' @details 
 #' 
 #' Spatial Early-warning signals (EWS) are metrics that are based on the 
 #'   spatial structure of a system and measure the degradation of an ecological 
 #'   system. The package \code{spatialwarnings} provides 
-#'   generic indicators (\code{\link{generic_spews}}), spectrum-based 
-#'   indicators (\code{\link{spectral_spews}}) and indicators based on patch 
-#'   size distributions (\code{\link{patchdistr_spews}}). 
+#'   generic indicators (\code{\link{generic_sews}}), spectrum-based 
+#'   indicators (\code{\link{spectral_sews}}) and indicators based on patch 
+#'   size distributions (\code{\link{patchdistr_sews}}). 
 #'   
 #' \code{create_indicator} can extend the package to any indicator function. 
 #'   It takes a function `fun` and returns another function that can be used 
-#'   as an indicator function similar to the \code{*_spews} functions. The 
+#'   as an indicator function similar to the \code{*_sews} functions. The 
 #'   results of this function can be assessed for significance using the 
 #'   generic function \code{indictest} and trends can be displayed using 
-#'   \code{plot}, \code{summary}, etc. (see Examples). 
+#'   \code{plot}, \code{summary}, etc. (see Examples). The function 
+#'   \code{custom_indicator} does the same but without creating an intermediate 
+#'   indicator function. 
 #' 
 #' \code{fun} should be a function that takes as input a matrix and possibly
 #'   more arguments, and return a single numeric value. Note that the matrix 
@@ -46,11 +51,11 @@
 #' }
 #' 
 #' # Create the indicator function
-#' maxpatch_spews <- create_indicator(maxpatchsize)
+#' maxpatch_sews <- create_indicator(maxpatchsize)
 #' 
-#' # Then work with this function as if it were a function from the *_spews 
+#' # Then work with this function as if it were a function from the *_sews 
 #' # family. 
-#' mp_indic <- maxpatch_spews(forestgap)
+#' mp_indic <- maxpatch_sews(forestgap)
 #' summary(mp_indic)
 #' 
 #' \dontrun{ 
@@ -70,19 +75,22 @@
 #' }
 #' 
 #' # Create indicator function
-#' cv_spews <- create_indicator(spatial_cv)
+#' cv_sews <- create_indicator(spatial_cv)
 #' 
 #' # Compute and display trends
-#' cv_indic <- cv_spews(serengeti, subsize = 3)
+#' cv_indic <- cv_sews(serengeti, subsize = 3)
 #' plot(cv_indic, along = serengeti.rain)
+#' 
+#' # We can do the same work in one run using custom_indicator
+#' cv_indic2 <- custom_indicator(serengeti, spatial_cv, subsize = 3)
+#' plot(cv_indic2, along = serengeti.rain)
 #' 
 #' \dontrun{ 
 #' indictest(cv_indic, nperm = 99)
 #' }
 #'@export
-create_indicator <- function(fun) { 
-  
-  fun.name <- as.character(substitute(fun))
+create_indicator <- function(fun, 
+                             fun.name = as.character(substitute(fun))) { 
   
   # Subfunction that works only on a matrix
   get_one_result <- function(mat, ...) { 
@@ -92,7 +100,7 @@ create_indicator <- function(fun) {
                    fun.name  = fun.name, 
                    indicf = fun)
     
-    class(result) <- c('custom_spews_single', 'custom_spews', 'list')
+    class(result) <- c('custom_sews_single', 'custom_sews', 'list')
     return(result)
   }
   
@@ -101,7 +109,7 @@ create_indicator <- function(fun) {
     if ( is.list(mat) ) { 
       result <- lapply(mat, get_one_result, ...)
       names(result) <- names(mat)
-      class(result) <- c('custom_spews_list', 'custom_spews', 'list')
+      class(result) <- c('custom_sews_list', 'custom_sews', 'list')
     } else { 
       result <- get_one_result(mat, ...)
     }
@@ -111,15 +119,27 @@ create_indicator <- function(fun) {
 }
 
 
+#'
+#' @rdname create_indicator
+#'
+#' @param mat A matrix or a list of matrices. 
+#'
+#'@export
+custom_indicator <- function(mat, fun, 
+                             fun.name = as.character(substitute(fun)), 
+                             ...) { 
+  indicfun <- create_indicator(fun, fun.name = fun.name)
+  indicfun(mat, ...)
+}
 
 # as.df methods
 # ---------------
 #'@export
-as.data.frame.custom_spews_single <- function(x, ...) { 
-  as.data.frame.custom_spews_list( list(x) )
+as.data.frame.custom_sews_single <- function(x, ...) { 
+  as.data.frame.custom_sews_list( list(x) )
 }
 #'@export
-as.data.frame.custom_spews_list <- function(x, ...) { 
+as.data.frame.custom_sews_list <- function(x, ...) { 
   output <- Map(function(n, o) data.frame(replicate = n, value = o[['value']], 
                                           fun.name = o[['fun.name']]), 
                seq_along(x), x)
@@ -131,13 +151,15 @@ as.data.frame.custom_spews_list <- function(x, ...) {
 
 # Print methods
 # ---------------
+#' @method plot custom_sews_single
 #'@export
-print.custom_spews_single <- function(x, ...) { 
-  print.custom_spews_list(list(x), ...)
+print.custom_sews_single <- function(x, ...) { 
+  print.custom_sews_list(list(x), ...)
 }
+#' @method plot custom_sews_list
 #'@export
-print.custom_spews_list <- function(x, ...) { 
-  summary.custom_spews_list(x, ...)
+print.custom_sews_list <- function(x, ...) { 
+  summary.custom_sews_list(x, ...)
 }
 
 
@@ -145,11 +167,11 @@ print.custom_spews_list <- function(x, ...) {
 # Summary methods
 # ---------------
 #'@export
-summary.custom_spews_single <- function(object, ...) { 
-  summary.custom_spews_list( list(object) )
+summary.custom_sews_single <- function(object, ...) { 
+  summary.custom_sews_list( list(object) )
 }
 #'@export
-summary.custom_spews_list <- function(object, ...) { 
+summary.custom_sews_list <- function(object, ...) { 
   
   # Get function name. Note that we only take the first element as there is no
   # way these names could be different for each elements of object. 
@@ -177,7 +199,7 @@ summary.custom_spews_list <- function(object, ...) {
 # ------------
 #' @rdname create_indicator
 #' 
-#' @param x A \code{custom_spews} object (as provided by the 
+#' @param x A \code{custom_sews} object (as provided by the 
 #'   custom indicator function created by \code{create_indicator}). 
 #' 
 #' @param along A vector providing values over which the indicator trend 
@@ -187,12 +209,12 @@ summary.custom_spews_list <- function(object, ...) {
 #' @param ... Ignored
 #' 
 #'@export
-plot.custom_spews_list <- function(x, along = NULL, ...) { 
-  plot.custom_spews_test_list(x, along = along, display_null = FALSE)
+plot.custom_sews_list <- function(x, along = NULL, ...) { 
+  plot.custom_sews_test_list(x, along = along, display_null = FALSE)
 }
 
 #' @export
-plot.custom_spews_single <- function(x, ...) { 
+plot.custom_sews_single <- function(x, ...) { 
   stop('I cannot plot a trend with only one value !')  
 }
 

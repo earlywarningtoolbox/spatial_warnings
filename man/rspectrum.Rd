@@ -43,5 +43,5 @@ lines(spec.cor, col = "blue")
 
 }
 \seealso{
-\code{\link{spectral_spews}}, \code{\link{indicator_sdr}}
+\code{\link{spectral_sews}}, \code{\link{indicator_sdr}}
 }

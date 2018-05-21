@@ -21,9 +21,9 @@
 #'   
 #' @return 
 #' 
-#' \code{generic_spews} returns an object of class \code{generic_spews_single}
+#' \code{generic_sews} returns an object of class \code{generic_sews_single}
 #'   (actually a list) if mat is a single matrix or an object of class 
-#'   \code{generic_spews_list} if mat is a list. 
+#'   \code{generic_sews_list} if mat is a list. 
 #' 
 #' \code{indictest} returns an object of class \code{generic_test} (actually 
 #'   a data.frame). 
@@ -81,7 +81,7 @@
 #' @examples
 #' 
 #' data(serengeti)
-#' gen_indic <- generic_spews(serengeti, subsize = 5, 
+#' gen_indic <- generic_sews(serengeti, subsize = 5, 
 #'                            moranI_coarse_grain = TRUE)
 #' 
 #' # Display results
@@ -115,7 +115,7 @@
 #' }
 #' 
 #' @export
-generic_spews <- function(mat, 
+generic_sews <- function(mat, 
                           subsize = 4,
                           abs_skewness = FALSE,
                           moranI_coarse_grain = FALSE) {
@@ -125,11 +125,11 @@ generic_spews <- function(mat,
   orig_mat <- mat
   
   if ( is.list(mat) ) { 
-    results <- lapply(mat, generic_spews, subsize, abs_skewness,
+    results <- lapply(mat, generic_sews, subsize, abs_skewness,
                       moranI_coarse_grain)
     names(results) <- names(mat) # import list names
-    class(results) <- c('generic_spews_list', 'generic_spews', 
-                        'spews_result_list', 'list')
+    class(results) <- c('generic_sews_list', 'generic_sews', 
+                        'sews_result_list', 'list')
     return(results)
   }
   
@@ -183,8 +183,8 @@ generic_spews <- function(mat,
                   abs_skewness = abs_skewness, 
                   moranI_coarse_grain = moranI_coarse_grain)
   
-  class(results) <- c('generic_spews_single', 'generic_spews',
-                      'spews_result_single', 'list')
+  class(results) <- c('generic_sews_single', 'generic_sews',
+                      'sews_result_single', 'list')
   return(results)
 }
 

@@ -8,14 +8,14 @@
 # Plot methods
 # --------------------------------------------------
 # 
-#' @rdname patchdistr_spews_plot
-#' @name patchdistr_spews_plot
+#' @rdname patchdistr_sews_plot
+#' @name patchdistr_sews_plot
 #' 
 #' @title Early-warning signals based on patch size distributions
 #' 
 #' @description Plot early-warning signals based on patch size distributions 
 #' 
-#' @param x An object as produced by \code{\link{spectral_spews}}
+#' @param x An object as produced by \code{\link{spectral_sews}}
 #' 
 #' @param along A vector providing values over which the indicator trend 
 #'   will be plotted. If \code{NULL} then the values are plotted sequentially 
@@ -44,13 +44,13 @@
 #'    cumbersome when working with a high number of matrices but displays the 
 #'    full shape of the distributions. 
 #'  
-#' @seealso \code{\link{patchdistr_spews}}
+#' @seealso \code{\link{patchdistr_sews}}
 #' 
 #' @examples
 #' 
 #' \dontrun{ 
 #' data(forestgap)
-#' psd_indic <- patchdistr_spews(forestgap)
+#' psd_indic <- patchdistr_sews(forestgap)
 #' 
 #' plot(psd_indic, along = forestgap.pars[ ,"d"]) 
 #' 
@@ -61,21 +61,21 @@
 #' plot_distr(psd_indic, along = forestgap.pars[ ,"d"])
 #' }
 #' 
-#'@method plot patchdistr_spews
+#'@method plot patchdistr_sews
 #'@export
-plot.patchdistr_spews <- function(x, along = NULL, ...) { 
-  if ( 'patchdistr_spews_single' %in% class(x) ) { 
+plot.patchdistr_sews <- function(x, along = NULL, ...) { 
+  if ( 'patchdistr_sews_single' %in% class(x) ) { 
     stop('I cannot plot a trend with only one value')
   }
   
-  plot.patchdistr_spews_list(x, along)
+  plot.patchdistr_sews_list(x, along)
 }
 
 # Note: plot will display how characteristics change along a gradient. To 
 #   have a plot of distributions, use plot_distr
 # 
-#'@method plot patchdistr_spews_list
-plot.patchdistr_spews_list <- function(x, along = NULL) { 
+#'@method plot patchdistr_sews_list
+plot.patchdistr_sews_list <- function(x, along = NULL) { 
   
   if ( !is.null(along) && (length(along) != length(x)) ) { 
     stop('The along values are unfit for plotting (size mismatch)')
@@ -175,7 +175,7 @@ plot.patchdistr_spews_list <- function(x, along = NULL) {
 }
 
 
-#' @rdname patchdistr_spews_plot
+#' @rdname patchdistr_sews_plot
 #' 
 # // along arg is already documented in plot() method
 #' 
@@ -190,13 +190,13 @@ plot_distr <- function(x, along = NULL, best_only = TRUE, plrange = TRUE) {
 }
 
 #'@export
-plot_distr.patchdistr_spews <- function(x, along = NULL, best_only = TRUE, 
+plot_distr.patchdistr_sews <- function(x, along = NULL, best_only = TRUE, 
                                         plrange = TRUE) { 
   NextMethod('plot_distr')
 }
 
 #'@export
-plot_distr.patchdistr_spews_single <- function(x, 
+plot_distr.patchdistr_sews_single <- function(x, 
                                                along = NULL, 
                                                best_only = TRUE, 
                                                plrange = TRUE) { 
@@ -249,7 +249,7 @@ plot_distr.patchdistr_spews_single <- function(x,
 }
 
 #'@export
-plot_distr.patchdistr_spews_list <- function(x, 
+plot_distr.patchdistr_sews_list <- function(x, 
                                              along = NULL, 
                                              best_only = TRUE, 
                                              plrange = TRUE) { 
@@ -328,14 +328,14 @@ plot_distr.patchdistr_spews_list <- function(x,
 
 # Predict methods 
 # --------------------------------------------------
-#' @rdname patchdistr_spews_predict
-#' @name patchdistr_spews_predict
+#' @rdname patchdistr_sews_predict
+#' @name patchdistr_sews_predict
 #' 
-#' @title predict method for patchdistr_spews objects
+#' @title predict method for patchdistr_sews objects
 #' 
 #' @description Export the observed and fitted patch size distributions 
 #' 
-#' @param object An \code{\link{patchdistr_spews}} object 
+#' @param object An \code{\link{patchdistr_sews}} object 
 #' 
 #' @param newdata A vector of patch sizes at which the fit is returned (default 
 #'   to 200 regularly-spaced values). 
@@ -349,7 +349,7 @@ plot_distr.patchdistr_spews_list <- function(x,
 #'   distribution values and pred, a data.frame containing the fitted 
 #'   values. 
 #' 
-#' @details The function \code{\link{patchdistr_spews}} fits competing 
+#' @details The function \code{\link{patchdistr_sews}} fits competing 
 #'   distribution models to the observed patch size distributions. This 
 #'   functions is able to export the observed values and the fitted values 
 #'   altogether. 
@@ -357,18 +357,18 @@ plot_distr.patchdistr_spews_list <- function(x,
 #' @examples 
 #' 
 #' \dontrun{ 
-#' patch_indics <- patchdistr_spews(forestgap)
+#' patch_indics <- patchdistr_sews(forestgap)
 #' 
 #' predict(patch_indics)
 #' 
 #' }
 #' 
-#' @seealso \code{\link{patchdistr_spews}}, 
-#'   \code{\link[=patchdistr_spews_plot]{plot}}, 
-#'   \code{\link[=patchdistr_spews_plot]{plot_distr}}, 
+#' @seealso \code{\link{patchdistr_sews}}, 
+#'   \code{\link[=patchdistr_sews_plot]{plot}}, 
+#'   \code{\link[=patchdistr_sews_plot]{plot_distr}}, 
 #' 
 #'@export
-predict.patchdistr_spews_single <- function(object, ..., 
+predict.patchdistr_sews_single <- function(object, ..., 
                                             newdata = NULL,
                                             best_only = FALSE) { 
   
@@ -432,10 +432,10 @@ predict.patchdistr_spews_single <- function(object, ...,
 }
 
 #'@export
-predict.patchdistr_spews_list <- function(object, ..., 
+predict.patchdistr_sews_list <- function(object, ..., 
                                           newdata = NULL, best_only = FALSE) { 
   
-  dat <- lapply(object, predict.patchdistr_spews_single, 
+  dat <- lapply(object, predict.patchdistr_sews_single, 
                 newdata = newdata, best_only = best_only)
   
   # Add id but handle when psd is empty
@@ -467,7 +467,7 @@ predict.patchdistr_spews_list <- function(object, ...,
 # --------------------------------------------------
 
 #'@export
-as.data.frame.patchdistr_spews_single <- function(x, ...) { 
+as.data.frame.patchdistr_sews_single <- function(x, ...) { 
   ans <- data.frame(x[['psd_type']], x[['plrange']],
                     # Add the name explicitely for these as they are single values
                     percolation = x[['percolation']], 
@@ -482,10 +482,10 @@ as.data.frame.patchdistr_spews_single <- function(x, ...) {
 }
 
 #'@export
-as.data.frame.patchdistr_spews_list <- function(x, ...) { 
+as.data.frame.patchdistr_sews_list <- function(x, ...) { 
   
   # Format data
-  results <- lapply(x, as.data.frame.patchdistr_spews_single)
+  results <- lapply(x, as.data.frame.patchdistr_sews_single)
   results <- Map(function(n, df) { 
                    data.frame(replicate = n, df) 
                  }, seq.int(length(results)), results)
@@ -537,7 +537,7 @@ prepare_summary_table <- function(x, ...) {
 }
 
 #'@export
-summary.patchdistr_spews <- function(object, ...) { 
+summary.patchdistr_sews <- function(object, ...) { 
   dat <- prepare_summary_table(object)
   
   cat('Patch-based Early-Warnings results\n') 
@@ -553,11 +553,11 @@ summary.patchdistr_spews <- function(object, ...) {
 # Print methods
 # --------------------------------------------------
 # Note this method works for both single and lists objects so we only 
-#   define it for patchdistr_spews (and not their *_list *_single 
+#   define it for patchdistr_sews (and not their *_list *_single 
 #   equivalents)
 
 #'@export
-print.patchdistr_spews <- function(x, ...) { 
+print.patchdistr_sews <- function(x, ...) { 
   cat('Patch-based Early-Warnings results\n') 
   cat('\n')
   

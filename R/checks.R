@@ -62,7 +62,7 @@ warn_if_not_square <- function(mat) {
 }
 
 # Check whether some variables are suited to make plots : used in task_generic
-#   and task_spectral spews
+#   and task_spectral sews
 check_suitable_for_plots <- function(obj, 
                                      along, 
                                      display_null) { 

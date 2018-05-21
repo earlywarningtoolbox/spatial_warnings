@@ -77,14 +77,14 @@
 #' Results can be displayed using the text-based \code{summary} and \code{print}, 
 #' but graphical options are also available to plot the trends (\code{plot}) and 
 #' the fitted distributions (\code{plot_distr}). Plotting functions are 
-#' documented in a \link[=patchdistr_spews_plot]{separate page}. Observed and 
+#' documented in a \link[=patchdistr_sews_plot]{separate page}. Observed and 
 #' fitted distributions can be produced using the \code{predict} function, 
-#' as documented in \link[=patchdistr_spews_predict]{this page}. 
+#' as documented in \link[=patchdistr_sews_predict]{this page}. 
 #' 
 #' @seealso \code{\link{indicator_psdtype}}, \code{\link{patchsizes}}, 
-#'   \code{\link[=patchdistr_spews_plot]{plot}}, 
-#'   \code{\link[=patchdistr_spews_plot]{plot_distr}}, 
-#'   \code{\link[=patchdistr_spews_predict]{predict}}
+#'   \code{\link[=patchdistr_sews_plot]{plot}}, 
+#'   \code{\link[=patchdistr_sews_plot]{plot_distr}}, 
+#'   \code{\link[=patchdistr_sews_predict]{predict}}
 #' 
 #' @references 
 #' 
@@ -106,7 +106,7 @@
 #' data(forestgap)
 #' 
 #' \dontrun{
-#' psd_indic <- patchdistr_spews(forestgap)
+#' psd_indic <- patchdistr_sews(forestgap)
 #' 
 #' summary(psd_indic)
 #' plot(psd_indic)
@@ -123,11 +123,11 @@
 #' 
 #' }
 #' @export
-patchdistr_spews <- function(x, 
+patchdistr_sews <- function(x, 
                              merge = FALSE,
                              fit_lnorm = FALSE,
                              best_by = "BIC", 
-                             xmin = 1, # "est" option
+                             xmin = 1, # a number, or "estimate" option
                              xmin_bounds = NULL, 
                              wrap = FALSE) {
   
@@ -135,10 +135,10 @@ patchdistr_spews <- function(x,
   
   # If input is a list -> apply on each element
   if ( !merge & is.list(x)) { 
-    results <- parallel::mclapply(x, patchdistr_spews, merge, fit_lnorm, 
+    results <- parallel::mclapply(x, patchdistr_sews, merge, fit_lnorm, 
                                   best_by, xmin, xmin_bounds, wrap)
-    class(results) <- c('patchdistr_spews_list', 'patchdistr_spews', 
-                        'spews_result_list', 'list')
+    class(results) <- c('patchdistr_sews_list', 'patchdistr_sews', 
+                        'sews_result_list', 'list')
     return(results)
   } 
   
@@ -184,8 +184,8 @@ patchdistr_spews <- function(x,
                  plrange = plr_est, 
                  npatches = length(psd),
                  unique_patches = length(unique(psd)))
-  class(result) <- c('patchdistr_spews_single', 'patchdistr_spews', 
-                     'spews_result_single', 'list')
+  class(result) <- c('patchdistr_sews_single', 'patchdistr_sews', 
+                     'sews_result_single', 'list')
   
   return(result)
 }

@@ -29,9 +29,9 @@
 #'  
 #'  "Workflow" functions:
 #'  \itemize{ 
-#'    \item \code{\link{generic_spews}}: Generic spatial EWS
-#'    \item \code{\link{spectral_spews}}: Spectrum-based EWS
-#'    \item \code{\link{patchdistr_spews}}: EWS based on patch-size distributions
+#'    \item \code{\link{generic_sews}}: Generic spatial EWS
+#'    \item \code{\link{spectral_sews}}: Spectrum-based EWS
+#'    \item \code{\link{patchdistr_sews}}: EWS based on patch-size distributions
 #'  }
 #'  
 #'  Individual indicators: 

@@ -13,7 +13,7 @@
 # 
 #' @title Generic spatial early-warning signals: plotting function
 #' 
-#' @rdname generic_spews
+#' @rdname generic_sews
 #'
 #' 
 # /!\ along is already documented elswhere !
@@ -28,9 +28,9 @@
 #'   line reflects something else than the indicator values (when \code{what} 
 #'   is not set to "value").
 #' 
-#' @method plot generic_spews_test
+#' @method plot generic_sews_test
 #' @export
-plot.generic_spews_test <- function(x, 
+plot.generic_sews_test <- function(x, 
                                     along = NULL, 
                                     what = 'value',
                                     display_null = TRUE, 
@@ -119,7 +119,7 @@ plot.generic_spews_test <- function(x,
 # as.data.frame methods
 # --------------------------------------------------
 #'@export
-as.data.frame.generic_spews_test <- function(x, ...) { 
+as.data.frame.generic_sews_test <- function(x, ...) { 
   
   # The list methods actually works pretty well so we do this. However, 
   # we define the method instead of relying on automatic dispatch 
@@ -133,7 +133,7 @@ as.data.frame.generic_spews_test <- function(x, ...) {
 # --------------------------------------------------
 
 #'@export
-print.generic_spews_test <- function(x, ...) { 
+print.generic_sews_test <- function(x, ...) { 
   cat('Generic Spatial Early-Warnings\n') 
   cat('\n')
   
@@ -177,7 +177,7 @@ print.generic_spews_test <- function(x, ...) {
 # Summary method
 # --------------------------------------------------
 #'@export
-summary.generic_spews_test <- function(object, ...) { 
-  print.generic_spews_test(object, ...)
+summary.generic_sews_test <- function(object, ...) { 
+  print.generic_sews_test(object, ...)
 }
 

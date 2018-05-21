@@ -97,7 +97,7 @@ test_that('Indicator plrange returns correct values', {
   
   # Test that workflow function and individual function return the same thing
   indiv_ic_plrange <- indicator_plrange(forestgap, merge = TRUE)$plrange 
-  workflow_plrange <- patchdistr_spews(forestgap, merge = TRUE)$plrange$plrange
+  workflow_plrange <- patchdistr_sews(forestgap, merge = TRUE)$plrange$plrange
   
   expect_true( abs(indiv_ic_plrange - 0.8153096) < 0.001 )
   expect_true( abs(workflow_plrange - 0.8153096) < 0.001 )
@@ -115,7 +115,7 @@ test_that('Generic indicator task function returns correct values', {
   moran_do_cg <- FALSE
   moran_do_cg <- FALSE
   
-  genindic_result <- generic_spews(testmat, 
+  genindic_result <- generic_sews(testmat, 
                                    subsize = size, 
                                    moranI_coarse_grain = moran_do_cg)
   

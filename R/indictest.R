@@ -9,7 +9,7 @@
 #' 
 #' @description Assess the significance of spatial early-warning values
 #' 
-#' @param x A spatial warning object such as one produced by the \code{*_spews} 
+#' @param x A spatial warning object such as one produced by the \code{*_sews} 
 #'   function family
 #' 
 #' @param nperm The number of permutations to carry out to produce the null 
@@ -17,7 +17,7 @@
 #' 
 #' @param ... Additional arguments passed to methods 
 #' 
-#' @return An object of class \code{*_spews_test} depending on the input object
+#' @return An object of class \code{*_sews_test} depending on the input object
 #'   (actually, a data.frame)
 #'
 #' @details 
@@ -28,7 +28,7 @@
 #'   distribution. P-values are obtained based on the rank of the observered
 #'   value in the null distribution. 
 #' 
-#' @seealso \code{\link{generic_spews}}, \code{\link{spectral_spews}}
+#' @seealso \code{\link{generic_sews}}, \code{\link{spectral_sews}}
 #'   
 #' @references 
 #' 

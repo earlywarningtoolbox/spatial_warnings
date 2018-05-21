@@ -36,7 +36,7 @@ test_that('results matches those in PLOS One', {
   matrices <- lapply(matrices, function(x) x == 1) # veg is 1
   
   # Now compute indicators
-  test_results  <- generic_spews(matrices, subsize = 10, 
+  test_results  <- generic_sews(matrices, subsize = 10, 
                                  moranI_coarse_grain = TRUE)
   test_reshaped <- acast(as.data.frame(test_results), 
                          replicate ~ indicator)

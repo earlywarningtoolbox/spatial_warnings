@@ -3,32 +3,40 @@
 %   R/task_custom_spews_indictest.R
 \name{create_indicator}
 \alias{create_indicator}
-\alias{plot.custom_spews_list}
-\alias{indictest.custom_spews}
-\alias{plot.custom_spews_test}
+\alias{custom_indicator}
+\alias{plot.custom_sews_list}
+\alias{indictest.custom_sews}
+\alias{plot.custom_sews_test}
 \title{Custom Spatial Early-Warning signals}
 \usage{
-create_indicator(fun)
+create_indicator(fun, fun.name = as.character(substitute(fun)))
 
-\method{plot}{custom_spews_list}(x, along = NULL, ...)
+custom_indicator(mat, fun, fun.name = as.character(substitute(fun)), ...)
 
-\method{indictest}{custom_spews}(x, nperm = 999, ...)
+plot.custom_sews_list(x, along = NULL, ...)
 
-\method{plot}{custom_spews_test}(x, along = NULL, what = "value",
+\method{indictest}{custom_sews}(x, nperm = 999, ...)
+
+\method{plot}{custom_sews_test}(x, along = NULL, what = "value",
   display_null = TRUE, ...)
 }
 \arguments{
 \item{fun}{A function that takes a real-valued matrix as input and returns 
 a single, numerical value.}
 
-\item{x}{A \code{custom_spews} object (as provided by the 
+\item{fun.name}{The indicator name (optional, used for plots and textual 
+summaries)}
+
+\item{mat}{A matrix or a list of matrices.}
+
+\item{...}{Ignored}
+
+\item{x}{A \code{custom_sews} object (as provided by the 
 custom indicator function created by \code{create_indicator}).}
 
 \item{along}{A vector providing values over which the indicator trend 
 will be plotted. If \code{NULL} then the values are plotted sequentially 
 in their original order.}
-
-\item{...}{Ignored}
 
 \item{nperm}{The number of replicates to use to compute use in the 
 null distribution}
@@ -44,7 +52,7 @@ is not set to "value").}
 }
 \value{
 \code{create_indicator} returns a function that can be used in the same way 
-  than the other \code{*_spews} functions (e.g. \code{generic_spews})
+  than the other \code{*_sews} functions (e.g. \code{generic_sews})
 }
 \description{
 Computation, significance assessment and display of trends 
@@ -54,16 +62,18 @@ Computation, significance assessment and display of trends
 Spatial Early-warning signals (EWS) are metrics that are based on the 
   spatial structure of a system and measure the degradation of an ecological 
   system. The package \code{spatialwarnings} provides 
-  generic indicators (\code{\link{generic_spews}}), spectrum-based 
-  indicators (\code{\link{spectral_spews}}) and indicators based on patch 
-  size distributions (\code{\link{patchdistr_spews}}). 
+  generic indicators (\code{\link{generic_sews}}), spectrum-based 
+  indicators (\code{\link{spectral_sews}}) and indicators based on patch 
+  size distributions (\code{\link{patchdistr_sews}}). 
   
 \code{create_indicator} can extend the package to any indicator function. 
   It takes a function `fun` and returns another function that can be used 
-  as an indicator function similar to the \code{*_spews} functions. The 
+  as an indicator function similar to the \code{*_sews} functions. The 
   results of this function can be assessed for significance using the 
   generic function \code{indictest} and trends can be displayed using 
-  \code{plot}, \code{summary}, etc. (see Examples). 
+  \code{plot}, \code{summary}, etc. (see Examples). The function 
+  \code{custom_indicator} does the same but without creating an intermediate 
+  indicator function. 
 
 \code{fun} should be a function that takes as input a matrix and possibly
   more arguments, and return a single numeric value. Note that the matrix 
@@ -82,11 +92,11 @@ maxpatchsize <- function(mat) {
 }
 
 # Create the indicator function
-maxpatch_spews <- create_indicator(maxpatchsize)
+maxpatch_sews <- create_indicator(maxpatchsize)
 
-# Then work with this function as if it were a function from the *_spews 
+# Then work with this function as if it were a function from the *_sews 
 # family. 
-mp_indic <- maxpatch_spews(forestgap)
+mp_indic <- maxpatch_sews(forestgap)
 summary(mp_indic)
 
 \dontrun{ 
@@ -106,11 +116,15 @@ spatial_cv <- function(mat, subsize) {
 }
 
 # Create indicator function
-cv_spews <- create_indicator(spatial_cv)
+cv_sews <- create_indicator(spatial_cv)
 
 # Compute and display trends
-cv_indic <- cv_spews(serengeti, subsize = 3)
+cv_indic <- cv_sews(serengeti, subsize = 3)
 plot(cv_indic, along = serengeti.rain)
+
+# We can do the same work in one run using custom_indicator
+cv_indic2 <- custom_indicator(serengeti, spatial_cv, subsize = 3)
+plot(cv_indic2, along = serengeti.rain)
 
 \dontrun{ 
 indictest(cv_indic, nperm = 99)

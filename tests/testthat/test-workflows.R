@@ -20,16 +20,16 @@ test_that("The workflow functions work", {
     expect_true({
       capture.output({
         
-        indics <- generic_spews(dataset) 
+        indics <- generic_sews(dataset) 
         
         print(indics)
         summary(indics)
-        as.data.frame(indics) 
+        expect_true(is.data.frame(as.data.frame(indics)))
         
         indics.test <- indictest(indics, nperm = 29)
         print(indics.test)        
         summary(indics.test)      
-        as.data.frame(indics.test) 
+        expect_true(is.data.frame(as.data.frame(indics.test)))
         
         if ( ! is.matrix(dataset) ) { # multiple values
           suppressWarnings( print( plot(indics.test) ) )
@@ -46,15 +46,15 @@ test_that("The workflow functions work", {
       capture.output({
         
         # These two comands should produce the same thing
-        indics <- spectral_spews(dataset, 
+        indics <- spectral_sews(dataset, 
                                  sdr_low_range  = c(0,  0.2), 
                                  sdr_high_range = c(.8, 1)) 
         
-        indics <- spectral_spews(dataset, quiet = TRUE) 
+        indics <- spectral_sews(dataset, quiet = TRUE) 
         
         print(indics)
         summary(indics)
-        as.data.frame(indics) 
+        expect_true(is.data.frame(as.data.frame(indics)))
         
         indics.test <- indictest(indics, nperm = 29)
         print(indics.test)        
@@ -78,11 +78,11 @@ test_that("The workflow functions work", {
     expect_true({
       capture.output({
         
-        indics <- patchdistr_spews(dataset, fit_lnorm = TRUE) 
+        indics <- patchdistr_sews(dataset, fit_lnorm = TRUE) 
         
         print(indics)
         summary(indics)
-        as.data.frame(indics) 
+        expect_true(is.data.frame(as.data.frame(indics)))
         
         if ( ! is.matrix(dataset) ) { 
           suppressWarnings( print( plot(indics) ) )

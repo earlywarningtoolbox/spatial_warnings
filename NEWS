@@ -2,13 +2,20 @@
 spatialwarnings v1.1 (Release date: unknown)
 ===============================================
 
+This release provides changes as to satisfy referees' comments 
+prior to publication, as long as minor improvements 
+in documentation. 
+
 New features: 
   * Support for custom indicators (see ?create_indicator)
   
 Minor changes: 
   * Documentation improvements 
   * Safer handling of small matrices in SDR computation
-
+  
+Name changes 
+  * `*_spews` functions are now deprecated in favor of `*_sews` functions
+  
 Bug fixes 
   * Counting patches in matrices with 1 line or 1 column 
     does not crash R anymore

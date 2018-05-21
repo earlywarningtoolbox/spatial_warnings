@@ -7,7 +7,7 @@
 indictest(x, nperm = 999, ...)
 }
 \arguments{
-\item{x}{A spatial warning object such as one produced by the \code{*_spews} 
+\item{x}{A spatial warning object such as one produced by the \code{*_sews} 
 function family}
 
 \item{nperm}{The number of permutations to carry out to produce the null 
@@ -16,7 +16,7 @@ distribution}
 \item{...}{Additional arguments passed to methods}
 }
 \value{
-An object of class \code{*_spews_test} depending on the input object
+An object of class \code{*_sews_test} depending on the input object
   (actually, a data.frame)
 }
 \description{
@@ -35,5 +35,5 @@ Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina,
   Methods for Spatial Patterns. PLoS ONE, 9, e92097
 }
 \seealso{
-\code{\link{generic_spews}}, \code{\link{spectral_spews}}
+\code{\link{generic_sews}}, \code{\link{spectral_sews}}
 }

@@ -47,5 +47,5 @@ Sankaran, S., Majumder, S., Kefi, S. and Guttal, V. (2017). Implications
   regime shifts. Ecological Indicators.
 }
 \seealso{
-\code{\link{generic_spews}}
+\code{\link{generic_sews}}
 }

@@ -1,9 +1,9 @@
 # 
 # 
-# This file contains the indictest functions for generic spews
+# This file contains the indictest functions for generic sews
 # 
 
-#' @rdname generic_spews
+#' @rdname generic_sews
 # /!\ Do not document x here as it already document in plot()
 #' 
 #' @param nperm The number of replicates to use to compute a null 
@@ -12,12 +12,12 @@
 #' @param ... Additional arguments passed onto methods
 #' 
 #' @export
-indictest.generic_spews <- function(x, nperm = 999, ...) { 
+indictest.generic_sews <- function(x, nperm = 999, ...) { 
   NextMethod('indictest')
 }
 
 #'@export 
-indictest.generic_spews_single <- function(x, nperm = 999, ...) { 
+indictest.generic_sews_single <- function(x, nperm = 999, ...) { 
   
   # We do not support low numbers of replicates
   if ( nperm < 3 ) { 
@@ -41,14 +41,14 @@ indictest.generic_spews_single <- function(x, nperm = 999, ...) {
   rownames(results) <- indic_list
   
   attr(results, 'nreplicates') <- nperm
-  class(results) <- c('generic_spews_test', 'spews_test', 'data.frame')
+  class(results) <- c('generic_sews_test', 'sews_test', 'data.frame')
   results
 }
 
 #'@export
-indictest.generic_spews_list <- function(x, nperm = 999, ...) { 
+indictest.generic_sews_list <- function(x, nperm = 999, ...) { 
   
-  results <- parallel::mclapply(x, indictest.generic_spews_single, 
+  results <- parallel::mclapply(x, indictest.generic_sews_single, 
                                 nperm, ...)
   
   # Replace replicate column with correct number
@@ -58,7 +58,7 @@ indictest.generic_spews_list <- function(x, nperm = 999, ...) {
   results <- do.call(rbind, results)
   
   attr(results, 'nreplicates') <- nperm
-  class(results) <- c('generic_spews_test', 'spews_test', 'data.frame')
+  class(results) <- c('generic_sews_test', 'sews_test', 'data.frame')
   return(results)
 }
 

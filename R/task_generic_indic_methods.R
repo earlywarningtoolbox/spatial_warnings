@@ -14,12 +14,12 @@
 
 
 # NOTE: we do not document the args as they are already included by another
-#   function in the generic_spews doc file
+#   function in the generic_sews doc file
 #  
-#' @rdname generic_spews
+#' @rdname generic_sews
 #' 
-#' @param x A \code{generic_spews} object (as provided by the 
-#'   \code{generic_spews} function). 
+#' @param x A \code{generic_sews} object (as provided by the 
+#'   \code{generic_sews} function). 
 #' 
 #' @param along A vector providing values over which the indicator trend 
 #'   will be plotted. If \code{NULL} then the values are plotted sequentially 
@@ -29,15 +29,15 @@
 #'   \code{along} is numeric or not. 
 #' 
 #' 
-#' @method plot generic_spews
+#' @method plot generic_sews
 #' @export
-plot.generic_spews <- function(x, along = NULL, ...) { 
-  if ( 'generic_spews_single' %in% class(x) ) { 
+plot.generic_sews <- function(x, along = NULL, ...) { 
+  if ( 'generic_sews_single' %in% class(x) ) { 
     stop('I cannot plot a trend with only one value !')
   }
   
   new_data <- as.data.frame(x)
-  plot.generic_spews_test(new_data, along, display_null = FALSE)
+  plot.generic_sews_test(new_data, along, display_null = FALSE)
 }
 
 
@@ -49,7 +49,7 @@ plot.generic_spews <- function(x, along = NULL, ...) {
 
 # This function works for both list and single object
 #'@export
-summary.generic_spews <- function(object, ...) { 
+summary.generic_sews <- function(object, ...) { 
   
   cat('Generic Spatial Early-Warnings\n') 
   cat('\n')
@@ -69,8 +69,8 @@ summary.generic_spews <- function(object, ...) {
 
 # Print is currently identical to summary()
 #'@export
-print.generic_spews <- function(x, ...) { 
-  summary.generic_spews(x, ...)
+print.generic_sews <- function(x, ...) { 
+  summary.generic_sews(x, ...)
 }
 
 
@@ -79,7 +79,7 @@ print.generic_spews <- function(x, ...) {
 # --------------------------------------------------
 
 #'@export
-as.data.frame.generic_spews_list <- function(x, ...) { 
+as.data.frame.generic_sews_list <- function(x, ...) { 
   
   df <- plyr::ldply(x, function(x) { as.data.frame(x[['results']]) })
   df[ ,'replicate'] <- seq.int(length(x))
@@ -92,7 +92,7 @@ as.data.frame.generic_spews_list <- function(x, ...) {
 }
 
 #'@export
-as.data.frame.generic_spews_single <- function(x, ...) { 
-  as.data.frame.generic_spews_list(list(x))
+as.data.frame.generic_sews_single <- function(x, ...) { 
+  as.data.frame.generic_sews_list(list(x))
 }
 

@@ -4,21 +4,21 @@
 # 
 
 
-# Note: we reuse the print method for spectral spews that works well
-#'@method print spectral_spews_test
+# Note: we reuse the print method for spectral sews that works well
+#'@method print spectral_sews_test
 #'@export 
-print.spectral_spews_test <- function(x, ...) { 
-  print.spectral_spews(x, ...)
+print.spectral_sews_test <- function(x, ...) { 
+  print.spectral_sews(x, ...)
 }
 
-# Note: spectral_spews_test objects are already data.frames. We explicitely 
+# Note: spectral_sews_test objects are already data.frames. We explicitely 
 #   assign the method here in case we want to modify it later
-#' @method as.data.frame spectral_spews_test
+#' @method as.data.frame spectral_sews_test
 #' @export
-as.data.frame.spectral_spews_test <- as.data.frame.data.frame
+as.data.frame.spectral_sews_test <- as.data.frame.data.frame
 
 #'@export
-summary.spectral_spews_test <- function(object, ...) { 
+summary.spectral_sews_test <- function(object, ...) { 
   cat('Spectral Spatial Early-Warnings results\n') 
   cat('\n')
   

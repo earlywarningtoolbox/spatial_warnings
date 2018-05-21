@@ -1,6 +1,6 @@
 # 
 # 
-# This file contains common methods to handle spectral_spews objects
+# This file contains common methods to handle spectral_sews objects
 # 
 
 
@@ -9,10 +9,10 @@
 # --------------------------------------------------
 
 #'@export
-as.data.frame.spectral_spews_list <- function(x, ...) { 
+as.data.frame.spectral_sews_list <- function(x, ...) { 
   
   # Compute a distribution of null values for SDR
-  results <- plyr::llply(x, as.data.frame.spectral_spews_single, ...)
+  results <- plyr::llply(x, as.data.frame.spectral_sews_single, ...)
   
   # Add a replicate column with replicate number
   results <- Map(function(x, df) { df[ ,'replicate'] <- x; df }, 
@@ -25,7 +25,7 @@ as.data.frame.spectral_spews_list <- function(x, ...) {
 }
 
 #'@export
-as.data.frame.spectral_spews_single <- function(x, ...) { 
+as.data.frame.spectral_sews_single <- function(x, ...) { 
   
   with(x, 
     rbind.fill(data.frame(replicate = 1, 
@@ -46,7 +46,7 @@ as.data.frame.spectral_spews_single <- function(x, ...) {
 # --------------------------------------------------
 
 #'@export
-print.spectral_spews <- function(x, ...) { 
+print.spectral_sews <- function(x, ...) { 
   cat('Spectral Spatial Early-Warnings results\n') 
   cat('\n')
   
@@ -65,7 +65,7 @@ print.spectral_spews <- function(x, ...) {
 # --------------------------------------------------
 
 #'@export
-summary.spectral_spews_list <- function(object, ...) { 
+summary.spectral_sews_list <- function(object, ...) { 
   cat('Spectral Spatial Early-Warnings results\n') 
   cat('\n')
   
@@ -86,6 +86,6 @@ summary.spectral_spews_list <- function(object, ...) {
 }
 
 #'@export
-summary.spectral_spews_single <- function(object, ...) { 
-  summary.spectral_spews_list(list(object))
+summary.spectral_sews_single <- function(object, ...) { 
+  summary.spectral_sews_list(list(object))
 }

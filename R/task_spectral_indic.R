@@ -28,8 +28,8 @@
 #' 
 #' @return 
 #' 
-#' Function \code{spectral_spews} object of class \code{spectral_spews_list} or 
-#'   \code{spectral_spews_single} depending on whether the input was a list of 
+#' Function \code{spectral_sews} object of class \code{spectral_sews_list} or 
+#'   \code{spectral_sews_single} depending on whether the input was a list of 
 #'   matrices or a single matrix. 
 #' 
 #' Function \code{indictest} 
@@ -81,7 +81,7 @@
 #' data(serengeti.rain) 
 #' 
 #' 
-#' spec_indic <- spectral_spews(serengeti, 
+#' spec_indic <- spectral_sews(serengeti, 
 #'                              sdr_low_range  = c(0, .2), 
 #'                              sdr_high_range = c(.8, 1))
 #' 
@@ -120,7 +120,7 @@
 #' }
 #' 
 #' @export
-spectral_spews <- function(mat, 
+spectral_sews <- function(mat, 
                            sdr_low_range  = NULL, 
                            sdr_high_range = NULL, 
                            quiet = FALSE) { 
@@ -148,10 +148,10 @@ spectral_spews <- function(mat,
   
   # Handle list case
   if ( is.list(mat) ) { 
-    results <- lapply(mat, spectral_spews, sdr_low_range, sdr_high_range, quiet)
+    results <- lapply(mat, spectral_sews, sdr_low_range, sdr_high_range, quiet)
     names(results) <- names(mat)
-    class(results) <- c('spectral_spews_list',  'spectral_spews', 
-                        'spews_result_list', 'list')
+    class(results) <- c('spectral_sews_list',  'spectral_sews', 
+                        'sews_result_list', 'list')
     return(results)
   }
   
@@ -186,7 +186,7 @@ spectral_spews <- function(mat,
                  call = match.call(), 
                  low_range = ranges_absolute[['low']], 
                  high_range = ranges_absolute[['high']])
-  class(output) <- c('spectral_spews_single', 'spectral_spews', 
-                     'spews_result_single', 'list')
+  class(output) <- c('spectral_sews_single', 'spectral_sews', 
+                     'sews_result_single', 'list')
   return(output)
 }

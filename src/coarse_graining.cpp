@@ -1,5 +1,4 @@
 //
-//
 // Function that takes care of coarse-graining
 //
 // Function to reduce original matrix to submatrix by averaging
@@ -17,13 +16,11 @@ using namespace Rcpp;
 //[[Rcpp::export]]
 arma::mat coarse_grain_cpp(arma::umat mat, int subsize) {
 
-  // Cast as int which may be more compatible with Solaris
+  // Integer division (round down to nearest integer). We convert to (int) 
+  // as mat.n_rows may be a uword.
   int nr = (int)(mat.n_rows / subsize);
   int nc = (int)(mat.n_cols / subsize);
-
-  // int nr = floor(mat.n_rows / subsize);
-  // int nc = floor(mat.n_cols / subsize);
-
+  
   arma::mat reduced_matrix = arma::mat(nr, nc);
 
   // Fill in values of the submatrix

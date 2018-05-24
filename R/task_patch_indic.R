@@ -124,12 +124,12 @@
 #' }
 #' @export
 patchdistr_sews <- function(x, 
-                             merge = FALSE,
-                             fit_lnorm = FALSE,
-                             best_by = "BIC", 
-                             xmin = 1, # a number, or "estimate" option
-                             xmin_bounds = NULL, 
-                             wrap = FALSE) {
+                            merge = FALSE,
+                            fit_lnorm = FALSE,
+                            best_by = "BIC", 
+                            xmin = 1, # a number, or "estimate" option
+                            xmin_bounds = NULL, 
+                            wrap = FALSE) {
   
   check_mat(x) # Check input matrix
   

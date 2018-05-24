@@ -65,7 +65,7 @@ generic_spews <- function(mat,
 #'   \code{\link{patchdistr_sews}} instead.
 #' 
 #'@export
-patchdistr_spews <- function(mat, 
+patchdistr_spews <- function(x, 
                              merge = FALSE,
                              fit_lnorm = FALSE,
                              best_by = "BIC", 
@@ -73,7 +73,7 @@ patchdistr_spews <- function(mat,
                              xmin_bounds = NULL, 
                              wrap = FALSE) {
   .Deprecated(new = "patchdistr_sews", package = "spatialwarnings")
-  patchdistr_sews(mat, marge, fit_lnorm, best_by, xmin, xmin_bounds, 
+  patchdistr_sews(x, merge, fit_lnorm, best_by, xmin, xmin_bounds, 
                   wrap)
 }
 

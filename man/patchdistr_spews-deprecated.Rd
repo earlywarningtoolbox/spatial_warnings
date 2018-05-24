@@ -4,10 +4,12 @@
 \alias{patchdistr_spews}
 \title{(DEPRECATED) Early-warning signals based on patch size distributions}
 \usage{
-patchdistr_spews(mat, merge = FALSE, fit_lnorm = FALSE, best_by = "BIC",
+patchdistr_spews(x, merge = FALSE, fit_lnorm = FALSE, best_by = "BIC",
   xmin = 1, xmin_bounds = NULL, wrap = FALSE)
 }
 \arguments{
+\item{x}{A logical matrix (TRUE/FALSE values) or a list of these}
+
 \item{merge}{The default behavior is to produce indicators values for each 
 matrix. If this parameter is set to TRUE then the patch size distributions 
 are pooled together for fitting.}
@@ -27,8 +29,6 @@ distributions.}
 
 \item{wrap}{Determines whether patches are considered to wrap around the 
 matrix when reaching the side}
-
-\item{x}{A logical matrix (TRUE/FALSE values) or a list of these}
 }
 \description{
 Compute early-warnings based on 

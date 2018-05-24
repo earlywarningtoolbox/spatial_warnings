@@ -8,8 +8,8 @@
 #' @param fun A function that takes a real-valued matrix as input and returns 
 #'   a single, numerical value. 
 #' 
-#' @param fun.name The indicator name (optional, used for plots and textual 
-#'   summaries)
+#' @param fun.name The indicator name. Optional, used for plots and textual 
+#'   summaries, but mandatory if \code{fun} is an anonymous function. 
 #' 
 #' @return 
 #' 
@@ -25,14 +25,13 @@
 #'   indicators (\code{\link{spectral_sews}}) and indicators based on patch 
 #'   size distributions (\code{\link{patchdistr_sews}}). 
 #'   
-#' \code{create_indicator} can extend the package to any indicator function. 
+#' \code{create_indicator} extends the package to any arbitrary function. 
 #'   It takes a function `fun` and returns another function that can be used 
-#'   as an indicator function similar to the \code{*_sews} functions. The 
-#'   results of this function can be assessed for significance using the 
-#'   generic function \code{indictest} and trends can be displayed using 
-#'   \code{plot}, \code{summary}, etc. (see Examples). The function 
-#'   \code{custom_indicator} does the same but without creating an intermediate 
-#'   indicator function. 
+#'   as an indicator similar to the \code{*_sews} function family. The 
+#'   results of this function can be assessed for significance using 
+#'   \code{indictest} and trends can be displayed using 
+#'   \code{plot}, \code{summary}, etc. (see Examples). \code{custom_indicator} 
+#'   \does the same but without creating an intermediate indicator function. 
 #' 
 #' \code{fun} should be a function that takes as input a matrix and possibly
 #'   more arguments, and return a single numeric value. Note that the matrix 
@@ -119,11 +118,11 @@ create_indicator <- function(fun,
 }
 
 
-#'
+#
 #' @rdname create_indicator
 #'
 #' @param mat A matrix or a list of matrices. 
-#'
+#' 
 #'@export
 custom_indicator <- function(mat, fun, 
                              fun.name = as.character(substitute(fun)), 

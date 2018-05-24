@@ -72,7 +72,7 @@ Spatial Early-warning signals (EWS) are metrics that are based on the
   results of this function can be assessed for significance using 
   \code{indictest} and trends can be displayed using 
   \code{plot}, \code{summary}, etc. (see Examples). \code{custom_indicator} 
-  \does the same but without creating an intermediate indicator function. 
+  does the same but without creating an intermediate indicator function. 
 
 \code{fun} should be a function that takes as input a matrix and possibly
   more arguments, and return a single numeric value. Note that the matrix 

@@ -1,6 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-tools
 .rsetup
 ^.*.kate-swp$
 manuscript
@@ -11,3 +10,4 @@ web
 README.md
 cran-comments.md
 ^codecov\.yml$
+tools/export_Rforge.sh

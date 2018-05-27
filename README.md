@@ -114,7 +114,7 @@ Generic Spatial Early-Warnings
 >       subtitle = "Grey ribbons indicate the 5-95% quantiles of the null distribution")
 ```
 
-![Example result](./web/serengeti_example.png)
+![Example result](./tools/imgs/serengeti_example.png)
 
 ## Original authors and License
 

@@ -5,10 +5,10 @@ data(forestgap)
 data(serengeti)
 
 datasets <- list(forestgap[3:4], 
-                 forestgap[1:3], 
-                 serengeti[5:6])
+                 forestgap[1:2])
 
 test_that('Custom indicators work', { 
+  skip_on_cran()
   
   for (dataset in datasets) { 
     # Run a classical workflow and make sure there are no errors
@@ -38,7 +38,7 @@ test_that('Custom indicators work', {
         print(a[[1]])
         
         options(mc.cores = 2) 
-        b <- indictest(a, nperm = 19)
+        b <- indictest(a, nperm = 9)
 
         summary(b)
         print(b)
@@ -57,8 +57,5 @@ test_that('Custom indicators work', {
     expect_true(all.equal(a, custom_indicator(dataset, fun = maxpatchsize)))
     
   }
-#   library(ggplot2)
-#   plot(b) + 
-#     scale_y_log10()
 
 })

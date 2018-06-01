@@ -74,7 +74,7 @@ test_that("the cpp implementation of the spectrum computations is correct", {
     return(shiftX)
   }
   
-  for ( i in seq_along(serengeti) ) { 
+  for ( i in c(1, 2, 3) ) { 
     testmat <- serengeti[[i]]
     
     # Test if there is more than one value in the matrix, because the behavior 

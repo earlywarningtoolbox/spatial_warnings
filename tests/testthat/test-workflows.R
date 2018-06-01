@@ -13,6 +13,7 @@ datasets <- list(forestgap[[3]],
                  serengeti[5:6])
 
 test_that("The workflow functions work", { 
+  skip_on_cran()
   
   for ( dataset in datasets ) { 
       
@@ -26,7 +27,7 @@ test_that("The workflow functions work", {
         summary(indics)
         expect_true(is.data.frame(as.data.frame(indics)))
         
-        indics.test <- indictest(indics, nperm = 29)
+        indics.test <- indictest(indics, nperm = 9)
         print(indics.test)        
         summary(indics.test)      
         expect_true(is.data.frame(as.data.frame(indics.test)))
@@ -56,7 +57,7 @@ test_that("The workflow functions work", {
         summary(indics)
         expect_true(is.data.frame(as.data.frame(indics)))
         
-        indics.test <- indictest(indics, nperm = 29)
+        indics.test <- indictest(indics, nperm = 9)
         print(indics.test)        
         summary(indics.test)      
         as.data.frame(indics.test) 
@@ -78,7 +79,7 @@ test_that("The workflow functions work", {
     expect_true({
       capture.output({
         
-        indics <- patchdistr_sews(dataset, fit_lnorm = TRUE) 
+        indics <- suppressWarnings( patchdistr_sews(dataset, fit_lnorm = TRUE) )
         
         print(indics)
         summary(indics)

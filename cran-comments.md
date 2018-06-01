@@ -1,8 +1,10 @@
 
 This is an update to the package spatialwarnings. It introduces small bug
-fixes, improvement in documentation and some additional functionality. 
-Some functions have been renamed as part of a peer-review process 
+fixes, improvement in documentation and some additional functionality.
+Some functions have been renamed as part of a peer-review process
 prior to publication of an article describing the package.
+
+Note that this is a reupload that reduces the required testing time. 
 
 ## Changes in this release
 
@@ -57,7 +59,7 @@ Homepage and usage example:
   https://github.com/spatial-ews/spatialwarnings
 
 Reference:
-  
+
   * Kéfi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina,
     V.N., et al. (2014). Early Warning Signals of Ecological Transitions:
     Methods for Spatial Patterns. PLoS ONE, 9, e92097.
@@ -65,4 +67,4 @@ Reference:
 
   * A dedicated article presenting in more detail the package is under
     preparation (submitted to Methods in Ecology and Evolution)
-  
+

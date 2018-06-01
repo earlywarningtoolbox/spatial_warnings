@@ -4,7 +4,8 @@ fixes, improvement in documentation and some additional functionality.
 Some functions have been renamed as part of a peer-review process
 prior to publication of an article describing the package.
 
-Note that this is a reupload that reduces the required testing time. 
+Note that this is a reupload that reduces the required testing time on
+CRAN machines.
 
 ## Changes in this release
 

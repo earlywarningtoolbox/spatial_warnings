@@ -31,7 +31,7 @@ Bug fixes
 
  - local linux computer (Arch Linux as of 2018/05/24, R 3.5.0)
 
- - Windows building service (R-release, R-devel at win-builder.r-project.org)
+ - Windows building service (R-devel at win-builder.r-project.org)
 
 ## R CMD check results
 

@@ -115,6 +115,7 @@ test_that('Indicator plrange returns correct values', {
 
 
 test_that('Generic indicator task function returns correct values', { 
+  skip_on_cran()
   
   # Parameters
   size <- 4

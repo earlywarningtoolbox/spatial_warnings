@@ -33,3 +33,9 @@ test_that("Coarse-graining works", {
   }
   
 })
+
+test_that("CG handles negative values", { 
+  expect_true( is.numeric( coarse_grain(matrix(runif(100, -10, -5), 100, 100), 
+                                        subsize = 4) ) )
+})
+

@@ -48,6 +48,11 @@ coarse_grain <- function(mat, subsize) {
     return(mat)
   }
   
+  # CG with length == 1 is no CG at all ! 
+  if ( subsize == 1) { 
+    return(mat)
+  }
+  
   coarse_grain_cpp(mat, subsize)
   
 }

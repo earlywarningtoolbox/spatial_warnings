@@ -14,7 +14,7 @@
 using namespace Rcpp;
 
 //[[Rcpp::export]]
-arma::mat coarse_grain_cpp(arma::umat mat, int subsize) {
+arma::mat coarse_grain_cpp(arma::mat mat, int subsize) {
 
   // Integer division (round down to nearest integer). We convert to (int) 
   // as mat.n_rows may be a uword.

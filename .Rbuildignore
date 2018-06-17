@@ -3,12 +3,12 @@
 .rsetup
 ^.*.kate-swp$
 manuscript
-draft
-data-raw
+^draft
+^data-raw
 ^.travis\.yml$
 web
 README.md
 cran-comments.md
 ^codecov\.yml$
-tools/export_Rforge.sh
-^./tools/imgs/.*.png$ 
+^tools/export_Rforge.sh
+tools/imgs

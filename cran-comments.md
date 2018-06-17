@@ -14,16 +14,16 @@ Bug fixes:
     
 ## Test environments
 
- - Travis-ci (Ubuntu 14.04.5, R 3.5.0 and devel (2018-05-31 r74811) ):
-   https://travis-ci.org/spatial-ews/spatialwarnings/builds/393369689
-
+ - Travis-ci (Ubuntu 14.04.5, R 3.5.0 and devel (2018-06-15 r74903) ):
+   https://travis-ci.org/spatial-ews/spatialwarnings/builds/393408917
+   
  - local linux computer (Arch Linux as of 2018-06-17, R 3.5.0)
-  
+   
  - Windows building service (R-devel at win-builder.r-project.org)
-   https://win-builder.r-project.org/vf2qxF1Ke1rr/
- 
+   https://win-builder.r-project.org/F6IHE3vX15aC
+   
  - Solaris: r-hub building service (platform solaris-x86-patched)
-   https://builder.r-hub.io/status/spatialwarnings_1.2.tar.gz-3b5d792967644e9e8e7dd4b52531da25
+   http://builder.r-hub.io/status/spatialwarnings_1.2.tar.gz-2fa883a51fff4e15bf80c194d4c3b0da
 
 ## R CMD check results
 

@@ -58,8 +58,8 @@ DataFrame rspectrum(arma::mat mat) {
   int nc = mat.n_cols; 
   
   // Middle point of matrix
-  int n0x = floor(nc/2); 
-  int n0y = floor(nr/2); 
+  int n0x = nc/2; 
+  int n0y = nr/2; 
   
   // Minimum and maximum distances to consider
   int mi = 1;

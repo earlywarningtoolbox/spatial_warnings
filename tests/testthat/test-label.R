@@ -12,6 +12,18 @@ test_that("Patch counting works and handles weird matrices", {
     # Fail if not a matrix
     expect_error(label(seq.int(10)))
     
+    # Wrapping 
+    a <- diag(5) > 0; a[5,1] <- TRUE
+    t <- label(a, wrap = FALSE)
+    expect_true((t[1,1] != t[5,1]) != t[5,5])
+    t <- label(a, wrap = TRUE)
+    expect_true((t[1,1] == t[5,1]) == t[5,5])
+    
+    # Neighboring mask 
+    nbm <- label(diag(5) > 0, nbmask = matrix(c(1,1,1,1,0,1,1,1,1), 
+                                              ncol = 3, nrow = 3))
+    expect_true(unique(na.omit(as.vector(nbm))) == 1)
+    
     # Return things
     expect_true( all(is.na(label(diag(10) == 2))) )
     expect_true( unique(as.vector(label(diag(10) < 2))) == 1 )

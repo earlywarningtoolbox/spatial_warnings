@@ -32,8 +32,8 @@ void shuffle_matrix_internal(arma::mat& mat,
     
     // As we are in a matrix we need to compute the 2D coordinates of the 
     //   cells to swap.
-    uword xold = floor(k/nc);
-    uword xnew = floor(j/nc);
+    uword xold = k/nc;
+    uword xnew = j/nc;
     uword yold = k % nc;
     uword ynew = j % nc;
     

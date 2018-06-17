@@ -29,7 +29,8 @@ test_that('Custom indicators work', {
         as.data.frame(a[[1]]) 
         
         if (length(dataset) > 1) { 
-          plot(a)
+          # Suppress the warnings related to missing values in geom_path
+          suppressWarnings( plot(a) )
         }
         
         indictest(a[[1]], nperm = 9)
@@ -39,12 +40,13 @@ test_that('Custom indicators work', {
         
         options(mc.cores = 2) 
         b <- indictest(a, nperm = 9)
-
+        
         summary(b)
         print(b)
         
         if (length(dataset) > 1) { 
-          plot(b)
+          # Suppress the warnings related to missing values in geom_path
+          suppressWarnings( plot(b) )
         }
       })
       

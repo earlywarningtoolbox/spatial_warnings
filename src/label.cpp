@@ -148,8 +148,8 @@ IntegerMatrix get_nb_coords(IntegerMatrix mat,
     for (int nbj=0; nbj<nbmask.ncol(); nbj++) { 
       // If the neighbor is to be considered, record the necessary shifts
       if ( nbmask(nbi, nbj) > 0) { 
-        int shift_x = nbi - ceil( (nbmask.nrow()-1)/2 );
-        int shift_y = nbj - ceil( (nbmask.ncol()-1)/2 );
+        int shift_x = nbi - (nbmask.nrow()-1)/2;
+        int shift_y = nbj - (nbmask.ncol()-1)/2;
         
         // Actual coordinates of the neighbor
         int nb_x = (X.first + shift_x);

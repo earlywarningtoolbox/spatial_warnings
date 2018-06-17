@@ -132,7 +132,6 @@ if (require(ggplot2)) {
     geom_vline(xintercept = 590, color = "red", linetype = "dashed")
 }
 
-}
 
 # Display radial-spectra
 plot_spectrum(spec_indic, along = serengeti.rain)
@@ -143,6 +142,7 @@ if (require(ggplot2)) {
     scale_y_log10()
 }
 
+}
 }
 \references{
 Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., 

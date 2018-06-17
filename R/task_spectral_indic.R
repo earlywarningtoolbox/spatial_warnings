@@ -108,7 +108,6 @@
 #'     geom_vline(xintercept = 590, color = "red", linetype = "dashed")
 #' }
 #' 
-#' }
 #' 
 #' # Display radial-spectra
 #' plot_spectrum(spec_indic, along = serengeti.rain)
@@ -119,6 +118,7 @@
 #'     scale_y_log10()
 #' }
 #' 
+#' }
 #' @export
 spectral_sews <- function(mat, 
                            sdr_low_range  = NULL, 

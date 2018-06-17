@@ -1,46 +1,36 @@
 
-This is a minor update to the package spatialwarnings 
-that should fix compilation on Solaris, as requested 
-by CRAN maintainers (problem regarding overloading 
-ambiguity). It also fixes a small bug regarding 
-functionality. 
+This is a minor update to the package spatialwarnings that should fix 
+compilation on Solaris, as requested by CRAN maintainers (problem regarding 
+overloading ambiguity). It also fixes a small bug regarding functionality. 
 
-Note that the previous version of the package has been 
-archived on CRAN due to delays in providing the updates.
-
-------------------------------------------------------
+Note that the previous version of the package has been archived on CRAN due to 
+delays in providing the update.
 
 ## Changes in this release
 
 Bug fixes: 
   * Compilation errors should now be fixed on Solaris
-  * Fixed coarse-graining bug when input values 
-    are non-integer
+  * Fixed coarse-graining bug when input values are not integers
+    
 ## Test environments
 
- * Travis-ci (Ubuntu 14.04.5, R 3.5.0 and devel 
-   (2018-05-31 r74811) ):
+ - Travis-ci (Ubuntu 14.04.5, R 3.5.0 and devel (2018-05-31 r74811) ):
    https://travis-ci.org/spatial-ews/spatialwarnings/builds/393369689
 
- * local linux computer (Arch Linux as of 2018-06-17, 
-   R 3.5.0)
+ - local linux computer (Arch Linux as of 2018-06-17, R 3.5.0)
   
- * Windows building service (R-devel at 
-   win-builder.r-project.org)
+ - Windows building service (R-devel at win-builder.r-project.org)
    https://win-builder.r-project.org/vf2qxF1Ke1rr/
  
- * Solaris: r-hub building service (platform 
-   solaris-x86-patched)
+ - Solaris: r-hub building service (platform solaris-x86-patched)
    https://builder.r-hub.io/status/spatialwarnings_1.2.tar.gz-3b5d792967644e9e8e7dd4b52531da25
 
 ## R CMD check results
 
-There were no ERRORs or WARNINGs on any of the 
-above platforms.
+There were no ERRORs or WARNINGs on any of the above platforms.
 
-One NOTE was produced on win-builder, related to the 
-fact that this package has been archived on 
-2018-06-17, along with a few false positives regarding 
+One NOTE was produced on win-builder, related to the fact that this package has 
+been archived on 2018-06-17, along with a few false positives regarding 
 mis-spelled words: 
 
 * checking CRAN incoming feasibility ... NOTE
@@ -61,7 +51,7 @@ CRAN repository db overrides:
     installation errors were not corrected despite reminder
   Overloading on Solaris.
 
-## Compiling Warning/Errors 
+## Compiling Warnings 
 
 Some compilation warnings are produced on Windows in RcppArmadillo-related 
 code, e.g.: 
@@ -77,25 +67,20 @@ d:/RCompile/CRANpkg/lib/3.6/RcppArmadillo/include/armadillo_bits/arma_ostream_me
 
 ## Package Description
 
-spatialwarnings is a package that assists ecologists 
-in carrying out computations of early-warning 
-signals (EWS) of ecosystem degradation.
+spatialwarnings is a package that assists ecologists in carrying out 
+computations of early-warning signals (EWS) of ecosystem degradation.
 
-These EWS are based on the fact that some ecosystems 
-are expected to show specific spatial patterns before 
-undergoing non-linear transitions (e.g. a wide shift 
-in their state despite a small change in external 
-forcings). For example, such ecosystems are expected 
-to show an increase in spatial autocorrelation, 
-variance and skewness, or, for patchy ecosystems,
-specific changes in the patch size distribution.
+These EWS are based on the fact that some ecosystems are expected to show 
+specific spatial patterns before undergoing non-linear transitions (e.g. a wide 
+shift in their state despite a small change in external forcings). For example, 
+such ecosystems are expected to show an increase in spatial autocorrelation, 
+variance and skewness, or, for patchy ecosystems, specific changes in the patch 
+size distribution.
 
-This packages assists users with computing these 
-metrics efficiently on matrix objects in R, test 
-their significance based on randomizing spatial 
-structure, and plot their trends based on ggplot2. 
-A convenient, three-step workflow is provided 
-based on summary/plot/etc. generic functions.
+This packages assists users with computing these metrics efficiently on matrix 
+objects in R, test their significance based on randomizing spatial structure, 
+and plot their trends based on ggplot2. A convenient, three-step workflow is 
+provided based on summary/plot/etc. generic functions.
 
 Homepage and usage example:
 
@@ -103,14 +88,11 @@ Homepage and usage example:
 
 Reference:
 
-  * Kéfi, S., Guttal, V., Brock, W.A., Carpenter, 
-    S.R., Ellison, A.M., Livina, V.N., et al. 
-    (2014). Early Warning Signals of Ecological 
-    Transitions: Methods for Spatial Patterns. 
-    PLoS ONE, 9, e92097.
+  * Kéfi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 
+    V.N., et al. (2014). Early Warning Signals of Ecological Transitions: 
+    Methods for Spatial Patterns. PLoS ONE, 9, e92097.
     http://dx.plos.org/10.1371/journal.pone.0092097
 
-  * A dedicated article presenting in more detail 
-    the package is under review (submitted to 
-    Methods in Ecology and Evolution)
+  * A dedicated article presenting in more detail the package is under review 
+    (submitted to Methods in Ecology and Evolution) 
  

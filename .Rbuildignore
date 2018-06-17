@@ -11,5 +11,4 @@ README.md
 cran-comments.md
 ^codecov\.yml$
 tools/export_Rforge.sh
-./tools/imgs
-^./tools/imgs/*.png$ 
+^./tools/imgs/.*.png$ 

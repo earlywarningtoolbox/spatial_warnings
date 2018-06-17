@@ -1,4 +1,12 @@
 
+spatialwarnings v1.2 (Release date: 2018-06)
+===============================================
+
+Bug fixes: 
+  * Compilation errors should be fixed on Solaris
+  * Fixed coarse-graining bug when input values are non-integer
+
+
 spatialwarnings v1.1 (Release date: 2018-06)
 ===============================================
 

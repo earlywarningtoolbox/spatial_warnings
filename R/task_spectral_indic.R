@@ -76,6 +76,7 @@
 #'   Transitions: Methods for Spatial Patterns. PLoS ONE, 9, e92097.
 #' 
 #' @examples
+#' \dontrun{
 #' 
 #' data(serengeti) 
 #' data(serengeti.rain) 
@@ -94,7 +95,6 @@
 #' # computing using: options(mc.cores = n)
 #' 
 #' # Assess significance
-#' \dontrun{
 #' spec_test <- indictest(spec_indic)
 #' summary(spec_test)
 #' 

@@ -100,6 +100,7 @@ The trend of SDR values can be plotted using the \code{plot()} method.
   method.
 }
 \examples{
+\dontrun{
 
 data(serengeti) 
 data(serengeti.rain) 
@@ -118,7 +119,6 @@ plot(spec_indic, along = serengeti.rain)
 # computing using: options(mc.cores = n)
 
 # Assess significance
-\dontrun{
 spec_test <- indictest(spec_indic)
 summary(spec_test)
 

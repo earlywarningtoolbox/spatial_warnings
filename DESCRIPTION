@@ -27,7 +27,8 @@ Suggests:
     covr,
     rmarkdown, 
     png,
-    tiff
+    tiff, 
+    gridExtra
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
 RoxygenNote: 6.0.1

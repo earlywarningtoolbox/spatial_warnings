@@ -25,7 +25,9 @@ Suggests:
     testthat,
     knitr,
     covr,
-    rmarkdown
+    rmarkdown, 
+    png,
+    tiff
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
 RoxygenNote: 6.0.1

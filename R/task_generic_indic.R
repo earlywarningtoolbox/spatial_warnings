@@ -125,8 +125,8 @@ generic_sews <- function(mat,
   orig_mat <- mat
   
   if ( is.list(mat) ) { 
-    results <- lapply(mat, generic_sews, subsize, abs_skewness,
-                      moranI_coarse_grain)
+    results <- parallel::mclapply(mat, generic_sews, subsize, abs_skewness,
+                                  moranI_coarse_grain)
     names(results) <- names(mat) # import list names
     class(results) <- c('generic_sews_list', 'generic_sews', 
                         'sews_result_list', 'list')

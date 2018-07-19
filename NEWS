@@ -1,4 +1,13 @@
 
+Coming in next release 
+===============================================
+
+Documentation and description changes: 
+  * Updated references to reflect the publication of new paper presenting 
+      the package <doi:10.1111/2041-210X.13058>
+  * Added a vignette presenting the package and some more advanced tasks 
+      related to the computation of indicators
+
 spatialwarnings v1.2 (Release date: 2018-06)
 ===============================================
 

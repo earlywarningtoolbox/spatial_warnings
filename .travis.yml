@@ -10,3 +10,5 @@ before_install:
   - sudo apt-get install libfftw3-dev
 after_success:
   - Rscript -e 'covr::codecov()'
+after_failure:
+  find *Rcheck -name '*.fail' -print -exec cat '{}' \;

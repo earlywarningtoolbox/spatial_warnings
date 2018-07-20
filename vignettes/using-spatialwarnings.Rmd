@@ -23,8 +23,6 @@ library(spatialwarnings)
 # Setup parallel computing 
 options(mc.cores = 4)
 
-
-
 # Install some packages which are needed by this vignette
 options(repos = "https://cloud.r-project.org")
 if ( ! require(tiff) ) { 

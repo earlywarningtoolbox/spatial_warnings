@@ -285,7 +285,11 @@ the nearest patch: we apply a smoothing filter to get rid of them.
 ```{r filter}
 # EBImage can be installed from Bioconductor repositories: 
 # https://www.bioconductor.org/packages/release/bioc/html/EBImage.html
-library(EBImage) 
+if ( ! require(EBImage) ) { 
+  cat('Installing required package EBImage...\n')
+  source("https://bioconductor.org/biocLite.R")
+  biocLite("EBImage")
+}
 
 clust_filt <- with(img1_tab, gblur(matrix(!is.na(clust) & clust == 2, 
                                           nrow = max(x), ncol = max(y)), 

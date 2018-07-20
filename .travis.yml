@@ -1,14 +1,22 @@
 ## Travis config file to build a package
 
 language: r
+
 cache: packages
+
 r:
   - release
   - devel
+## Disable vignette building on travis 
+r_build_args: --no-build-vignettes 
+r_check_args: --no-build-vignettes 
+
 before_install:
   - sudo apt-get update
   - sudo apt-get install libfftw3-dev
+
 after_success:
   - Rscript -e 'covr::codecov()'
+  
 after_failure:
   find *Rcheck -name '*.fail' -print -exec cat '{}' \;

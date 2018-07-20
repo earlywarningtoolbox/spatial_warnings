@@ -19,3 +19,4 @@
 .onUnload <- function(libpath) { 
   options(spw.threads = NULL)
 }
+

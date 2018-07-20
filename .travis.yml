@@ -5,5 +5,8 @@ cache: packages
 r:
   - release
   - devel
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install libfftw3-dev
 after_success:
   - Rscript -e 'covr::codecov()'

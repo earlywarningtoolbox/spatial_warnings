@@ -22,6 +22,24 @@ knitr::opts_chunk$set(
 library(spatialwarnings)
 # Setup parallel computing 
 options(mc.cores = 4)
+
+# Install some packages which are needed by this vignette
+if ( ! require(tiff) ) { 
+  install.packages('tiff') 
+} 
+if ( ! require(png) ) { 
+  install.packages('png') 
+} 
+if ( ! require(gridExtra) ) { 
+  install.packages('gridExtra') 
+} 
+# EBImage can be installed from Bioconductor repositories: 
+# https://www.bioconductor.org/packages/release/bioc/html/EBImage.html
+if ( ! require(EBImage) ) { 
+  source("https://bioconductor.org/biocLite.R")
+  biocLite("EBImage", suppressUpdates = TRUE)
+}
+
 ```
 
 
@@ -283,17 +301,11 @@ are misclassified by the k-means algorithm. However, they most likely pertain to
 the nearest patch: we apply a smoothing filter to get rid of them. 
 
 ```{r filter}
-# EBImage can be installed from Bioconductor repositories: 
-# https://www.bioconductor.org/packages/release/bioc/html/EBImage.html
-if ( ! require(EBImage) ) { 
-  cat('Installing required package EBImage...\n')
-  source("https://bioconductor.org/biocLite.R")
-  biocLite("EBImage")
-}
 
-clust_filt <- with(img1_tab, gblur(matrix(!is.na(clust) & clust == 2, 
-                                          nrow = max(x), ncol = max(y)), 
-                                          sigma = 1.5)) > .2
+clust_filt <- with(img1_tab, 
+                   gblur(matrix(!is.na(clust) & clust == 2, 
+                                nrow = max(x), ncol = max(y)), 
+                                sigma = 1.5)) > .2
 
 img1_tab[ ,'clust_filt'] <- as.vector(clust_filt)
 

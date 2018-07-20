@@ -29,18 +29,22 @@ options(mc.cores = 4)
 options(repos = "https://cloud.r-project.org")
 if ( ! require(tiff) ) { 
   install.packages('tiff') 
+  library(tiff)
 } 
 if ( ! require(png) ) { 
   install.packages('png') 
+  library(png)
 } 
 if ( ! require(gridExtra) ) { 
   install.packages('gridExtra') 
+  library(gridExtra)
 } 
 # EBImage can be installed from Bioconductor repositories: 
 # https://www.bioconductor.org/packages/release/bioc/html/EBImage.html
 if ( ! require(EBImage) ) { 
   source("https://bioconductor.org/biocLite.R")
   biocLite("EBImage", suppressUpdates = TRUE)
+  library(EBImage)
 }
 
 ```

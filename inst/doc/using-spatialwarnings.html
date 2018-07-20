@@ -292,26 +292,23 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw">options</span>(<span class="dt">repos =</span> <span class="st">&quot;https://cloud.r-project.org&quot;</span>)</a>
 <a class="sourceLine" id="cb1-9" data-line-number="9"><span class="cf">if</span> ( <span class="op">!</span><span class="st"> </span><span class="kw">require</span>(tiff) ) { </a>
 <a class="sourceLine" id="cb1-10" data-line-number="10">  <span class="kw">install.packages</span>(<span class="st">'tiff'</span>) </a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">} </a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt; Loading required package: tiff</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">  <span class="kw">library</span>(tiff)</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">} </a>
 <a class="sourceLine" id="cb1-13" data-line-number="13"><span class="cf">if</span> ( <span class="op">!</span><span class="st"> </span><span class="kw">require</span>(png) ) { </a>
 <a class="sourceLine" id="cb1-14" data-line-number="14">  <span class="kw">install.packages</span>(<span class="st">'png'</span>) </a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">} </a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="cf">if</span> ( <span class="op">!</span><span class="st"> </span><span class="kw">require</span>(gridExtra) ) { </a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">  <span class="kw">install.packages</span>(<span class="st">'gridExtra'</span>) </a>
-<a class="sourceLine" id="cb1-18" data-line-number="18">} </a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt; Loading required package: gridExtra</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; Attaching package: 'gridExtra'</span></a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt; The following object is masked from 'package:EBImage':</span></a>
-<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co">#&gt;     combine</span></a>
-<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co"># EBImage can be installed from Bioconductor repositories: </span></a>
-<a class="sourceLine" id="cb1-26" data-line-number="26"><span class="co"># https://www.bioconductor.org/packages/release/bioc/html/EBImage.html</span></a>
-<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="cf">if</span> ( <span class="op">!</span><span class="st"> </span><span class="kw">require</span>(EBImage) ) { </a>
-<a class="sourceLine" id="cb1-28" data-line-number="28">  <span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)</a>
-<a class="sourceLine" id="cb1-29" data-line-number="29">  <span class="kw">biocLite</span>(<span class="st">&quot;EBImage&quot;</span>, <span class="dt">suppressUpdates =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb1-30" data-line-number="30">}</a></code></pre></div>
+<a class="sourceLine" id="cb1-15" data-line-number="15">  <span class="kw">library</span>(png)</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">} </a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="cf">if</span> ( <span class="op">!</span><span class="st"> </span><span class="kw">require</span>(gridExtra) ) { </a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">  <span class="kw">install.packages</span>(<span class="st">'gridExtra'</span>) </a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">  <span class="kw">library</span>(gridExtra)</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20">} </a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co"># EBImage can be installed from Bioconductor repositories: </span></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co"># https://www.bioconductor.org/packages/release/bioc/html/EBImage.html</span></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="cf">if</span> ( <span class="op">!</span><span class="st"> </span><span class="kw">require</span>(EBImage) ) { </a>
+<a class="sourceLine" id="cb1-24" data-line-number="24">  <span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)</a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">  <span class="kw">biocLite</span>(<span class="st">&quot;EBImage&quot;</span>, <span class="dt">suppressUpdates =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">  <span class="kw">library</span>(EBImage)</a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">}</a></code></pre></div>
 <div id="identifying-periodicity-in-data" class="section level1">
 <h1>Identifying periodicity in data</h1>
 <p>EWS available in  assume that stress does not affect the periodicity of the spatial structure, as changes in periodicity may mask mask of alter trends in indicator values. Before computing the EWS, it is therefore needed to check for any possible periodicity in the input data. In this appendix, we contrast two images to show how the r-spectrum can be used to highlight periodicity (or its absence), and we show the R code used to run these analyses.</p>

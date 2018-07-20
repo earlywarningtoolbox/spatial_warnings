@@ -1,7 +1,6 @@
 // 
-// 
-// This file contains a routing to compute the normalization parameter 
-//   of a discrete powerexp distribution
+// This file contains a function that computes the normalization constant 
+//   of a discrete truncated-PL distribution.
 // 
 
 #include <Rcpp.h>

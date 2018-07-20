@@ -135,8 +135,8 @@ patchdistr_sews <- function(x,
   
   # If input is a list -> apply on each element
   if ( !merge & is.list(x)) { 
-    results <- parallel::mclapply(x, patchdistr_sews, merge, fit_lnorm, 
-                                  best_by, xmin, xmin_bounds, wrap)
+    results <- lapply(x, patchdistr_sews, merge, fit_lnorm, 
+                      best_by, xmin, xmin_bounds, wrap)
     class(results) <- c('patchdistr_sews_list', 'patchdistr_sews', 
                         'sews_result_list', 'list')
     return(results)

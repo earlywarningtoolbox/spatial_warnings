@@ -127,7 +127,7 @@ plot(gen_test, along = serengeti.rain, what = "z_score")
 # for convenience
 if ( require(ggplot2) ) { 
   plot(gen_test, along = serengeti.rain) + 
-    geom_vline(xintercept = 593, color = "red", linetype = "dashed") +
+    geom_vline(xintercept = 733, color = "red", linetype = "dashed") +
     xlab('Annual rainfall') + 
     theme_minimal()
 }

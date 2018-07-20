@@ -148,8 +148,8 @@ spectral_sews <- function(mat,
   
   # Handle list case
   if ( is.list(mat) ) { 
-    results <- parallel::mclapply(mat, spectral_sews, sdr_low_range, 
-                                  sdr_high_range, quiet)
+    results <- lapply(mat, spectral_sews, sdr_low_range, 
+                      sdr_high_range, quiet)
     names(results) <- names(mat)
     class(results) <- c('spectral_sews_list',  'spectral_sews', 
                         'sews_result_list', 'list')

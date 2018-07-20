@@ -28,7 +28,8 @@ Suggests:
     rmarkdown, 
     png,
     tiff, 
-    gridExtra
+    gridExtra,
+    EBImage
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
 RoxygenNote: 6.0.1

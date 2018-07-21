@@ -27,12 +27,12 @@ Monitoring ecosystem degradation using spatial data and the R package
 'spatialwarnings'. Methods in Ecology and Evolution.](https://dx.doi.org/10.1111/2041-210X.13058)
 
 For more advanced users and/or technical questions that may arise, 
-a FAQ is available [there](https://alex.lecairn.org/spatialwarnings-faq.html)
+a FAQ is also available [there](https://alex.lecairn.org/spatialwarnings-faq.html)
 
 ## Contributors
 
-Alain Danet, [Alex Genin (Maintainer)](mailto:alexandre.genin@umontpellier.fr),
-Vishwesha Guttal, Sonia Kefi, Sabiha Majumder, Sumithra Sankaran, [Florian Schneider](mailto:florian.schneider@univ-montp2.fr)
+Alain Danet, [Alexandre Génin (Maintainer)](mailto:alexandre.genin@umontpellier.fr),
+Vishwesha Guttal, Sonia Kefi, Sabiha Majumder, Sumithra Sankaran, Florian Schneider
 
 ## Installation
 

@@ -164,7 +164,7 @@ THE SOFTWARE.
 
 [Génin, A. , Majumder, S. , Sankaran, S. , Danet, A. , Guttal, V. , 
 Schneider, F. D. and Kéfi, S. (2018),
-Monitoring ecosystemdegradation using spatial data and the R package 
+Monitoring ecosystem degradation using spatial data and the R package 
 'spatialwarnings'. Methods in Ecology and Evolution.](https://dx.doi.org/10.1111/2041-210X.13058)
 
 [Kéfi S, Guttal V, Brock WA, Carpenter SR, Ellison AM, et al. (2014)

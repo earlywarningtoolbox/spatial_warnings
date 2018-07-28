@@ -16,8 +16,8 @@ script:
   # Test first fitting results against pli code
   - R -e "install.packages(c('devtools', 'testthat', 'roxygen2'))"
   - R -e "devtools::install_deps()"
-  - R -e "TEST_PSDFIT <- TRUE; devtools::test(filter = 'test-psdfit')"
-  - R -e "TEST_XMIN <- TRUE; devtools::test(filter = 'test-xmin')"
+  - R -e "TEST_PSDFIT <- TRUE; devtools::test(filter = 'psdfit')"
+  - R -e "TEST_XMIN <- TRUE; devtools::test(filter = 'xmin')"
   # Then test the whole package
   - R CMD build .
   - R CMD check *tar.gz

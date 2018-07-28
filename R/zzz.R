@@ -12,7 +12,9 @@
                         utils::packageDescription("spatialwarnings", 
                                                   fields = "Version"), 
                         appendLF = TRUE)
-  packageStartupMessage("Use options(mc.cores = <n>) to set up multi-core processing (unix only)")
+  if ( .Platform$OS.type == "unix" ) { 
+    packageStartupMessage("Use options(mc.cores = <n>) to set up multi-core processing")
+  }
 }
 
 

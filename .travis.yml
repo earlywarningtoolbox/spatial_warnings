@@ -11,11 +11,11 @@ r:
 before_install:
   - sudo apt-get update
   - sudo apt-get install libfftw3-dev libgsl-dev
-  - export NOT_CRAN="true"
   
 script:
   # Test first fitting results against pli code
-  - R -e "install.packages(c('devtools', 'testthat'))"
+  - R -e "install.packages(c('devtools', 'testthat', 'roxygen2'))"
+  - R -e "devtools::install_deps()"
   - R -e "TEST_PSDFIT <- TRUE; devtools::test(filter = 'test-psdfit')"
   - R -e "TEST_XMIN <- TRUE; devtools::test(filter = 'test-xmin')"
   # Then test the whole package

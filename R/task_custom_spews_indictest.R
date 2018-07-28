@@ -52,13 +52,14 @@ indictest.custom_sews_list <- function(x, nperm = 999, ...) {
   return(results)
 }
 
-
+#'@method as.data.frame custom_sews_test_single
 #'@export
 as.data.frame.custom_sews_test_single <- function(x, ...) { 
   # We need to explicitely add a `replicate` column because it will 
   # be used by funs down the stream. 
   data.frame(replicate = 1, as.data.frame.list(x))
 }
+#'@method as.data.frame custom_sews_test_list
 #'@export
 as.data.frame.custom_sews_test_list <- function(x, ...) { 
   tab <- ldply(x, as.data.frame.list)
@@ -69,7 +70,7 @@ as.data.frame.custom_sews_test_list <- function(x, ...) {
 }
 
 
-
+#'@method as.data.frame custom_sews_test_list
 #'@export
 summary.custom_sews_test_single <- function(object, ...) { 
   summary.custom_sews_test_list( list(object) )

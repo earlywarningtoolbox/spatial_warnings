@@ -91,6 +91,13 @@
 create_indicator <- function(fun, 
                              fun.name = as.character(substitute(fun))) { 
   
+  # Test if fun.name is derived from an anonymous function
+  if ( length(fun.name) > 1 ) { 
+    warning('A valid name could not be derived from the function passed to create_indicator,\n', 
+            'using the default name custom_indic')
+    fun.name <- "custom_indic"
+  }
+  
   # Subfunction that works only on a matrix
   get_one_result <- function(mat, ...) { 
     result <- list(value     = fun(mat, ...), 
@@ -133,10 +140,12 @@ custom_indicator <- function(mat, fun,
 
 # as.df methods
 # ---------------
+#'@method as.data.frame custom_sews_single
 #'@export
 as.data.frame.custom_sews_single <- function(x, ...) { 
   as.data.frame.custom_sews_list( list(x) )
 }
+#'@method as.data.frame custom_sews_list
 #'@export
 as.data.frame.custom_sews_list <- function(x, ...) { 
   output <- Map(function(n, o) data.frame(replicate = n, value = o[['value']], 
@@ -150,12 +159,12 @@ as.data.frame.custom_sews_list <- function(x, ...) {
 
 # Print methods
 # ---------------
-#' @method plot custom_sews_single
+#'@method print custom_sews_single
 #'@export
 print.custom_sews_single <- function(x, ...) { 
   print.custom_sews_list(list(x), ...)
 }
-#' @method plot custom_sews_list
+#'@method print custom_sews_list
 #'@export
 print.custom_sews_list <- function(x, ...) { 
   summary.custom_sews_list(x, ...)
@@ -165,10 +174,12 @@ print.custom_sews_list <- function(x, ...) {
 
 # Summary methods
 # ---------------
+#'@method summary custom_sews_single
 #'@export
 summary.custom_sews_single <- function(object, ...) { 
   summary.custom_sews_list( list(object) )
 }
+#'@method summary custom_sews_list
 #'@export
 summary.custom_sews_list <- function(object, ...) { 
   
@@ -207,12 +218,14 @@ summary.custom_sews_list <- function(object, ...) {
 #' 
 #' @param ... Ignored
 #' 
+#'@method plot custom_sews_list
 #'@export
 plot.custom_sews_list <- function(x, along = NULL, ...) { 
   plot.custom_sews_test_list(x, along = along, display_null = FALSE)
 }
 
-#' @export
+#'@method plot custom_sews_single
+#'@export
 plot.custom_sews_single <- function(x, ...) { 
   stop('I cannot plot a trend with only one value !')  
 }

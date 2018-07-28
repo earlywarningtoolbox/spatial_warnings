@@ -12,93 +12,79 @@ datasets <- list(forestgap[[3]],
                  forestgap[2:4], 
                  serengeti[5:6])
 
+test_methods <- function(teststring, datalength, obj, .test_df = TRUE) { 
+  
+  ok_print <- any(grepl(teststring, capture.output(print(obj))))
+  expect_true(ok_print)
+  
+  ok_summary <- any(grepl(teststring, capture.output(summary(obj))))
+  expect_true(ok_summary)
+  if (.test_df) { 
+    ok_as_df <- nrow(as.data.frame(obj)) == datalength
+  } else { 
+    ok_as_df <- is.data.frame(as.data.frame(obj)) 
+  }
+  expect_true(ok_as_df)
+  
+  return(TRUE)
+}
+
 test_that("The workflow functions work", { 
   skip_on_cran()
   
   for ( dataset in datasets ) { 
-      
+    
+    # Length of data
+    datal <- ifelse(is.matrix(dataset), 1, length(dataset))
+    
     # Generic indicators
-    expect_true({
-      capture.output({
-        
-        indics <- generic_sews(dataset) 
-        
-        print(indics)
-        summary(indics)
-        expect_true(is.data.frame(as.data.frame(indics)))
-        
-        indics.test <- indictest(indics, nperm = 9)
-        print(indics.test)        
-        summary(indics.test)      
-        expect_true(is.data.frame(as.data.frame(indics.test)))
-        
-        if ( ! is.matrix(dataset) ) { # multiple values
-          suppressWarnings( print( plot(indics.test) ) )
-          suppressWarnings( print( plot(indics) ) )
-        }
-        
-      })
-    # Return true 
-    TRUE})
+    indics <- generic_sews(dataset) 
+    test_methods("Generic Spatial Early-Warnings", 
+                 datal*4, indics) # l(dataset) * 4 indics
+    # test_methods("Generic Spatial Early-Warnings", 4, indics[[1]])
     
+    indics.test <- indictest(indics, nperm = 9)
+    test_methods("Generic Spatial Early-Warnings", 
+                  datal*4, indics.test)
     
-    # Spectral-based indicators
-    expect_true({
-      capture.output({
-        
-        # These two comands should produce the same thing
-        indics <- spectral_sews(dataset, 
-                                 sdr_low_range  = c(0,  0.2), 
-                                 sdr_high_range = c(.8, 1)) 
-        
-        indics <- spectral_sews(dataset, quiet = TRUE) 
-        
-        print(indics)
-        summary(indics)
-        expect_true(is.data.frame(as.data.frame(indics)))
-        
-        indics.test <- indictest(indics, nperm = 9)
-        print(indics.test)        
-        summary(indics.test)      
-        as.data.frame(indics.test) 
-        
-        if ( ! is.matrix(dataset) ) { 
-          suppressWarnings( print( plot(indics.test) ) )
-          suppressWarnings( print( plot(indics) ) )
-        }
-        
-        suppressWarnings( plot_spectrum(indics)      )
-        suppressWarnings( plot_spectrum(indics.test) )
-        
-      })
-        
-    # Return true 
-    TRUE})
+    if ( datal > 1 ) { # multiple values
+      suppressWarnings( print( plot(indics.test) ) )
+      suppressWarnings( print( plot(indics) ) )
+    }
+    
+    # Spectral indicators
+    indics <- spectral_sews(dataset, 
+                            sdr_low_range  = c(0,  0.2), 
+                            sdr_high_range = c(.8, 1)) 
+    test_methods("Spectral Spatial Early-Warnings", 
+                 length(dataset), indics, .test_df = FALSE)
+    # test_methods("Spectral Spatial Early-Warnings", 1, indics[[1]])
+    
+    indics.test <- indictest(indics, nperm = 9)
+    test_methods("Spectral Spatial Early-Warnings", 
+                  datal, indics.test, .test_df = FALSE)
+    # test_methods("Spectral Spatial Early-Warnings", 1, indics.test[[1]])
+    
+    if ( datal > 1 ) { # multiple values
+      suppressWarnings( print( plot(indics.test) ) )
+      suppressWarnings( print( plot(indics) ) )
+    }
+    
     
     # PSD-based indicators
-    skip_on_travis() # Sometimes vgam fails for some reason, so we skip 
-                     # this test on travis for now. 
-    expect_true({
-      capture.output({
-        
-        indics <- suppressWarnings( patchdistr_sews(dataset, fit_lnorm = TRUE) )
-        
-        print(indics)
-        summary(indics)
-        expect_true(is.data.frame(as.data.frame(indics)))
-        
-        if ( ! is.matrix(dataset) ) { 
-          suppressWarnings( print( plot(indics) ) )
-        }
-        
-        # This test can sometimes fail (?! something to investigate ?)
-        predict(indics)
-        
-        suppressWarnings( plot_distr(indics) )
-        
-      })
-    # Return true 
-    TRUE})
+    indics <- suppressWarnings( patchdistr_sews(dataset, fit_lnorm = TRUE) )
+    test_methods("Patch-based Early-Warnings results", 
+                 datal*4, indics) # l(dataset) * 4 psd types fitted
+    # test_methods("Patch-based Early-Warnings results", 
+    #              datal*4, indics[[1]])
+    
+    # Test prediction of PSDs
+    indics.pred <- predict(indics)
+    
+    if ( ! is.matrix(dataset) ) { 
+      suppressWarnings( print( plot(indics) ) )
+    }
+    suppressWarnings( plot_distr(indics) )
     
   }
   

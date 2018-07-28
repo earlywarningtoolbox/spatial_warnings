@@ -9,9 +9,9 @@ library(ggplot2)
 
 context('Test the fitting of distributions')
 
-# Do not run this test automatically as compilation can fail on other 
-# computers (e.g. when the gsl is absent). 
-TEST_PSDFIT <- FALSE
+# Do not run this test automatically (especially not on CRAN) as compilation 
+# can fail on other computers (e.g. when the gsl is absent). 
+TEST_PSDFIT <- identical(Sys.getenv("NOT_CRAN"), "true")
 
 if ( TEST_PSDFIT ) { 
   
@@ -35,7 +35,8 @@ if ( TEST_PSDFIT ) {
             chmod +x discpowerexp")
   
   test_that('PL fitting works', { 
-    
+    skip_on_cran()
+
     expos <- c(1.2, 1.5, 2.5)
     xmins <- c(1,  10, 100)
     for ( expo in expos ) { 
@@ -79,7 +80,7 @@ if ( TEST_PSDFIT ) {
     }
     
   })
-
+  
   test_that('EXP fitting works', { 
     
     rates <- c(1.1, 1.5)  
@@ -285,7 +286,7 @@ if ( TEST_PSDFIT ) {
   system("cd ./pli-R-v0.0.3-2007-07-25/zeta-function/ && rm zeta_func zeta_func.o")
   system("cd ./pli-R-v0.0.3-2007-07-25/exponential-integral/ && rm exp_int exp_int.o")
   system("cd ./pli-R-v0.0.3-2007-07-25/ && rm discpowerexp")
-
+  
 } else { 
   message("Skipping psd-fitting tests")
 }

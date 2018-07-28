@@ -44,6 +44,11 @@
 #'    \item \code{\link{indicator_plrange}}: Power-law range
 #'  }
 #' 
+#' The package home page is available at [Github]https://github.com/spatial-ews/spatialwarnings
+#' and a [FAQ covering technical issues](https://alex.lecairn.org/spatialwarnings-faq.html) is 
+#' also available. 
+#' 
+#' 
 #' @docType package
 #' @name spatialwarnings
 #' 

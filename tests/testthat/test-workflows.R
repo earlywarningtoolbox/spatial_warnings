@@ -52,12 +52,17 @@ test_that("The workflow functions work", {
       suppressWarnings( print( plot(indics) ) )
     }
     
+    
+    
     # Spectral indicators
     indics <- spectral_sews(dataset, 
                             sdr_low_range  = c(0,  0.2), 
                             sdr_high_range = c(.8, 1)) 
     test_methods("Spectral Spatial Early-Warnings", 
                  length(dataset), indics, .test_df = FALSE)
+    expect_warning({ spectral_sews(dataset) }) # give a warning when no args are passed
+    
+    
     # test_methods("Spectral Spatial Early-Warnings", 1, indics[[1]])
     
     indics.test <- indictest(indics, nperm = 9)
@@ -69,6 +74,10 @@ test_that("The workflow functions work", {
       suppressWarnings( print( plot(indics.test) ) )
       suppressWarnings( print( plot(indics) ) )
     }
+    suppressWarnings( print( plot_spectrum(indics.test) ) ) 
+    suppressWarnings( print( plot_spectrum(indics) ) ) 
+    
+    
     
     
     # PSD-based indicators
@@ -84,7 +93,7 @@ test_that("The workflow functions work", {
     if ( ! is.matrix(dataset) ) { 
       suppressWarnings( print( plot(indics) ) )
     }
-    suppressWarnings( plot_distr(indics) )
+    suppressWarnings( print( plot_distr(indics) ) )
     
   }
   

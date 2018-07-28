@@ -221,8 +221,8 @@ if ( exists("TEST_PSDFIT") && TEST_PSDFIT ) {
           
           if ( !is.null(clauset_fit) ) { 
 #             if ( ! (our_fit$ll < clauset_fit$loglike) ) { 
-              expect_equal(our_fit$expo, clauset_fit$exponent, tol = 5e-3)
-              expect_equal(our_fit$rate, clauset_fit$rate, tol = 5e-3)
+              expect_equal(our_fit$expo, clauset_fit$exponent, tol = 1e-2)
+              expect_equal(our_fit$rate, clauset_fit$rate, tol = 1e-2)
 #             }
           
           # Look at fit

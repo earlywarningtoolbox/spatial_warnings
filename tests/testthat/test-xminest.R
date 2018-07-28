@@ -40,8 +40,8 @@ if ( exists('TEST_XMIN') && TEST_XMIN ) {
       # Create pl object and estimate its xmin
       pl_obj <- poweRlaw::displ$new(pldat)
       est_xmin_plpkg <- poweRlaw::estimate_xmin(pl_obj)[["xmin"]]
-      cat(est_xmin_plpkg, ' -> ', est_xmin, " [", 
-          length(unique(pldat)), "]", "\n", sep = "")
+      cat(" Ours: ", est_xmin_plpkg, ' -> poweRlaw\'s: ', est_xmin, " [", 
+          length(unique(pldat)), " unique patches]", "\n", sep = "")
       
       if ( !is.na(est_xmin) && !is.na(est_xmin_plpkg) ) { 
         # Note: In some pathological cases (few unique patches), there can be 

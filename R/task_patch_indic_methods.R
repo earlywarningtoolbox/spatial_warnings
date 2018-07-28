@@ -340,7 +340,7 @@ plot_distr.patchdistr_sews_list <- function(x,
 #' @param newdata A vector of patch sizes at which the fit is returned (default 
 #'   to 200 regularly-spaced values). 
 #' 
-#' @param ... Ignored additionnal arguments
+#' @param ... Additional arguments (ignored)
 #' 
 #' @param best_only Return values for only the best fit of each element (matrix)
 #'   in \code{object}, or return the values for all fitted distribution. 

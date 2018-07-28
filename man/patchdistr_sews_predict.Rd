@@ -11,7 +11,7 @@
 \arguments{
 \item{object}{An \code{\link{patchdistr_sews}} object}
 
-\item{...}{Ignored additionnal arguments}
+\item{...}{Additional arguments (ignored)}
 
 \item{newdata}{A vector of patch sizes at which the fit is returned (default 
 to 200 regularly-spaced values).}

@@ -49,7 +49,7 @@ A data.frame (or a list of these if x is a list) with the
 }
 \description{
 This functions fits different patch size distributions 
- types (power-law, longnormal, exponential and truncated power-law) to 
+ types (power-law, log-normal, exponential and truncated power-law) to 
  the patches contained in a matrix. The distributions are returned with 
  their corresponding AIC, BIC and AICc to select the best fit.
 }

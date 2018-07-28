@@ -79,7 +79,7 @@ Spatial Early-warning signals (EWS) are metrics that are based on the
   is converted internally to numeric values, as a side effect of using 
   c++ code when assessing significance. When working with logical matrices 
   (e.g. when computing patch size distributions), the matrix has to be 
-  explicitely converted to logical within function `fun`.
+  explicitly converted to logical within function `fun`.
 }
 \examples{
 

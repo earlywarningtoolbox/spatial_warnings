@@ -92,7 +92,7 @@ The significance of spectral early-warning signals can be estimated by
   reshuffling the original matrix (function \code{indictest}). Indicators 
   are then recomputed on the shuffled matrices and the values obtained are 
   used as a null distribution. P-values are obtained based on the rank of 
-  the observered value in the null distribution. 
+  the observed value in the null distribution. 
 
 The trend of SDR values can be plotted using the \code{plot()} method. 
   Alternatively, the spectrum itself can be plotted (with facets 

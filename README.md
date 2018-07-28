@@ -27,7 +27,7 @@ Monitoring ecosystem degradation using spatial data and the R package
 'spatialwarnings'. Methods in Ecology and Evolution.](https://dx.doi.org/10.1111/2041-210X.13058)
 
 For more advanced users and/or technical questions that may arise, 
-a FAQ is also available [there](https://alex.lecairn.org/spatialwarnings-faq.html)
+a FAQ is also available [there](https://alex.lecairn.org/spatialwarnings-faq.html).
 
 ## Contributors
 

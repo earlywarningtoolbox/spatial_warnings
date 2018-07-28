@@ -60,7 +60,7 @@ ecosystems become more and more degraded:
   - The patch-size distribution is closer to an exponential 
   distribution
 
-Additionnally, it has been suggested that these changes in patch size 
+Additionally, it has been suggested that these changes in patch size 
 distribution shape should be reflected in the power-law range (PLR). This 
 function carries out all the required computations and helps display 
 the results in a convenient form. 

@@ -88,7 +88,7 @@ The significance of generic early-warning signals can be estimated by
   reshuffling the original matrix (function \code{indictest}). Indicators 
   are then recomputed on the shuffled matrices and the values obtained are 
   used as a null distribution. P-values are obtained based on the rank of 
-  the observered value in the null distribution. A small P-value means 
+  the observed value in the null distribution. A small P-value means 
   that the indicator is significantly above the null values, as expected 
   before a critical point. 
 

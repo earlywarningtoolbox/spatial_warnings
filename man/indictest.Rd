@@ -26,7 +26,7 @@ Assess the significance of spatial early-warning values
 The significance of many early-warning signals can be estimated by 
   reshuffling the original matrix. Indicators are then recomputed 
   on the shuffled matrices and the values obtained are used as a null 
-  distribution. P-values are obtained based on the rank of the observered
+  distribution. P-values are obtained based on the rank of the observed
   value in the null distribution.
 }
 \references{

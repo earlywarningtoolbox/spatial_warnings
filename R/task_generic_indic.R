@@ -53,7 +53,7 @@
 #'   reshuffling the original matrix (function \code{indictest}). Indicators 
 #'   are then recomputed on the shuffled matrices and the values obtained are 
 #'   used as a null distribution. P-values are obtained based on the rank of 
-#'   the observered value in the null distribution. A small P-value means 
+#'   the observed value in the null distribution. A small P-value means 
 #'   that the indicator is significantly above the null values, as expected 
 #'   before a critical point. 
 #'
@@ -133,7 +133,7 @@ generic_sews <- function(mat,
     return(results)
   }
   
-  # Warn if the matrix is continous but we will coarse grain anyway
+  # Warn if the matrix is continuous but we will coarse grain anyway
   if ( is.numeric(mat) && subsize > 1 ) { 
     warning(paste('Input matrix has continous values but will be coarse-grained', 
                   'anyway. Set subsize=1 to disable coarse graining.'))

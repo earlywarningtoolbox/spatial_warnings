@@ -1,12 +1,10 @@
 
 context('Test that xmin estimations are correct')
 
-# We do not test on CRAN because this requires compilation of external code. 
-TEST_XMIN <- identical(Sys.getenv("NOT_CRAN"), "true")
 GRAPHICAL <- FALSE # Plot some diagnostics. 
 
 
-if ( TEST_XMIN ) { 
+if ( exists('TEST_XMIN') && TEST_XMIN ) { 
   # Change dir if running tests manually
   if ( file.exists('./tests/testthat') ) { 
     library(testthat)

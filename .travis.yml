@@ -7,14 +7,20 @@ cache: packages
 r:
   - release
   - devel
-## Disable vignette building on travis 
-r_build_args: --no-build-vignettes 
-r_check_args: --no-build-vignettes 
 
 before_install:
   - sudo apt-get update
   - sudo apt-get install libfftw3-dev libgsl-dev
   - export NOT_CRAN="true"
+  
+script:
+  # Test first fitting results against pli code
+  - R -e "install.packages(c('devtools', 'testthat'))"
+  - R -e "TEST_PSDFIT <- TRUE; devtools::test(filter = 'test-psdfit')"
+  - R -e "TEST_XMIN <- TRUE; devtools::test(filter = 'test-xmin')"
+  # Then test the whole package
+  - R CMD build .
+  - R CMD check *tar.gz
   
 after_success:
   - Rscript -e 'covr::codecov()'

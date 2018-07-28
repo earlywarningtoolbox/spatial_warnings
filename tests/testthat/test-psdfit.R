@@ -9,11 +9,7 @@ library(ggplot2)
 
 context('Test the fitting of distributions')
 
-# Do not run this test automatically (especially not on CRAN) as compilation 
-# can fail on other computers (e.g. when the gsl is absent). 
-TEST_PSDFIT <- identical(Sys.getenv("NOT_CRAN"), "true")
-
-if ( TEST_PSDFIT ) { 
+if ( exists("TEST_PSDFIT") && TEST_PSDFIT ) { 
   
   # Change dir if running tests manually
   if ( file.exists('./tests/testthat') ) { 

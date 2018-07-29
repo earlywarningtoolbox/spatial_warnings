@@ -43,10 +43,11 @@ if ( exists('TEST_XMIN') && TEST_XMIN ) {
       cat(" Ours: ", est_xmin_plpkg, ' -> poweRlaw\'s: ', est_xmin, " [", 
           length(unique(pldat)), " unique patches]", "\n", sep = "")
       
-      if ( !is.na(est_xmin) && !is.na(est_xmin_plpkg) ) { 
+      if ( !is.na(est_xmin) && !is.na(est_xmin_plpkg) && 
+           length(unique(pldat)) > 5 ) { 
         # Note: In some pathological cases (few unique patches), there can be 
-        # a small difference in xmin. So we have an acceptable error here. 
-        expect_true( abs(est_xmin - est_xmin_plpkg) <= 2 )
+        # a small difference in xmin, so we use an acceptable error here. 
+        expect_true( abs(est_xmin - est_xmin_plpkg) <= 1 )
         
         # In this case, inspect the fit provided by the poweRlaw package
         if ( GRAPHICAL && est_xmin != est_xmin_plpkg ) { 

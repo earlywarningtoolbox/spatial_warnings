@@ -92,7 +92,7 @@
 #' 
 #' # Compute significance (long)
 #' \dontrun{
-#' gen_test <- indictest(gen_indic)
+#' gen_test <- indictest(gen_indic, nperm = 199)
 #' 
 #' print(gen_test)
 #' 

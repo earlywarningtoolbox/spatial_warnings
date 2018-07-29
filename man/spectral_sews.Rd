@@ -119,7 +119,7 @@ plot(spec_indic, along = serengeti.rain)
 # computing using: options(mc.cores = n)
 
 # Assess significance
-spec_test <- indictest(spec_indic)
+spec_test <- indictest(spec_indic, nperm = 199)
 summary(spec_test)
 
 # Display the SDR trend, now with a grey ribbon representing 5\%-95\% 

@@ -4,7 +4,6 @@
 \name{spatialwarnings}
 \alias{spatialwarnings}
 \alias{spatialwarnings-package}
-\alias{spatialwarnings-package}
 \title{Early Spatial-Warnings of Ecosystem Degradation}
 \description{
 Many dynamical systems such as ecosystems exhibit non-linear responses to 

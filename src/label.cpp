@@ -29,8 +29,8 @@ IntegerMatrix label_cpp(IntegerMatrix mat,
   IntegerVector patch;
   bool percolation = false;
   
-  for (int i=0; i<W; i++) { 
-    for (int j=0; j<H; j++) { 
+  for (int i=0; i<H; i++) { 
+    for (int j=0; j<W; j++) { 
       // We consider the cell (i,j).
       
       // Default value is NA if not in a patch
@@ -156,14 +156,14 @@ IntegerMatrix get_nb_coords(IntegerMatrix mat,
         int nb_y = (X.second + shift_y);
         
         // Does the neighbor fall outside the matrix ? 
-        bool is_out = (nb_x < 0) | (nb_x >= W) | (nb_y < 0) | (nb_y >= H);
+        bool is_out = (nb_x < 0) | (nb_x >= H) | (nb_y < 0) | (nb_y >= W);
         
         // It is out and we don't wrap around: do not count this neighbor
         if ( !wrap && is_out ) { 
           // Nothing
         } else { // The neighbors falls within the field (or we wrap around)
-          neighbors_xy(curnb, 0) = (nb_x + W) % W;
-          neighbors_xy(curnb, 1) = (nb_y + H) % H;
+          neighbors_xy(curnb, 0) = (nb_x + H) % H;
+          neighbors_xy(curnb, 1) = (nb_y + W) % W;
           curnb++;
         }
       }

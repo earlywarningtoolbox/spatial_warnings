@@ -4,7 +4,8 @@ Coming in next release
 
 Bug fixes: 
   * Added missing methods exports for custom indicators
-
+  * Fixed the treatment of patch labelling for non-square images
+  
 Documentation and description changes: 
   * Updated references to reflect the publication of new paper presenting 
       the package <doi:10.1111/2041-210X.13058>

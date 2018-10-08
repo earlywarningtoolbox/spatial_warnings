@@ -36,7 +36,7 @@ optim_safe <- function(f, pars0) {
   # Note that in some pathological cases the fit fails (not enough points, etc.)
   # This happens a lot when finding xmin as we end up fitting on very few 
   # points in the tail of the distribution. Here, we report the fit failed but 
-  # do not stop execution. In most (all?) of those cases it has no 
+  # do not stop execution. In most (all?) of normal cases it has no 
   # consequences on the results. 
   result <- try({ 
     sann_approx <- optim(pars0, safe(f), 

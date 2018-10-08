@@ -4,7 +4,8 @@
 \alias{indicator_skewness}
 \title{Skewness indicator}
 \usage{
-indicator_skewness(input, subsize = 5, absolute = TRUE, nreplicates = 999)
+indicator_skewness(input, subsize = 5, absolute = TRUE,
+  nreplicates = 999)
 }
 \arguments{
 \item{input}{A matrix or a list of matrices. The matrix 

@@ -4,8 +4,8 @@
 \alias{patchsizes}
 \title{Get patch sizes.}
 \usage{
-patchsizes(mat, merge = FALSE, nbmask = matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0),
-  ncol = 3), wrap = FALSE)
+patchsizes(mat, merge = FALSE, nbmask = matrix(c(0, 1, 0, 1, 0, 1, 0,
+  1, 0), ncol = 3), wrap = FALSE)
 }
 \arguments{
 \item{mat}{A logical matrix or a list of these matrices.}

@@ -39,7 +39,7 @@ test_that("Patch counting works and handles weird matrices", {
     expect_true(attr(label(t(ex)), "psd") == 3)
     expect_true(all(dim(label(ex)) == dim(ex))) # Check that dims are equal
     
-    # Non-square matrix counting 
+    # Non-square matrix counting (width > height)
     ex <- matrix(c(1, 0, 0, 1, 
                    0, 0, 0, 1, 
                    0, 0, 0, 1), byrow = TRUE, ncol = 4) > 0
@@ -48,6 +48,17 @@ test_that("Patch counting works and handles weird matrices", {
     test <- label(ex, wrap = FALSE)
     expect_true(test[1,1] != test[2, 4])
     expect_true(test[1,4] == test[2, 4])
+    
+    # Non-square matrix counting (height > width)
+    ex <- matrix(c(1, 0, 0, 
+                   1, 0, 0, 
+                   1, 0, 0, 
+                   1, 0, 1), byrow = TRUE, ncol = 3) > 0
+    test <- label(ex, wrap = TRUE)
+    expect_true(test[1,1] == test[4, 3])
+    test <- label(ex, wrap = FALSE)
+    expect_true(test[1,1] != test[4, 3])
+    expect_true(test[4,1] == test[3, 1])
     
     # Non-square matrix counting 
     ex <- matrix(c(1, 1, 1, 1, 

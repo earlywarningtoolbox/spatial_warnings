@@ -49,4 +49,11 @@ test_that("Patch counting works and handles weird matrices", {
     expect_true(test[1,1] != test[2, 4])
     expect_true(test[1,4] == test[2, 4])
     
+    # Non-square matrix counting 
+    ex <- matrix(c(1, 1, 1, 1, 
+                   0, 0, 0, 1, 
+                   0, 0, 0, 1), byrow = TRUE, ncol = 4) > 0
+    test <- label(ex)
+    expect_true(attr(test, "percolation"))
+    
 })

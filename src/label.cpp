@@ -121,7 +121,7 @@ IntegerVector flood_fill(const IntegerMatrix &mat,
     }
   }
   
-  if ( (xmax - xmin + 1) == mat.ncol() || (ymax - ymin + 1) == mat.nrow() ) { 
+  if ( (xmax - xmin + 1) == mat.nrow() || (ymax - ymin + 1) == mat.ncol() ) { 
     percolation = 1;
   }
   

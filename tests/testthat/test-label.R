@@ -68,3 +68,4 @@ test_that("Patch counting works and handles weird matrices", {
     expect_true(attr(test, "percolation"))
     
 })
+

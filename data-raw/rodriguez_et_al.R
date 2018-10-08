@@ -9,7 +9,7 @@ pics <- dir(picdir, full = TRUE, pattern = "*.jpg")
 
 # Read the pictures 
 imgs <- lapply(pics, readJPEG)
-names(imgs) <- gsub(".jpg", "", basename(names(imgs_classif)))
+names(imgs) <- gsub(".jpg", "", basename(pics))
 
 # Convert to B/W
 # The images have three bands (R/G/B). We transform them into a black
@@ -27,6 +27,7 @@ names(imgs_bw) <- names(imgs)
 imgs_classif <- lapply(imgs_bw, function(mat) mat > mean(mat))
 
 psds <- patchdistr_spews(imgs_classif)
+
 plot_distr(psds, along = names(psds))
 
 plot(psds, along = names(psds))

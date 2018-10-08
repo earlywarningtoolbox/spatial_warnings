@@ -1,32 +1,32 @@
-[![Build Status](https://travis-ci.org/spatial-ews/spatialwarnings.svg?branch=master)](https://travis-ci.org/spatial-ews/spatialwarnings) 
-[![Coverage 
-status](https://codecov.io/gh/spatial-ews/spatialwarnings/branch/master/graph/badge.svg)](https://codecov.io/github/spatial-ews/spatialwarnings?branch=master) 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/spatialwarnings)](https://cran.r-project.org/package=spatialwarnings) 
+[![Build Status](https://travis-ci.org/spatial-ews/spatialwarnings.svg?branch=master)](https://travis-ci.org/spatial-ews/spatialwarnings)
+[![Coverage
+status](https://codecov.io/gh/spatial-ews/spatialwarnings/branch/master/graph/badge.svg)](https://codecov.io/github/spatial-ews/spatialwarnings?branch=master)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/spatialwarnings)](https://cran.r-project.org/package=spatialwarnings)
 
 Spatial early warning signs - R package
 =======================================
 
-This package helps computing spatial early warning signals of critical 
-transitions. This is part of a collaborative project between [Sonia Kefi's 
-group](http://sonia.kefi.fr/) (Institut de Sciences d'Evolution, CNRS, IRD, 
-Université Montpellier, France) and [Vishwesha 
-Guttal's](https://teelabiisc.wordpress.com/) (Center for Ecological Sciences, 
+This package helps computing spatial early warning signals of critical
+transitions. This is part of a collaborative project between [Sonia Kefi's
+group](http://sonia.kefi.fr/) (Institut de Sciences d'Evolution, CNRS, IRD,
+Université Montpellier, France) and [Vishwesha
+Guttal's](https://teelabiisc.wordpress.com/) (Center for Ecological Sciences,
 Indian Institute of Science, Bangalore, India).
 
 The R package provides several sets of functions related to the computation of
 early warning signals of ecosystem tipping points and irreversible
 transitions (also known as *catastrophic shifts*). In particular, it
 facilitates computing those indicators, assess their significance and plot
-their trends. 
+their trends.
 
-To understand the context behind those indicators, and see how they 
-can be computed, the best way is to have a look at our paper about the package: 
-  
+To understand the context behind those indicators, and see how they
+can be computed, the best way is to have a look at our paper about the package:
+
 [Génin, A. , Majumder, S. , Sankaran, S. , Danet, A. , Guttal, V. , Schneider, F. D. and Kéfi, S. (2018),
-Monitoring ecosystem degradation using spatial data and the R package 
+Monitoring ecosystem degradation using spatial data and the R package
 'spatialwarnings'. Methods in Ecology and Evolution.](https://dx.doi.org/10.1111/2041-210X.13058)
 
-For more advanced users and/or technical questions that may arise, 
+For more advanced users and/or technical questions that may arise,
 a FAQ is also available [there](https://alex.lecairn.org/spatialwarnings-faq.html).
 
 ## Contributors
@@ -135,8 +135,8 @@ reference website for the [early-warnings signals toolbox](http://www.early-warn
 
 This work is licensed under an MIT license. Some code included in unit tests has
 been written by Cosma Rohilla Shalizi [http://bactra.org/](http://bactra.org/)
-and is redistributed in its entirety with the R package as specified in its
-README file.
+and is redistributed in its entirety with the source of this R package as
+specified in its README file.
 
 The MIT License (MIT)
 
@@ -162,9 +162,9 @@ THE SOFTWARE.
 
 ## References
 
-[Génin, A. , Majumder, S. , Sankaran, S. , Danet, A. , Guttal, V. , 
+[Génin, A. , Majumder, S. , Sankaran, S. , Danet, A. , Guttal, V. ,
 Schneider, F. D. and Kéfi, S. (2018),
-Monitoring ecosystem degradation using spatial data and the R package 
+Monitoring ecosystem degradation using spatial data and the R package
 'spatialwarnings'. Methods in Ecology and Evolution.](https://dx.doi.org/10.1111/2041-210X.13058)
 
 [Kéfi S, Guttal V, Brock WA, Carpenter SR, Ellison AM, et al. (2014)

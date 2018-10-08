@@ -2,9 +2,13 @@
 Coming in next release 
 ===============================================
 
+Improvements: 
+  * Enable parallel computation of patch size distributions
+  * Added a dataset of aerial view of vegetation in Arizona ('arizona')
+  
 Bug fixes: 
   * Added missing methods exports for custom indicators
-  * Fixed the treatment of patch labelling for non-square images
+  * Fixed the patch labelling for non-square images
   
 Documentation and description changes: 
   * Updated references to reflect the publication of new paper presenting 

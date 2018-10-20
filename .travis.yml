@@ -14,6 +14,7 @@ before_install:
   
 script:
   # Test first fitting results against pli code
+  - R -e "update.packages(ask = FALSE)"
   - R -e "install.packages(c('testthat', 'roxygen2'))"
   - R -e "devtools::install_deps()"
   - R -e "TEST_PSDFIT <- TRUE; devtools::test(filter = 'psdfit')"

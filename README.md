@@ -42,7 +42,7 @@ Vishwesha Guttal, Sonia Kefi, Sabiha Majumder, Sumithra Sankaran, Florian Schnei
 install.packages('spatialwarnings')
 ```
 
-The developement version of this package can be installed using the
+The development version of this package can be installed using the
 `devtools` package in R:
 
 ```

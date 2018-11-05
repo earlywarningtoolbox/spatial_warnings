@@ -16,8 +16,8 @@ distribution}
 \item{...}{Additional arguments passed to methods}
 }
 \value{
-An object of class \code{*_sews_test} depending on the input object
-  (actually, a data.frame)
+An object of class ending in \code{*_sews_test}, whose exact class 
+  depends on the input object (in reality a data.frame)
 }
 \description{
 Assess the significance of spatial early-warning values

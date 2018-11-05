@@ -29,12 +29,12 @@ as.data.frame.spectral_sews_single <- function(x, ...) {
   
   with(x, 
     rbind.fill(data.frame(replicate = 1, 
-                                type = 'sdr', 
-                                value = results[['sdr']]), 
-                     data.frame(replicate = 1, 
-                                type  = 'rspectrum', 
-                                dist  = results[['spectrum']][ ,'dist'],
-                                value = results[['spectrum']][ ,'rspec'])) 
+                          type = 'sdr', 
+                          value = results[['sdr']]), 
+               data.frame(replicate = 1, 
+                         type  = 'rspectrum', 
+                         dist  = results[['spectrum']][ ,'dist'],
+                         value = results[['spectrum']][ ,'rspec'])) 
   )
   
 }

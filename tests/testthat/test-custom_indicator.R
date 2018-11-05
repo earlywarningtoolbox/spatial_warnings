@@ -35,8 +35,8 @@ test_that('Custom indicators work', {
     
     # Test methods for custom indics
     # Several matrices
-    test_methods("Custom Spatial Early-Warnings", length(dataset), a)
-    test_methods("Custom Spatial Early-Warnings", 1, a[[1]])
+    test_methods("Spatial Early-Warning:", length(dataset), a)
+    test_methods("Spatial Early-Warning:", 1, a[[1]])
     
     if (length(dataset) > 1) { 
       # Suppress the warnings related to missing values in geom_path
@@ -47,8 +47,8 @@ test_that('Custom indicators work', {
     
     options(mc.cores = 2) 
     b <- indictest(a, nperm = 9)
-    test_methods("Custom Spatial Early-Warnings", length(dataset), b)
-    test_methods("Custom Spatial Early-Warnings", 1, b[[1]])
+    test_methods("Spatial Early-Warning:", length(dataset), b)
+    test_methods("Spatial Early-Warning:", 1, b[[1]])
     
     if (length(dataset) > 1) { 
       # Suppress the warnings related to missing values in geom_path
@@ -67,14 +67,14 @@ test_that('Custom indicators work', {
 })
 
 
-test_that('Custom indicators handles anon functions correctly', { 
+test_that('Custom indicators handles anonymous functions correctly', { 
   # Test create_indicator with anonymous function 
   expect_warning(
     anon_fun_indic <- create_indicator(function(mat) mean(mat))
   )
   expect_true({
     anon_fun_indic <- create_indicator(function(mat) mean(mat), 
-                                       fun.name = "testfun")
+                                       indicname = "testfun")
     TRUE
   })
 })

@@ -8,7 +8,7 @@
 #' @param fun A function that takes a real-valued matrix as input and returns 
 #'   a single, numerical value. 
 #' 
-#' @param fun.name The indicator name. Optional, used for plots and textual 
+#' @param indicname The indicator name. Optional, used for plots and textual 
 #'   summaries, but mandatory if \code{fun} is an anonymous function. 
 #' 
 #' @return 
@@ -89,13 +89,13 @@
 #' }
 #'@export
 create_indicator <- function(fun, 
-                             fun.name = as.character(substitute(fun))) { 
+                             indicname = as.character(substitute(fun))) { 
   
-  # Test if fun.name is derived from an anonymous function
-  if ( length(fun.name) > 1 ) { 
+  # Test if indicname is derived from an anonymous function
+  if ( length(indicname) > 1 ) { 
     warning('A valid name could not be derived from the function passed to create_indicator,\n', 
             'using the default name custom_indic')
-    fun.name <- "custom_indic"
+    indicname <- "custom_indic"
   }
   
   # Subfunction that works only on a matrix
@@ -103,10 +103,10 @@ create_indicator <- function(fun,
     result <- list(value     = fun(mat, ...), 
                    orig_data = mat, 
                    fun.args  = as.list(match.call(expand.dots = FALSE))[['...']], 
-                   fun.name  = fun.name, 
                    indicf = fun)
     
-    class(result) <- c('custom_sews_single', 'custom_sews', 'list')
+    class(result) <- c('custom_sews_single', 'simple_sews_single', 'custom_sews', 'list')
+    attr(result, 'indicname') <- indicname
     return(result)
   }
   
@@ -115,7 +115,8 @@ create_indicator <- function(fun,
     if ( is.list(mat) ) { 
       result <- parallel::mclapply(mat, get_one_result, ...)
       names(result) <- names(mat)
-      class(result) <- c('custom_sews_list', 'custom_sews', 'list')
+      class(result) <- c('custom_sews_single', 'simple_sews_list', 'custom_sews', 'list')
+      attr(result, 'indicname') <- indicname
     } else { 
       result <- get_one_result(mat, ...)
     }
@@ -132,102 +133,8 @@ create_indicator <- function(fun,
 #' 
 #'@export
 custom_indicator <- function(mat, fun, 
-                             fun.name = as.character(substitute(fun)), 
+                             indicname = as.character(substitute(fun)), 
                              ...) { 
-  indicfun <- create_indicator(fun, fun.name = fun.name)
+  indicfun <- create_indicator(fun, indicname = indicname)
   indicfun(mat, ...)
 }
-
-# as.df methods
-# ---------------
-#'@method as.data.frame custom_sews_single
-#'@export
-as.data.frame.custom_sews_single <- function(x, ...) { 
-  as.data.frame.custom_sews_list( list(x) )
-}
-#'@method as.data.frame custom_sews_list
-#'@export
-as.data.frame.custom_sews_list <- function(x, ...) { 
-  output <- Map(function(n, o) data.frame(replicate = n, value = o[['value']], 
-                                          fun.name = o[['fun.name']]), 
-               seq_along(x), x)
-  output <- do.call(rbind, output)
-  output
-}
-
-
-
-# Print methods
-# ---------------
-#'@method print custom_sews_single
-#'@export
-print.custom_sews_single <- function(x, ...) { 
-  print.custom_sews_list(list(x), ...)
-}
-#'@method print custom_sews_list
-#'@export
-print.custom_sews_list <- function(x, ...) { 
-  summary.custom_sews_list(x, ...)
-}
-
-
-
-# Summary methods
-# ---------------
-#'@method summary custom_sews_single
-#'@export
-summary.custom_sews_single <- function(object, ...) { 
-  summary.custom_sews_list( list(object) )
-}
-#'@method summary custom_sews_list
-#'@export
-summary.custom_sews_list <- function(object, ...) { 
-  
-  # Get function name. Note that we only take the first element as there is no
-  # way these names could be different for each elements of object. 
-  fun.name <- object[[1]][['fun.name']]
-  
-  cat('Custom Spatial Early-Warnings:', fun.name, '\n') 
-  cat('\n')
-  
-  display_size_info(object)
-  cat('\n')
-  
-  # Format output table
-  output <- as.data.frame(object)[ ,c('replicate', 'value')]
-  names(output) <- c('Mat. #', fun.name)
-  
-  print.data.frame(output, row.names = FALSE, digits = DIGITS)
-  cat('\n')
-  cat('Use as.data.frame() to retrieve values in a convenient form\n')
-
-  invisible(output)
-}
-
-
-# Plot methods 
-# ------------
-#' @rdname create_indicator
-#' 
-#' @param x A \code{custom_sews} object (as provided by the 
-#'   custom indicator function created by \code{create_indicator}). 
-#' 
-#' @param along A vector providing values over which the indicator trend 
-#'   will be plotted. If \code{NULL} then the values are plotted sequentially 
-#'   in their original order. 
-#' 
-#' @param ... Ignored
-#' 
-#'@method plot custom_sews_list
-#'@export
-plot.custom_sews_list <- function(x, along = NULL, ...) { 
-  plot.custom_sews_test_list(x, along = along, display_null = FALSE)
-}
-
-#'@method plot custom_sews_single
-#'@export
-plot.custom_sews_single <- function(x, ...) { 
-  stop('I cannot plot a trend with only one value !')  
-}
-
-

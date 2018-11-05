@@ -1,5 +1,5 @@
 # 
-# This file contains a function to test significance of custom indicators 
+# This file contains functions to test significance and plot simple indicators 
 # 
 # WARNING: indictest will always transform original matrix to numeric 
 # internally, be careful when your function works with logical data. 
@@ -32,9 +32,8 @@ indictest.simple_sews_single <- function(x, nperm = 999, ...) {
                                              indicf = new_indicf)
   
   # Format result
-  results <- c(null_values, x["fun.name"], list(nperm = nperm))
+  results <- c(null_values, list(nperm = nperm))
   class(results) <- c('simple_sews_test_single', 'sews_test', 'list')
-  attr(results, "indicname") <- attr(x, "indicname")
   
   return(results)
 }
@@ -50,29 +49,20 @@ indictest.simple_sews_list <- function(x, nperm = 999, ...) {
   }
   
   class(results) <- c('simple_sews_test_list', 'sews_test', 'list')
-  attr(results, "indicname") <- attr(x, "indicname")
   return(results)
-}
-
-# Safe version of as.data.frame.list that removes NULL elements present 
-# in a list prior to converting to data.frame
-as.data.frame.list_safe <- function(l) { 
-  isNULL <- unlist(lapply(l, is.null))
-  as.data.frame.list( l[!isNULL] )
 }
 
 #'@method as.data.frame simple_sews_test_single
 #'@export
 as.data.frame.simple_sews_test_single <- function(x, ...) { 
-  
   # We need to explicitely add a `replicate` column because it will 
   # be used by funs down the stream. 
-  data.frame(replicate = 1, as.data.frame.list_safe(x))
+  data.frame(replicate = 1, as.data.frame.list(x))
 }
 #'@method as.data.frame simple_sews_test_list
 #'@export
 as.data.frame.simple_sews_test_list <- function(x, ...) { 
-  tab <- ldply(x, as.data.frame.list_safe)
+  tab <- ldply(x, as.data.frame.list)
   # Reorder cols
   tab <- data.frame(replicate = tab[ ,'replicate'], 
                     tab[ ! names(tab) %in% 'replicate'])
@@ -86,20 +76,23 @@ summary.simple_sews_test_single <- function(object, ...) {
   summary.simple_sews_test_list( list(object) )
 }
 #'@export
-summary.simple_sews_test_list <- function(object, ...) { 
+summary.simple_sews_test_list <- function(object, 
+                                          indicname = attr(object, "indicname"), 
+                                          ...) { 
+  if ( is.null(indicname) ) { 
+    indicname <- ""
+  }
   
   tab <- as.data.frame(object)
+  
   # Get some info about the computation
-  indicname <- attr(object, "indicname")
-  indicname <- ifelse(is.null(indicname), "Unknown indicator", indicname)
-
   nperm    <- tab[1, "nperm"]
   
   # Format pvalues 
   tab[ ,'stars'] <- pval_stars(tab[ ,'pval'])
   
   tab <- tab[ ,c('replicate', 'value', 'pval', 'stars')]
-  names(tab) <- c('Mat. #', "Value", 'P>null', "")
+  names(tab) <- c('Mat. #', indicname, 'P>null', "")
   
   cat('Spatial Early-Warning:', indicname, '\n') 
   cat('\n')
@@ -229,8 +222,9 @@ plot.simple_sews_test_list <- function(x,
                                            y = what))
   
   # Set ylab 
-  fun.name <- x[1, 'fun.name']
-  plot <- plot + ylab(fun.name)
+  ylabel <- ifelse(is.null(attr(x, 'indicname')), "Value", 
+                     attr(x, 'indicname'))
+  plot <- plot + ylab(ylabel)
   
   # Set xlab
   if ( set_default_xlab ) { 

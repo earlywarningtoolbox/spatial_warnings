@@ -9,17 +9,19 @@ context('Test the computation of flow length')
 # from the code for a random matrix matches the theoretical expectations. See 
 # Rodriguez et al. 2017 (Eco. Ind.)
 library(plyr)
-all_fls <- adply(seq(0, 1, length.out = 200), 1, function(rho) { 
+
+all_fls <- adply(seq(0.01, 1, length.out = 50), 1, function(rho) { 
   
   # Set other parameters randomly
-  L <- sample.int(100, 1)
+  L <- 100
+  cols <- 1 # Relationships hold for a column vector only (especially variance)
   cell_size <- 0.5
-  slope <- runif(1, 0, 80) * (180/pi)
+  slope <- runif(1, 10, 20) 
   
   # Compute flow lengths
   ds <- cell_size / cos(slope * pi/180)
-  fls <- replicate(100, { 
-    dat <- matrix(runif(L), ncol = 1, nrow = L) < rho
+  fls <- replicate(200, { 
+    dat <- matrix(runif(L*cols), ncol = cols, nrow = L) < rho
     raw_flowlength_planar(dat, cell_size = cell_size, slope = slope)
   })
   
@@ -38,7 +40,7 @@ all_fls <- adply(seq(0, 1, length.out = 200), 1, function(rho) {
              themean = E_fl, 
              thevar  = V_fl, 
              themax  = ds*(L+1)/2)
-}, .id = NULL)
+}, .progress = "none", .id = NULL)
 
 # Obs. mean and Theoretical mean should be equal 
 expect_true( with(all_fls, t.test(x = obsmean, y = themean)$p.value) > 0.5 )
@@ -85,23 +87,25 @@ rodriguez <- lapply(dir(datadir, full.names = TRUE), function(n) {
 compute_deviation <- function(mat, slope, cell_size) { 
   fl <- raw_flowlength_planar(mat, slope, cell_size)
   
-  cover <- mean(mat)
-  n <- nrow(mat)
-  p_slope <- cell_size / cos(slope * pi/180)
   
-  E_FL_r <- (1-cover)*(cover*n-(1-cover)*(1-(1-cover)^n))*p_slope / (cover*cover*n) 
-  E_fl <- ds * (1 - rho)*(rho * L - (1 - rho)*(1 - (1 - rho)^L)) / (rho^2*L)
-
-  return( (fl - E_FL_r) / E_FL_r )
+  null <- compute_indicator_with_null(mat, 999, function(mat) { 
+      raw_flowlength_planar(mat > 0, slope, cell_size)
+    })$null_mean
+  
+  return( (fl - null) / null )
   
 }
 
-raw <- lapply(rodriguez, raw_flowlength_planar, slope = .6, cell_size = 0.223)
-values <- lapply(rodriguez, compute_deviation, slope = .6, cell_size = 0.223)
+raw <- lapply(rodriguez, raw_flowlength_planar, slope = 20, cell_size = 0.5)
+values <- lapply(rodriguez, compute_deviation,  slope = 20, cell_size = 0.5)
 covers <- lapply(rodriguez, mean)
-data.frame(values = unlist(values), covers = unlist(covers))
+a <- data.frame(dev = unlist(values), 
+                covers = unlist(covers), 
+                raw    = unlist(raw), 
+                shouldbe = c(0.651, 0.384, NA))
+a
 
 # 
-# b	cover	diffFLrdm_	diffFLagg
-# 0,55	0,2	0,651	0,175
-# 0,57	0,3	0,384	0,05
+# b	cover	diffFLrdm_  diffFLagg
+# 0,55	0,2	0,651	    0,175
+# 0,57	0,3	0,384	    0,05

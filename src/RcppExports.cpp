@@ -31,6 +31,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// col_sumcumprod
+arma::rowvec col_sumcumprod(arma::mat m);
+RcppExport SEXP _spatialwarnings_col_sumcumprod(SEXP mSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type m(mSEXP);
+    rcpp_result_gen = Rcpp::wrap(col_sumcumprod(m));
+    return rcpp_result_gen;
+END_RCPP
+}
 // label_cpp
 IntegerMatrix label_cpp(IntegerMatrix mat, IntegerMatrix nbmask, bool wrap);
 RcppExport SEXP _spatialwarnings_label_cpp(SEXP matSEXP, SEXP nbmaskSEXP, SEXP wrapSEXP) {
@@ -144,6 +155,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_spatialwarnings_coarse_grain_cpp", (DL_FUNC) &_spatialwarnings_coarse_grain_cpp, 2},
     {"_spatialwarnings_discpowerexp_norm", (DL_FUNC) &_spatialwarnings_discpowerexp_norm, 3},
+    {"_spatialwarnings_col_sumcumprod", (DL_FUNC) &_spatialwarnings_col_sumcumprod, 1},
     {"_spatialwarnings_label_cpp", (DL_FUNC) &_spatialwarnings_label_cpp, 3},
     {"_spatialwarnings_raw_moran", (DL_FUNC) &_spatialwarnings_raw_moran, 1},
     {"_spatialwarnings_tplsum", (DL_FUNC) &_spatialwarnings_tplsum, 4},

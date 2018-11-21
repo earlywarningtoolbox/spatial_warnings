@@ -76,35 +76,35 @@ expect_true({
 })
 
 
-# Test that we reproduce published results (Rodriguez et al. 2017)
-datadir <- './tests/testthat/rodriguez2018/rawdata/'
-
-rodriguez <- lapply(dir(datadir, full.names = TRUE), function(n) { 
-  as.matrix(read.table(n)) > 0
-})
-
-
-compute_deviation <- function(mat, slope, cell_size) { 
-  fl <- raw_flowlength_planar(mat, slope, cell_size)
-  
-  
-  null <- compute_indicator_with_null(mat, 999, function(mat) { 
-      raw_flowlength_planar(mat > 0, slope, cell_size)
-    })$null_mean
-  
-  return( (fl - null) / null )
-  
-}
-
-raw <- lapply(rodriguez, raw_flowlength_planar, slope = 20, cell_size = 0.5)
-values <- lapply(rodriguez, compute_deviation,  slope = 20, cell_size = 0.5)
-covers <- lapply(rodriguez, mean)
-a <- data.frame(dev = unlist(values), 
-                covers = unlist(covers), 
-                raw    = unlist(raw), 
-                shouldbe = c(0.651, 0.384, NA))
-a
-
+# # Test that we reproduce published results (Rodriguez et al. 2017)
+# datadir <- './tests/testthat/rodriguez2018/rawdata/'
+# 
+# rodriguez <- lapply(dir(datadir, full.names = TRUE), function(n) { 
+#   as.matrix(read.table(n)) > 0
+# })
+# 
+# 
+# compute_deviation <- function(mat, slope, cell_size) { 
+#   fl <- raw_flowlength_planar(mat, slope, cell_size)
+#   
+#   
+#   null <- compute_indicator_with_null(mat, 999, function(mat) { 
+#       raw_flowlength_planar(mat > 0, slope, cell_size)
+#     })$null_mean
+#   
+#   return( (fl - null) / null )
+#   
+# }
+# 
+# raw <- lapply(rodriguez, raw_flowlength_planar, slope = 20, cell_size = 0.5)
+# values <- lapply(rodriguez, compute_deviation,  slope = 20, cell_size = 0.5)
+# covers <- lapply(rodriguez, mean)
+# a <- data.frame(dev = unlist(values), 
+#                 covers = unlist(covers), 
+#                 raw    = unlist(raw), 
+#                 shouldbe = c(0.651, 0.384, NA))
+# a
+# 
 # 
 # b	cover	diffFLrdm_  diffFLagg
 # 0,55	0,2	0,651	    0,175

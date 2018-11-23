@@ -2,6 +2,11 @@
 Coming in next release 
 ===============================================
 
+New indicators: 
+  * Planar flowlength (Mayor et al. 2013, Rodriguez et al. 2017)
+  * Kolmogorov complexity based on Block Decomposition Method 
+      (Dakos and Soler-Toscano 2016)
+  
 Improvements: 
   * Enable parallel computation of patch size distributions
   * Added a dataset of aerial view of vegetation in Arizona ('arizona')

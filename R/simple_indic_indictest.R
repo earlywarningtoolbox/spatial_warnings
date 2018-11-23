@@ -4,11 +4,6 @@
 # WARNING: indictest will always transform original matrix to numeric 
 # internally, be careful when your function works with logical data. 
 # 
-#' @rdname create_indicator
-#' 
-#' @param nperm The number of replicates to use to compute use in the 
-#'   null distribution
-#' 
 #' @export
 indictest.simple_sews <- function(x, nperm = 999, ...) { 
   NextMethod('indictest')
@@ -119,19 +114,6 @@ print.simple_sews_test_list <- function(x, ...) {
 
 
 
-#' @rdname create_indicator
-# /!\ along is already documented elsewhere !
-# /!\ x is already documented elsewhere !
-#' 
-#' @param what The trendline to be displayed. Defaults to the indicator's 
-#'   values ("value") but other metrics can be displayed. Correct values are 
-#'   "value", "pval" or "z_score".
-#' 
-#' @param display_null Chooses whether a grey ribbon should be added to reflect
-#'   the null distribution. Note that it can not be displayed when the trend 
-#'   line reflects something else than the indicator values (when \code{what} 
-#'   is not set to "value").
-#' 
 #' @method plot simple_sews_test
 #' @export
 plot.simple_sews_test <- function(x, 
@@ -152,13 +134,13 @@ plot.simple_sews_test_single <- function(x,
   stop('I cannot plot a trend with only one value')
 }
 
-#' @method plot simple_sews_test_list
+#'@method plot simple_sews_test_list
 #'@export
 plot.simple_sews_test_list <- function(x, 
-                                        along = NULL, 
-                                        what = "value", 
-                                        display_null = TRUE, 
-                                        ...) { 
+                                       along = NULL, 
+                                       what = "value", 
+                                       display_null = TRUE, 
+                                       ...) { 
   
   # Transform into data.frame
   x <- as.data.frame(x)

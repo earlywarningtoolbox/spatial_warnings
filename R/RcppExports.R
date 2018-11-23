@@ -13,6 +13,10 @@ col_sumcumprod <- function(m) {
     .Call('_spatialwarnings_col_sumcumprod', PACKAGE = 'spatialwarnings', m)
 }
 
+fl_internal <- function(m) {
+    .Call('_spatialwarnings_fl_internal', PACKAGE = 'spatialwarnings', m)
+}
+
 label_cpp <- function(mat, nbmask, wrap) {
     .Call('_spatialwarnings_label_cpp', PACKAGE = 'spatialwarnings', mat, nbmask, wrap)
 }

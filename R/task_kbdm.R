@@ -1,9 +1,37 @@
-
 # This function takes a matrix and a returns a single value.
+#' 
+#' @title Kolmogorov complexity of a matrix 
+#' 
+#' @description Compute the Kolmogorov complexity of a matrix using the 
+#'   Block Decomposition Method (requires the \code{acss} package).
+#' 
+#' @details 
+#' 
+#'   The Kolmogorov complexity cannot be computed directly for large strings 
+#'     (i.e. matrices). However, the complexity of smaller submatrices can be 
+#'     estimated, then combined to obtain an approximation of the complexity 
+#'     of the whole matrix. This method, the Block Decomposition Method is 
+#'     implemented in this function. See also \code{\link{kbdm_sews}} 
+#'     for more details. 
+#' 
+#' @return A numeric value
+#' 
+#' @param mat A logical matrix (with TRUE/FALSE values)
+#' 
+#' @param subsize A submatrix size to carry out the Block Decomposition Method
+#'   (must be between 1 and 3)
+#' 
+#' @seealso \code{\link{kbdm_sews}}, \code{\link[acss]{acss}}
+#' 
+#' @examples 
+#' 
+#' raw_kbdm(forestgap[[1]], subsize = 3)
+#' 
+#' 
 #'@export
 raw_kbdm <- function(mat, subsize = 3) {
   
-  if ( ! require(acss) ) { 
+  if ( ! requireNamespace("acss") ) { 
     stop(paste0('Computation of kbdm requires the package acss. Install it ', 
                 'using install.packages("acss")'))
   }
@@ -13,7 +41,6 @@ raw_kbdm <- function(mat, subsize = 3) {
   }
   
   # Split matrix
-  subsize <- subsize
   xs <- seq(1, nrow(mat), by = subsize)
   ys <- seq(1, ncol(mat), by = subsize)
   allblockns <- expand.grid(seq.int(length(xs)-1),
@@ -21,8 +48,8 @@ raw_kbdm <- function(mat, subsize = 3) {
   all_substr <- Map(function(xblockn, yblockn) {
                       dict <- as.vector(mat[xs[xblockn]:(xs[xblockn+1]-1),
                                             ys[yblockn]:(ys[yblockn+1]-1)]) 
-                      dict <- as.integer() 
-                      dict <- paste(collapse = "")
+                      dict <- as.integer(dict) 
+                      dict <- paste(dict, collapse = "")
                     },
                     allblockns[ ,1], allblockns[ ,2]) 
   all_substr <- unlist(all_substr)
@@ -31,8 +58,8 @@ raw_kbdm <- function(mat, subsize = 3) {
   counts <- table(all_substr)
   counts <- data.frame(string = names(counts),
                        multip = as.vector(counts),
-                       kctm = acss(names(counts), alphabet = 2)[ ,1])
-
+                       kctm = acss::acss(names(counts), alphabet = 2)[ ,1])
+  
   # Compute Kbdm
   return( with(counts, sum(log2(multip) + kctm)) )
 }
@@ -40,23 +67,75 @@ raw_kbdm <- function(mat, subsize = 3) {
 #'
 #' @title Indicator based on Kolmogorov Complexity 
 #' 
-#' @description Compute the Kolmogorov Complexity on a set of matrices, 
-#'   using the Block Decomposition Method. 
+#' @description 
+#' 
+#'   Computes the Kolmogorov Complexity on a set of matrices, 
+#'     using the Block Decomposition Method. 
 #'
-#' @details WriteMe
+#' @details 
+#' 
+#    The Kolmogorov complexity of a given matrix has been suggested to 
+#'     be a useful indicator to anticipate transitions in model ecological 
+#'     systems (Dakos and Soler-Toscano, 2017). When close to the transition 
+#'     critical point, the complexity is expected to decrease. 
+#'   
+#'   The Kolmogorov complexity cannot be computed directly for large strings 
+#'     (i.e. matrices). However, the complexity of smaller submatrices can be 
+#'     estimated, then combined to obtain an approximation of the complexity 
+#'     of the whole matrix. This method, the Block Decomposition Method is 
+#'     implemented in this indicator following Dakos and Soler-Toscano (2017). 
+#' 
+#' @return 
+#' 
+#'   \code{kbdm_sews} returns an object of class \code{simple_sews_single} 
+#'     (a list) if mat is a single matrix, and an object of class 
+#'     \code{simple_sews_list} if mat is a list of matrices. These objects can 
+#'     be used with generic methods indictest (to test significnance) or plot 
+#'     (to display trends), see also the examples below. 
+#'   
+#' @references 
+#'   
+#'   Dakos, V., and F. Soler-Toscano. 2017. Measuring complexity to infer 
+#'   changes in the dynamics of ecological systems under stress. Ecological 
+#'   Complexity 32:144–155.
+#'   
+#'   #FIXME <another ref would be nice also>
+#'   
+#' @param mat A logical matrix (TRUE/FALSE values)
+#' 
+#' @param subsize A submatrix size to carry out the Block Decomposition Method
+#'   (must be between 1 and 3)
+#' 
+#' @seealso \code{\link{raw_kbdm}}, \code{\link[acss]{acss}}
+#' 
+#' @examples 
+#' 
+#' \dontrun{ 
+#' 
+#' kbdm_result <- kbdm_sews(serengeti, subsize = 3)
+#' plot(kbdm_result, along = serengeti.rain)
+#' 
+#' kbdm_test <- indictest(kbdm_result, nperm = 99)
+#' plot(kbdm_test, along = serengeti.rain)
+#' 
+#' # Plot deviation to a random matrix
+#' plot(kbdm_test, along = serengeti.rain, what = "z_score") + 
+#' 
+#' }
+#' 
 #' 
 #'@export 
-kbdm_spews <- function(mat, 
+kbdm_sews <- function(mat, 
                        subsize = 3) { 
   
   # This is a formatted function to compute the kbdm
   kbdmfun <- function(mat, subsize) { 
     result <- list(value     = raw_kbdm(mat, subsize), 
                    orig_data = mat, 
-                   fun.args  = as.list(match.call(expand.dots = FALSE))[['...']], 
-                   indicf = raw_kbdm)
+                   fun.args  = list(subsize = subsize), 
+                   indicf    = raw_kbdm)
     
-    class(result) <- c('kbdm_sews', 'simple_sews_single', 'custom_sews', 'list')
+    class(result) <- c('kbdm_sews', 'simple_sews_single', 'list')
     attr(result, "indicname") <- "Kbdm Complexity"
     return(result)
   }
@@ -64,7 +143,7 @@ kbdm_spews <- function(mat,
   if ( is.list(mat) ) { 
     result <- parallel::mclapply(mat, kbdmfun, subsize)
     names(result) <- names(mat)
-    class(result) <- c('kbdm_sews', 'simple_sews_list', 'custom_sews', 'list')
+    class(result) <- c('kbdm_sews', 'simple_sews_list', 'list')
     attr(result, "indicname") <- "Kbdm Complexity"
   } else { 
     result <- kbdmfun(mat, subsize)

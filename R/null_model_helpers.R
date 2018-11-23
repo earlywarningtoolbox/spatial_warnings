@@ -2,9 +2,6 @@
 # These functions factorize some code between numerical indicators. Most 
 # notably it handles creating the null model testing, etc.
 # 
-# WARNING: IT IS UP TO THE INDICF FUNCTION TO DECIDE WHETHER TO COARSE 
-#   GRAIN OR NOT
-# 
 compute_indicator_with_null <- function(input, 
                                         nreplicates, 
                                         indicf) { 
@@ -21,9 +18,18 @@ compute_indicator_with_null <- function(input,
                           nrow = 1, ncol = nreplicates)
     } else { 
       # Compute the index on a randomized matrix
-      nulldistr <- shuffle_and_compute(input, indicf, nreplicates)
+      # shuffle_and_compute will convert all matrices to numeric matrices 
+      # internally. We need to explicitely convert back to logical after 
+      # shuffling before computing the indicator 
+      if ( is.logical(input) ) { 
+        nulldistr <- shuffle_and_compute(input, function(x) indicf(x>0), 
+                                         nreplicates)
+      } else { 
+        nulldistr <- shuffle_and_compute(input, indicf, nreplicates)
+      }
       nulldistr <- t( do.call(rbind, nulldistr) )
     }
+    
     # Note that here nulldistr always has one or more rows and nreplicates 
     #   columns -> it is always a matrix
     nullstats <- list(null_mean = apply(nulldistr, 1, mean), 
@@ -45,7 +51,7 @@ compute_indicator_with_null <- function(input,
 safe_quantile <- function(nulldistr, p) { 
   if ( any( is.na(nulldistr) ) ) { 
     warning(paste0('Computation of null values produced NAs (', 
-                   sum(is.na(nulldistr)), " out of ", length(nulldistr), ")"))
+                   sum(is.na(nulldistr)), " out of ", length(nulldistr), "). "))
   }
   quantile(nulldistr, p, na.rm = TRUE)
 }

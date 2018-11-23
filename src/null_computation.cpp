@@ -62,7 +62,7 @@ List shuffle_and_compute(arma::mat& mat,
                          int nrep) { 
   
   arma::mat shuffmat = mat; 
-    
+  
   // Allocate indicator results
   List nulldistr = List(nrep);
   

@@ -36,17 +36,13 @@
 #' \code{fun} should be a function that takes as input a matrix and possibly
 #'   more arguments, and return a single numeric value. Note that the matrix 
 #'   is converted internally to numeric values, as a side effect of using 
-#'   c++ code when assessing significance. When working with logical matrices 
-#'   (e.g. when computing patch size distributions), the matrix has to be 
-#'   explicitly converted to logical within function `fun`. 
+#'   c++ code when assessing significance. 
 #' 
 #' @examples
 #' 
 #' # Use the maximum patch size as indicator of degradation
 #' maxpatchsize <- function(mat) { 
-#'   # Note that we explicitely convert mat here to logical as it can be 
-#'   # transformed into numeric internally. 
-#'   max(patchsizes(mat > 0))
+#'   max(patchsizes(mat))
 #' }
 #' 
 #' # Create the indicator function
@@ -59,7 +55,6 @@
 #' 
 #' \dontrun{ 
 #' # Assess significance and display trends
-#' options(mc.cores = 2)
 #' mp_test <- indictest(mp_indic, nperm = 49)
 #' plot(mp_test)
 #' }
@@ -93,8 +88,8 @@ create_indicator <- function(fun,
   
   # Test if indicname is derived from an anonymous function
   if ( length(indicname) > 1 ) { 
-    warning('A valid name could not be derived from the function passed to create_indicator,\n', 
-            'using the default name custom_indic')
+    warning('A valid name could not be derived from the function passed', 
+            'to create_indicator, using the default name custom_indic')
     indicname <- "custom_indic"
   }
   

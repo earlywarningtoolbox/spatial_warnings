@@ -10,7 +10,7 @@ context('Test the computation of flow length')
 # Rodriguez et al. 2017 (Eco. Ind.)
 library(plyr)
 
-all_fls <- adply(seq(0.01, 1, length.out = 50), 1, function(rho) { 
+all_fls <- adply(seq(0.01, 1, length.out = 100), 1, function(rho) { 
   
   # Set other parameters randomly
   L <- 100

@@ -27,7 +27,7 @@ test_that('Custom indicators work', {
   for (dataset in datasets) { 
     # Run a classical workflow and make sure there are no errors
     maxpatchsize <- function(mat) { 
-      max(patchsizes(mat > 0))
+      max(patchsizes(mat))
     }
     
     indicator_mp <- create_indicator(maxpatchsize)
@@ -45,7 +45,6 @@ test_that('Custom indicators work', {
     
     indictest(a[[1]], nperm = 9)
     
-    options(mc.cores = 2) 
     b <- indictest(a, nperm = 9)
     test_methods("Spatial Early-Warning:", length(dataset), b)
     test_methods("Spatial Early-Warning:", 1, b[[1]])

@@ -97,7 +97,6 @@ summary(mp_indic)
 
 \dontrun{ 
 # Assess significance and display trends
-options(mc.cores = 2)
 mp_test <- indictest(mp_indic, nperm = 49)
 plot(mp_test)
 }

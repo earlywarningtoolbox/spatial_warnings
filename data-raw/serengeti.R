@@ -9,8 +9,6 @@
 # 
 # 
 
-options(mc.cores = 4)
-
 datdir <- './data-raw/serengeti/'
 files  <- dir(paste0(datdir, "matrices"), full = TRUE)
 

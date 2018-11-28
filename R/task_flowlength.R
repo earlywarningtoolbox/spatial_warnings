@@ -45,6 +45,8 @@
 #' plot(fl_test, what = "z_score")
 #' }
 #' 
+#FIXME: Does it make sense to provide default values ? 
+#FIXME: Is "planar" a good name ? 
 #'@export
 flowlength_sews <- function(mat, 
                             slope = 20, 
@@ -150,6 +152,3 @@ raw_flowlength_planar <- function(mat,        # Input matrix
   
   return(fl)
 }
-
-#FIXME: Does it make sense to provide default values ? 
-#FIXME: Is "planar" a good name ? 

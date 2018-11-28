@@ -13,7 +13,7 @@ before_install:
   - sudo apt-get install libfftw3-dev libgsl-dev
   
 script:
-  # Test first fitting results against pli code
+  # Test first the fitting results against pli code
   - R -e "update.packages(ask = FALSE)"
   - R -e "install.packages(c('testthat', 'roxygen2'))"
   - R -e "devtools::install_deps()"

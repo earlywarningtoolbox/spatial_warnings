@@ -21,7 +21,7 @@ script:
   - R -e "TEST_XMIN <- TRUE; devtools::test(filter = 'xmin')"
   # Then test the whole package
   - R CMD build .
-  - travis_wait R CMD check *tar.gz --as-cran --run-dontrun --run-donttest
+  - R CMD check *tar.gz --as-cran 
   
 after_success:
   - Rscript -e 'covr::codecov()'

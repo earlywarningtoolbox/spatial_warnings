@@ -119,7 +119,7 @@ raw_kbdm <- function(mat, subsize = 3) {
 #' plot(kbdm_test, along = serengeti.rain)
 #' 
 #' # Plot deviation to a random matrix
-#' plot(kbdm_test, along = serengeti.rain, what = "z_score") + 
+#' plot(kbdm_test, along = serengeti.rain, what = "z_score") 
 #' 
 #' }
 #' 

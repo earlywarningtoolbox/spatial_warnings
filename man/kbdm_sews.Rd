@@ -45,7 +45,7 @@ kbdm_test <- indictest(kbdm_result, nperm = 99)
 plot(kbdm_test, along = serengeti.rain)
 
 # Plot deviation to a random matrix
-plot(kbdm_test, along = serengeti.rain, what = "z_score") + 
+plot(kbdm_test, along = serengeti.rain, what = "z_score") 
 
 }
 

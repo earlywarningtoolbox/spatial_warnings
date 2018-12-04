@@ -55,8 +55,6 @@ plot(kbdm_test, along = serengeti.rain, what = "z_score")
 Dakos, V., and F. Soler-Toscano. 2017. Measuring complexity to infer 
   changes in the dynamics of ecological systems under stress. Ecological 
   Complexity 32:144–155.
-  
-  #FIXME <another ref would be nice also>
 }
 \seealso{
 \code{\link{raw_kbdm}}, \code{\link[acss]{acss}}

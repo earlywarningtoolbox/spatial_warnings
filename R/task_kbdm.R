@@ -99,8 +99,6 @@ raw_kbdm <- function(mat, subsize = 3) {
 #'   changes in the dynamics of ecological systems under stress. Ecological 
 #'   Complexity 32:144–155.
 #'   
-#'   #FIXME <another ref would be nice also>
-#'   
 #' @param mat A logical matrix (TRUE/FALSE values)
 #' 
 #' @param subsize A submatrix size to carry out the Block Decomposition Method

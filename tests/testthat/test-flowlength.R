@@ -86,7 +86,6 @@ expect_true({
 # tests on images that have been already binarized in matlab/octave
 # 
 imagedir <- './rodriguez2018/images/'
-ref <- read.csv(paste0(imagedir, "../extracted_fl_images.csv"))
 all_images <- lapply(dir(imagedir, full.names = TRUE, pattern = "*.csv"), 
                      function(i) { 
                        a <- as.matrix(read.csv(i, header = FALSE)) > 0 

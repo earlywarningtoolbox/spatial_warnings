@@ -1,44 +1,23 @@
 # 
 # 
 
-library(ggplot2)
-library(jpeg)
-library(EBImage) # Install from Bioconductor
-
+# Read binarized images from Rodriguez et al. (2017). The images are binarized
+# using the graythresh() function from Octave, then exported as csvs containing 
+# 1/0s 
 picdir <- "./data-raw/rodriguez_etal"
-pics <- dir(picdir, full = TRUE, pattern = "*.jpg")
+pics <- dir(picdir, full = TRUE, pattern = "*.csv")
 
 # Read the pictures 
-imgs <- lapply(pics, readJPEG)
-names(imgs) <- gsub(".jpg", "", basename(pics))
+imgs <- lapply(pics, function(f) as.matrix(read.csv(f, header = FALSE)) > 0)
+names(imgs) <- gsub(".csv", "", basename(pics))
 
-# Convert to B/W
-# The images have three bands (R/G/B). We transform them into a black
-# and white image using principal component analysis (PCA)
-summarise_pca <- function(arr) {
-  values <- matrix(as.vector(arr), ncol = 3)
-  pca <- prcomp(values)
-  values <- pca[["x"]][ ,1]
-  matrix(values, ncol = ncol(arr), nrow = nrow(arr))
-}
-imgs_bw <- lapply(imgs, summarise_pca)
-names(imgs_bw) <- names(imgs)
+# Compute a test of indicators  
+ics <- flowlength_sews(imgs) 
+ics <- indictest(ics, nperm = 19)
+plot(ics, along = names(psds))
 
-# Compute indicators 
-imgs_classif <- lapply(imgs_bw, function(mat) { 
-  clust <- mat > mean(mat)
-#   clust <- gblur(clust, sigma = 1) > .4 
-})
-lattice::levelplot(imgs_classif[[2]])
-
-psds <- patchdistr_spews(imgs_classif)
-
-plot_distr(psds, along = names(psds))
-
-plot(psds, along = names(psds))
-
-# 
-arizona <- imgs_classif
+# Store dataset now
+arizona <- imgs
 use_data(arizona, overwrite = TRUE, compress = TRUE)
 
 

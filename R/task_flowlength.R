@@ -53,7 +53,7 @@ flowlength_sews <- function(mat,
                             cell_size = 1, 
                             method = "planar") { 
   
-  # This is a formatted function to compute the kbdm
+  # This is a formatted function to compute the flow length
   flfun <- function(mat, slope, cell_size) { 
     result <- list(value     = raw_flowlength_planar(mat, slope, cell_size), 
                    orig_data = mat, 

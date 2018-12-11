@@ -20,7 +20,7 @@ all_fls <- adply(seq(0.01, 1, length.out = 100), 1, function(rho) {
   
   # Compute flow lengths
   ds <- cell_size / cos(slope * pi/180)
-  fls <- replicate(200, { 
+  fls <- replicate(19999, { 
     dat <- matrix(runif(L*cols), ncol = cols, nrow = L) < rho
     raw_flowlength_planar(dat, cell_size = cell_size, slope = slope)
   })
@@ -46,6 +46,12 @@ all_fls <- adply(seq(0.01, 1, length.out = 100), 1, function(rho) {
 expect_true( with(all_fls, t.test(x = obsmean, y = themean)$p.value) > 0.5 )
 expect_true( with(all_fls, t.test(x = obsvar, y = thevar)$p.value) > 0.5 )
 
+# Obs mean and theoretical mean should be very close
+with( subset(all_fls, themean > 0 & thevar > 0), { 
+  plot(themean, abs(obsmean - themean) / themean )
+  expect_true( all( abs(obsmean - themean) / themean < 0.01) )
+  expect_true( all( abs(obsvar - thevar) / thevar < 0.1) )
+})
 
 # library(ggplot2)
 # library(tidyr)
@@ -76,36 +82,28 @@ expect_true({
 })
 
 
-# # Test that we reproduce published results (Rodriguez et al. 2017)
-# datadir <- './tests/testthat/rodriguez2018/rawdata/'
+# Test that we reproduce results from images. Note that we actually based these 
+# tests on images that have been already binarized in matlab/octave
 # 
-# rodriguez <- lapply(dir(datadir, full.names = TRUE), function(n) { 
-#   as.matrix(read.table(n)) > 0
-# })
-# 
-# 
-# compute_deviation <- function(mat, slope, cell_size) { 
-#   fl <- raw_flowlength_planar(mat, slope, cell_size)
-#   
-#   
-#   null <- compute_indicator_with_null(mat, 999, function(mat) { 
-#       raw_flowlength_planar(mat > 0, slope, cell_size)
-#     })$null_mean
-#   
-#   return( (fl - null) / null )
-#   
-# }
-# 
-# raw <- lapply(rodriguez, raw_flowlength_planar, slope = 20, cell_size = 0.5)
-# values <- lapply(rodriguez, compute_deviation,  slope = 20, cell_size = 0.5)
-# covers <- lapply(rodriguez, mean)
-# a <- data.frame(dev = unlist(values), 
-#                 covers = unlist(covers), 
-#                 raw    = unlist(raw), 
-#                 shouldbe = c(0.651, 0.384, NA))
-# a
-# 
-# 
-# b	cover	diffFLrdm_  diffFLagg
-# 0,55	0,2	0,651	    0,175
-# 0,57	0,3	0,384	    0,05
+imagedir <- './rodriguez2018/images/'
+ref <- read.csv(paste0(imagedir, "../extracted_fl_images.csv"))
+all_images <- lapply(dir(imagedir, full.names = TRUE, pattern = "*.csv"), 
+                     function(i) { 
+                       a <- as.matrix(read.csv(i, header = FALSE)) > 0 
+                       dimnames(a) <- NULL
+                       a
+                      })
+fls <- flowlength_sews(all_images, slope = 0.6, cell_size = 0.223)
+ref <- data.frame(covers = c(0.42, 0.37, 0.17, 0.12, 0.19, 0.13, 
+                             0.48, 0.38, 0.34, 0.218, 0.114, 0.08), 
+                  fl = c(1.1231, 1.2624, 5.1928, 9.0719, 4.6266, 8.6047, 
+                         1.5144, 2.5934, 3.3909, 4.945, 11.631, 15.6279))
+
+fl.df <- as.data.frame(fls)
+
+compare <- data.frame(fl.df, ref)
+expect_true({ 
+    with(compare, all( abs(value - fl) < 0.01))
+  })
+
+

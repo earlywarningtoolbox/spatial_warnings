@@ -24,11 +24,8 @@ Suggests:
     moments,
     poweRlaw,
     testthat,
-    knitr,
     covr,
-    rmarkdown, 
     acss
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
 RoxygenNote: 6.1.0
-VignetteBuilder: knitr

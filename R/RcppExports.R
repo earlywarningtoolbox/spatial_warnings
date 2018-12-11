@@ -9,10 +9,6 @@ discpowerexp_norm <- function(expo, rate, xmin) {
     .Call('_spatialwarnings_discpowerexp_norm', PACKAGE = 'spatialwarnings', expo, rate, xmin)
 }
 
-col_sumcumprod <- function(m) {
-    .Call('_spatialwarnings_col_sumcumprod', PACKAGE = 'spatialwarnings', m)
-}
-
 fl_internal <- function(m) {
     .Call('_spatialwarnings_fl_internal', PACKAGE = 'spatialwarnings', m)
 }

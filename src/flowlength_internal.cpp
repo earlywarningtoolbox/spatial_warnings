@@ -4,13 +4,8 @@
 using namespace arma;
 using namespace Rcpp;
 
-// This piece of code computes the cumulative product of a matrix by column, 
-// then sums it by columns (similar to what sum(cumprod(mat)) does in matlab).
-//[[Rcpp::export]]
-arma::rowvec col_sumcumprod(arma::mat m) { 
-  return( sum(cumprod(m,0), 0) ); 
-}
-
+// This piece of code computes the flowlength before taking into account 
+// the dimensions of pixels/slope. 
 //[[Rcpp::export]]
 double fl_internal(arma::mat m) { 
   
@@ -23,5 +18,5 @@ double fl_internal(arma::mat m) {
     flcol += a; 
   } 
   
-  return( accu(flcol)/(nx*ny) ); 
+  return( accu(flcol)/((double)nx * (double)ny) ); 
 }

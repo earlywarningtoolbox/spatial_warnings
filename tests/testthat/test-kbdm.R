@@ -24,7 +24,7 @@ test_that("Kbdm results are correct", {
   kbdm_vals <- as.data.frame(kbdm_sews(matrices))
 
   xvals <- sapply(allfiles, function(f) { 
-      library(stringr)
+
       a <- strsplit(f, split = c("CA_b"))[[1]][2]
       a <- gsub(".txt", "", a)
       a <- as.numeric(a)

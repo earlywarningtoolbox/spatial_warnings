@@ -82,7 +82,7 @@ expect_true({
 })
 
 
-# Test that we reproduce results from images. Note that we actually based these 
+# Test that we reproduce results from images. Note that we base these 
 # tests on images that have been already binarized in matlab/octave
 # 
 imagedir <- './rodriguez2018/images/'

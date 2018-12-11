@@ -49,7 +49,7 @@ expect_true( with(all_fls, t.test(x = obsvar, y = thevar)$p.value) > 0.5 )
 # Obs mean and theoretical mean should be very close
 with( subset(all_fls, themean > 0 & thevar > 0), { 
   plot(themean, abs(obsmean - themean) / themean )
-  expect_true( all( abs(obsmean - themean) / themean < 0.01) )
+  expect_true( all( abs(obsmean - themean) / themean < 0.02) )
   expect_true( all( abs(obsvar - thevar) / thevar < 0.1) )
 })
 

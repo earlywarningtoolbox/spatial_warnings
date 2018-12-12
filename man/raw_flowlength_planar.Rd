@@ -22,8 +22,9 @@ Compute a simple approximation of the flow length assuming a
   constant slope
 }
 \details{
-This function computes the flow length of a given matrix, using a 
-    planar approximation (the slope is constant across the whole matrix), 
+This function computes the Flowlength of a given matrix, using a 
+    planar approximation (the slope is constant across the whole matrix, 
+    with maximum slope being from the top of the matrix to its bottom), 
     as per Rodriguez et al. (2017). See \code{\link{flowlength_sews}} for 
     more details.
 }

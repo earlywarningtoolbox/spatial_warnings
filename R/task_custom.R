@@ -126,6 +126,8 @@ create_indicator <- function(fun,
 #'
 #' @param mat A matrix or a list of matrices. 
 #' 
+#' @param ... Additional arguments that are passed to the function \code{fun}
+#' 
 #'@export
 custom_indicator <- function(mat, fun, 
                              indicname = as.character(substitute(fun)), 

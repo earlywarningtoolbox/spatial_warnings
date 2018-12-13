@@ -25,8 +25,9 @@
 #' 
 #' @examples 
 #' 
+#' \dontrun{ 
 #' raw_kbdm(forestgap[[1]], subsize = 3)
-#' 
+#' }
 #' 
 #'@export
 raw_kbdm <- function(mat, subsize = 3) {

@@ -4,7 +4,7 @@ context('Test that xmin estimations are correct')
 GRAPHICAL <- FALSE # Plot some diagnostics. 
 
 
-if ( exists('TEST_XMIN') && TEST_XMIN ) { 
+if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) { 
   # Change dir if running tests manually
   if ( file.exists('./tests/testthat') ) { 
     library(testthat)
@@ -27,9 +27,9 @@ if ( exists('TEST_XMIN') && TEST_XMIN ) {
   test_that("xmins estimation is correct", { 
     
 
-    parms <- expand.grid(expo = 1.5, 
+    parms <- expand.grid(expo = c(1.5, 1.2), 
                          rate = c(0.001, 0.005, 0.01, 0.1, 0.2, 0.3, 0.5, 
-                                      0.7, 1, 1.2, 1.3, 1.4, 1.5, 1.7, 1.8, 2))
+                                      0.7, 1))
     
     estim_xmin <- function(df) { 
       

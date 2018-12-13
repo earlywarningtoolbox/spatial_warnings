@@ -9,7 +9,7 @@ library(ggplot2)
 
 context('Test the fitting of distributions')
 
-if ( exists("TEST_PSDFIT") && TEST_PSDFIT ) { 
+if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) { 
   
   # Change dir if running tests manually
   if ( file.exists('./tests/testthat') ) { 

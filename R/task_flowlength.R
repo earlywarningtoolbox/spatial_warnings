@@ -14,7 +14,7 @@
 #'   topography. Flowlength is defined as the average length of all the 
 #'   potential runoff pathways in the target area. Thus, a higher value of 
 #'   the index indicates a higher hydrologic connectivity of runoff source 
-#'   areas. This function is designed for an idealized planar hillslope 
+#'   areas. This function is designed for an idealized uniform hillslope 
 #'   (e.g., with constant slope angle, the direction of maximum slope being 
 #'   from the top to the bottom of the input matrices). 
 #' 
@@ -66,7 +66,7 @@
 #'   from above). 
 #' 
 #' @param method The method to use to compute the flow length (for now only 
-#'   the method "planar", using a single slope approximation, is implemented)
+#'   the method "uniform", using a single slope approximation, is implemented)
 #' 
 #' @return The flow length numerical value. 
 #' 
@@ -82,20 +82,18 @@
 #' plot(fl_test, what = "z_score")
 #' }
 #' 
-#FIXME: Does it make sense to provide default values ? 
-#FIXME: Is "planar" a good name ? 
 #'@export
 flowlength_sews <- function(mat, 
                             slope = 20, 
                             cell_size = 1, 
-                            method = "planar") { 
+                            method = "uniform topography") { 
   
   # This is a formatted function to compute the flow length
   flfun <- function(mat, slope, cell_size) { 
-    result <- list(value     = raw_flowlength_planar(mat, slope, cell_size), 
+    result <- list(value     = raw_flowlength_uniform(mat, slope, cell_size), 
                    orig_data = mat, 
                    fun.args  = list(slope, cell_size), 
-                   indicf    = raw_flowlength_planar)
+                   indicf    = raw_flowlength_uniform)
     
     class(result) <- c('flowlength_sews', 'simple_sews_single', 'list')
     attr(result, "indicname") <- paste0("Flow length (", method, ")")
@@ -119,7 +117,7 @@ flowlength_sews <- function(mat,
 # A function that computes the "simple" flowlength as described in Rodriguez 
 #   et al. 
 # 
-#' @title Flow length (planar approximation)
+#' @title Flow length (uniform slope)
 #' 
 #' @description Compute a simple approximation of the flow length assuming a 
 #'   constant slope 
@@ -127,7 +125,7 @@ flowlength_sews <- function(mat,
 #' @details 
 #'   
 #'   This function computes the Flowlength of a given matrix, using a 
-#'     planar approximation (the slope is constant across the whole matrix, 
+#'     uniform approximation (the slope is constant across the whole matrix, 
 #'     with maximum slope being from the top of the matrix to its bottom), 
 #'     as per Rodriguez et al. (2017). See \code{\link{flowlength_sews}} for 
 #'     more details. 
@@ -137,8 +135,6 @@ flowlength_sews <- function(mat,
 #' Rodríguez, F., Á. G. Mayor, M. Rietkerk, and S. Bautista. 2017. A null model 
 #'   for assessing the cover-independent role of bare soil connectivity as 
 #'   indicator of dryland functioning and dynamics. Ecological Indicators.
-#' 
-#' <Mayor et al. 2013 ?>
 #' 
 #' @param mat The input matrix (must be a logical matrix)
 #' 
@@ -153,13 +149,13 @@ flowlength_sews <- function(mat,
 #' 
 #' @examples 
 #' 
-#' raw_flowlength_planar(arizona[[1]], slope = 20, cell_size = 1)
+#' raw_flowlength_uniform(arizona[[1]], slope = 20, cell_size = 1)
 #' 
 #' 
 #' 
 #' 
 #'@export
-raw_flowlength_planar <- function(mat,        # Input matrix
+raw_flowlength_uniform <- function(mat,        # Input matrix
                                   slope,      # Slope (in degrees)
                                   cell_size) { # Cell size
   

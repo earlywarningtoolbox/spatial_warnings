@@ -4,7 +4,8 @@
 \alias{flowlength_sews}
 \title{Flowlength connectivity indicator (uniform topography)}
 \usage{
-flowlength_sews(mat, slope = 20, cell_size = 1, method = "planar")
+flowlength_sews(mat, slope = 20, cell_size = 1,
+  method = "uniform topography")
 }
 \arguments{
 \item{mat}{The input matrix (must be a logical matrix)}
@@ -15,7 +16,7 @@ flowlength_sews(mat, slope = 20, cell_size = 1, method = "planar")
 from above).}
 
 \item{method}{The method to use to compute the flow length (for now only 
-the method "planar", using a single slope approximation, is implemented)}
+the method "uniform", using a single slope approximation, is implemented)}
 }
 \value{
 The flow length numerical value.
@@ -31,7 +32,7 @@ This function computes Flowlength, a simple metric that measures the
   topography. Flowlength is defined as the average length of all the 
   potential runoff pathways in the target area. Thus, a higher value of 
   the index indicates a higher hydrologic connectivity of runoff source 
-  areas. This function is designed for an idealized planar hillslope 
+  areas. This function is designed for an idealized uniform hillslope 
   (e.g., with constant slope angle, the direction of maximum slope being 
   from the top to the bottom of the input matrices). 
 

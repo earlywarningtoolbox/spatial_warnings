@@ -28,7 +28,9 @@ as.data.frame.simple_sews_list <- function(x, ...) {
 #'@method print simple_sews_single
 #'@export
 print.simple_sews_single <- function(x, ...) { 
-  print.simple_sews_list(list(x), ...)
+  x.list <- list(x)
+  attr(x.list, "indicname") <- attr(x, "indicname")
+  summary.simple_sews_list(x.list, ...)
 }
 #'@method print simple_sews_list
 #'@export
@@ -43,7 +45,9 @@ print.simple_sews_list <- function(x, ...) {
 #'@method summary simple_sews_single
 #'@export
 summary.simple_sews_single <- function(object, ...) { 
-  summary.simple_sews_list( list(object) )
+  object.list <- list(object)
+  attr(object.list, "indicname") <- attr(object, "indicname")
+  summary.simple_sews_list( object.list )
 }
 #'@method summary simple_sews_list
 #'@export
@@ -74,17 +78,6 @@ summary.simple_sews_list <- function(object,
 
 # Plot methods 
 # ------------
-#' @rdname create_indicator
-#' 
-#' @param x A \code{custom_sews} object (as provided by the 
-#'   custom indicator function created by \code{create_indicator}). 
-#' 
-#' @param along A vector providing values over which the indicator trend 
-#'   will be plotted. If \code{NULL} then the values are plotted sequentially 
-#'   in their original order. 
-#' 
-#' @param ... Ignored
-#' 
 #'@method plot simple_sews_list
 #'@export
 plot.simple_sews_list <- function(x, along = NULL, ...) { 

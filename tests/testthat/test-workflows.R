@@ -19,6 +19,7 @@ test_methods <- function(teststring, datalength, obj, .test_df = TRUE) {
   
   ok_summary <- any(grepl(teststring, capture.output(summary(obj))))
   expect_true(ok_summary)
+  
   if (.test_df) { 
     ok_as_df <- nrow(as.data.frame(obj)) == datalength
   } else { 
@@ -54,6 +55,7 @@ test_that("The workflow functions work", {
     
     
     
+    
     # Spectral indicators
     indics <- spectral_sews(dataset, 
                             sdr_low_range  = c(0,  0.2), 
@@ -62,13 +64,9 @@ test_that("The workflow functions work", {
                  length(dataset), indics, .test_df = FALSE)
     expect_warning({ spectral_sews(dataset) }) # give a warning when no args are passed
     
-    
-    # test_methods("Spectral Spatial Early-Warnings", 1, indics[[1]])
-    
     indics.test <- indictest(indics, nperm = 9)
     test_methods("Spectral Spatial Early-Warnings", 
                   datal, indics.test, .test_df = FALSE)
-    # test_methods("Spectral Spatial Early-Warnings", 1, indics.test[[1]])
     
     if ( datal > 1 ) { # multiple values
       suppressWarnings( print( plot(indics.test) ) )
@@ -94,6 +92,32 @@ test_that("The workflow functions work", {
       suppressWarnings( print( plot(indics) ) )
     }
     suppressWarnings( print( plot_distr(indics) ) )
+    
+    
+    
+    
+    # Flowlength indicator
+    indics <- flowlength_sews(dataset)
+    test_methods("Spatial Early-Warning: Flow length", 
+                 length(dataset), indics, .test_df = FALSE)
+    if ( ! is.matrix(dataset) ) { 
+      suppressWarnings( print( plot(indics) ) )
+    }
+    
+    indics.test <- indictest(indics, nperm = 3)
+    test_methods("Spatial Early-Warning: Flow length", 
+                  datal, indics.test, .test_df = FALSE)
+    
+    
+    
+    # KBDM indicator
+    indics <- suppressWarnings( kbdm_sews(dataset) )
+    test_methods("Spatial Early-Warning: Kbdm Complexity", 
+                 datal, indics) # l(dataset) * 4 psd types fitted
+    
+    if ( ! is.matrix(dataset) ) { 
+      suppressWarnings( print( plot(indics) ) )
+    }
     
   }
   

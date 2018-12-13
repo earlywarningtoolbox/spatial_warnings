@@ -1,9 +1,6 @@
 # 
 # This file contains functions to test significance and plot simple indicators 
 # 
-# WARNING: indictest will always transform original matrix to numeric 
-# internally, be careful when your function works with logical data. 
-# 
 #' @export
 indictest.simple_sews <- function(x, nperm = 999, ...) { 
   NextMethod('indictest')
@@ -29,6 +26,7 @@ indictest.simple_sews_single <- function(x, nperm = 999, ...) {
   # Format result
   results <- c(null_values, list(nperm = nperm))
   class(results) <- c('simple_sews_test_single', 'sews_test', 'list')
+  attr(results, "indicname") <- attr(x, "indicname")
   
   return(results)
 }
@@ -44,6 +42,8 @@ indictest.simple_sews_list <- function(x, nperm = 999, ...) {
   }
   
   class(results) <- c('simple_sews_test_list', 'sews_test', 'list')
+  attr(results, "indicname") <- attr(x, "indicname")
+  
   return(results)
 }
 
@@ -53,6 +53,7 @@ as.data.frame.simple_sews_test_single <- function(x, ...) {
   # We need to explicitely add a `replicate` column because it will 
   # be used by funs down the stream. 
   ans <- data.frame(replicate = 1, as.data.frame.list(x))
+  
   return(ans)
 }
 #'@method as.data.frame simple_sews_test_list
@@ -69,14 +70,16 @@ as.data.frame.simple_sews_test_list <- function(x, ...) {
 #'@method as.data.frame simple_sews_test_list
 #'@export
 summary.simple_sews_test_single <- function(object, ...) { 
-  summary.simple_sews_test_list( list(object) )
+  object.list <- list(object)
+  attr(object.list, "indicname") <- attr(object, "indicname")
+  summary.simple_sews_test_list( object.list )
 }
 #'@export
 summary.simple_sews_test_list <- function(object, 
                                           indicname = attr(object, "indicname"), 
                                           ...) { 
   if ( is.null(indicname) ) { 
-    indicname <- ""
+    indicname <- "unknown indicator"
   }
   
   tab <- as.data.frame(object)
@@ -115,19 +118,6 @@ print.simple_sews_test_list <- function(x, ...) {
 
 
 
-#' @rdname create_indicator
-# /!\ along is already documented elsewhere !
-# /!\ x is already documented elsewhere !
-#' 
-#' @param what The trendline to be displayed. Defaults to the indicator's 
-#'   values ("value") but other metrics can be displayed. Correct values are 
-#'   "value", "pval" or "z_score".
-#' 
-#' @param display_null Chooses whether a grey ribbon should be added to reflect
-#'   the null distribution. Note that it can not be displayed when the trend 
-#'   line reflects something else than the indicator values (when \code{what} 
-#'   is not set to "value").
-#' 
 #' @method plot simple_sews_test
 #' @export
 plot.simple_sews_test <- function(x, 

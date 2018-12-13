@@ -17,8 +17,9 @@ script:
   - R -e "update.packages(ask = FALSE)"
   - R -e "install.packages(c('testthat', 'roxygen2'))"
   - R -e "devtools::install_deps()"
-  - R -e "TEST_PSDFIT <- TRUE; devtools::test(filter = 'psdfit')"
-  - R -e "TEST_XMIN <- TRUE; devtools::test(filter = 'xmin')"
+  - R -e "EXTENDED_TESTS <- TRUE; devtools::test(filter = 'psdfit')"
+  - R -e "EXTENDED_TESTS <- TRUE; devtools::test(filter = 'xmin')"
+  - R -e "EXTENDED_TESTS <- TRUE; devtools::test(filter = 'flowlength')"
   # Then test the whole package
   - R CMD build .
   - R CMD check *tar.gz --as-cran 

@@ -64,18 +64,32 @@ certain measurable properties around those critical points.
 
 This package aims at providing a practical set of tools for the detection of
 these upcoming critical points in spatial datasets, by using indicators based on
-those properties. Those indicators fall within broad families around which the
-package is centered:
-
+those properties. Some of those indicators fall within broad families around 
+which the package is centered:
+  
   * "Generic" spatial indicators
   * Spectrum-based indicators
   * Indicators based on patch-size distributions
 
-Each of these indicator types can be computed with this package. Their
-significance can be assessed using permutation-based tests and results can
-be displayed using familiar summary/plot methods.
+Each of these indicator types can be computed with this package, along with 
+other, newer ones. Their significance can be assessed using permutation-based 
+tests and results can be displayed using familiar summary/plot methods. 
+
+In total, spatialwarnings provides the following spatial indicators published 
+in the literature: 
+  
+  - lag-1 autocorrelation (Moran's I, Dakos et al. 2010)
+  - Variance (Guttal et al. 2008)
+  - Skewness (Guttal et al. 2008)
+  - SDR Ratio (Kéfi et al. 2014)
+  - Patch-size distribution shape (Kéfi et al. 2011)
+  - Power-law range (Berdugo et al. 2017)
+  - Flowlength (Rodriguez et al. 2017)
+  - Kolmogorov complexity (Dakos et al. 2017)
 
 ## Code sample
+
+A simple analysis with `spatialwarnings` could fit in a few lines of code: 
 
 ```r
 > library(ggplot2)

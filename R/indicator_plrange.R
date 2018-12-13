@@ -22,8 +22,8 @@
 #' Some ecosystems show typical changes in their patch-size 
 #' distribution as they become more and more degraded. In particular, an 
 #' increase in the truncation of the patch-size distribution (PSD) is expected 
-#' to occur. The power-law range (PLR) measures the truncation of the PSD in a single 
-#' value (see also \code{\link{patchdistr_sews}} for more details). 
+#' to occur. The power-law range (PLR) measures the truncation of the PSD 
+#' in a single value (see also \code{\link{patchdistr_sews}} for more details). 
 #' 
 #' To compute the PLR, power-laws are fitted with a variable 
 #' minimum patch size (xmin) and the one with the lowest Kolmogorov-Smirnov

@@ -1,3 +1,93 @@
+
+#'
+#' @title Indicator based on Kolmogorov Complexity 
+#' 
+#' @description 
+#' 
+#'   Computes the Kolmogorov Complexity on a set of matrices, 
+#'     using the Block Decomposition Method. 
+#'
+#' @details 
+#' 
+#    The Kolmogorov complexity of a given matrix has been suggested to 
+#'     be a useful indicator to anticipate transitions in model ecological 
+#'     systems (Dakos and Soler-Toscano, 2017). When close to the transition 
+#'     critical point, the complexity is expected to decrease. 
+#'   
+#'   The Kolmogorov complexity cannot be computed directly for large strings 
+#'     (i.e. matrices). However, the complexity of smaller submatrices can be 
+#'     estimated, then combined to obtain an approximation of the complexity 
+#'     of the whole matrix. This method, the Block Decomposition Method is 
+#'     implemented in this indicator following Dakos and Soler-Toscano (2017). 
+#' 
+#' @return 
+#' 
+#'   \code{kbdm_sews} returns an object of class \code{simple_sews_single} 
+#'     (a list) if mat is a single matrix, and an object of class 
+#'     \code{simple_sews_list} if mat is a list of matrices. These objects can 
+#'     be used with generic methods indictest (to test significnance) or plot 
+#'     (to display trends), see also the examples below. 
+#'   
+#' @references 
+#'   
+#'   Dakos, V., and F. Soler-Toscano. 2017. Measuring complexity to infer 
+#'   changes in the dynamics of ecological systems under stress. Ecological 
+#'   Complexity 32:144–155.
+#'   
+#' @param mat A logical matrix (TRUE/FALSE values) or a list of logical 
+#'   matrices
+#' 
+#' @param subsize A submatrix size to carry out the Block Decomposition Method
+#'   (must be between 1 and 3)
+#' 
+#' @seealso \code{\link{raw_kbdm}}, \code{\link[acss]{acss}}
+#' 
+#' @examples 
+#' 
+#' \dontrun{ 
+#' 
+#' kbdm_result <- kbdm_sews(serengeti, subsize = 3)
+#' plot(kbdm_result, along = serengeti.rain)
+#' 
+#' kbdm_test <- indictest(kbdm_result, nperm = 99)
+#' plot(kbdm_test, along = serengeti.rain)
+#' 
+#' # Plot deviation to a random matrix
+#' plot(kbdm_test, along = serengeti.rain, what = "z_score") 
+#' 
+#' }
+#' 
+#' 
+#'@export 
+kbdm_sews <- function(mat, 
+                      subsize = 3) { 
+  
+  # This is a formatted function to compute the kbdm
+  kbdmfun <- function(mat, subsize) { 
+    result <- list(value     = raw_kbdm(mat, subsize), 
+                   orig_data = mat, 
+                   fun.args  = list(subsize = subsize), 
+                   indicf    = raw_kbdm)
+    
+    class(result) <- c('kbdm_sews', 'simple_sews_single', 'list')
+    attr(result, "indicname") <- "Kbdm Complexity"
+    return(result)
+  }
+  
+  if ( is.list(mat) ) { 
+    result <- parallel::mclapply(mat, kbdmfun, subsize)
+    names(result) <- names(mat)
+    class(result) <- c('kbdm_sews', 'simple_sews_list', 'list')
+    attr(result, "indicname") <- "Kbdm Complexity"
+  } else { 
+    result <- kbdmfun(mat, subsize)
+  }
+  
+  return(result)
+
+}
+
+
 # This function takes a matrix and a returns a single value.
 #' 
 #' @title Kolmogorov complexity of a matrix 
@@ -65,90 +155,3 @@ raw_kbdm <- function(mat, subsize = 3) {
   return( with(counts, sum(log2(multip) + kctm)) )
 }
   
-#'
-#' @title Indicator based on Kolmogorov Complexity 
-#' 
-#' @description 
-#' 
-#'   Computes the Kolmogorov Complexity on a set of matrices, 
-#'     using the Block Decomposition Method. 
-#'
-#' @details 
-#' 
-#    The Kolmogorov complexity of a given matrix has been suggested to 
-#'     be a useful indicator to anticipate transitions in model ecological 
-#'     systems (Dakos and Soler-Toscano, 2017). When close to the transition 
-#'     critical point, the complexity is expected to decrease. 
-#'   
-#'   The Kolmogorov complexity cannot be computed directly for large strings 
-#'     (i.e. matrices). However, the complexity of smaller submatrices can be 
-#'     estimated, then combined to obtain an approximation of the complexity 
-#'     of the whole matrix. This method, the Block Decomposition Method is 
-#'     implemented in this indicator following Dakos and Soler-Toscano (2017). 
-#' 
-#' @return 
-#' 
-#'   \code{kbdm_sews} returns an object of class \code{simple_sews_single} 
-#'     (a list) if mat is a single matrix, and an object of class 
-#'     \code{simple_sews_list} if mat is a list of matrices. These objects can 
-#'     be used with generic methods indictest (to test significnance) or plot 
-#'     (to display trends), see also the examples below. 
-#'   
-#' @references 
-#'   
-#'   Dakos, V., and F. Soler-Toscano. 2017. Measuring complexity to infer 
-#'   changes in the dynamics of ecological systems under stress. Ecological 
-#'   Complexity 32:144–155.
-#'   
-#' @param mat A logical matrix (TRUE/FALSE values)
-#' 
-#' @param subsize A submatrix size to carry out the Block Decomposition Method
-#'   (must be between 1 and 3)
-#' 
-#' @seealso \code{\link{raw_kbdm}}, \code{\link[acss]{acss}}
-#' 
-#' @examples 
-#' 
-#' \dontrun{ 
-#' 
-#' kbdm_result <- kbdm_sews(serengeti, subsize = 3)
-#' plot(kbdm_result, along = serengeti.rain)
-#' 
-#' kbdm_test <- indictest(kbdm_result, nperm = 99)
-#' plot(kbdm_test, along = serengeti.rain)
-#' 
-#' # Plot deviation to a random matrix
-#' plot(kbdm_test, along = serengeti.rain, what = "z_score") 
-#' 
-#' }
-#' 
-#' 
-#'@export 
-kbdm_sews <- function(mat, 
-                       subsize = 3) { 
-  
-  # This is a formatted function to compute the kbdm
-  kbdmfun <- function(mat, subsize) { 
-    result <- list(value     = raw_kbdm(mat, subsize), 
-                   orig_data = mat, 
-                   fun.args  = list(subsize = subsize), 
-                   indicf    = raw_kbdm)
-    
-    class(result) <- c('kbdm_sews', 'simple_sews_single', 'list')
-    attr(result, "indicname") <- "Kbdm Complexity"
-    return(result)
-  }
-  
-  if ( is.list(mat) ) { 
-    result <- parallel::mclapply(mat, kbdmfun, subsize)
-    names(result) <- names(mat)
-    class(result) <- c('kbdm_sews', 'simple_sews_list', 'list')
-    attr(result, "indicname") <- "Kbdm Complexity"
-  } else { 
-    result <- kbdmfun(mat, subsize)
-  }
-  
-  return(result)
-
-}
-

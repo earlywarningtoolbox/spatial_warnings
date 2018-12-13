@@ -64,18 +64,18 @@
 indicator_plrange <- function(mat,
                               merge = FALSE,
                               xmin_bounds = NULL) {
-
+  
   if ( !merge && is.list(mat) ) {
       # Returns a list of lists
     return( lapply(mat, indicator_plrange, merge, xmin_bounds) )
   }
-
+  
   psd <- patchsizes(mat, merge = merge)
-
+  
   if ( is.null(xmin_bounds) ) {
     xmin_bounds <- range(psd)
   }
-
+  
   # If there are not enough patches to work with -> return NA
   if ( length(unique(psd)) <= 2 ) { 
     warning('Not enough different patch sizes to estimate xmin: returning NA')
@@ -85,30 +85,78 @@ indicator_plrange <- function(mat,
     plrange_result <- plrange(psd, xmin_bounds) # returns xmin also
     result <- data.frame(min(psd), max(psd), plrange_result)
   }
-
+  
   names(result) <- c("minsize", "maxsize", "xmin_est", "plrange")
   return(result)
 }
 
-plrange <- function(psd, xmin_bounds) {
+#' @title Power-law range indicator
+#' 
+#' @description Compute the power-law range of a matrix 
+#' 
+#' @param mat A logical matrix (TRUE/FALSE values)
+#'
+#' @param xmin_bounds A vector of two integer values, defining a range in which 
+#'   to search for the best xmin (see Details). 
+#' 
+#' 
+#' @details 
+#' 
+#' Some ecosystems show typical changes in their patch-size 
+#' distribution as they become more and more degraded. In particular, an 
+#' increase in the truncation of the patch-size distribution (PSD) is expected 
+#' to occur. The power-law range (PLR) measures the truncation of the PSD in 
+#' a single value (see also \code{\link{patchdistr_sews}} for more details). 
+#' 
+#' To compute the PLR, power-laws are fitted with a variable 
+#' minimum patch size (xmin) and the one with the lowest Kolmogorov-Smirnov
+#' distance to the empirical distribution is retained. PLR is then computed 
+#' using this best-fitting xmin: 
+#' 
+#' \deqn{\frac{log(x_{max}) - log(x_{min})}{log(x_{max}) - log(x_{smallest})}}{ (log(xmax) - log(xmin))/(log(xmax) - log(xsmallest))}
+#' 
+#' where \eqn{x_{max}}{x_max} is the maximum observed patch size, and 
+#' \eqn{x_{smallest}}{x_smallest} is the minimum observed patch size. 
+#' 
+#' @seealso \code{\link{indicator_plrange}}, \code{\link{patchdistr_sews}}
+#' 
+#' @return The power-law range value of the matrix, a single number 
+#' 
+#' @examples
+#' raw_plrange(serengeti[[1]])
+#' 
+#'@export 
+raw_plrange <- function(mat, xmin_bounds = NULL) { 
+  
+  psd <- patchsizes(mat)
+  
+  if ( is.null(xmin_bounds) ) {
+    xmin_bounds <- range(psd)
+  }
+  plrange_result <- plrange(psd, xmin_bounds)
+  
+  return(plrange_result[ ,"plrange"])
+}
 
+plrange <- function(psd, xmin_bounds) {
+  
   # If psd is empty, then return NA
   if ( length(unique(psd)) <= 1) {
     return( data.frame(xmin_est = NA_real_, plrange = NA_real_) )
   }
-
+  
   xsmallest <- min(psd)
   xmax <- max(psd)
   xmin <- xmin_estim(psd, bounds = xmin_bounds)
-
+  
   if ( is.na(xmin) ) { # finding xmin failed
     result <- data.frame(NA_real_, NA_real_)
   } else {
     result <- data.frame(xmin, 1 - (log10(xmin) - log10(xsmallest)) /
                                 (log10(xmax) - log10(xsmallest)))
   }
-
+  
   names(result) <- c('xmin_est', 'plrange')
-
+  
   return(result)
 }

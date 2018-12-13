@@ -10,12 +10,13 @@
 # Optimisation global options
 ITERLIM <- 10000
 GRADTOL <- 1e-10 
+SANNITER <- 200
 
 # This is a safe version of nlm that returns a sensible result (NA) when 
 # the algorithm fails to converge. This can happen quite often when looking 
 # for pathological cases (e.g. fitting distribution based on few points in the 
 # tails, etc.). 
-optim_safe <- function(f, pars0) { 
+optim_safe <- function(f, pars0, do_sann = TRUE) { 
   
   # Wrap a neg ll objective function so that it does not return NAs
   safe <- function(f) { 
@@ -39,15 +40,19 @@ optim_safe <- function(f, pars0) {
   # do not stop execution. In most (all?) of normal cases it has no 
   # consequences on the results. 
   result <- try({ 
-    sann_approx <- optim(pars0, safe(f), 
-                         method = "SANN", 
-                         control = list(maxit = 100)) 
+    if ( do_sann ) { 
+      sann_approx <- optim(pars0, safe(f), 
+                          method = "SANN", 
+                          control = list(maxit = SANNITER)) 
+      pars0 <- sann_approx[['par']]
+    } 
     
     # Now do a Newton method to find the (hopefully global) minimum. 
-    result <- nlm(safe(f), sann_approx[['par']], 
+    result <- nlm(safe(f), pars0, 
                   iterlim = ITERLIM, gradtol = GRADTOL)
-  
+    
   }, silent = TRUE)
+  
   
   if ( class(result) == "try-error" ) { 
     warning('Optimization failed to converge, returning NA. Error is:\n', 
@@ -61,8 +66,10 @@ optim_safe <- function(f, pars0) {
       warning(paste0('nlm returned an error (error code:', result[["code"]], ").\n", 
                      "See ?nlm for more information"))
     }
-    return(result)
   }
+  # with(result, cat('Fitting results: ', estimate, ' (convergence code:', 
+  #                   code, ")\n", sep = ""))
+  return(result)
 }
 
 # Bounds on parameters, these should be large and no observed distribution should 
@@ -195,7 +202,9 @@ pl_fit <- function(dat, xmin = 1) {
     }
   }
   
-  est <- optim_safe(negll, from_rescaled(expo_estim, PLMIN, PLMAX))
+  est <- optim_safe(negll, from_rescaled(expo_estim, PLMIN, PLMAX), 
+                    # It seems there is no need for SANN optimisation for plfit 
+                    do_sann = FALSE)
   
   expo_estim <- to_rescaled(est[["estimate"]], PLMIN, PLMAX)
   

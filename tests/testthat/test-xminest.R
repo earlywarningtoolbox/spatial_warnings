@@ -27,9 +27,9 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
   test_that("xmins estimation is correct", { 
     
 
-    parms <- expand.grid(expo = c(1.5, 1.2), 
-                         rate = c(0.001, 0.005, 0.01, 0.1, 0.2, 0.3, 0.5, 
-                                      0.7, 1))
+    parms <- expand.grid(expo = c(1.5, 1.3, 1.2), 
+                         rate = c(0.001, 0.005, 0.01, 0.1, 0.15, 0.2, 0.25, 0.3, 
+                                  0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1))
     
     estim_xmin <- function(df) { 
       

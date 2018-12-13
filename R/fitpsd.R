@@ -30,14 +30,14 @@ optim_safe <- function(f, pars0, do_sann = TRUE) {
     }
   }
   
-  # Try to do first a quick SANN optimisation to find a good first 
+  # We can try to do first a quick SANN optimisation to find a good first 
   # approximation and get out of a possible initial local minimum (happens 
   # sometimes with lnorm fitting). 
   # 
   # Note that in some pathological cases the fit fails (not enough points, etc.)
   # This happens a lot when finding xmin as we end up fitting on very few 
   # points in the tail of the distribution. Here, we report the fit failed but 
-  # do not stop execution. In most (all?) of normal cases it has no 
+  # do not stop execution. In most (all?) normal cases it has no 
   # consequences on the results. 
   result <- try({ 
     if ( do_sann ) { 

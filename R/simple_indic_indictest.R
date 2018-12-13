@@ -52,7 +52,8 @@ indictest.simple_sews_list <- function(x, nperm = 999, ...) {
 as.data.frame.simple_sews_test_single <- function(x, ...) { 
   # We need to explicitely add a `replicate` column because it will 
   # be used by funs down the stream. 
-  data.frame(replicate = 1, as.data.frame.list(x))
+  ans <- data.frame(replicate = 1, as.data.frame.list(x))
+  return(ans)
 }
 #'@method as.data.frame simple_sews_test_list
 #'@export
@@ -114,6 +115,19 @@ print.simple_sews_test_list <- function(x, ...) {
 
 
 
+#' @rdname create_indicator
+# /!\ along is already documented elsewhere !
+# /!\ x is already documented elsewhere !
+#' 
+#' @param what The trendline to be displayed. Defaults to the indicator's 
+#'   values ("value") but other metrics can be displayed. Correct values are 
+#'   "value", "pval" or "z_score".
+#' 
+#' @param display_null Chooses whether a grey ribbon should be added to reflect
+#'   the null distribution. Note that it can not be displayed when the trend 
+#'   line reflects something else than the indicator values (when \code{what} 
+#'   is not set to "value").
+#' 
 #' @method plot simple_sews_test
 #' @export
 plot.simple_sews_test <- function(x, 
@@ -143,19 +157,19 @@ plot.simple_sews_test_list <- function(x,
                                        ...) { 
   
   # Transform into data.frame
-  x <- as.data.frame(x)
+  x.df <- as.data.frame(x)
   
   # If along is not provided, then use the replicate number
   set_default_xlab <- FALSE 
   if ( is.null(along) ) { 
-    along <- unique(x[ ,"replicate"])
+    along <- unique(x.df[ ,"replicate"])
     set_default_xlab <- TRUE 
   }
   
-  check_suitable_for_plots(x, along, display_null)
+  check_suitable_for_plots(x.df, along, display_null)
   
-  plot_data <- data.frame(as.data.frame(x), 
-                          gradient = along[x[ ,'replicate']])
+  plot_data <- data.frame(as.data.frame(x.df), 
+                          gradient = along[x.df[ ,'replicate']])
   
   # Create base ggplot2 object
   # Create base plot object 
@@ -165,7 +179,7 @@ plot.simple_sews_test_list <- function(x,
   
   # Check if we really want to add a null ribbon
   add_null <- display_null
-  if ( display_null && ! "null_mean" %in% colnames(x) ) { 
+  if ( display_null && ! "null_mean" %in% colnames(x.df) ) { 
     warning('Null data was specified to be displayed but could not be found ', 
             'in the provided object')
     add_null <- FALSE
@@ -178,8 +192,8 @@ plot.simple_sews_test_list <- function(x,
   
   if ( add_null ) { 
     null_data <- data.frame(plot_data,
-                            null_ymin = x[ ,'null_05'],
-                            null_ymax = x[ ,'null_95'])
+                            null_ymin = x.df[ ,'null_05'],
+                            null_ymax = x.df[ ,'null_95'])
     
     plot <- plot + 
       ggplot2::geom_ribbon(ggplot2::aes_string(x = 'gradient',
@@ -203,9 +217,10 @@ plot.simple_sews_test_list <- function(x,
     ggplot2::geom_line(ggplot2::aes_string(x = 'gradient', 
                                            y = what))
   
-  # Set ylab 
-  ylabel <- ifelse(is.null(attr(x, 'indicname')), "Value", 
-                     attr(x, 'indicname'))
+  # Set ylab  
+  ylabel <- ifelse(is.null(attr(x, 'indicname')), 
+                   "Value", 
+                   attr(x, 'indicname'))
   plot <- plot + ylab(ylabel)
   
   # Set xlab

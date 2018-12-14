@@ -6,7 +6,7 @@ Author: Alain Danet, Alexandre Genin, Vishwesha Guttal, Sonia Kefi,
   Sabiha Majumder, Sumithra Sankaran, Florian Schneider
 License: MIT + file LICENSE
 Maintainer: Alexandre Genin <alexandre.genin@univ-montp2.fr>
-Description: Tools to compute and assess significance of early-warnings signals (EWS) of ecosystem degradation on raster data sets. EWS are metrics derived from the observed spatial structure of an ecosystem -- e.g. spatial autocorrelation -- that increase before an ecosystem undergoes a non-linear transition (Genin et al. (2014) <doi:10.1111/2041-210X.13058>).
+Description: Tools to compute and assess significance of early-warnings signals (EWS) of ecosystem degradation on raster data sets. EWS are metrics derived from the observed spatial structure of an ecosystem -- e.g. spatial autocorrelation -- that increase before an ecosystem undergoes a non-linear transition (Genin et al. (2018) <doi:10.1111/2041-210X.13058>).
 Encoding: UTF-8
 URL: https://github.com/spatial-ews/spatialwarnings
 Depends: R (>= 3.3.0)

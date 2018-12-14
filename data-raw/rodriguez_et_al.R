@@ -8,7 +8,11 @@ picdir <- "./data-raw/rodriguez_etal"
 pics <- dir(picdir, full = TRUE, pattern = "*.csv")
 
 # Read the pictures 
-imgs <- lapply(pics, function(f) as.matrix(read.csv(f, header = FALSE)) > 0)
+imgs <- lapply(pics, function(f) { 
+  a <- as.matrix(read.csv(f, header = FALSE)) > 0
+  dimnames(a) <- NULL
+  a
+  })
 names(imgs) <- gsub(".csv", "", basename(pics))
 
 # Compute a test of indicators  

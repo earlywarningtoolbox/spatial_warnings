@@ -1,5 +1,5 @@
 
-Coming in next release 
+spatialwarnings v1.3 (Release date: 2018-12)
 ===============================================
 
 New indicators: 
@@ -10,15 +10,17 @@ New indicators:
 Improvements: 
   * Enable parallel computation of patch size distributions
   * Added a dataset of aerial view of vegetation in Arizona ('arizona')
+  * Added functions to compute the coarse-grained variance/skewness on a 
+      single matrix 
   
-Bug fixes: 
+Bug fixes and code improvements: 
   * Added missing methods exports for custom indicators
   * Fixed the patch labelling for non-square images
+  * General code cleanup and improvement
   
 Documentation and description changes: 
   * Updated references to reflect the publication of new paper presenting 
       the package <doi:10.1111/2041-210X.13058>
-  * Fixed minor typos 
   
   
 spatialwarnings v1.2 (Release date: 2018-06)

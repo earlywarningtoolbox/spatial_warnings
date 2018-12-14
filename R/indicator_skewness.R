@@ -1,6 +1,6 @@
  #' @title Skewness indicator
 #'
-#' @description This functions computes the spatial skewness of spatial data. 
+#' @description Compute the spatial skewness of spatial data. 
 #'   It also computes a null value obtained by randomizing 
 #'   the matrix.
 #'   
@@ -102,20 +102,8 @@ indicator_skewness <- function(input,
                    subsize, absolute, nreplicates) )
   } else { 
     
-    # We choose the function depending on whether we want the absolute value 
-    #   of skewness or its raw value.
-    if ( absolute ) { 
-      indic_tmp <- raw_abs_skewness
-    } else { 
-      indic_tmp <- raw_skewness
-    }
-    
-    # We alter the chosen function above depending on whether we want 
-    #   coarse_graining or not.
-    if ( subsize > 1 ) { 
-      indicf <- with_coarse_graining(indic_tmp, subsize)
-    } else { 
-      indicf <- indic_tmp
+    indicf <- function(mat) { 
+      raw_cg_skewness(mat, subsize, absolute)
     }
     
     # Compute and return the indicator
@@ -123,9 +111,24 @@ indicator_skewness <- function(input,
     
   }
 }
-
-raw_abs_skewness <- function(mat) { 
-  abs(raw_skewness(mat)) 
+#' @title Skewness of a coarse-grained matrix 
+#' 
+#' @description Compute the skewness of a given matrix after coarse-graining 
+#' 
+#' @param mat A matrix that can contain logical (with TRUE/FALSE values)
+#' 
+#' @param subsize The size of the submatrices used for coarse-graining
+#' 
+#' @param absolute Whether to return the unmodified skewness, or its 
+#'   absolute value
+#' 
+raw_cg_skewness <- function(mat, subsize, absolute) { 
+  a <- cpp_skewness( coarse_grain(mat, subsize) )
+  if (absolute) { 
+    return( abs(a) ) 
+  } else { 
+    return(a) 
+  }
 }
 
 

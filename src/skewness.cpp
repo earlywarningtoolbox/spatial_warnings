@@ -8,25 +8,8 @@ using namespace arma;
 
 #define NOVAR_SKEWNESS_VAL NA_REAL
 
-
-// 
-//' 
-//' @title Skewness
-//' 
-//' @description Compute the skewness of a given set of values 
-//' 
-//' @return Skewness as a numeric value. 
-//' 
-//' @details If the values provided have zero variance, then \code{NA} 
-//'   is returned. 
-//' 
-//' @param X A vector of values
-//' 
-//' @seealso \code{\link[moments]{skewness}}
-//' 
-//'@export
 //[[Rcpp::export]]
-double raw_skewness(arma::vec X) { 
+double cpp_skewness(arma::vec X) { 
   
   // Number of elements in X
   int N = X.n_elem; 

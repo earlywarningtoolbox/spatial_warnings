@@ -92,18 +92,16 @@ indicator_variance <- function(input,
     return( lapply(input, indicator_variance, subsize, nreplicates) )
   } else { 
     
-    # We alter the raw_variance function so it includes coarse_graining 
-    #   in case subsize is above 1. 
-    indicf <- raw_variance
-    if ( subsize > 1 ) { 
-      indicf <- with_coarse_graining(raw_variance, subsize)
-    } 
-    
+    indicf <- function(mat) { 
+      raw_cg_variance(mat, subsize = subsize) 
+    }
     # Compute and return indicator
     return( compute_indicator_with_null(input, nreplicates, indicf) ) 
     
   }
 }
 
-raw_variance <- function(mat) { var(as.vector(mat)) }
+raw_cg_variance <- function(mat, subsize) { 
+  var( as.vector( coarse_grain(mat, subsize) ) )
+}
 

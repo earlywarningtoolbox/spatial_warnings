@@ -45,7 +45,7 @@ A list (or a list of lists if input was a list of matrices) with
     }
 }
 \description{
-This functions computes the spatial skewness of spatial data. 
+Compute the spatial skewness of spatial data. 
   It also computes a null value obtained by randomizing 
   the matrix.
 }

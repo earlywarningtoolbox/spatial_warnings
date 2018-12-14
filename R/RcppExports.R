@@ -96,23 +96,8 @@ rspectrum <- function(mat) {
     .Call('_spatialwarnings_rspectrum', PACKAGE = 'spatialwarnings', mat)
 }
 
-#' 
-#' @title Skewness
-#' 
-#' @description Compute the skewness of a given set of values 
-#' 
-#' @return Skewness as a numeric value. 
-#' 
-#' @details If the values provided have zero variance, then \code{NA} 
-#'   is returned. 
-#' 
-#' @param X A vector of values
-#' 
-#' @seealso \code{\link[moments]{skewness}}
-#' 
-#'@export
-raw_skewness <- function(X) {
-    .Call('_spatialwarnings_raw_skewness', PACKAGE = 'spatialwarnings', X)
+cpp_skewness <- function(X) {
+    .Call('_spatialwarnings_cpp_skewness', PACKAGE = 'spatialwarnings', X)
 }
 
 sum_all_one_over_k <- function(from, to, expo) {

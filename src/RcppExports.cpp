@@ -115,14 +115,14 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// raw_skewness
-double raw_skewness(arma::vec X);
-RcppExport SEXP _spatialwarnings_raw_skewness(SEXP XSEXP) {
+// cpp_skewness
+double cpp_skewness(arma::vec X);
+RcppExport SEXP _spatialwarnings_cpp_skewness(SEXP XSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::vec >::type X(XSEXP);
-    rcpp_result_gen = Rcpp::wrap(raw_skewness(X));
+    rcpp_result_gen = Rcpp::wrap(cpp_skewness(X));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -162,7 +162,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_spatialwarnings_shuffle_matrix", (DL_FUNC) &_spatialwarnings_shuffle_matrix, 1},
     {"_spatialwarnings_shuffle_and_compute", (DL_FUNC) &_spatialwarnings_shuffle_and_compute, 3},
     {"_spatialwarnings_rspectrum", (DL_FUNC) &_spatialwarnings_rspectrum, 1},
-    {"_spatialwarnings_raw_skewness", (DL_FUNC) &_spatialwarnings_raw_skewness, 1},
+    {"_spatialwarnings_cpp_skewness", (DL_FUNC) &_spatialwarnings_cpp_skewness, 1},
     {"_spatialwarnings_sum_all_one_over_k", (DL_FUNC) &_spatialwarnings_sum_all_one_over_k, 3},
     {"_spatialwarnings_sum_all_one_over_k_before", (DL_FUNC) &_spatialwarnings_sum_all_one_over_k_before, 2},
     {NULL, NULL, 0}

@@ -20,6 +20,7 @@ test_methods <- function(teststring, datalength, obj, .test_df = TRUE) {
   ok_summary <- any(grepl(teststring, capture.output(summary(obj))))
   expect_true(ok_summary)
   
+  
   if (.test_df) { 
     ok_as_df <- nrow(as.data.frame(obj)) == datalength
   } else { 

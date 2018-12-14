@@ -148,6 +148,7 @@ generic_sews <- function(mat,
   #   above options. 
   indicf <- function(mat) { 
     
+    # We do coarse-graining only once for the whole matrix
     mat_cg <- coarse_grain(mat, subsize)
     
     if ( sd(as.vector(mat_cg)) == 0 ) { 
@@ -157,15 +158,15 @@ generic_sews <- function(mat,
                 mean     = mean(mat)) )
     }
     
+    skewness_value <- cpp_skewness(mat_cg)
+    if (abs_skewness) { 
+      skewness_value <- abs(skewness_value)
+    }
+    
     if (moranI_coarse_grain) { 
       moran_value <- raw_moran(mat_cg) 
     } else { 
       moran_value <- raw_moran(mat)
-    }
-    
-    skewness_value <- raw_skewness(mat_cg)
-    if (abs_skewness) { 
-      skewness_value <- abs(skewness_value)
     }
     
     c(variance = var(as.vector(mat_cg)),

@@ -2,8 +2,8 @@
 // A small function that computes moran's I index 
 // 
 
-#include <Rcpp.h>
-using namespace Rcpp;
+#include <RcppArmadillo.h>
+using namespace arma;
 
 //' 
 //' @title Spatial correlation at lag 1
@@ -29,18 +29,18 @@ using namespace Rcpp;
 //' 
 //'@export
 //[[Rcpp::export]]
-double raw_moran(NumericMatrix mat) { 
+double raw_moran(arma::mat& mat) { 
   
-  double m = mean(mat);
-  double v = var(mat); // Treats mat as vector
+  double m = mean(vectorise(mat));
+  double v = var(vectorise(mat)); // Treats mat as vector
   
-  int h = mat.nrow() - 1;
-  int w = mat.ncol() - 1;
+  uword h = mat.n_rows - 1;
+  uword w = mat.n_cols - 1;
   
   
   double moranI = 0;
-  for (int j=1; j<w; j++) { 
-    for (int i=1; i<h; i++) { 
+  for (uword j=1; j<w; j++) { 
+    for (uword i=1; i<h; i++) { 
       moranI += (mat(i,j) - m) * (mat(i,j-1) + mat(i,j+1) + mat(i-1,j) + 
                                   mat(i+1,j) - 4*m);
     }

@@ -56,12 +56,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // raw_moran
-double raw_moran(NumericMatrix mat);
+double raw_moran(arma::mat& mat);
 RcppExport SEXP _spatialwarnings_raw_moran(SEXP matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type mat(matSEXP);
     rcpp_result_gen = Rcpp::wrap(raw_moran(mat));
     return rcpp_result_gen;
 END_RCPP

@@ -1,23 +1,35 @@
 
-This is a minor update to the package spatialwarnings that should fix 
-compilation on Solaris, as requested by CRAN maintainers (problem regarding 
-overloading ambiguity). It also fixes a small bug regarding functionality. 
-
-Note that the previous version of the package has been archived on CRAN due to 
-delays in providing the update.
+This is an update to the package spatialwarnings that fixes many bugs, 
+improve the code base and provides new functionality. 
 
 ## Changes in this release
 
-Bug fixes: 
-  * Compilation errors should now be fixed on Solaris
-  * Fixed coarse-graining bug when input values are not integers
-    
+New indicators: 
+  * Planar flowlength (Mayor et al. 2013, Rodriguez et al. 2017)
+  * Kolmogorov complexity based on Block Decomposition Method 
+      (Dakos and Soler-Toscano 2016)
+  
+Improvements: 
+  * Enable parallel computation of patch size distributions
+  * Added a dataset of aerial view of vegetation in Arizona ('arizona')
+  * Added functions to compute the coarse-grained variance/skewness on a 
+      single matrix 
+  
+Bug fixes and code improvements: 
+  * Added missing methods exports for custom indicators
+  * Fixed the patch labelling for non-square images
+  * General code cleanup and improvement
+  
+Documentation and description changes: 
+  * Updated references to reflect the publication of new paper presenting 
+      the package <doi:10.1111/2041-210X.13058>
+  
 ## Test environments
 
  - Travis-ci (Ubuntu 14.04.5, R 3.5.0 and devel (2018-06-15 r74903) ):
    https://travis-ci.org/spatial-ews/spatialwarnings/builds/393408917
    
- - local linux computer (Arch Linux as of 2018-06-17, R 3.5.0)
+ - local linux computer (Arch Linux as of 2018-12-15, R 3.5.1)
    
  - Windows building service (R-devel at win-builder.r-project.org)
    https://win-builder.r-project.org/F6IHE3vX15aC
@@ -27,43 +39,13 @@ Bug fixes:
 
 ## R CMD check results
 
-There were no ERRORs or WARNINGs on any of the above platforms.
-
-One NOTE was produced on win-builder, related to the fact that this package has 
-been archived on 2018-06-17, along with a few false positives regarding 
-mis-spelled words: 
-
-* checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Alexandre Genin <alexandre.genin@univ-montp2.fr>'
-
-New submission
-
-Package was archived on CRAN
+A note concerning a spell check false positive (my name): 
 
 Possibly mis-spelled words in DESCRIPTION:
-  EWS (9:82, 9:133)
-  Kefi (9:313)
-  al (9:321)
-  et (9:318)
+  Genin (9:313)
 
-CRAN repository db overrides:
-  X-CRAN-Comment: Archived on 2018-06-17 as 
-    installation errors were not corrected despite reminder
-  Overloading on Solaris.
 
 ## Compiling Warnings 
-
-Some compilation warnings are produced on Windows in RcppArmadillo-related 
-code, e.g.: 
-
-d:/Compiler/gcc-4.9.3/mingw_32/bin/g++  -I"D:/RCompile/recent/R/include" -DNDEBUG  -I"d:/RCompile/CRANpkg/lib/3.6/Rcpp/include" -I"d:/RCompile/CRANpkg/lib/3.6/RcppArmadillo/include"   -I"d:/Compiler/gcc-4.9.3/local330/include"     -pedantic -O2 -Wall  -mtune=core2 -c RcppExports.cpp -o RcppExports.o
-In file included from d:/RCompile/CRANpkg/lib/3.6/RcppArmadillo/include/armadillo:406:0,
-                 from d:/RCompile/CRANpkg/lib/3.6/RcppArmadillo/include/RcppArmadilloForward.h:46,
-                 from d:/RCompile/CRANpkg/lib/3.6/RcppArmadillo/include/RcppArmadillo.h:31,
-                 from RcppExports.cpp:4:
-d:/RCompile/CRANpkg/lib/3.6/RcppArmadillo/include/armadillo_bits/arma_ostream_meat.hpp:74:7: warning: integer constant is too large for 'long' type [-Wlong-long]
-       ( cond_rel< (sizeof(eT) > 4) && (is_same_type<uword,eT>::yes || is_same_type<sword,eT>::yes) >::geq(val, eT(+10000000000)) )
-       ^
 
 ## Package Description
 

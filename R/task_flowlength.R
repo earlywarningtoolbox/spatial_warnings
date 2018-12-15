@@ -149,9 +149,9 @@ flowlength_sews <- function(mat,
 #' 
 #' @examples 
 #' 
+#' \dontrun{ 
 #' raw_flowlength_uniform(arizona[[1]], slope = 20, cell_size = 1)
-#' 
-#' 
+#' }
 #' 
 #' 
 #'@export

@@ -13,4 +13,5 @@ tools/imgs
 ^vignettes/using-spatialwarnings_cache/.*$
 ^vignettes/using-spatialwarnings_files/.*$
 ^tests/testthat/pli-R-v0.0.3-2007-07-25.*$
-^.file.*$ 
+^file.*$ 
+^foo.o$

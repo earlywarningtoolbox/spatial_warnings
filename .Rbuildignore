@@ -15,3 +15,4 @@ tools/imgs
 ^tests/testthat/pli-R-v0.0.3-2007-07-25.*$
 ^file.*$ 
 ^foo.o$
+^tools/pkg_check.R$

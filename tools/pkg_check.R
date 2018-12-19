@@ -3,9 +3,12 @@
 #
 
 # Clone then 
-pkgdir <- tempdir()
+pkgdir <- "/tmp/ramdisk/Rtesting"
 git_address <- system(paste0("git clone https://github.com/spatial-ews/spatialwarnings ", 
                              pkgdir))
+
+# Check on local computer 
+devtools::check(pkg = pkgdir, cran = TRUE)
 
 # Check on windows
 # devtools::check_win_devel(pkg = pkgdir)
@@ -15,10 +18,13 @@ git_address <- system(paste0("git clone https://github.com/spatial-ews/spatialwa
 # Check on Solaris
 rhub::check(pkgdir, platform = "solaris-x86-patched")
 
-# Check on linux 
+# Check on common platforms for CRAN
 rhub::check_for_cran(pkgdir)
 
-# Results are sent by email 
+# => Results are sent by email 
 
 # Cleanup
-file.remove(dir(pkgdir, full.name = TRUE))
+unlink(pkgdir, recursive = TRUE)
+# file.remove(dir(".", full.names = TRUE))
+# file.remove(dir(".", full.names = TRUE))
+

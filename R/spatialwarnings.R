@@ -20,7 +20,7 @@
 #'  
 #'  This package implements the computation of these indicators, or 
 #'  \emph{early-warning signals} (EWS), on spatial raster data. High-level 
-#'  functions and methods provide familar workflows to compute the indicators 
+#'  functions and methods provide familiar workflows to compute the indicators 
 #'  and display their variations along environmental gradients or time-series. 
 #'  Lower-level functions are also available to integrate early-warning signals 
 #'  in a different workflow. 

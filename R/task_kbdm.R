@@ -25,7 +25,7 @@
 #'   \code{kbdm_sews} returns an object of class \code{simple_sews_single} 
 #'     (a list) if mat is a single matrix, and an object of class 
 #'     \code{simple_sews_list} if mat is a list of matrices. These objects can 
-#'     be used with generic methods indictest (to test significnance) or plot 
+#'     be used with generic methods indictest (to test significance) or plot 
 #'     (to display trends), see also the examples below. 
 #'   
 #' @references 

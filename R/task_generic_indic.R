@@ -5,7 +5,7 @@
 
 #' @title Generic Spatial Early-Warning signals
 #' 
-#' @description Computation, significance assesment and display of spatial 
+#' @description Computation, significance assessment and display of spatial 
 #'   generic early warning signals (Moran's I, variance and skewness)
 #' 
 #' @param mat A matrix (quantitative data), a binary matrix (TRUE/FALSE data), 
@@ -46,7 +46,7 @@
 #'   a square window defined by the \code{subsize} parameter. This makes spatial  
 #'   variance and skewness reflect actual spatial patterns when working with 
 #'   binary (\code{TRUE}/\code{FALSE} data), but is optional when using 
-#'   continous data. Keep in mind that it effectively reduces the size of 
+#'   continuous data. Keep in mind that it effectively reduces the size of 
 #'   the matrix by approximately \code{subsize} on each dimension. 
 #'   
 #' The significance of generic early-warning signals can be estimated by 

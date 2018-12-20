@@ -1,6 +1,43 @@
 
 This is an update to the package spatialwarnings that fixes many bugs, 
-improve the code base and provides new functionality. 
+improves the code base and provides new functionality. 
+
+
+
+## Test environments
+
+This package was tested using the following environments: 
+ 
+ - rhub service using the following platforms: 
+  Debian Linux, R-devel, GCC ASAN/UBSAN
+  Fedora Linux, R-devel, clang, gfortran
+  Ubuntu Linux 16.04 LTS, R-release, GCC
+  Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+  
+ (note that the package could not be tested on Solaris using the rhub 
+  service because of a failure to compile Rcpp there)
+  
+ - Travis-ci (Ubuntu 14.04.5, R 3.5.0 and devel (2018-06-15 r74903) ):
+   https://travis-ci.org/spatial-ews/spatialwarnings
+ 
+ - local linux computer (Arch Linux as of 2018-12-18, R 3.5.1)
+  
+ - Solaris x86 (Solaris 11 in local virtualbox, R 3.3.0 from OpenCSW)
+
+
+
+## R CMD check results
+
+No ERRORs nor WARNINGs arose during testing on the above platforms. One NOTE 
+occured regarding a spell check false positive: 
+
+Possibly mis-spelled words in DESCRIPTION:
+  al (9:322)
+  et (9:319)
+  EWS (9:82, 9:133)
+  Genin (9:313)
+
+
 
 ## Changes in this release
 
@@ -24,29 +61,8 @@ Documentation and description changes:
   * Updated references to reflect the publication of new paper presenting 
       the package <doi:10.1111/2041-210X.13058>
   
-## Test environments
-
- - Travis-ci (Ubuntu 14.04.5, R 3.5.0 and devel (2018-06-15 r74903) ):
-   https://travis-ci.org/spatial-ews/spatialwarnings/builds/393408917
-   
- - local linux computer (Arch Linux as of 2018-12-15, R 3.5.1)
-   
- - Windows building service (R-devel at win-builder.r-project.org)
-   https://win-builder.r-project.org/F6IHE3vX15aC
-   
- - Solaris: r-hub building service (platform solaris-x86-patched)
-   http://builder.r-hub.io/status/spatialwarnings_1.2.tar.gz-2fa883a51fff4e15bf80c194d4c3b0da
-
-## R CMD check results
-
-A note concerning a spell check false positive (my name): 
-
-Possibly mis-spelled words in DESCRIPTION:
-  Genin (9:313)
-
-
-## Compiling Warnings 
-
+  
+  
 ## Package Description
 
 spatialwarnings is a package that assists ecologists in carrying out 

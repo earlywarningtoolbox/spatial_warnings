@@ -37,7 +37,7 @@ raw_flowlength_uniform(arizona[[1]], slope = 20, cell_size = 1)
 
 }
 \references{
-Rodríguez, F., Á. G. Mayor, M. Rietkerk, and S. Bautista. 2017. A null model 
+Rodriguez, F., A. G. Mayor, M. Rietkerk, and S. Bautista. 2017. A null model 
   for assessing the cover-independent role of bare soil connectivity as 
   indicator of dryland functioning and dynamics. Ecological Indicators.
 }

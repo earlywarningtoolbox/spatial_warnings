@@ -64,7 +64,7 @@ plot(fl_test, what = "z_score")
 
 }
 \references{
-Rodríguez, F., Á. G. Mayor, M. Rietkerk, and S. Bautista. 2017. A null model 
+Rodriguez, F., A. G. Mayor, M. Rietkerk, and S. Bautista. 2017. A null model 
   for assessing the cover-independent role of bare soil connectivity as 
   indicator of dryland functioning and dynamics. Ecological Indicators.
 
@@ -73,10 +73,10 @@ Mayor, A.G., Bautista, S., Small, E.E., Dixon, M., Bellot, J., 2008.
   vegetation pattern and topography: a tool for assessing potential water 
   and soil losses in drylands. Water Resour. Res. 44, W10423.
 
-Mayor, A.G., Kéfi, S., Bautista, S., Rodríguez, F., Cartení, F., Rietkerk, 
+Mayor, A.G., Kefi, S., Bautista, S., Rodriguez, F., Carteni, F., Rietkerk, 
   M., 2013. Feedbacks between vegetation pattern and resource loss 
   dramatically decrease ecosystem resilience and restoration potential in 
-  a simple dryland model. Landsc. Ecol. 28, 931–942.
+  a simple dryland model. Landsc. Ecol. 28, 931-942.
 
 Moreno-de las Heras, M., Saco, P.M., Willgoose, G.R., Tongway, D.J., 2012. 
   Variations in hydrological connectivity of Australian semiarid landscapes 
@@ -86,5 +86,5 @@ Moreno-de las Heras, M., Saco, P.M., Willgoose, G.R., Tongway, D.J., 2012.
 Okin, G.S., Moreno-de las Heras, M., Saco, P.M., Throop, H.L., Vivoni, E.R., 
   Parsons, A.J., Wainwright, J., Peters, D.P.C., 2015. Connectivity in 
   dryland landscapes: shifting concepts of spatial interactions. 
-  Front. Ecol. Environ. 13 (1), 20–27.
+  Front. Ecol. Environ. 13 (1), 20-27.
 }

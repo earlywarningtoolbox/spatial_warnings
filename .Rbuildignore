@@ -1,3 +1,4 @@
+^CRAN-RELEASE$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 .rsetup
@@ -16,3 +17,4 @@ tools/imgs
 ^file.*$ 
 ^foo.o$
 ^tools/pkg_check.R$
+^\.unison.*$

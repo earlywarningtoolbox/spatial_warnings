@@ -2,7 +2,12 @@
 This is an update to the package spatialwarnings that fixes many bugs, 
 improves the code base and provides new functionality. 
 
+Please note that this is a reupload which should fix an issue with a file 
+previously included in error in the source archive. 
 
+Thanks, 
+
+Alexandre Génin
 
 ## Test environments
 

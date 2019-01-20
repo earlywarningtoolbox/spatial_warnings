@@ -2,6 +2,7 @@
 [![Coverage
 status](https://codecov.io/gh/spatial-ews/spatialwarnings/branch/master/graph/badge.svg)](https://codecov.io/github/spatial-ews/spatialwarnings?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/spatialwarnings)](https://cran.r-project.org/package=spatialwarnings)
+[![CRAN_downloads](https://cranlogs.r-pkg.org/badges/last-week/spatialwarnings)](https://cran.r-project.org/package=spatialwarnings)
 
 Spatial early warning signs - R package
 =======================================

@@ -2,6 +2,7 @@
 [![Coverage
 status](https://codecov.io/gh/spatial-ews/spatialwarnings/branch/master/graph/badge.svg)](https://codecov.io/github/spatial-ews/spatialwarnings?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/spatialwarnings)](https://cran.r-project.org/package=spatialwarnings)
+[![CRAN_downloads](https://cranlogs.r-pkg.org/badges/last-week/spatialwarnings)](https://cran.r-project.org/package=spatialwarnings)
 
 Spatial early warning signs - R package
 =======================================
@@ -191,5 +192,5 @@ following review:
 [Nijp, J. J., Temme, A. J.A.M., van Voorn, George A.K., Kooistra, L., 
 Hengeveld, G.M., Soons, M.B., Teuling, A.J. and Wallinga, J. (2019) 
 Spatial early warning signals for impending regime shifts: A
-practical framework for application in real‐world landscapes]
+practical framework for application in real‐world landscapes](https://onlinelibrary.wiley.com/doi/full/10.1111/gcb.14591)
 

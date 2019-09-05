@@ -176,12 +176,20 @@ THE SOFTWARE.
 
 ## References
 
-[Génin, A. , Majumder, S. , Sankaran, S. , Danet, A. , Guttal, V. ,
+[Génin, A., Majumder, S., Sankaran, S., Danet, A., Guttal, V.,
 Schneider, F. D. and Kéfi, S. (2018),
 Monitoring ecosystem degradation using spatial data and the R package
 'spatialwarnings'. Methods in Ecology and Evolution.](https://dx.doi.org/10.1111/2041-210X.13058)
 
-[Kéfi S, Guttal V, Brock WA, Carpenter SR, Ellison AM, et al. (2014)
+[Kéfi S., Guttal V., Brock W.A., Carpenter S.R., Ellison A.M., et al. (2014)
 Early Warning Signals of Ecological Transitions: Methods for Spatial Patterns.
 PLoS ONE 9(3): e92097.](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0092097)
+
+Ecologists interested in this package will also probably like the 
+following review: 
+
+[Nijp, J. J., Temme, A. J.A.M., van Voorn, George A.K., Kooistra, L., 
+Hengeveld, G.M., Soons, M.B., Teuling, A.J. and Wallinga, J. (2019) 
+Spatial early warning signals for impending regime shifts: A
+practical framework for application in real‐world landscapes]
 

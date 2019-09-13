@@ -12,7 +12,8 @@
 generic_sews(mat, subsize = 4, abs_skewness = FALSE,
   moranI_coarse_grain = FALSE)
 
-\method{indictest}{generic_sews}(x, nperm = 999, ...)
+\method{indictest}{generic_sews}(x, null_method = "perm", nperm = 999,
+  covariate_layers = NULL, ...)
 
 \method{plot}{generic_sews_test}(x, along = NULL, what = "value",
   display_null = TRUE, ...)

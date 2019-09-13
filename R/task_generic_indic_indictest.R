@@ -12,12 +12,20 @@
 #' @param ... Additional arguments passed onto methods
 #' 
 #' @export
-indictest.generic_sews <- function(x, nperm = 999, ...) { 
+indictest.generic_sews <- function(x, 
+                                   null_method = "perm", 
+                                   nperm = 999, 
+                                   covariate_layers = NULL, 
+                                   ...) { 
   NextMethod('indictest')
 }
 
 #'@export 
-indictest.generic_sews_single <- function(x, nperm = 999, ...) { 
+indictest.generic_sews_single <- function(x, nperm = 999, 
+                                          null_method = "perm", 
+                                          formula = NULL, 
+                                          covariate_layers = NULL, 
+                                          ...) { 
   
   # We do not support low numbers of replicates
   if ( nperm < 3 ) { 
@@ -28,7 +36,9 @@ indictest.generic_sews_single <- function(x, nperm = 999, ...) {
   # Compute a distribution of null values
   null_values <- compute_indicator_with_null(x[["orig_data"]],
                                              nreplicates = nperm, 
-                                             indicf = x[["indicf"]])
+                                             indicf = x[["indicf"]], 
+                                             null_method = null_method, 
+                                             covariate_layers = covariate_layers)
   
   results <- as.data.frame(null_values)
   

@@ -35,9 +35,13 @@
 #'   Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 
 #'   V.N., et al. (2014). Early Warning Signals of Ecological Transitions: 
 #'   Methods for Spatial Patterns. PLoS ONE, 9, e92097
-#'  
+#' 
 #'@export
-indictest <- function(x, nperm = 999, ...) { 
+indictest <- function(x, 
+                      nperm = 999, 
+                      null_method = c('perm', 'glm'), 
+                      covariate_layers = NULL, 
+                      ...) { 
   UseMethod('indictest')
 }
 

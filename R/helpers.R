@@ -71,3 +71,7 @@ display_size_info.sews_result_list <- display_size_info.list <- function(x) {
       ifelse(length(x)>1, 'matrices', 'matrix'), ' ',
       "(", size_text_report,')\n', sep = '')
 }
+
+ifNULLthen <- function(a, b) { 
+  if (is.null(a)) b else a 
+}

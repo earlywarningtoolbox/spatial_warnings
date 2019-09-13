@@ -14,10 +14,24 @@ as.data.frame.simple_sews_single <- function(x, ...) {
 }
 #'@method as.data.frame simple_sews_list
 #'@export
-as.data.frame.simple_sews_list <- function(x, ...) { 
-  output <- Map(function(n, o) data.frame(replicate = n, value = o[['value']]), 
-               seq_along(x), x)
+as.data.frame.simple_sews_list <- function(x, wide = FALSE, ...) { 
+  
+  # Find or create the indicator names
+  indicnames <- ifNULLthen(names(x[[1]][['value']]), 
+                           paste0("indic_", seq_along(x[[1]][['value']])))
+  
+  if ( wide ) { 
+    output <- Map(function(n, o) { 
+        a <- as.data.frame(matrix(o[['value']], nrow = 1))
+        data.frame(replicate = n, indic = indicnames,  a)
+      }, seq_along(x), x)
+  } else { 
+    output <- Map(function(n, o) { 
+        data.frame(replicate = n, indic = indicnames, value = o[['value']])
+      }, seq_along(x), x)
+  }
   output <- do.call(rbind, output)
+  row.names(output) <- NULL
   output
 }
 
@@ -65,8 +79,8 @@ summary.simple_sews_list <- function(object,
   cat('\n')
   
   # Format output table
-  output <- as.data.frame(object)[ ,c('replicate', 'value')]
-  names(output) <- c('Mat. #', indicname)
+  output <- as.data.frame(object)
+  names(output) <- c('Mat. #', 'Indicator', 'Value')
   
   print.data.frame(output, row.names = FALSE, digits = DIGITS)
   cat('\n')

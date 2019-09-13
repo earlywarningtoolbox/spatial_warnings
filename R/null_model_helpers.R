@@ -5,8 +5,8 @@
 compute_indicator_with_null <- function(input, 
                                         nreplicates, 
                                         indicf, 
-                                        null_method, 
-                                        covariate_layers) { 
+                                        null_method = "perm", 
+                                        covariate_layers = NULL) { 
   
   # Compute the observed value
   value  <- indicf(input)

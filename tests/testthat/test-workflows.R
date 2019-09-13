@@ -41,12 +41,12 @@ test_that("The workflow functions work", {
     
     # Generic indicators
     indics <- generic_sews(dataset) 
-    test_methods("Generic Spatial Early-Warnings", 
+    test_methods("Generic Indicators", 
                  datal*4, indics) # l(dataset) * 4 indics
     # test_methods("Generic Spatial Early-Warnings", 4, indics[[1]])
     
     indics.test <- indictest(indics, nperm = 9)
-    test_methods("Generic Spatial Early-Warnings", 
+    test_methods("Generic Indicators", 
                   datal*4, indics.test)
     
     if ( datal > 1 ) { # multiple values

@@ -25,7 +25,7 @@ test_that('indicator functions stop if provided garbage data', {
 #     print(f)
     expect_error(f(garbage_badclass))
     expect_error(f(garbage_has_nas))
-
+    
     expect_warning(f(garbage_diffsizes))
     expect_warning(f(garbage_list_diff_types))
   }

@@ -9,8 +9,8 @@
 # ---------------
 #'@method as.data.frame simple_sews_single
 #'@export
-as.data.frame.simple_sews_single <- function(x, ...) { 
-  as.data.frame.simple_sews_list( list(x) )
+as.data.frame.simple_sews_single <- function(x, wide = FALSE, ...) { 
+  as.data.frame.simple_sews_list( list(x), wide = wide )
 }
 #'@method as.data.frame simple_sews_list
 #'@export
@@ -59,9 +59,12 @@ print.simple_sews_list <- function(x, ...) {
 # ---------------
 #'@method summary simple_sews_single
 #'@export
-summary.simple_sews_single <- function(object, ...) { 
+summary.simple_sews_single <- function(object, 
+                                       indicname = attr(object, "indicname"), 
+                                       ...) { 
   object.list <- list(object)
   attr(object.list, "indicname") <- attr(object, "indicname")
+  
   summary.simple_sews_list( object.list )
 }
 #'@method summary simple_sews_list
@@ -80,7 +83,7 @@ summary.simple_sews_list <- function(object,
   cat('\n')
   
   # Format output table
-  output <- as.data.frame(object, wide = TRUE)
+  output <- as.data.frame.simple_sews_list(object, wide = TRUE)
   names(output)[1] <- c('Mat. #')
   
   print.data.frame(output, row.names = FALSE, digits = DIGITS)
@@ -93,27 +96,8 @@ summary.simple_sews_list <- function(object,
 
 # Plot methods 
 # ------------
-# 
-#' @title Spatial early-warning signals: display of trends
-#' 
-#' @param x A \code{simple_sews} object (as provided by **_sews functions, such 
-#'   as \code{generic_sews()} or \code{kbdm_sews()}). 
-#' 
-#' @param along A vector providing values over which the indicator trend 
-#'   will be plotted. If \code{NULL} then the values are plotted sequentially 
-#'   in their original order. 
-#' 
-#' @details Note that the produced plot is adjusted depending on whether 
-#'   \code{along} is numeric or not. 
-#' @param what The trendline to be displayed. Defaults to the indicator's 
-#'   values ("value") but other metrics can be displayed. Correct values are 
-#'   "value", "pval" or "z_score".
-#' 
-#' @param display_null Chooses whether a grey ribbon should be added to reflect
-#'   the null distribution. Note that it can not be displayed when the trend 
-#'   line reflects something else than the indicator values (when \code{what} 
-#'   is not set to "value").
-#'
+# /!\ the doc for this function is documented in ./R/simple_indic_indictest.R
+#'@rdname simple_sews_methods
 #'@method plot simple_sews_list
 #'@export
 plot.simple_sews_list <- function(x, along = NULL, ...) { 

@@ -123,24 +123,24 @@ test_that('Generic indicator task function returns correct values', {
   moran_do_cg <- FALSE
   
   genindic_result <- generic_sews(testmat, 
-                                   subsize = size, 
-                                   moranI_coarse_grain = moran_do_cg)
+                                  subsize = size, 
+                                  moranI_coarse_grain = moran_do_cg)
   
   # Moran
-  expect_equal(genindic_result[['results']][['moran']], 
+  expect_equal(as.data.frame(genindic_result, wide = TRUE)$moran, 
                indicator_moran(testmat, 
                                subsize = 1,
                                nreplicates = 0)[['value']])
   
   # Skewness
-  expect_equal(genindic_result[['results']][['skewness']],
+  expect_equal(as.data.frame(genindic_result, wide = TRUE)$skewness, 
                indicator_skewness(testmat, 
                                   subsize = size, 
                                   absolute = FALSE, 
                                   nreplicates = 0)[['value']])
   
   # Variances
-  expect_equal(genindic_result[['results']][['variance']],
+  expect_equal(as.data.frame(genindic_result, wide = TRUE)$variance, 
                indicator_variance(testmat, 
                                   subsize = size, 
                                   nreplicates = 0)[['value']])

@@ -4,7 +4,7 @@
 \alias{indictest}
 \title{Significance-assessment of spatial early-warning signals}
 \usage{
-indictest(x, nperm = 999, null_method = c("perm", "glm"),
+indictest(x, nperm = 999, null_method = "perm",
   covariate_layers = NULL, ...)
 }
 \arguments{

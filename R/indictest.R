@@ -39,7 +39,7 @@
 #'@export
 indictest <- function(x, 
                       nperm = 999, 
-                      null_method = c('perm', 'glm'), 
+                      null_method = 'perm', 
                       covariate_layers = NULL, 
                       ...) { 
   UseMethod('indictest')

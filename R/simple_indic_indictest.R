@@ -4,7 +4,7 @@
 #' @export
 indictest.simple_sews <- function(x, 
                                   nperm = 999, 
-                                  null_method = c('perm', 'glm'), 
+                                  null_method = 'perm', 
                                   covariate_layers = NULL, 
                                   ...) { 
   NextMethod('indictest')
@@ -12,7 +12,7 @@ indictest.simple_sews <- function(x,
 #'@export
 indictest.simple_sews_single <- function(x, 
                                          nperm = 999, 
-                                         null_method = c('perm', 'glm'), 
+                                         null_method = 'perm', 
                                          covariate_layers = NULL, 
                                          ...) { 
   
@@ -66,7 +66,7 @@ indictest.simple_sews_list <- function(x,
 as.data.frame.simple_sews_test_single <- function(x, ...) { 
   # Find or create the indicator names
   indicnames <- ifNULLthen(names(x[['value']]), 
-                           paste0("indic_", seq_along(x[[1]][['value']])))
+                           paste0("indic_", seq_along(x[['value']])))
   
   # We need to explicitely add a `replicate` column because it will 
   # be used by funs down the stream. 
@@ -94,7 +94,9 @@ as.data.frame.simple_sews_test_list <- function(x, ...) {
 
 #'@method as.data.frame simple_sews_test_list
 #'@export
-summary.simple_sews_test_single <- function(object, ...) { 
+summary.simple_sews_test_single <- function(object, 
+                                            indicname = attr(object, "indicname"), 
+                                            ...) { 
   object.list <- list(object)
   attr(object.list, "indicname") <- attr(object, "indicname")
   summary.simple_sews_test_list( object.list )
@@ -126,7 +128,7 @@ summary.simple_sews_test_list <- function(object,
     a
   })
   tab_pretty <- do.call(data.frame, tab_pretty)
-  tab_pretty <- data.frame(replicate = seq_along(nrow(tab_pretty)), tab_pretty)
+  tab_pretty <- data.frame(replicate = seq.int(nrow(tab_pretty)), tab_pretty)
   
   # Build the header to print. Note that we set it to the names of the 
   # data.frame. This is handy because then print.data.frame handles all the 
@@ -161,13 +163,17 @@ print.simple_sews_test_list <- function(x, ...) {
   summary.simple_sews_test_list(x, ...)
 }
 
-
 #' @title Spatial early-warning signals: display of trends
 #' 
-#'
+#' @param x A \code{simple_sews} object (as provided by **_sews functions, such 
+#'   as \code{generic_sews()} or \code{kbdm_sews()}). 
 #' 
-# /!\ along is already documented elswhere !
-# /!\ x is already documented elswhere !
+#' @param along A vector providing values over which the indicator trend 
+#'   will be plotted. If \code{NULL} then the values are plotted sequentially 
+#'   in their original order. 
+#' 
+#' @details Note that the produced plot is adjusted depending on whether 
+#'   \code{along} is numeric or not. 
 #' 
 #' @param what The trendline to be displayed. Defaults to the indicator's 
 #'   values ("value") but other metrics can be displayed. Correct values are 
@@ -178,8 +184,9 @@ print.simple_sews_test_list <- function(x, ...) {
 #'   line reflects something else than the indicator values (when \code{what} 
 #'   is not set to "value").
 #' 
-#' @method plot simple_sews_test
-#' @export
+#'@rdname simple_sews_methods
+#'@method plot simple_sews_test
+#'@export
 plot.simple_sews_test <- function(x, 
                                   along = NULL,
                                   what = "value", 
@@ -191,13 +198,13 @@ plot.simple_sews_test <- function(x,
 #' @method plot simple_sews_test_single
 #'@export
 plot.simple_sews_test_single <- function(x, 
-                                          along = NULL, 
-                                          what = "value", 
-                                          display_null = TRUE, 
-                                          ...) { 
+                                         along = NULL, 
+                                         what = "value", 
+                                         display_null = TRUE, 
+                                         ...) { 
   stop('I cannot plot a trend with only one value')
 }
-
+                                          
 #'@method plot simple_sews_test_list
 #'@export
 plot.simple_sews_test_list <- function(x, 

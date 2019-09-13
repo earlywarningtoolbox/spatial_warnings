@@ -128,8 +128,8 @@ generic_sews <- function(mat,
     results <- lapply(mat, generic_sews, subsize, abs_skewness,
                       moranI_coarse_grain)
     names(results) <- names(mat) # import list names
-    class(results) <- c('generic_sews_list', 'generic_sews', 
-                        'sews_result_list', 'list')
+    class(results) <- c('simple_sews_list', 'list')
+    attr(results, "indicname") <- "Generic Indicators"
     return(results)
   }
   
@@ -144,49 +144,49 @@ generic_sews <- function(mat,
                   'performed.'))
   }
   
-  # Build the right indicator function (closure) that take into accounts the 
-  #   above options. 
-  indicf <- function(mat) { 
-    
-    # We do coarse-graining only once for the whole matrix
-    mat_cg <- coarse_grain(mat, subsize)
-    
-    if ( sd(as.vector(mat_cg)) == 0 ) { 
-      return( c(variance = var(as.vector(mat_cg)), 
-                skewness = NA_real_, 
-                moran    = NA_real_, 
-                mean     = mean(mat)) )
-    }
-    
-    skewness_value <- cpp_skewness(mat_cg)
-    if (abs_skewness) { 
-      skewness_value <- abs(skewness_value)
-    }
-    
-    if (moranI_coarse_grain) { 
-      moran_value <- raw_moran(mat_cg) 
-    } else { 
-      moran_value <- raw_moran(mat)
-    }
-    
-    c(variance = var(as.vector(mat_cg)),
-      skewness = skewness_value,
-      moran    = moran_value,
-      mean     = mean(mat))
-  }
-  
   # Compute the indicators and store the parameters used
-  results <- list(results = as.list(indicf(mat)), 
+  results <- list(value = raw_generic_indic(mat, subsize, abs_skewness, 
+                                            moranI_coarse_grain), 
                   orig_data = orig_mat,
-                  call = match.call(),
-                  subsize = subsize, 
-                  indicf  = indicf, 
-                  abs_skewness = abs_skewness, 
-                  moranI_coarse_grain = moranI_coarse_grain)
+                  indicf  = raw_generic_indic, 
+                  fun.args = list(subsize = subsize, 
+                                  abs_skewness = abs_skewness, 
+                                  moranI_coarse_grain = moranI_coarse_grain))
   
-  class(results) <- c('generic_sews_single', 'generic_sews',
-                      'sews_result_single', 'list')
+  class(results) <- c('simple_sews_single', 'list')
+  attr(results, "indicname") <- "Generic Indicators"
   return(results)
 }
 
+
+# Build the right indicator function (closure) that take into accounts the 
+#   above options. 
+raw_generic_indic <- function(mat, subsize, abs_skewness, moranI_coarse_grain) { 
+  
+  # We do coarse-graining only once for the whole matrix
+  mat_cg <- coarse_grain(mat, subsize)
+  
+  if ( sd(as.vector(mat_cg)) == 0 ) { 
+    return( c(variance = var(as.vector(mat_cg)), 
+              skewness = NA_real_, 
+              moran    = NA_real_, 
+              mean     = mean(mat)) )
+  }
+  
+  skewness_value <- cpp_skewness(mat_cg)
+  if (abs_skewness) { 
+    skewness_value <- abs(skewness_value)
+  }
+  
+  if (moranI_coarse_grain) { 
+    moran_value <- raw_moran(mat_cg) 
+  } else { 
+    moran_value <- raw_moran(mat)
+  }
+  
+  c(variance = var(as.vector(mat_cg)),
+    skewness = skewness_value,
+    moran    = moran_value,
+    mean     = mean(mat))
+}
 

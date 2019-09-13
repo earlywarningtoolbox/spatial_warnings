@@ -104,7 +104,7 @@ summary.simple_sews_test_list <- function(object,
                                           indicname = attr(object, "indicname"), 
                                           ...) { 
   if ( is.null(indicname) ) { 
-    indicname <- "unknown indicator"
+    indicname <- "unknown indicator(s)"
   }
   
   tab <- as.data.frame(object)
@@ -162,7 +162,22 @@ print.simple_sews_test_list <- function(x, ...) {
 }
 
 
-
+#' @title Spatial early-warning signals: display of trends
+#' 
+#'
+#' 
+# /!\ along is already documented elswhere !
+# /!\ x is already documented elswhere !
+#' 
+#' @param what The trendline to be displayed. Defaults to the indicator's 
+#'   values ("value") but other metrics can be displayed. Correct values are 
+#'   "value", "pval" or "z_score".
+#' 
+#' @param display_null Chooses whether a grey ribbon should be added to reflect
+#'   the null distribution. Note that it can not be displayed when the trend 
+#'   line reflects something else than the indicator values (when \code{what} 
+#'   is not set to "value").
+#' 
 #' @method plot simple_sews_test
 #' @export
 plot.simple_sews_test <- function(x, 

@@ -152,6 +152,6 @@ raw_kbdm <- function(mat, subsize = 3) {
                        kctm = acss::acss(names(counts), alphabet = 2)[ ,1])
   
   # Compute Kbdm
-  return( with(counts, sum(log2(multip) + kctm)) )
+  return( c(kbdm = with(counts, sum(log2(multip) + kctm))) )
 }
   

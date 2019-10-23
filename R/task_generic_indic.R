@@ -166,7 +166,8 @@ raw_generic_indic <- function(mat, subsize, abs_skewness, moranI_coarse_grain) {
   # We do coarse-graining only once for the whole matrix
   mat_cg <- coarse_grain(mat, subsize)
   
-  if ( sd(as.vector(mat_cg)) == 0 ) { 
+  # Handle the case where there is a single unique value in the matrix
+  if ( length(unique(as.vector(mat_cg))) == 1 ) { 
     return( c(variance = var(as.vector(mat_cg)), 
               skewness = NA_real_, 
               moran    = NA_real_, 

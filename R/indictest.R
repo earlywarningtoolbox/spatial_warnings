@@ -15,6 +15,9 @@
 #' @param nperm The number of permutations to carry out to produce the null 
 #'   distribution 
 #' 
+#' @param null_method The method used to test significance (right now 
+#'   only the permutation method is supported, 'perm')
+#' 
 #' @param ... Additional arguments passed to methods 
 #' 
 #' @return An object of class ending in \code{*_sews_test}, whose exact class 
@@ -22,11 +25,40 @@
 #' 
 #' @details 
 #' 
-#' The significance of many early-warning signals can be estimated by 
-#'   reshuffling the original matrix. Indicators are then recomputed 
-#'   on the shuffled matrices and the values obtained are used as a null 
-#'   distribution. P-values are obtained based on the rank of the observed
-#'   value in the null distribution. 
+#' \code{indictest} is used to test the significance of early-warning signals
+#'   against 'null matrices', which represent the expected spatial structure 
+#'   in the absence of the biological process of interest. This is done based 
+#'   on the following procedure: (1) a set of N null matrices is 
+#'   generated (this number is set by the argument \code{nperm}); (2) indicator
+#'   values are recomputed on this set of null matrices and (3) the significance 
+#'   of the observed indicator value is tested against this distribution. 
+#'   Several methods are available to produce the set of null matrices. 
+#'   
+#' The first option is to generate them by reshuffling the original 
+#'   observed matrix. This produces null matrices with the same exact average 
+#'   value, but with a random spatial structure (no autocorrelation at all 
+#'   lags). Use \code{null_method = "perm"} to use this option. 
+#' 
+#' A second option is to use a statistical model to come up with an expected 
+#'   null value for each cell of the matrix. This model can possibly include 
+#'   covariates, which have to be passed as matrices using the argument 
+#'   \code{covariate_layers}. In practice, this option fits the following 
+#'   model if the matrix has logical (TRUE/FALSE) values: 
+#' 
+#' glm(Y_ij ~ cov1_ij + cov2_ij + ... covN_ij, family = binomial()) 
+#' 
+#' where the Y_ij are the values of the observed matrix, and the covn_ij are 
+#'   possible covariates (the \code{family} argument is set to 
+#'   \code{gaussian()}, if the matrix has real values). A cell value is then 
+#'   predicted
+#' 
+#' This approach has the advantage of being able to take into account the 
+#'   spatial structure of the landscape. For instance, when analyzing plant 
+#'   patterns, the plant cover may be higher in areas with more water, 
+#'   introducing a spurious patch of continous cover. This model-based null 
+#'   model approach can take this into account by introducing a covariate 
+#'   layer with the amount of water, thus producing null matrices where the 
+#'   mean cover will be higher next to zones with high water content. 
 #' 
 #' @seealso \code{\link{generic_sews}}, \code{\link{spectral_sews}}
 #'   

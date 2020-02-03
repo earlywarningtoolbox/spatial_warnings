@@ -27,5 +27,5 @@ Suggests:
     acss
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
-RoxygenNote: 7.0.0
+RoxygenNote: 7.0.2
 Encoding: UTF-8

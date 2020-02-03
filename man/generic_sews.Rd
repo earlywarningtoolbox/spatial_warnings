@@ -119,7 +119,7 @@ gen_test <- indictest(gen_indic, nperm = 199)
 
 print(gen_test)
 
-# Display the trend, now with a grey ribbon indicating the 5%-95% quantile
+# Display the trend, now with a grey ribbon indicating the 5\%-95\% quantile
 # range of the null distribution
 plot(gen_test, along = serengeti.rain)
 

@@ -120,7 +120,7 @@ plot(spec_indic, along = serengeti.rain)
 spec_test <- indictest(spec_indic, nperm = 199)
 summary(spec_test)
 
-# Display the SDR trend, now with a grey ribbon representing 5%-95% 
+# Display the SDR trend, now with a grey ribbon representing 5\%-95\% 
 # quantiles of the null distribution
 plot(spec_test, along = serengeti.rain)
 

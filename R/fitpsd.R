@@ -11,6 +11,7 @@
 ITERLIM <- 10000
 GRADTOL <- 1e-10 
 SANNITER <- 200
+STEPTOL <- 1e-10
 
 # This is a safe version of nlm that returns a sensible result (NA) when 
 # the algorithm fails to converge. This can happen quite often when looking 
@@ -49,7 +50,7 @@ optim_safe <- function(f, pars0, do_sann = TRUE) {
     
     # Now do a Newton method to find the (hopefully global) minimum. 
     result <- nlm(safe(f), pars0, 
-                  iterlim = ITERLIM, gradtol = GRADTOL)
+                  iterlim = ITERLIM, gradtol = GRADTOL, steptol = STEPTOL)
     
   }, silent = TRUE)
   
@@ -62,7 +63,7 @@ optim_safe <- function(f, pars0, do_sann = TRUE) {
   } else { 
     # Code results above 3 means a true problem, below 3 the solution 
     # is either exact or approximate. 
-    if ( result[["code"]] > 3 ) { 
+    if ( result[["code"]] > 2 ) { 
       warning(paste0('nlm returned an error (error code:', result[["code"]], ").\n", 
                      "See ?nlm for more information"))
     }

@@ -1,9 +1,6 @@
 
 context('Test that xmin estimations are correct')
 
-GRAPHICAL <- FALSE # Plot some diagnostics. 
-
-
 if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) { 
   # Change dir if running tests manually
   if ( file.exists('./tests/testthat') ) { 
@@ -35,24 +32,26 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
       
       pldat <- round(rpowerexp(10000, 1, df[ ,'expo'], df[, 'rate']))
       
-      est_xmin <- suppressWarnings( spatialwarnings:::xmin_estim(pldat) )
+      # est_xmin <- suppressWarnings( spatialwarnings:::xmin_estim(pldat) )
+      est_xmin <- spatialwarnings:::xmin_estim(pldat) 
       
       # Create pl object and estimate its xmin
       pl_obj <- poweRlaw::displ$new(pldat)
       est_xmin_plpkg <- poweRlaw::estimate_xmin(pl_obj)[["xmin"]]
-      cat(" Ours: ", est_xmin_plpkg, ' -> poweRlaw\'s: ', est_xmin, " [", 
+      cat(" Ours: ", est_xmin, ' -> poweRlaw\'s: ', est_xmin_plpkg, " [", 
           length(unique(pldat)), " unique patches]", "\n", sep = "")
       
       if ( !is.na(est_xmin) && 
            !is.na(est_xmin_plpkg) && 
-           length(unique(pldat)) >= 10 ) { 
+           length(unique(pldat)) >= 5 ) { 
         # Note: In some pathological cases (few unique patches), there can be 
         # a small difference in xmin, so we use an acceptable error here. 
         expect_true( abs(est_xmin - est_xmin_plpkg) <= 1 )
         
         # In this case, inspect the fit provided by the poweRlaw package
-        if ( GRAPHICAL && est_xmin != est_xmin_plpkg ) { 
-          
+        if ( exists('GRAPHICAL') && GRAPHICAL && est_xmin != est_xmin_plpkg ) { 
+          dev.new()
+          par(mfrow = c(1,2))
           plot(log10(cumpsd(pldat[pldat >= est_xmin])))
           our_fit <- pl_fit(pldat, xmin = est_xmin)
           xs <- unique(round(seq(min(pldat), max(pldat), length.out = 100)))
@@ -78,7 +77,6 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
     }
     
   })
-
 
   # Remove auxiliary binaries now that tests are done
   system("cd ./pli-R-v0.0.3-2007-07-25/zeta-function/ && rm zeta_func zeta_func.o")

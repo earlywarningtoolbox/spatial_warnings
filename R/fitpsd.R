@@ -89,8 +89,8 @@ TPL_RATEMAX <- 20
 # These functions are useful when doing the fit to rescale the values to 
 # a bounded range. This allows using unbounded optimization methods (sann, nlm, 
 # etc.) but still have bounded parameters. 
-to_rescaled   <- function(x, min, max) VGAM::extlogit(x, min, max, inverse = TRUE)
-from_rescaled <- function(x, min, max) VGAM::extlogit(x, min, max)
+to_rescaled   <- function(x, min, max) VGAM::extlogitlink(x, min, max, inverse = TRUE)
+from_rescaled <- function(x, min, max) VGAM::extlogitlink(x, min, max)
 
 # Riemann zeta function with xmin taken into account :
 # sum( 1/k^-expo ) for i=xmin to i = inf

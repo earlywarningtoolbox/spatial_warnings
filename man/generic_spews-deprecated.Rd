@@ -4,8 +4,12 @@
 \alias{generic_spews}
 \title{(DEPRECATED) Generic Spatial Early-Warning signals}
 \usage{
-generic_spews(mat, subsize = 4, abs_skewness = FALSE,
-  moranI_coarse_grain = FALSE)
+generic_spews(
+  mat,
+  subsize = 4,
+  abs_skewness = FALSE,
+  moranI_coarse_grain = FALSE
+)
 }
 \arguments{
 \item{mat}{A matrix (quantitative data), a binary matrix (TRUE/FALSE data), 

@@ -5,8 +5,7 @@
 \alias{predict.patchdistr_sews_single}
 \title{predict method for patchdistr_sews objects}
 \usage{
-\method{predict}{patchdistr_sews_single}(object, ..., newdata = NULL,
-  best_only = FALSE)
+\method{predict}{patchdistr_sews_single}(object, ..., newdata = NULL, best_only = FALSE)
 }
 \arguments{
 \item{object}{An \code{\link{patchdistr_sews}} object}

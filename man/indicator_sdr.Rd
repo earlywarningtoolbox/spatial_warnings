@@ -4,8 +4,12 @@
 \alias{indicator_sdr}
 \title{Spectral Density Ratio (SDR) indicator}
 \usage{
-indicator_sdr(input, sdr_low_range = NULL, sdr_high_range = NULL,
-  nreplicates = 999)
+indicator_sdr(
+  input,
+  sdr_low_range = NULL,
+  sdr_high_range = NULL,
+  nreplicates = 999
+)
 }
 \arguments{
 \item{input}{A matrix or a logical matrix (TRUE/FALSE), or a list of these.}

@@ -7,8 +7,7 @@
 \usage{
 create_indicator(fun, indicname = as.character(substitute(fun)))
 
-custom_indicator(mat, fun, indicname = as.character(substitute(fun)),
-  ...)
+custom_indicator(mat, fun, indicname = as.character(substitute(fun)), ...)
 }
 \arguments{
 \item{fun}{A function that takes a real-valued matrix as input and returns 

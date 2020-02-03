@@ -4,8 +4,7 @@
 \alias{indictest}
 \title{Significance-assessment of spatial early-warning signals}
 \usage{
-indictest(x, nperm = 999, null_method = "perm",
-  covariate_layers = NULL, ...)
+indictest(x, nperm = 999, null_method = "perm", covariate_layers = NULL, ...)
 }
 \arguments{
 \item{x}{A spatial warning object such as one produced by the \code{*_sews} 

@@ -4,8 +4,7 @@
 \alias{spectral_spews}
 \title{(DEPRECATED) Spectrum-based spatial early-warning signals.}
 \usage{
-spectral_spews(mat, sdr_low_range = NULL, sdr_high_range = NULL,
-  quiet = FALSE)
+spectral_spews(mat, sdr_low_range = NULL, sdr_high_range = NULL, quiet = FALSE)
 }
 \arguments{
 \item{mat}{The input matrix or a list of matrices.}

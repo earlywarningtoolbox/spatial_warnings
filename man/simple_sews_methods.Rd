@@ -6,8 +6,7 @@
 \alias{plot.simple_sews_list}
 \title{Spatial early-warning signals: display of trends}
 \usage{
-\method{plot}{simple_sews_test}(x, along = NULL, what = "value",
-  display_null = TRUE, ...)
+\method{plot}{simple_sews_test}(x, along = NULL, what = "value", display_null = TRUE, ...)
 
 \method{plot}{simple_sews_list}(x, along = NULL, ...)
 }

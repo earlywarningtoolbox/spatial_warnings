@@ -9,13 +9,16 @@
 \alias{plot.generic_sews}
 \title{Generic Spatial Early-Warning signals}
 \usage{
-generic_sews(mat, subsize = 4, abs_skewness = FALSE,
-  moranI_coarse_grain = FALSE)
+generic_sews(
+  mat,
+  subsize = 4,
+  abs_skewness = FALSE,
+  moranI_coarse_grain = FALSE
+)
 
 \method{indictest}{generic_sews}(x, nperm = 999, ...)
 
-\method{plot}{generic_sews_test}(x, along = NULL, what = "value",
-  display_null = TRUE, ...)
+\method{plot}{generic_sews_test}(x, along = NULL, what = "value", display_null = TRUE, ...)
 
 \method{plot}{generic_sews}(x, along = NULL, ...)
 }
@@ -116,7 +119,7 @@ gen_test <- indictest(gen_indic, nperm = 199)
 
 print(gen_test)
 
-# Display the trend, now with a grey ribbon indicating the 5\%-95\% quantile
+# Display the trend, now with a grey ribbon indicating the 5%-95% quantile
 # range of the null distribution
 plot(gen_test, along = serengeti.rain)
 

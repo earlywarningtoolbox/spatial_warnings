@@ -8,13 +8,11 @@
 \alias{plot_spectrum}
 \title{Spectrum-based spatial early-warning signals.}
 \usage{
-spectral_sews(mat, sdr_low_range = NULL, sdr_high_range = NULL,
-  quiet = FALSE)
+spectral_sews(mat, sdr_low_range = NULL, sdr_high_range = NULL, quiet = FALSE)
 
 \method{indictest}{spectral_sews}(x, nperm = 999, ...)
 
-\method{plot}{spectral_sews_test}(x, ..., along = NULL, what = "value",
-  display_null = TRUE)
+\method{plot}{spectral_sews_test}(x, ..., along = NULL, what = "value", display_null = TRUE)
 
 plot_spectrum(x, along = NULL, display_null = TRUE)
 }
@@ -122,7 +120,7 @@ plot(spec_indic, along = serengeti.rain)
 spec_test <- indictest(spec_indic, nperm = 199)
 summary(spec_test)
 
-# Display the SDR trend, now with a grey ribbon representing 5\%-95\% 
+# Display the SDR trend, now with a grey ribbon representing 5%-95% 
 # quantiles of the null distribution
 plot(spec_test, along = serengeti.rain)
 

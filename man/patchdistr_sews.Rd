@@ -4,8 +4,15 @@
 \alias{patchdistr_sews}
 \title{Early-warning signals based on patch size distributions}
 \usage{
-patchdistr_sews(x, merge = FALSE, fit_lnorm = FALSE, best_by = "BIC",
-  xmin = 1, xmin_bounds = NULL, wrap = FALSE)
+patchdistr_sews(
+  x,
+  merge = FALSE,
+  fit_lnorm = FALSE,
+  best_by = "BIC",
+  xmin = 1,
+  xmin_bounds = NULL,
+  wrap = FALSE
+)
 }
 \arguments{
 \item{x}{A logical matrix (TRUE/FALSE values) or a list of these}

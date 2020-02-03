@@ -43,8 +43,9 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
       cat(" Ours: ", est_xmin_plpkg, ' -> poweRlaw\'s: ', est_xmin, " [", 
           length(unique(pldat)), " unique patches]", "\n", sep = "")
       
-      if ( !is.na(est_xmin) && !is.na(est_xmin_plpkg) && 
-           length(unique(pldat)) > 5 ) { 
+      if ( !is.na(est_xmin) && 
+           !is.na(est_xmin_plpkg) && 
+           length(unique(pldat)) >= 10 ) { 
         # Note: In some pathological cases (few unique patches), there can be 
         # a small difference in xmin, so we use an acceptable error here. 
         expect_true( abs(est_xmin - est_xmin_plpkg) <= 1 )

@@ -32,8 +32,8 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
       
       pldat <- round(rpowerexp(10000, 1, df[ ,'expo'], df[, 'rate']))
       
-      # est_xmin <- suppressWarnings( spatialwarnings:::xmin_estim(pldat) )
-      est_xmin <- spatialwarnings:::xmin_estim(pldat) 
+      est_xmin <- suppressWarnings( spatialwarnings:::xmin_estim(pldat) )
+      # est_xmin <- spatialwarnings:::xmin_estim(pldat) 
       
       # Create pl object and estimate its xmin
       pl_obj <- poweRlaw::displ$new(pldat)
@@ -65,7 +65,6 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
           lines(log10(xs), 
                 log10(ppl(xs, plpkg_expo, xmin = est_xmin_plpkg)))
           title("PWL FIT")
-          
         }
       }
       

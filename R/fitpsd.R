@@ -17,7 +17,9 @@ STEPTOL <- 1e-10
 # the algorithm fails to converge. This can happen quite often when looking 
 # for pathological cases (e.g. fitting distribution based on few points in the 
 # tails, etc.). 
-optim_safe <- function(f, pars0, do_sann = TRUE) { 
+optim_safe <- function(f, pars0, do_sann = TRUE, 
+                       lower = rep(-Inf, length(pars0)), 
+                       upper = rep(Inf,  length(pars0))) { 
   
   # Wrap a neg ll objective function so that it does not return NAs
   safe <- function(f) { 
@@ -40,37 +42,53 @@ optim_safe <- function(f, pars0, do_sann = TRUE) {
   # points in the tail of the distribution. Here, we report the fit failed but 
   # do not stop execution. In most (all?) normal cases it has no 
   # consequences on the results. 
-  result <- try({ 
-    if ( do_sann ) { 
-      sann_approx <- optim(pars0, safe(f), 
-                          method = "SANN", 
-                          control = list(maxit = SANNITER)) 
-      pars0 <- sann_approx[['par']]
-    } 
+  if ( do_sann ) { 
+    result_sann <- try({ 
+        sann_approx <- optim(pars0, safe(f), 
+                            method = "SANN", 
+                            control = list(maxit = SANNITER)) 
+    }, silent = TRUE)
+  
+    # SANN resulted in error => bail
+    if ( class(result_sann) == "try-error" ) { 
+      warning('Optimization failed to converge, returning NA. Error is:\n', 
+              result)
+      return( list(minimum = NA_real_, 
+                   estimate = NA_real_) )
+    }
     
-    # Now do a Newton method to find the (hopefully global) minimum. 
-    result <- nlm(safe(f), pars0, 
-                  iterlim = ITERLIM, gradtol = GRADTOL, steptol = STEPTOL)
-    
+    # SANN resulted in success => set new starting parameters for nlm
+    pars0 <- sann_approx[["par"]]
+  } 
+  
+  # We found a SANN solution, try to refine it with nlm
+  result_nlm <- try({ 
+    nlm(safe(f), pars0, 
+        iterlim = ITERLIM, gradtol = GRADTOL, steptol = STEPTOL)
   }, silent = TRUE)
   
-  
-  if ( class(result) == "try-error" ) { 
-    warning('Optimization failed to converge, returning NA. Error is:\n', 
-            result)
-    return( list(minimum = NA_real_, 
-                 estimate = NA_real_) )
-  } else { 
-    # Code results above 3 means a true problem, below 3 the solution 
-    # is either exact or approximate. 
-    if ( result[["code"]] > 2 ) { 
-      warning(paste0('nlm returned an error (error code:', result[["code"]], ").\n", 
-                     "See ?nlm for more information"))
+  if ( class(result_nlm) == "try-error" ) { 
+    if ( do_sann ) { 
+      warning('nlm failed to converge, using solution found with SANN.')
+      return( list(minimum  = sann_approx[['value']], 
+                   estimate = sann_approx[['par']]) )
+    } else { 
+      warning('nlm failed to converge, returning NA.')
+      return( list(minimum = NA_real_, 
+                    estimate = NA_real_) )
     }
   }
-  # with(result, cat('Fitting results: ', estimate, ' (convergence code:', 
-  #                   code, ")\n", sep = ""))
-  return(result)
+  
+  # nlm succeeded. Code results above 3 means a true problem, below 3 the 
+  # solution is either exact or approximate. 
+  if ( result_nlm[["code"]] > 3 ) { 
+    warning(paste0('nlm returned an error (error code:', result_nlm[["code"]], ").\n", 
+                    "See ?nlm for more information"))
+  }
+  
+  # with(result_nlm, cat('Fitting results: ', estimate, ' (convergence code:', 
+  #                      code, ")\n", sep = ""))
+  return(result_nlm)
 }
 
 # Bounds on parameters, these should be large and no observed distribution should 
@@ -195,7 +213,7 @@ pl_fit <- function(dat, xmin = 1) {
   expo_estim <- 1 + npts / (sum(log(dat)) - npts*log(xmin-.5))
   
   negll <- function(expo) {
-    result <- - pl_ll(dat, to_rescaled(expo, PLMIN, PLMAX), xmin) 
+    result <- - pl_ll(dat, expo, xmin) 
     if ( is.infinite(result) ) { 
       return(NA_real_)
     } else { 
@@ -203,15 +221,11 @@ pl_fit <- function(dat, xmin = 1) {
     }
   }
   
-  est <- optim_safe(negll, from_rescaled(expo_estim, PLMIN, PLMAX), 
-                    # It seems there is no need for SANN optimisation for plfit 
-                    do_sann = FALSE)
-  
-  expo_estim <- to_rescaled(est[["estimate"]], PLMIN, PLMAX)
+  est <- optim_safe(negll, expo_estim)
   
   result <- list(type = 'pl',
                  method = 'll', 
-                 expo = expo_estim,
+                 expo = est[["estimate"]],
                  ll = - est[['minimum']],
                  xmin = xmin,
                  npars = 1)

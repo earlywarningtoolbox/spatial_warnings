@@ -4,7 +4,7 @@
 \alias{indictest}
 \title{Significance-assessment of spatial early-warning signals}
 \usage{
-indictest(x, nperm = 999, null_method = "perm", covariate_layers = NULL, ...)
+indictest(x, nperm = 999, null_method = "perm", ...)
 }
 \arguments{
 \item{x}{A spatial warning object such as one produced by the \code{*_sews} 
@@ -40,26 +40,7 @@ The first option is to generate them by reshuffling the original
   value, but with a random spatial structure (no autocorrelation at all 
   lags). Use \code{null_method = "perm"} to use this option. 
 
-A second option is to use a statistical model to come up with an expected 
-  null value for each cell of the matrix. This model can possibly include 
-  covariates, which have to be passed as matrices using the argument 
-  \code{covariate_layers}. In practice, this option fits the following 
-  model if the matrix has logical (TRUE/FALSE) values: 
-
-glm(Y_ij ~ cov1_ij + cov2_ij + ... covN_ij, family = binomial()) 
-
-where the Y_ij are the values of the observed matrix, and the covn_ij are 
-  possible covariates (the \code{family} argument is set to 
-  \code{gaussian()}, if the matrix has real values). A cell value is then 
-  predicted
-
-This approach has the advantage of being able to take into account the 
-  spatial structure of the landscape. For instance, when analyzing plant 
-  patterns, the plant cover may be higher in areas with more water, 
-  introducing a spurious patch of continous cover. This model-based null 
-  model approach can take this into account by introducing a covariate 
-  layer with the amount of water, thus producing null matrices where the 
-  mean cover will be higher next to zones with high water content.
+A second option is to use random draws from ...
 }
 \references{
 Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 

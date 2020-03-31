@@ -2,11 +2,13 @@
 # These functions factorize some code between numerical indicators. Most 
 # notably it handles creating the null model testing, etc.
 # 
+# This function will compute a null distribution of indicator values on input, 
+# by reshuffling it nreplicates times. 
+# 
 compute_indicator_with_null <- function(input, 
                                         nreplicates, 
                                         indicf, 
-                                        null_method = "perm", 
-                                        covariate_layers = NULL) { 
+                                        null_method = "perm") { 
   
   # Compute the observed value
   value  <- indicf(input)
@@ -32,30 +34,7 @@ compute_indicator_with_null <- function(input,
         nulldistr <- shuffle_and_compute(input, indicf, nreplicates)
       }
       
-    } else if ( null_method == "glm" ) { 
-      
-      # We build a model that takes covariates into account
-      N <- nrow(input) * ncol(input)
-      glm.family <- if ( is.logical(input) ) binomial() else gaussian()
-      glm.df <- data.frame(y = as.vector(input))
-      form_string <- "y ~ 1"
-      if ( !is.null(covariate_layers)) { 
-       glm.df <- data.frame(glm.df, 
-                            do.call(cbind, lapply(covariate_layers, as.vector)))
-       form_string <- paste(form_string, "+", paste(names(covariate_layers), 
-                                                    collapse = " + "))
-      } 
-      
-      mod <- glm(as.formula(form_string), 
-                 family = glm.family, 
-                 data = glm.df)
-      
-      nulldistr <- generate_glm_nulldistr(mod, 
-                                          is_binomial = is.logical(input), 
-                                          indicf = indicf, 
-                                          nr = nrow(input), 
-                                          nc = ncol(input), 
-                                          nreplicates = nreplicates)
+    } else if ( null_method == "bernouilli" ) { 
       
     } else { 
       stop(paste0("Unknown null-model method: ", null_method))

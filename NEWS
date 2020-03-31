@@ -1,3 +1,10 @@
+spatialwarnings v1.4.0 (Release date: unknown)
+===============================================
+
+Improvements: 
+  * Increase the precision of the optimizer when fitting distributions. This 
+      fixes some differences in results produced by this package and the 
+      poweRlaw package. (FIXME: check that it really fixes the problems)
 
 spatialwarnings v1.3.1 (Release date: 2018-12)
 ===============================================

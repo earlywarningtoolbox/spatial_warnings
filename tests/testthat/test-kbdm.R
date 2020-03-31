@@ -42,8 +42,8 @@ test_that("Kbdm results are correct", {
 
   # Slope of relationship should be close to zero
   expect_true({
-      abs(1 - coef(linmod)[2]) < .1
-    })
+    abs(1 - coef(linmod)[2]) < .1
+  })
 
   # Both values should have a max that is very close 
   expect_true({ 

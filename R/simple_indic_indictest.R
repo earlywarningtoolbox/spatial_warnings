@@ -5,7 +5,6 @@
 indictest.simple_sews <- function(x, 
                                   nperm = 999, 
                                   null_method = 'perm', 
-                                  covariate_layers = NULL, 
                                   ...) { 
   NextMethod('indictest')
 }
@@ -13,7 +12,6 @@ indictest.simple_sews <- function(x,
 indictest.simple_sews_single <- function(x, 
                                          nperm = 999, 
                                          null_method = 'perm', 
-                                         covariate_layers = NULL, 
                                          ...) { 
   
   # We do not support low numbers of replicates
@@ -30,8 +28,7 @@ indictest.simple_sews_single <- function(x,
   null_values <- compute_indicator_with_null(x[["orig_data"]],
                                              nreplicates = nperm, 
                                              indicf = new_indicf, 
-                                             null_method = null_method, 
-                                             covariate_layers = covariate_layers)
+                                             null_method = null_method)
   
   # Format result
   results <- c(null_values, list(nperm = nperm))
@@ -43,12 +40,11 @@ indictest.simple_sews_single <- function(x,
 #'@export
 indictest.simple_sews_list <- function(x, 
                                        nperm = 999, 
-                                       null_method = c('perm', 'glm'), 
-                                       covariate_layers = NULL, 
+                                       null_method = "perm", 
                                        ...) { 
                                          
   results <- parallel::mclapply(x, indictest.simple_sews_single, 
-                                nperm, null_method, covariate_layers, ...)
+                                nperm, null_method, ...)
   
   # Add replicate column with correct replicate number
   for ( nb in seq_along(results) ) { 

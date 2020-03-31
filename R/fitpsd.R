@@ -12,12 +12,13 @@ ITERLIM <- 10000
 GRADTOL <- 1e-10 
 SANNITER <- 200
 STEPTOL <- 1e-10
+STEPMAX <- 10
 
 # This is a safe version of nlm that returns a sensible result (NA) when 
 # the algorithm fails to converge. This can happen quite often when looking 
 # for pathological cases (e.g. fitting distribution based on few points in the 
 # tails, etc.). 
-optim_safe <- function(f, pars0, do_sann = TRUE, 
+optim_safe <- function(f, pars0, do_sann = FALSE, 
                        lower = rep(-Inf, length(pars0)), 
                        upper = rep(Inf,  length(pars0))) { 
   
@@ -45,14 +46,14 @@ optim_safe <- function(f, pars0, do_sann = TRUE,
   if ( do_sann ) { 
     result_sann <- try({ 
         sann_approx <- optim(pars0, safe(f), 
-                            method = "SANN", 
-                            control = list(maxit = SANNITER)) 
+                             method = "SANN", 
+                             control = list(maxit = SANNITER)) 
     }, silent = TRUE)
   
     # SANN resulted in error => bail
     if ( class(result_sann) == "try-error" ) { 
       warning('Optimization failed to converge, returning NA. Error is:\n', 
-              result)
+              result_sann)
       return( list(minimum = NA_real_, 
                    estimate = NA_real_) )
     }
@@ -64,7 +65,8 @@ optim_safe <- function(f, pars0, do_sann = TRUE,
   # We found a SANN solution, try to refine it with nlm
   result_nlm <- try({ 
     nlm(safe(f), pars0, 
-        iterlim = ITERLIM, gradtol = GRADTOL, steptol = STEPTOL)
+        iterlim = ITERLIM, gradtol = GRADTOL, steptol = STEPTOL, 
+        stepmax = STEPMAX)
   }, silent = TRUE)
   
   if ( class(result_nlm) == "try-error" ) { 
@@ -108,8 +110,12 @@ TPL_RATEMAX <- 20
 # These functions are useful when doing the fit to rescale the values to 
 # a bounded range. This allows using unbounded optimization methods (sann, nlm, 
 # etc.) but still have bounded parameters. 
-to_rescaled   <- function(x, min, max) VGAM::extlogitlink(x, min, max, inverse = TRUE)
-from_rescaled <- function(x, min, max) VGAM::extlogitlink(x, min, max)
+to_rescaled   <- function(x, min, max) { 
+  VGAM::extlogitlink(x, min, max, inverse = TRUE)
+}
+from_rescaled <- function(x, min, max) { 
+  VGAM::extlogitlink(x, min, max)
+}
 
 # Riemann zeta function with xmin taken into account :
 # sum( 1/k^-expo ) for i=xmin to i = inf
@@ -221,7 +227,7 @@ pl_fit <- function(dat, xmin = 1) {
     }
   }
   
-  est <- optim_safe(negll, expo_estim)
+  est <- optim_safe(negll, expo_estim, do_sann = FALSE)
   
   result <- list(type = 'pl',
                  method = 'll', 
@@ -373,7 +379,8 @@ exp_fit <- function(dat, xmin = 1) {
     - exp_ll(dat, to_rescaled(rate, EXPMIN, EXPMAX), xmin)
   }
   
-  est <- optim_safe(negll, from_rescaled(rate0, EXPMIN, EXPMAX))
+  est <- optim_safe(negll, from_rescaled(rate0, EXPMIN, EXPMAX), 
+                    do_sann = FALSE)
   
   result <- list(type = 'exp',
                  method = 'll', 

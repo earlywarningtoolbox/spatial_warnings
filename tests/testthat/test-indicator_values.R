@@ -84,7 +84,7 @@ test_that('Indicator psdtype returns correct values', {
 
   # Test one fit on the whole dataset
   expect_true(with(indicator_psdtype(forestgap, merge = TRUE), 
-                    as.character(type[best])) == "pl") 
+                   as.character(type[best])) == "pl") 
   
   # Test individual fits
   if ( exists("EXTENDED_TESTS") ) { 

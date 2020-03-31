@@ -56,7 +56,7 @@ indictest.simple_sews_list <- function(x,
   
   return(results)
 }
-
+ 
 #'@method as.data.frame simple_sews_test_single
 #'@export
 as.data.frame.simple_sews_test_single <- function(x, ...) { 

@@ -19,8 +19,8 @@ in their original order.}
 
 \item{...}{Further arguments passed to methods}
 
-\item{best_only}{Plot only the best fit the empirical (inverse cumulative) patch-size 
-distribution with an overlay of the estimated fits.}
+\item{best_only}{Plot only the best fit the empirical (inverse cumulative) 
+patch-size distribution with an overlay of the estimated fits.}
 
 \item{plrange}{Plot the power-law range}
 }

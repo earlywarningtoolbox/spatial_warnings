@@ -16,29 +16,8 @@ compute_indicator_with_null <- function(input,
   
   if (nreplicates > 2) { 
     
-    if ( length(unique(input)) == 1 ) { 
-      # Compute the index on the same matrix as randomization will do nothing
-      nulldistr <- matrix(rep(indicf(input), nreplicates), 
-                          nrow = 1, ncol = nreplicates)
-      
-    # We use permutation to produce null models
-    } else if ( null_method == "perm" ) { 
-      # Compute the index on a randomized matrix
-      # shuffle_and_compute will convert all matrices to numeric matrices 
-      # internally. We need to explicitely convert back to logical after 
-      # shuffling before computing the indicator 
-      if ( is.logical(input) ) { 
-        nulldistr <- shuffle_and_compute(input, function(x) indicf(x>0), 
-                                         nreplicates)
-      } else { 
-        nulldistr <- shuffle_and_compute(input, indicf, nreplicates)
-      }
-      
-    } else if ( null_method == "bernouilli" ) { 
-      
-    } else { 
-      stop(paste0("Unknown null-model method: ", null_method))
-    }
+    nulldistr <- generate_null_distr(input, indicf, nreplicates, 
+                                       null_method)
     
     # nulldistr is a list so far => combine it to a matrix, with each null 
     # replicate as a row
@@ -60,25 +39,40 @@ compute_indicator_with_null <- function(input,
   return(result)
 }
 
-# 
-generate_glm_nulldistr <- function(mod, is_binomial, indicf, 
-                                   nr, nc, 
-                                   nreplicates) { 
+# Returns a list with the values of indicf obtained from random matrices
+generate_null_distr <- function(input, indicf, nreplicates, null_method) { 
   
-  lapply(seq.int(nreplicates), function(n) { 
-    if ( is_binomial ) { 
-      newmat <- matrix(rbinom(nr*nc, 1, predict(mod, type = "response")), 
-                       nrow = nr, ncol = nc)
+  if ( length(unique(input)) == 1 ) { 
+    # Compute the index on the same matrix as randomization will do nothing
+    nulldistr <- matrix(rep(indicf(input), nreplicates), 
+                        nrow = 1, ncol = nreplicates)
+                        
+  } else if ( null_method == "perm" ) { 
+    
+    # Compute the index on a randomized matrix
+    # shuffle_and_compute will convert all matrices to numeric matrices 
+    # internally. We need to explicitely convert back to logical after 
+    # shuffling before computing the indicator 
+    if ( is.logical(input) ) { 
+      nulldistr <- shuffle_and_compute(input, function(x) indicf(x>0), 
+                                       nreplicates)
     } else { 
-      # Gaussian model
-      newmat <- matrix(rnorm(nr*nc, 
-                             mean = predict(mod, type = "response"), 
-                             sd = sigma(mod)), 
-                      nrow = nr, ncol = nc)
+      nulldistr <- shuffle_and_compute(input, indicf, nreplicates)
     }
     
-    indicf(newmat)
-  })
+  } else if ( null_method == "binom" ) { 
+    
+    nulldistr <- lapply(seq.int(nreplicates), function(n) { 
+      newinput <- input
+      input[] <- rbinom(nrow(input) * ncol(input), 1, prob = mean(input))
+      indicf(input)
+    })
+    
+  } else { 
+    stop(paste0("Unknown null-model method: ", null_method))
+  }
+  
+  return(nulldistr)
 }
 
 # We use a safe version of quantile that reports as warnings 

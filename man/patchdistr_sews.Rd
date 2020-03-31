@@ -19,7 +19,8 @@ patchdistr_sews(
 
 \item{merge}{The default behavior is to produce indicators values for each 
 matrix. If this parameter is set to TRUE then the patch size distributions 
-are pooled together for fitting.}
+are pooled together before fitting, yielding only one final indicator 
+value for the set of matrices.}
 
 \item{fit_lnorm}{When patch size distributions are compared, should we 
 consider lognormal type ? (see details)}
@@ -128,6 +129,10 @@ Kefi, S., Rietkerk, M., Roy, M., Franc, A., de Ruiter, P.C. & Pascual, M.
   (2011). Robust scaling in ecosystems and the meltdown of patch size 
   distributions before extinction: Patch size distributions towards 
   extinction. Ecology Letters, 14, 29-35.
+
+Berdugo, M, Sonia Kéfi, Santiago Soliveres, and Fernando T. Maestre. (2017) 
+  Plant Spatial Patterns Identify Alternative Ecosystem Multifunctionality 
+  States in Global Drylands. Nature in Ecology and Evolution, no. 1.
 
 Clauset, A., Shalizi, C. R., & Newman, M. E. (2009). 
   Power-law distributions in empirical data. SIAM review, 51(4), 661-703.

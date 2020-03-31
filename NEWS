@@ -1,3 +1,4 @@
+
 spatialwarnings v1.4.0 (Release date: unknown)
 ===============================================
 
@@ -5,6 +6,17 @@ Improvements:
   * Increase the precision of the optimizer when fitting distributions. This 
       fixes some differences in results produced by this package and the 
       poweRlaw package. (FIXME: check that it really fixes the problems)
+  
+  * Significance of Power-law range can be tested using `indictest()`. Using 
+      `plot_distr()` on the resulting objects will display the 0.05/0.95 
+      quantiles of null patch size distributions. 
+
+Removals: 
+  * All the deprecated `*_spews` functions are now defunct. 
+
+Misc changes: 
+  * Minor changes in print/summary methods
+
 
 spatialwarnings v1.3.1 (Release date: 2018-12)
 ===============================================
@@ -59,6 +71,7 @@ Bug fixes
   * Counting patches in matrices with 1 line or 1 column
     does not crash R anymore
   * The R package should now build on Solaris
+
 
 spatialwarnings v1.0 (Release date: 2017-11-03)
 ===============================================

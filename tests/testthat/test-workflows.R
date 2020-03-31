@@ -85,6 +85,9 @@ test_that("The workflow functions work", {
                  datal*4, indics) # l(dataset) * 4 psd types fitted
     # test_methods("Patch-based Early-Warnings results", 
     #              datal*4, indics[[1]])
+    indics.test <- indictest(indics, nperm = 9)
+    test_methods("Spectral Spatial Early-Warnings", 
+                  datal*4, indics.test, .test_df = FALSE)
     
     # Test prediction of PSDs
     indics.pred <- predict(indics)

@@ -179,8 +179,8 @@ plot.patchdistr_sews_list <- function(x, along = NULL) {
 #' 
 # // along arg is already documented in plot() method
 #' 
-#' @param best_only Plot only the best fit the empirical (inverse cumulative) patch-size 
-#'   distribution with an overlay of the estimated fits. 
+#' @param best_only Plot only the best fit the empirical (inverse cumulative) 
+#'   patch-size distribution with an overlay of the estimated fits. 
 #' 
 #' @param plrange Plot the power-law range 
 #'
@@ -291,7 +291,7 @@ plot_distr.patchdistr_sews_list <- function(x,
     
     plot <- plot + 
       geom_segment(aes_q(x = ~xmin_est, y = 1, 
-                          xend = ~xmax,  yend = 1), 
+                         xend = ~xmax,  yend = 1), 
                     data = plrange_dat, 
                     arrow = arrow(ends = "both", type = "open", 
                                   length = unit(0.05, "inches")), 
@@ -529,6 +529,19 @@ prepare_summary_table <- function(x, ...) {
     pretty_names <- c('Mat. #', pretty_names)
   }
   
+  # If there is a pvalue columne, then add it to the output table at the end, 
+  # along with the stars
+  if ( "plrpval" %in% names(dat) ) { 
+    dat[ ,"pvalstars"] <- pval_stars(dat[ ,"plrpval"])
+    dat[ ,'pvalstars'] <- ifelse(is.na(dat[ ,'plrpval']), " ", 
+                                 as.character(dat[ ,'pvalstars']))
+    dat[ ,'plrpval'] <- ifelse(is.na(dat[ ,'plrpval']), " ", 
+                               as.character(dat[ ,'plrpval']))
+    
+    cols <- c(cols, "plrpval", "pvalstars")
+    pretty_names <- c(pretty_names, "P>null (PLR)", "")
+  }
+  
   # Extract data and rename cols
   dat <- dat[, cols]
   names(dat) <- pretty_names
@@ -558,22 +571,16 @@ summary.patchdistr_sews <- function(object, ...) {
 
 #'@export
 print.patchdistr_sews <- function(x, ...) { 
-  cat('Patch-based Early-Warnings results\n') 
-  cat('\n')
-  
-  print.data.frame( as.data.frame(x), row.names = FALSE)
-  
-  cat('\n')
-  cat('Use as.data.frame() to retrieve values in a convenient form\n')
+  summary(x, ...)
 }
 
 
 
 # Helper function 
 # ---------------
-# Get the inverse cumulative distribution of a psd (P(x >= k))
-cumpsd <- function(dat) { 
-  x <- sort(unique(dat))
+# Get the inverse cumulative distribution of a psd (P(x >= k)). x here are the 
+# values at which to evalue the inverse cumulative psd. 
+cumpsd <- function(dat, x = sort(unique(dat))) { 
   N <- length(dat)
   y <- sapply(x, function(k) { sum(dat >= k) / N })
   return( data.frame(patchsize = x, y = y) )

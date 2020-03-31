@@ -8,7 +8,8 @@
 #' 
 #' @param merge The default behavior is to produce indicators values for each 
 #'   matrix. If this parameter is set to TRUE then the patch size distributions 
-#'   are pooled together for fitting. 
+#'   are pooled together before fitting, yielding only one final indicator 
+#'   value for the set of matrices. 
 #' 
 #' @param fit_lnorm When patch size distributions are compared, should we 
 #'   consider lognormal type ? (see details)
@@ -98,6 +99,10 @@
 #'   distributions before extinction: Patch size distributions towards 
 #'   extinction. Ecology Letters, 14, 29-35.
 #' 
+#' Berdugo, M, Sonia Kéfi, Santiago Soliveres, and Fernando T. Maestre. (2017) 
+#'   Plant Spatial Patterns Identify Alternative Ecosystem Multifunctionality 
+#'   States in Global Drylands. Nature in Ecology and Evolution, no. 1.
+#' 
 #' Clauset, A., Shalizi, C. R., & Newman, M. E. (2009). 
 #'   Power-law distributions in empirical data. SIAM review, 51(4), 661-703.
 #' 
@@ -183,7 +188,8 @@ patchdistr_sews <- function(x,
                  cover = meancover,
                  plrange = plr_est, 
                  npatches = length(psd),
-                 unique_patches = length(unique(psd)))
+                 unique_patches = length(unique(psd)), 
+                 orig_data = x)
   class(result) <- c('patchdistr_sews_single', 'patchdistr_sews', 
                      'sews_result_single', 'list')
   

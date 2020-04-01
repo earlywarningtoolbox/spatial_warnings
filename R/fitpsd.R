@@ -12,7 +12,7 @@ ITERLIM <- 10000
 GRADTOL <- 1e-10 
 SANNITER <- 200
 STEPTOL <- 1e-10
-STEPMAX <- 10
+STEPMAX <- 5
 
 # This is a safe version of nlm that returns a sensible result (NA) when 
 # the algorithm fails to converge. This can happen quite often when looking 
@@ -25,8 +25,11 @@ optim_safe <- function(f, pars0, do_sann = FALSE,
   # Wrap a neg ll objective function so that it does not return NAs
   safe <- function(f) { 
     function(pars) { 
+      if ( any( ! is.finite(pars) ) ) { 
+        return(1e15)
+      }
       ans <- f(pars) 
-      if ( is.na(ans) ) { 
+      if ( ! is.finite(ans) ) { 
         return(1e15) 
       } else { 
         return(ans)
@@ -507,7 +510,7 @@ tpl_fit <- function(dat, xmin = 1) {
   pars0 <- c(from_rescaled(expo0, TPL_EXPOMIN, TPL_EXPOMAX), 
              from_rescaled(rate0, TPL_RATEMIN, TPL_RATEMAX))
   
-  est <- optim_safe(negll, pars0)
+  est <- optim_safe(negll, pars0, do_sann = TRUE)
   
   result <- list(type = 'tpl',
                  method = 'll', 

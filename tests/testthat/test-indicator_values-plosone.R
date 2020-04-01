@@ -39,7 +39,7 @@ test_that('results matches those in PLOS One', {
   test_results  <- generic_sews(matrices, subsize = 10, 
                                 moranI_coarse_grain = TRUE)
   test_reshaped <- acast(as.data.frame(test_results), 
-                         replicate ~ indic)
+                         matrixn ~ indic)
     
   # Now test for concordance
   ref_results <- cbind(mean = mean_reduced,  # ! order matters !

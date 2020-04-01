@@ -3,10 +3,10 @@
 # notably it handles creating the null model testing, etc.
 # 
 # This function will compute a null distribution of indicator values on input, 
-# by reshuffling it nreplicates times. 
+# by reshuffling it nulln times. 
 # 
 compute_indicator_with_null <- function(input, 
-                                        nreplicates, 
+                                        nulln, 
                                         indicf, 
                                         null_method = "perm") { 
   
@@ -14,16 +14,16 @@ compute_indicator_with_null <- function(input,
   value  <- indicf(input)
   result <- list(value = value)
   
-  if (nreplicates > 2) { 
+  if (nulln > 2) { 
     
-    nulldistr <- generate_null_distr(input, indicf, nreplicates, 
+    nulldistr <- generate_null_distr(input, indicf, nulln, 
                                        null_method)
     
     # nulldistr is a list so far => combine it to a matrix, with each null 
     # replicate as a row
     nulldistr <- t( do.call(rbind, nulldistr) )
     
-    # Note that here nulldistr always has one or more rows and nreplicates 
+    # Note that here nulldistr always has one or more rows and nulln 
     #   columns -> it is always a matrix
     nullstats <- list(null_mean = apply(nulldistr, 1, mean), 
                       null_sd   = apply(nulldistr, 1, sd), 
@@ -40,12 +40,12 @@ compute_indicator_with_null <- function(input,
 }
 
 # Returns a list with the values of indicf obtained from random matrices
-generate_null_distr <- function(input, indicf, nreplicates, null_method) { 
+generate_null_distr <- function(input, indicf, nulln, null_method) { 
   
   if ( length(unique(input)) == 1 ) { 
     # Compute the index on the same matrix as randomization will do nothing
-    nulldistr <- matrix(rep(indicf(input), nreplicates), 
-                        nrow = 1, ncol = nreplicates)
+    nulldistr <- matrix(rep(indicf(input), nulln), 
+                        nrow = 1, ncol = nulln)
                         
   } else if ( null_method == "perm" ) { 
     
@@ -55,14 +55,14 @@ generate_null_distr <- function(input, indicf, nreplicates, null_method) {
     # shuffling before computing the indicator 
     if ( is.logical(input) ) { 
       nulldistr <- shuffle_and_compute(input, function(x) indicf(x>0), 
-                                       nreplicates)
+                                       nulln)
     } else { 
-      nulldistr <- shuffle_and_compute(input, indicf, nreplicates)
+      nulldistr <- shuffle_and_compute(input, indicf, nulln)
     }
     
   } else if ( null_method == "binom" ) { 
     
-    nulldistr <- lapply(seq.int(nreplicates), function(n) { 
+    nulldistr <- lapply(seq.int(nulln), function(n) { 
       newinput <- input
       input[] <- rbinom(nrow(input) * ncol(input), 1, prob = mean(input))
       indicf(input)

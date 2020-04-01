@@ -14,9 +14,9 @@ indictest.simple_sews_single <- function(x,
                                          null_method = 'perm', 
                                          ...) { 
   
-  # We do not support low numbers of replicates
+  # We do not support low numbers of null simulations
   if ( nulln < 3 ) { 
-    stop('The number of null replicates should be above 3 to ', 
+    stop('The number of null simulations should be above 3 to ', 
          'assess significance')
   }
   
@@ -26,7 +26,7 @@ indictest.simple_sews_single <- function(x,
   
   # Compute a distribution of null values
   null_values <- compute_indicator_with_null(x[["orig_data"]],
-                                             nreplicates = nulln, 
+                                             nulln = nulln, 
                                              indicf = new_indicf, 
                                              null_method = null_method)
   
@@ -46,9 +46,9 @@ indictest.simple_sews_list <- function(x,
   results <- parallel::mclapply(x, indictest.simple_sews_single, 
                                 nulln, null_method, ...)
   
-  # Add replicate column with correct replicate number
+  # Add matrixn column with correct number
   for ( nb in seq_along(results) ) { 
-    results[[nb]][['replicate']] <- nb
+    results[[nb]][['matrixn']] <- nb
   }
   
   class(results) <- c('simple_sews_test_list', 'sews_test', 'list')
@@ -64,9 +64,9 @@ as.data.frame.simple_sews_test_single <- function(x, ...) {
   indicnames <- ifNULLthen(names(x[['value']]), 
                            paste0("indic_", seq_along(x[['value']])))
   
-  # We need to explicitely add a `replicate` column because it will 
+  # We need to explicitely add a `matrixn` column because it will 
   # be used by funs down the stream. 
-  ans <- data.frame(replicate = 1, 
+  ans <- data.frame(matrixn = 1, 
                     indic = indicnames, 
                     as.data.frame.list(x))
   
@@ -81,9 +81,9 @@ as.data.frame.simple_sews_test_list <- function(x, ...) {
 
   tab <- ldply(x, function(x) { data.frame(indic = indicnames, 
                                            as.data.frame.list(x)) } )
-  # Reorder cols so that 'replicate' is first'
-  tab <- data.frame(replicate = tab[ ,'replicate'], 
-                    tab[ ! names(tab) %in% 'replicate'])
+  # Reorder cols so that 'matrixn' is first'
+  tab <- data.frame(matrixn = tab[ ,'matrixn'], 
+                    tab[ ! names(tab) %in% 'matrixn'])
   tab
 }
 
@@ -113,7 +113,7 @@ summary.simple_sews_test_list <- function(object,
   # Format pvalues 
   tab[ ,'stars'] <- pval_stars(tab[ ,'pval'])
   
-  tab <- tab[ ,c('replicate', 'indic', 'value', 'pval', 'stars')]
+  tab <- tab[ ,c('matrixn', 'indic', 'value', 'pval', 'stars')]
   
   # Reshape the table 
   tab_pretty <- llply(unique(tab[['indic']]), function(current_indic) { 
@@ -124,7 +124,7 @@ summary.simple_sews_test_list <- function(object,
     a
   })
   tab_pretty <- do.call(data.frame, tab_pretty)
-  tab_pretty <- data.frame(replicate = seq.int(nrow(tab_pretty)), tab_pretty)
+  tab_pretty <- data.frame(matrixn = seq.int(nrow(tab_pretty)), tab_pretty)
   
   # Build the header to print. Note that we set it to the names of the 
   # data.frame. This is handy because then print.data.frame handles all the 
@@ -133,7 +133,7 @@ summary.simple_sews_test_list <- function(object,
   header <- names(tab_pretty) 
   header[grepl('pval_', header)] <- 'P>null'
   header[grepl('stars_', header)] <- ''
-  header[grepl('replicate', header)] <- 'Mat #'
+  header[grepl('matrixn', header)] <- 'Mat #'
   names(tab_pretty) <- header
   
   cat('Spatial Early-Warning:', indicname, '\n') 
@@ -212,17 +212,17 @@ plot.simple_sews_test_list <- function(x,
   # Transform into data.frame
   x.df <- as.data.frame(x)
   
-  # If along is not provided, then use the replicate number
+  # If along is not provided, then use the matrixn number
   set_default_xlab <- FALSE 
   if ( is.null(along) ) { 
-    along <- unique(x.df[ ,"replicate"])
+    along <- unique(x.df[ ,"matrixn"])
     set_default_xlab <- TRUE 
   }
   
   check_suitable_for_plots(x.df, along, display_null)
   
   plot_data <- data.frame(as.data.frame(x.df), 
-                          gradient = along[x.df[ ,'replicate']])
+                          gradient = along[x.df[ ,'matrixn']])
   
   # Create base ggplot2 object
   # Create base plot object 

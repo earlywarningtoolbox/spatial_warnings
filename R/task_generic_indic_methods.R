@@ -82,10 +82,10 @@ print.generic_sews <- function(x, ...) {
 as.data.frame.generic_sews_list <- function(x, ...) { 
   
   df <- plyr::ldply(x, function(x) { as.data.frame(x[['results']]) })
-  df[ ,'replicate'] <- seq.int(length(x))
+  df[ ,'matrixn'] <- seq.int(length(x))
   
   # Extract and reorder the data.frame
-  df <- df[ ,c('replicate', 'mean', 'moran', 'skewness', 'variance')]
+  df <- df[ ,c('matrixn', 'mean', 'moran', 'skewness', 'variance')]
   tidyr::gather_(df, 'indicator', 'value', 
                  c('mean', 'moran', 'skewness', 'variance'), 
                  factor_key = TRUE)

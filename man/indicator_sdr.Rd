@@ -4,12 +4,7 @@
 \alias{indicator_sdr}
 \title{Spectral Density Ratio (SDR) indicator}
 \usage{
-indicator_sdr(
-  input,
-  sdr_low_range = NULL,
-  sdr_high_range = NULL,
-  nreplicates = 999
-)
+indicator_sdr(input, sdr_low_range = NULL, sdr_high_range = NULL, nulln = 999)
 }
 \arguments{
 \item{input}{A matrix or a logical matrix (TRUE/FALSE), or a list of these.}
@@ -24,7 +19,7 @@ use for the computation of the spectral density ratio. For example, for
 the highest 20\% (default value), set \code{sdr_high_range} to 
 \code{c(.8, 1)}.}
 
-\item{nreplicates}{The number of replicates to compute for the null 
+\item{nulln}{The number of simulations to compute for the null 
 distribution}
 }
 \value{
@@ -33,7 +28,7 @@ A list (or a list of lists if input was a list of matrices) with
     \itemize{
       \item `value`: SDR of the matrix
     }
-  If nreplicates is above 2, then the list has the following additional 
+  If nulln is above 2, then the list has the following additional 
   components : 
     \itemize{
       \item `null_mean`: Mean SDR of the null distribution
@@ -69,7 +64,7 @@ Low and high frequencies are averaged in order to compute the SDR. The
 \examples{
 
 \dontrun{ 
-serengeti.sdr <- indicator_sdr(serengeti, nreplicates = 499)
+serengeti.sdr <- indicator_sdr(serengeti, nulln = 499)
 do.call(rbind, serengeti.sdr) # convert results to data.frame
 }
 

@@ -37,8 +37,8 @@ computing the Moran's I indicator value ?}
 \item{x}{A \code{generic_sews} object (as provided by the 
 \code{generic_sews} function).}
 
-\item{nulln}{The number of replicates to use to compute a null 
-distribution}
+\item{nulln}{Number of simulations used to produce the null 
+distribution of indicator values.}
 
 \item{...}{Additional arguments passed onto methods}
 

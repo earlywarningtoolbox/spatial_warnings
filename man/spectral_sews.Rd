@@ -33,8 +33,8 @@ c(.8, 1). See also the Details section.}
 
 \item{x}{A \code{spectral_sews_test} object as produced by \link{indictest}}
 
-\item{nulln}{The number of replicates to use to compute use in the 
-null distribution}
+\item{nulln}{Number of simulations used to produce the null 
+distribution of indicator values.}
 
 \item{...}{Ignored}
 

@@ -34,7 +34,7 @@ pval_stars <- function(value, NA_ret = NA) {
   }
 }
 
-# Format pvalues to reflect the number of replicates instead of printing a 
+# Format pvalues to reflect the number of null values instead of printing a 
 # 0 when it is below what's detectable. 
 format_pvalues <- function(X, nreps) { 
   ifelse(X == 0, 

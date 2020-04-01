@@ -17,15 +17,15 @@
 #' @param absolute Should the function return the absolute value or raw value 
 #'   of skewness ?
 #' 
-#' @param nreplicates Number of replicates to produce to estimate null 
-#'   distribution of index.
+#' @param nulln Number of simulations used to produce the null 
+#'   distribution of indicator values.
 #' 
 #' @return A list (or a list of lists if input was a list of matrices) with 
 #'   components:
 #'     \itemize{
 #'       \item `value`: Spatial skewness of the matrix
 #'     }
-#'   If nreplicates is above 2, then the list has the following additional 
+#'   If nulln is above 2, then the list has the following additional 
 #'   components : 
 #'     \itemize{
 #'       \item `null_mean`: Mean skewness of the null distribution
@@ -92,14 +92,14 @@
 indicator_skewness <- function(input, 
                                subsize     = 5, 
                                absolute = TRUE,
-                               nreplicates = 999) {
+                               nulln = 999) {
   
   check_mat(input) # checks if binary and sensible
   
   if ( is.list(input) ) {
     # Returns a list of lists
     return( lapply(input, indicator_skewness, 
-                   subsize, absolute, nreplicates) )
+                   subsize, absolute, nulln) )
   } else { 
     
     indicf <- function(mat) { 
@@ -107,7 +107,7 @@ indicator_skewness <- function(input,
     }
     
     # Compute and return the indicator
-    return( compute_indicator_with_null(input, nreplicates, indicf) ) 
+    return( compute_indicator_with_null(input, nulln, indicf) ) 
     
   }
 }

@@ -24,17 +24,17 @@ summary.spectral_sews_test <- function(object, ...) {
   
   # Keep only SDR and print as data frame
   x2 <- as.data.frame(object)
-  x2 <- x2[x2[ ,"type"] == 'sdr', c('replicate', 'value', 'pval')]
+  x2 <- x2[x2[ ,"type"] == 'sdr', c('matrixn', 'value', 'pval')]
   
   # Format pvals
   x2<- data.frame(x2, stars = pval_stars(x2[ ,'pval']))
-  x2[ ,"pval"] <- format_pvalues(x2[ ,"pval"], attr(object, "nreplicates"))
+  x2[ ,"pval"] <- format_pvalues(x2[ ,"pval"], attr(object, "nulln"))
   
   names(x2) <- c('Matrix #', 'SDR Value', 'P>null', '   ')
   print.data.frame(x2, row.names = FALSE)
   
   cat('\n')
-  cat(' Significance tested against', attr(object, 'nreplicates'), 
+  cat(' Significance tested against', attr(object, 'nulln'), 
       'randomly shuffled matrices\n')
   cat(" Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1", '\n')
   cat('\n')

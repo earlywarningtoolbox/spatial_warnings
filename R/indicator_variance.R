@@ -14,15 +14,15 @@
 #'   \code{subsize} in each dimension of the matrix. Variance is calculated 
 #'   on the coarse-grained matrix. 
 #' 
-#' @param nreplicates Number of replicates to produce to estimate null 
-#'   distribution of index.
+#' @param nulln Number of simulations used to produce the null 
+#'   distribution of indicator values.
 #' 
 #' @return A list (or a list of lists if input was a list of matrices) with 
 #'   components:
 #'     \itemize{
 #'       \item `value`: Spatial variance of the matrix
 #'     }
-#'   If nreplicates is above 2, then the list has the following additional 
+#'   If nulln is above 2, then the list has the following additional 
 #'   components : 
 #'     \itemize{
 #'       \item `null_mean`: Mean spatial variance of the null distribution
@@ -77,26 +77,26 @@
 #' 
 #' data(serengeti)
 #' \dontrun{
-#' indicator_variance(serengeti, nreplicates = 499)
+#' indicator_variance(serengeti, nulln = 499)
 #' }
 #' 
 #'@export
 indicator_variance <- function(input, 
                                subsize     = 5, 
-                               nreplicates = 999) {
+                               nulln = 999) {
   
   check_mat(input) # checks data input
   
   if (is.list(input)) { 
     # Returns a list of lists
-    return( lapply(input, indicator_variance, subsize, nreplicates) )
+    return( lapply(input, indicator_variance, subsize, nulln) )
   } else { 
     
     indicf <- function(mat) { 
       raw_cg_variance(mat, subsize = subsize) 
     }
     # Compute and return indicator
-    return( compute_indicator_with_null(input, nreplicates, indicf) ) 
+    return( compute_indicator_with_null(input, nulln, indicf) ) 
     
   }
 }

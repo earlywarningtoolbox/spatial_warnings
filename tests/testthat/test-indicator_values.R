@@ -21,12 +21,12 @@ if ( exists("EXTENDED_TESTS") ) {
     
     expect_equal(varf(testmat), 
                 indicator_variance(testmat, subsize = 1, 
-                                    nreplicates = 0)[["value"]])
+                                    nulln = 0)[["value"]])
     
     for (subsize in subsizes) { 
       expect_equal(varf(coarse_grain(testmat, subsize = subsize)), 
                   indicator_variance(testmat, subsize = subsize, 
-                                      nreplicates = 0)[["value"]])
+                                      nulln = 0)[["value"]])
     }
   })
 
@@ -41,12 +41,12 @@ if ( exists("EXTENDED_TESTS") ) {
     expect_equal(skewf(testmat), 
                 indicator_skewness(testmat, subsize = 1, 
                                     absolute = FALSE, 
-                                    nreplicates = 0)[["value"]])
+                                    nulln = 0)[["value"]])
     
     for (subsize in subsizes) { 
       expect_equal(skewf(coarse_grain(testmat, subsize = subsize)), 
                   indicator_skewness(testmat, subsize = subsize, 
-                                      nreplicates = 0,
+                                      nulln = 0,
                                       absolute = FALSE)[["value"]]) # adjust for test
     }
   })
@@ -75,7 +75,7 @@ if ( exists("EXTENDED_TESTS") ) {
     
     # Now test the indicator functions
     expect_equal(raw_moran(testmat), 
-                indicator_moran(testmat, nreplicates = 0)[['value']])
+                indicator_moran(testmat, nulln = 0)[['value']])
     
   })
 
@@ -132,20 +132,20 @@ if ( exists("EXTENDED_TESTS") ) {
     expect_equal(as.data.frame(genindic_result, wide = TRUE)$moran, 
                 indicator_moran(testmat, 
                                 subsize = 1,
-                                nreplicates = 0)[['value']])
+                                nulln = 0)[['value']])
     
     # Skewness
     expect_equal(as.data.frame(genindic_result, wide = TRUE)$skewness, 
                 indicator_skewness(testmat, 
                                     subsize = size, 
                                     absolute = FALSE, 
-                                    nreplicates = 0)[['value']])
+                                    nulln = 0)[['value']])
     
     # Variances
     expect_equal(as.data.frame(genindic_result, wide = TRUE)$variance, 
                 indicator_variance(testmat, 
                                     subsize = size, 
-                                    nreplicates = 0)[['value']])
+                                    nulln = 0)[['value']])
     
   })
 }

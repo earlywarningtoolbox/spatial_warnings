@@ -4,7 +4,7 @@
 \alias{indicator_variance}
 \title{Spatial variance indicator}
 \usage{
-indicator_variance(input, subsize = 5, nreplicates = 999)
+indicator_variance(input, subsize = 5, nulln = 999)
 }
 \arguments{
 \item{input}{A matrix or a list of matrices. The matrix 
@@ -17,8 +17,8 @@ matrix. Coarse-graining reduces the size of the matrix by a factor
 \code{subsize} in each dimension of the matrix. Variance is calculated 
 on the coarse-grained matrix.}
 
-\item{nreplicates}{Number of replicates to produce to estimate null 
-distribution of index.}
+\item{nulln}{Number of simulations used to produce the null 
+distribution of indicator values.}
 }
 \value{
 A list (or a list of lists if input was a list of matrices) with 
@@ -26,7 +26,7 @@ A list (or a list of lists if input was a list of matrices) with
     \itemize{
       \item `value`: Spatial variance of the matrix
     }
-  If nreplicates is above 2, then the list has the following additional 
+  If nulln is above 2, then the list has the following additional 
   components : 
     \itemize{
       \item `null_mean`: Mean spatial variance of the null distribution
@@ -71,7 +71,7 @@ Null model evaluations are also done on coarse-grained matrices.
 
 data(serengeti)
 \dontrun{
-indicator_variance(serengeti, nreplicates = 499)
+indicator_variance(serengeti, nulln = 499)
 }
 
 }

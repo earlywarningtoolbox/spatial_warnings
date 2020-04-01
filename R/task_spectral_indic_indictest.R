@@ -5,8 +5,8 @@
 
 #' @rdname spectral_sews
 #' 
-#' @param nulln The number of replicates to use to compute use in the 
-#'   null distribution
+#' @param nulln Number of simulations used to produce the null 
+#'   distribution of indicator values.
 #' 
 #' @export
 indictest.spectral_sews <- function(x, nulln = 999, ...) { 
@@ -26,15 +26,15 @@ indictest.spectral_sews_list <- function(x, nulln = 999, ...) {
   # Transfer names 
   names(results) <- names(x)
   
-  # Add a replicate column with replicate number
-  results <- Map(function(x, df) { df[ ,'replicate'] <- x; df }, 
+  # Add a matrixn column with matrixn number
+  results <- Map(function(x, df) { df[ ,'matrixn'] <- x; df }, 
                  seq.int(length(results)), results)
   
   # Bind all of it in a single df
   results <- do.call(rbind, results)
   
   # Format and return output
-  attr(results, "nreplicates") <- nulln
+  attr(results, "nulln") <- nulln
   class(results) <- c('spectral_sews_test', 'sews_test', 'data.frame')
   
   return(results)
@@ -45,7 +45,7 @@ indictest.spectral_sews_list <- function(x, nulln = 999, ...) {
 indictest.spectral_sews_single <- function(x, nulln = 999, ...) { 
   
   # Build closure passed to compute_indicator_with_null that uses the correct
-  #   high and low ranges, and is compatible with the use of replicate(). 
+  #   high and low ranges, and is compatible with the use of matrixn(). 
   sdr_indicf <- function(mat) { 
     spectrum <- rspectrum(mat)
     
@@ -57,7 +57,7 @@ indictest.spectral_sews_single <- function(x, nulln = 999, ...) {
   # Compute a distribution of null values for SDR
   null_values_sdr <- 
     compute_indicator_with_null(x[['orig_data']], 
-                                nreplicates = nulln, 
+                                nulln = nulln, 
                                 indicf = sdr_indicf)
   
   results <- rbind(
@@ -67,12 +67,12 @@ indictest.spectral_sews_single <- function(x, nulln = 999, ...) {
                dist = x[['results']][['spectrum']][ ,'dist'], 
                lapply(null_values_sdr, `[`, -1)) # all but first elem
   )
-  # Add replicate column and discard row names
-  results <- data.frame(replicate = 1, results)
+  # Add matrixn column and discard row names
+  results <- data.frame(matrixn = 1, results)
   row.names(results) <- NULL
   
   # Format output
-  attr(results, "nreplicates") <- nulln
+  attr(results, "nulln") <- nulln
   class(results) <- c('spectral_sews_test', 'sews_test', 'data.frame')
   
   return(results)

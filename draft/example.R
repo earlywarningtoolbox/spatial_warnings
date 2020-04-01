@@ -123,7 +123,8 @@ forest.genic <- generic_spews(forestgap,
                               abs_skewness = TRUE,
                               moranI_coarse_grain = TRUE)
 
-#' We can also specify the number of replicates to use in the null distribution
+#' We can also specify the number of simulations to use for the null 
+#' distribution
 forest.gentest <- indictest(forest.genic, 
                             .progress = "time", 
                             nulln = 199)
@@ -140,8 +141,6 @@ head( as.data.frame(forest.gentest) )
 forest.varic <- indicator_variance(forestgap)
 # See also indicator_skewness, indicator_moran, etc. 
 
-#' Parallel processing is available via setting the global option spw.threads
-options(spw.threads = 24)
 
 
 

@@ -26,7 +26,7 @@ indictest.patchdistr_sews_single <- function(x,
   # Obtain null distributions + plrange values. We compute both at the same 
   # time so we do not reshuffle matrices twice. 
   nulldistr <- generate_null_distr(x[["orig_data"]], 
-                                   nreplicates = nulln, 
+                                   nulln = nulln, 
                                    null_method = null_method, 
                                    function(nullmat) { 
       list(plrange = raw_plrange(nullmat), 
@@ -76,7 +76,7 @@ indictest.patchdistr_sews_single <- function(x,
   ans <- c(x, 
            cumpsd_null = list(cumpsd_null_distr), 
            plrange_pval = plrange_pval, 
-           nreplicates = nulln, 
+           nulln = nulln, 
            null_method = null_method)
   class(ans) <- c('patchdistr_sews_test_single', 
                   'patchdistr_sews_single', 
@@ -128,11 +128,11 @@ summary.patchdistr_sews_test_single <- function(x, ...) {
   summary.patchdistr_sews(x, ...)
 }
 
-# Convert each element to a data frame, and a column with the replicate number
+# Convert each element to a data frame, and a column with the matrixn number
 #'@export
 as.data.frame.patchdistr_sews_test_list <- function(x, ...) { 
   newdat <- llply(x, as.data.frame.patchdistr_sews_test_single)
-  newdat <- Map(function(n, o) data.frame(replicate = n, o), 
+  newdat <- Map(function(n, o) data.frame(matrixn = n, o), 
                 seq_along(newdat), newdat)
   do.call(rbind, newdat)
 }
@@ -152,11 +152,11 @@ plot_distr.patchdistr_sews_test_list <- function(x,
   gplot <- plot_distr.patchdistr_sews_list(x, along, best_only, plrange)
   
   # Add the null data to that plot
-  nulldat <- Map(function(n, o) data.frame(replicate = n, o[['cumpsd_null']]), 
+  nulldat <- Map(function(n, o) data.frame(matrixn = n, o[['cumpsd_null']]), 
                  seq_along(x), x)
   nulldat <- do.call(rbind, nulldat)
   if ( ! is.null(along) ) { 
-    nulldat[ ,'replicate'] <- along[nulldat[ ,'replicate']]
+    nulldat[ ,'matrixn'] <- along[nulldat[ ,'matrixn']]
   }
   
   # NOTE: we add layers this way to the ggplot object, so null values appear 

@@ -24,11 +24,11 @@ as.data.frame.simple_sews_list <- function(x, wide = FALSE, ...) {
     output <- Map(function(n, o) { 
         a <- as.data.frame(matrix(o[['value']], nrow = 1))
         names(a) <- indicnames
-        data.frame(replicate = n, a)
+        data.frame(matrixn = n, a)
       }, seq_along(x), x)
   } else { 
     output <- Map(function(n, o) { 
-        data.frame(replicate = n, indic = indicnames, value = o[['value']])
+        data.frame(matrixn = n, indic = indicnames, value = o[['value']])
       }, seq_along(x), x)
   }
   output <- do.call(rbind, output)

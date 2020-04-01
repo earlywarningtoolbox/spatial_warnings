@@ -4,7 +4,7 @@
 \alias{indicator_moran}
 \title{Moran's Index at lag of 1}
 \usage{
-indicator_moran(input, subsize = 1, nreplicates = 999)
+indicator_moran(input, subsize = 1, nulln = 999)
 }
 \arguments{
 \item{input}{An matrix or a list of matrix object. It should 
@@ -13,7 +13,7 @@ be a square matrix}
 \item{subsize}{logical. Dimension of the submatrix used to coarse-grain the 
 original matrix (set to 1 for no coarse-graining).}
 
-\item{nreplicates}{Number of replicates to produce to estimate null 
+\item{nulln}{Number of replicates to produce to estimate null 
 distribution of index (default: 999).}
 }
 \value{
@@ -22,7 +22,7 @@ A list (or a list of those if input is a list of matrix
     \itemize{
       \item `value`: Spatial autocorrelation of the matrix
     }
-  If nreplicates is above 2, then the list has the following additional 
+  If nulln is above 2, then the list has the following additional 
   components : 
     \itemize{
       \item `null_mean`: Mean autocorrelation of the null distribution

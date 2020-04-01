@@ -14,8 +14,8 @@ as.data.frame.spectral_sews_list <- function(x, ...) {
   # Compute a distribution of null values for SDR
   results <- plyr::llply(x, as.data.frame.spectral_sews_single, ...)
   
-  # Add a replicate column with replicate number
-  results <- Map(function(x, df) { df[ ,'replicate'] <- x; df }, 
+  # Add a matrixn column with matrixn number
+  results <- Map(function(x, df) { df[ ,'matrixn'] <- x; df }, 
                  seq.int(length(results)), results)
   
   # Bind all of it in a single df
@@ -28,10 +28,10 @@ as.data.frame.spectral_sews_list <- function(x, ...) {
 as.data.frame.spectral_sews_single <- function(x, ...) { 
   
   with(x, 
-    rbind.fill(data.frame(replicate = 1, 
+    rbind.fill(data.frame(matrixn = 1, 
                           type = 'sdr', 
                           value = results[['sdr']]), 
-               data.frame(replicate = 1, 
+               data.frame(matrixn = 1, 
                          type  = 'rspectrum', 
                          dist  = results[['spectrum']][ ,'dist'],
                          value = results[['spectrum']][ ,'rspec'])) 
@@ -75,7 +75,7 @@ summary.spectral_sews_list <- function(object, ...) {
   
   # Show only SDR and print as data frame
   x2 <- as.data.frame(object)
-  x2 <- x2[x2[ ,"type"] == "sdr", c('replicate', 'value')]
+  x2 <- x2[x2[ ,"type"] == "sdr", c('matrixn', 'value')]
   names(x2) <- c('Matrix #', 'SDR Value')
   
   print.data.frame(x2, row.names = FALSE)

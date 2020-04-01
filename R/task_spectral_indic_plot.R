@@ -26,10 +26,10 @@ plot.spectral_sews_test <- function(x, # an indictest object
                                      what = 'value', 
                                      display_null = TRUE) { 
   
-  # If along is not provided, then use the replicate number
+  # If along is not provided, then use the matrixn number
   set_default_xlab <- FALSE 
   if ( is.null(along) ) { 
-    along <- unique(x[ ,"replicate"])
+    along <- unique(x[ ,"matrixn"])
     set_default_xlab <- TRUE 
   }
   
@@ -38,7 +38,7 @@ plot.spectral_sews_test <- function(x, # an indictest object
   # This function only plots summary sdr so we subset the indictest data.frame
   is_sdr <- x[ ,'type'] == 'sdr'
   plot_data <- data.frame(x[is_sdr, ],
-                          gradient = along[x[is_sdr,'replicate']])
+                          gradient = along[x[is_sdr,'matrixn']])
   
   # Create base plot object 
   plot <- ggplot(plot_data) + theme_spwarnings()
@@ -121,24 +121,24 @@ plot_spectrum <- function(x, along = NULL, display_null = TRUE) {
 # Method for indictest output
 #' @export
 plot_spectrum.spectral_sews_test <- function(x, 
-                                              along = NULL, 
-                                              display_null = TRUE) { 
+                                             along = NULL, 
+                                             display_null = TRUE) { 
   
   # If along is not provided, then use the replicate number
-  if ( !is.null(along) && (length(along) != max(x[ ,'replicate'])) ) { 
+  if ( !is.null(along) && (length(along) != max(x[ ,'matrixn'])) ) { 
     stop('The along values are unfit for plotting (size mismatch)')
   }
   
   set_default_xlab <- FALSE 
   if ( is.null(along) ) { 
-    along <- unique(x[ ,"replicate"])
+    along <- unique(x[ ,"matrixn"])
   }
   
   # We subset the original object to use only rspectrum-related variables and 
-  # add the gradient variable to it. We also add a replicate column 
+  # add the gradient variable to it. We also add a matrixn column 
   is_rspec <- x[ ,'type'] == 'rspectrum'
   x <- data.frame(x[is_rspec, ], 
-                    gradient = along[x[is_rspec, 'replicate']])
+                    gradient = along[x[is_rspec, 'matrixn']])
   
   # Create base plot. 
   plot <- ggplot(x) +
@@ -162,12 +162,12 @@ plot_spectrum.spectral_sews_test <- function(x,
   # Add layer for the observed spectrum
   plot <- plot + geom_line(aes_q(x = ~dist, 
                                                    y = ~value, 
-                                                   group = ~replicate)) +
+                                                   group = ~matrixn)) +
     scale_color_gradient(low = '#000000', high = '#E86435', 
                                   name = 'Spectral \nDensity \nRatio') 
    
-  # Add facets if multiple replicates are present
-  if ( length(unique(x[ ,"replicate"])) > 1 ) {
+  # Add facets if multiple matrices are present
+  if ( length(unique(x[ ,"matrixn"])) > 1 ) {
     plot <- plot + facet_wrap( ~ gradient ) 
   }
   

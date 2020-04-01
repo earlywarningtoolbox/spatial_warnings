@@ -67,14 +67,14 @@ check_suitable_for_plots <- function(obj,
                                      along, 
                                      display_null) { 
   
-  if ( ! 'replicate' %in% colnames(obj) || 
+  if ( ! 'matrixn' %in% colnames(obj) || 
         !is.null(along) && length(along) <= 1 ) { 
     stop('I cannot plot a trend with only one value')
   }
   
-  if ( length(unique(obj[ ,'replicate'])) != length(along) ) { 
+  if ( length(unique(obj[ ,'matrixn'])) != length(along) ) { 
     stop('External data length (along = ...) does not match ',
-         'the number of replicates !')
+         'the number of matrices !')
   }
   
 }

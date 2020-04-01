@@ -17,7 +17,7 @@
 #'   the highest 20\% (default value), set \code{sdr_high_range} to 
 #'   \code{c(.8, 1)}. 
 #' 
-#' @param nreplicates The number of replicates to compute for the null 
+#' @param nulln The number of simulations to compute for the null 
 #'   distribution
 #' 
 #' @return A list (or a list of lists if input was a list of matrices) with 
@@ -25,7 +25,7 @@
 #'     \itemize{
 #'       \item `value`: SDR of the matrix
 #'     }
-#'   If nreplicates is above 2, then the list has the following additional 
+#'   If nulln is above 2, then the list has the following additional 
 #'   components : 
 #'     \itemize{
 #'       \item `null_mean`: Mean SDR of the null distribution
@@ -64,7 +64,7 @@
 #' @examples 
 #' 
 #' \dontrun{ 
-#' serengeti.sdr <- indicator_sdr(serengeti, nreplicates = 499)
+#' serengeti.sdr <- indicator_sdr(serengeti, nulln = 499)
 #' do.call(rbind, serengeti.sdr) # convert results to data.frame
 #' }
 #' 
@@ -72,7 +72,7 @@
 indicator_sdr <- function(input, 
                           sdr_low_range  = NULL, 
                           sdr_high_range = NULL, 
-                          nreplicates = 999) { 
+                          nulln = 999) { 
   
   check_mat(input) # checks if binary and sensible
   
@@ -93,7 +93,7 @@ indicator_sdr <- function(input,
   if (is.list(input)) {
     # Returns a list of lists
     return( llply(input, indicator_sdr, sdr_low_range, sdr_high_range, 
-                   nreplicates) )
+                   nulln) )
   } 
   
   # Now the input is always a mmatrix
@@ -109,7 +109,7 @@ indicator_sdr <- function(input,
   
   return( 
     compute_indicator_with_null(input, 
-                                nreplicates = nreplicates, 
+                                nulln = nulln, 
                                 indicf = indicf)
   )
   

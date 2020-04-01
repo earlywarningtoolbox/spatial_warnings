@@ -4,7 +4,7 @@
 \alias{indicator_skewness}
 \title{Skewness indicator}
 \usage{
-indicator_skewness(input, subsize = 5, absolute = TRUE, nreplicates = 999)
+indicator_skewness(input, subsize = 5, absolute = TRUE, nulln = 999)
 }
 \arguments{
 \item{input}{A matrix or a list of matrices. The matrix 
@@ -20,8 +20,8 @@ on the coarse-grained matrix.}
 \item{absolute}{Should the function return the absolute value or raw value 
 of skewness ?}
 
-\item{nreplicates}{Number of replicates to produce to estimate null 
-distribution of index.}
+\item{nulln}{Number of simulations used to produce the null 
+distribution of indicator values.}
 }
 \value{
 A list (or a list of lists if input was a list of matrices) with 
@@ -29,7 +29,7 @@ A list (or a list of lists if input was a list of matrices) with
     \itemize{
       \item `value`: Spatial skewness of the matrix
     }
-  If nreplicates is above 2, then the list has the following additional 
+  If nulln is above 2, then the list has the following additional 
   components : 
     \itemize{
       \item `null_mean`: Mean skewness of the null distribution

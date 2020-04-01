@@ -89,7 +89,7 @@ plot.patchdistr_sews_list <- function(x, along = NULL) {
   # If along is provided, then add it to the table
   xtitle <- deparse(substitute(along))
   if ( is.null(along) ) { 
-    along <- as.factor(obj_table[ ,'replicate'])
+    along <- as.factor(obj_table[ ,'matrixn'])
     xtitle <- "Matrix number"
   }
   
@@ -260,16 +260,16 @@ plot_distr.patchdistr_sews_list <- function(x,
   
   # Get plottable data.frames
   values <- predict(x, best_only = best_only)
-  # Modify replicate column if necessary and reorder values
+  # Modify matrixn column if necessary and reorder values
   if ( ! is.null(along) ) { 
-    values[['obs']][ ,'replicate']  <- along[values[["obs"]][ ,'replicate']]
-    values[['pred']][ ,'replicate'] <- along[values[["pred"]][ ,'replicate']]
+    values[['obs']][ ,'matrixn']  <- along[values[["obs"]][ ,'matrixn']]
+    values[['pred']][ ,'matrixn'] <- along[values[["pred"]][ ,'matrixn']]
   }
   
   plot <- ggplot() + 
     scale_y_log10() +
     scale_x_log10() + 
-    facet_wrap( ~ replicate) + 
+    facet_wrap( ~ matrixn) + 
     xlab('Patch size') + 
     ylab('Frequency (P>=x)') + 
     theme_spwarnings()
@@ -277,17 +277,17 @@ plot_distr.patchdistr_sews_list <- function(x,
   if ( plrange ) { 
     # Add plrange to the plot. We need to extract info 
     # from the observed psd so that we can place the segment on the plot. 
-    plrange_dat <- unique( as.data.frame(x)[ ,c("replicate", 'xmin_est')] )
+    plrange_dat <- unique( as.data.frame(x)[ ,c("matrixn", 'xmin_est')] )
     if ( ! is.null(along) ) { 
-      plrange_dat[ ,"replicate"] <- along[plrange_dat[ ,"replicate"]]
+      plrange_dat[ ,"matrixn"] <- along[plrange_dat[ ,"matrixn"]]
     }
     
-    patches_minmax <- ddply(values[['obs']], "replicate", 
+    patches_minmax <- ddply(values[['obs']], "matrixn", 
                           function(df) { 
                             data.frame(xmax = max(df[ ,"patchsize"]))
                           })
     plrange_dat <- join(plrange_dat, patches_minmax, type = "left", 
-                        match = "first", by = "replicate")
+                        match = "first", by = "matrixn")
     
     plot <- plot + 
       geom_segment(aes_q(x = ~xmin_est, y = 1, 
@@ -441,9 +441,9 @@ predict.patchdistr_sews_list <- function(object, ...,
   # Add id but handle when psd is empty
   add_id <- function(n, x) { 
     if (nrow(x) > 0) { 
-      x <- data.frame(replicate = n, x) 
+      x <- data.frame(matrixn = n, x) 
     } else {
-      x <- data.frame(replicate = n, patchsize = NA_integer_)
+      x <- data.frame(matrixn = n, patchsize = NA_integer_)
     } 
   }
   
@@ -487,7 +487,7 @@ as.data.frame.patchdistr_sews_list <- function(x, ...) {
   # Format data
   results <- lapply(x, as.data.frame.patchdistr_sews_single)
   results <- Map(function(n, df) { 
-                   data.frame(replicate = n, df) 
+                   data.frame(matrixn = n, df) 
                  }, seq.int(length(results)), results)
   
   # Bind it altogether and return df 
@@ -522,10 +522,10 @@ prepare_summary_table <- function(x, ...) {
             'type', 'plrange')
   pretty_names <- c('N(uniq.)', 'Cover', 'Percl.Full', 'Percl.Empt', 'Type', 'PLR')
   
-  # If there is a replicate column (for when several matrices were 
+  # If there is a matrixn column (for when several matrices were 
   #   used at once), then add it to these columns
-  if ( "replicate" %in% names(dat) ) { 
-    cols <- c("replicate", cols)
+  if ( "matrixn" %in% names(dat) ) { 
+    cols <- c("matrixn", cols)
     pretty_names <- c('Mat. #', pretty_names)
   }
   

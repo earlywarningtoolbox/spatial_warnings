@@ -22,7 +22,7 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
     
     # Compute flow lengths
     ds <- cell_size / cos(slope * pi/180)
-    fls <- replicate(19999, { 
+    fls <- matrixn(19999, { 
       dat <- matrix(runif(L*cols), ncol = cols, nrow = L) < rho
       raw_flowlength_uniform(dat, cell_size = cell_size, slope = slope)
     })

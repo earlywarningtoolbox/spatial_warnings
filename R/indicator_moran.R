@@ -19,7 +19,7 @@
 #' @param subsize logical. Dimension of the submatrix used to coarse-grain the 
 #'   original matrix (set to 1 for no coarse-graining).
 #' 
-#' @param nreplicates Number of replicates to produce to estimate null 
+#' @param nulln Number of replicates to produce to estimate null 
 #'   distribution of index (default: 999).
 #' 
 #' @return A list (or a list of those if input is a list of matrix 
@@ -27,7 +27,7 @@
 #'     \itemize{
 #'       \item `value`: Spatial autocorrelation of the matrix
 #'     }
-#'   If nreplicates is above 2, then the list has the following additional 
+#'   If nulln is above 2, then the list has the following additional 
 #'   components : 
 #'     \itemize{
 #'       \item `null_mean`: Mean autocorrelation of the null distribution
@@ -52,14 +52,14 @@
 #'@export
 indicator_moran <- function(input, 
                             subsize     = 1, # default = no cg
-                            nreplicates = 999) {
+                            nulln = 999) {
   
   check_mat(input) # checks if binary and sensible
   # We do not check for binary status as moran's I can be computed on both. 
   
   if (is.list(input)) {
     # Returns a list of lists
-    return( lapply(input, indicator_moran, subsize, nreplicates) )
+    return( lapply(input, indicator_moran, subsize, nulln) )
   } else { 
     
     # We alter the moran function to do coarse_graining if the user asked for it
@@ -70,7 +70,7 @@ indicator_moran <- function(input,
       indicf <- raw_moran
     }
     
-    return( compute_indicator_with_null(input, nreplicates, indicf) )
+    return( compute_indicator_with_null(input, nulln, indicf) )
     
     
   }

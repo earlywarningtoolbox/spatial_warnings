@@ -34,15 +34,18 @@ Many dynamical systems such as ecosystems exhibit non-linear responses to
  
  Individual indicators: 
  \itemize{ 
-   \item \code{\link{indicator_moran}}: lag-1 spatial autocorrelation (Moran's I)
+   \item \code{\link{indicator_moran}}: lag-1 spatial autocorrelation 
    \item \code{\link{indicator_variance}}: Spatial variance
    \item \code{\link{indicator_skewness}}: Spatial skewness
    \item \code{\link{indicator_sdr}}: Spectral density ratio (SDR)
    \item \code{\link{indicator_psdtype}}: Patch-size distribution shape 
    \item \code{\link{indicator_plrange}}: Power-law range
+   \item \code{\link{indicator_kbdm}}: Kolmogorov entropy
+   \item \code{\link{indicator_flowlength}}: Flow length 
  }
 
-The package home page is available at [Github]https://github.com/spatial-ews/spatialwarnings
-and a [FAQ covering technical issues](https://alex.lecairn.org/spatialwarnings-faq.html) is 
-also available.
+The package home page is available at 
+\link[=https://github.com/spatial-ews/spatialwarnings]{Github}
+and a \link[=https://alex.lecairn.org/spatialwarnings-faq.html]{FAQ 
+  covering technical issues} is also available.
 }

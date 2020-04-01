@@ -12,10 +12,10 @@ patchsizes(
 )
 }
 \arguments{
-\item{mat}{A logical matrix or a list of these matrices.}
+\item{mat}{A logical matrix or a list of such matrices.}
 
 \item{merge}{Controls whether the obtained patch size distributions are to 
-be pooled together if mat is a list of matrices.}
+be pooled together if \code{mat} is a list of matrices.}
 
 \item{nbmask}{a square matrix with an odd number of lines and columns that 
 describes which neighbors are to be considered around a cell. Default 
@@ -31,7 +31,7 @@ If mat is a logical matrix, then the function returns a vector of
   a list of vectors of patch sizes: this list is flattened if merge is TRUE.
 }
 \description{
-Get the distribution of patch sizes of a logical matrix
+Get the distribution of patch sizes from a logical matrix
 }
 \examples{
 

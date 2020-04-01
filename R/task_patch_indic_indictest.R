@@ -1,7 +1,23 @@
 # 
 # Functions that help compute significance of patch-size distributions
 # 
+#' @rdname patchdistr_sews
+#' 
+#' @param x An object returned by \code{patchdistr_sews}
+#' 
+#' @param nperm The number of simulations to use to compute the null 
+#' distribution of indicator values 
+#' 
+#' @param null_method The method to use to compute null indicator values 
+#'   (can be one of "perm", "bernouilli", or a function, see Details)
+# 
 #'@export
+indictest.patchdistr_sews <- function(x, 
+                                     nperm = 999, 
+                                     null_method = "perm") { 
+  NextMethod("patchdistr_sews")
+}
+
 indictest.patchdistr_sews_single <- function(x, 
                                              nperm = 999, 
                                              null_method = "perm") { 

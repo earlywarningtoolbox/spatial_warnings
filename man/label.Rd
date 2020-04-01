@@ -38,10 +38,10 @@ Label each patch with a number in a binary matrix
   matrix)
 }
 \details{
-The \code{label} function "labels" the patches of a binary (TRUE/FALSE) 
-  matrix. It returns a matrix of similar height and width, with integer 
-  values representing the ID of each unique patch (contiguous cells). 
-  Empty cells are labeled as \code{NA}.
+The \code{label} function "labels" the patches of a binary 
+  (TRUE/FALSE) matrix. It returns a matrix of similar height and width, 
+  with integer values representing the ID of each unique patch (contiguous
+   cells). Empty cells are labelled as \code{NA}.
 }
 \examples{
 

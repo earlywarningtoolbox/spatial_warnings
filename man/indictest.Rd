@@ -33,14 +33,10 @@ Assess the significance of spatial early-warning values
   generated (this number is set by the argument \code{nperm}); (2) indicator
   values are recomputed on this set of null matrices and (3) the significance 
   of the observed indicator value is tested against this distribution. 
-  Several methods are available to produce the set of null matrices. 
   
-The first option is to generate them by reshuffling the original 
-  observed matrix. This produces null matrices with the same exact average 
-  value, but with a random spatial structure (no autocorrelation at all 
-  lags). Use \code{null_method = "perm"} to use this option. 
-
-A second option is to use random draws from ...
+Several methods are available to produce the set of null matrices. If 
+  \code{null_method} is set ot "perm", the original matrix is reshuffled 
+  \code{nperm} times to obtain the null distribution of indicator values.
 }
 \references{
 Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 

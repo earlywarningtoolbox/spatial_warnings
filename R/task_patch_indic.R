@@ -2,9 +2,9 @@
 #' @title Early-warning signals based on patch size distributions
 #' 
 #' @description Compute early-warnings based on patch size distributions 
-#'   and review/plot the results
+#'   and review or plot the results
 #' 
-#' @param x A logical matrix (TRUE/FALSE values) or a list of these
+#' @param mat A logical matrix (TRUE/FALSE values) or a list of these
 #' 
 #' @param merge The default behavior is to produce indicators values for each 
 #'   matrix. If this parameter is set to TRUE then the patch size distributions 
@@ -128,7 +128,7 @@
 #' 
 #' }
 #' @export
-patchdistr_sews <- function(x, 
+patchdistr_sews <- function(mat, 
                             merge = FALSE,
                             fit_lnorm = FALSE,
                             best_by = "BIC", 
@@ -136,11 +136,11 @@ patchdistr_sews <- function(x,
                             xmin_bounds = NULL, 
                             wrap = FALSE) {
   
-  check_mat(x) # Check input matrix
+  check_mat(mat) # Check input matrix
   
   # If input is a list -> apply on each element
-  if ( !merge & is.list(x)) { 
-    results <- parallel::mclapply(x, patchdistr_sews, merge, fit_lnorm, 
+  if ( !merge & is.list(mat)) { 
+    results <- parallel::mclapply(mat, patchdistr_sews, merge, fit_lnorm, 
                                   best_by, xmin, xmin_bounds, wrap)
     class(results) <- c('patchdistr_sews_list', 'patchdistr_sews', 
                         'sews_result_list', 'list')
@@ -148,7 +148,7 @@ patchdistr_sews <- function(x,
   } 
   
   # Get patch size distribution
-  psd <- patchsizes(x, merge = merge, wrap = wrap)
+  psd <- patchsizes(mat, merge = merge, wrap = wrap)
   
   # Set bounds to search for xmin
   if ( length(psd) > 0 && is.null(xmin_bounds) ) { 
@@ -163,21 +163,21 @@ patchdistr_sews <- function(x,
   }
   
   # Compute percolation 
-  if ( is.list(x) ) { 
-    percol <- lapply(x, percolation)
+  if ( is.list(mat) ) { 
+    percol <- lapply(mat, percolation)
     percol <- mean(unlist(percol))
-    percol_empty <- lapply(x, function(x) percolation(!x))
+    percol_empty <- lapply(mat, function(mat) percolation(!mat))
     percol_empty <- mean(unlist(percol_empty))
   } else { 
-    percol <- percolation(x)
-    percol_empty <- percolation(!x)
+    percol <- percolation(mat)
+    percol_empty <- percolation(!mat)
   } 
   
   # Compute the mean cover 
-  if ( is.list(x) ) { 
-    meancover <- mean(laply(x, mean))
+  if ( is.list(mat) ) { 
+    meancover <- mean(laply(mat, mean))
   } else { 
-    meancover <- mean(x)
+    meancover <- mean(mat)
   }
   
   # Return object 
@@ -189,7 +189,7 @@ patchdistr_sews <- function(x,
                  plrange = plr_est, 
                  npatches = length(psd),
                  unique_patches = length(unique(psd)), 
-                 orig_data = x)
+                 orig_data = mat)
   class(result) <- c('patchdistr_sews_single', 'patchdistr_sews', 
                      'sews_result_single', 'list')
   

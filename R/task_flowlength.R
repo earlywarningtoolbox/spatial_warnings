@@ -156,8 +156,8 @@ flowlength_sews <- function(mat,
 #' 
 #'@export
 raw_flowlength_uniform <- function(mat,        # Input matrix
-                                  slope,      # Slope (in degrees)
-                                  cell_size) { # Cell size
+                                   slope,      # Slope (in degrees)
+                                   cell_size) { # Cell size
   
   if ( is.vector(mat) ) { 
     mat <- matrix(mat, ncol = 1, nrow = length(mat))

@@ -43,9 +43,9 @@ test_that('Custom indicators work', {
       suppressWarnings( plot(a) )
     }
     
-    indictest(a[[1]], nperm = 9)
+    indictest(a[[1]], nulln = 9)
     
-    b <- indictest(a, nperm = 9)
+    b <- indictest(a, nulln = 9)
     test_methods("Spatial Early-Warning:", length(dataset), b)
     test_methods("Spatial Early-Warning:", 1, b[[1]])
     

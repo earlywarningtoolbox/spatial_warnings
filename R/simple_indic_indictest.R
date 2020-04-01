@@ -3,19 +3,19 @@
 # 
 #' @export
 indictest.simple_sews <- function(x, 
-                                  nperm = 999, 
+                                  nulln = 999, 
                                   null_method = 'perm', 
                                   ...) { 
   NextMethod('indictest')
 }
 #'@export
 indictest.simple_sews_single <- function(x, 
-                                         nperm = 999, 
+                                         nulln = 999, 
                                          null_method = 'perm', 
                                          ...) { 
   
   # We do not support low numbers of replicates
-  if ( nperm < 3 ) { 
+  if ( nulln < 3 ) { 
     stop('The number of null replicates should be above 3 to ', 
          'assess significance')
   }
@@ -26,12 +26,12 @@ indictest.simple_sews_single <- function(x,
   
   # Compute a distribution of null values
   null_values <- compute_indicator_with_null(x[["orig_data"]],
-                                             nreplicates = nperm, 
+                                             nreplicates = nulln, 
                                              indicf = new_indicf, 
                                              null_method = null_method)
   
   # Format result
-  results <- c(null_values, list(nperm = nperm))
+  results <- c(null_values, list(nulln = nulln))
   class(results) <- c('simple_sews_test_single', 'sews_test', 'list')
   attr(results, "indicname") <- attr(x, "indicname")
   
@@ -39,12 +39,12 @@ indictest.simple_sews_single <- function(x,
 }
 #'@export
 indictest.simple_sews_list <- function(x, 
-                                       nperm = 999, 
+                                       nulln = 999, 
                                        null_method = "perm", 
                                        ...) { 
                                          
   results <- parallel::mclapply(x, indictest.simple_sews_single, 
-                                nperm, null_method, ...)
+                                nulln, null_method, ...)
   
   # Add replicate column with correct replicate number
   for ( nb in seq_along(results) ) { 
@@ -108,7 +108,7 @@ summary.simple_sews_test_list <- function(object,
   tab <- as.data.frame(object)
   
   # Get some info about the computation
-  nperm <- tab[1, "nperm"]
+  nulln <- tab[1, "nulln"]
   
   # Format pvalues 
   tab[ ,'stars'] <- pval_stars(tab[ ,'pval'])
@@ -140,7 +140,7 @@ summary.simple_sews_test_list <- function(object,
   cat('\n')
   print.data.frame(tab_pretty, row.names = FALSE, digits = DIGITS)
   cat('\n')
-  cat(' Significance tested against', nperm, 
+  cat(' Significance tested against', nulln, 
       'randomly shuffled matrices\n')
   cat(" Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1", '\n')
   cat('\n')

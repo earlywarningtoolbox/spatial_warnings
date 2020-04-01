@@ -82,12 +82,12 @@ as.data.frame.variogram_sews_list <- function(x, ...) {
 
 # Testing method 
 indictest.variogram_sews_list <- function(x, 
-                                          nperm = 999, 
+                                          nulln = 999, 
                                           null_method = "perm", 
                                           ...) { 
   
   results <- parallel::mclapply(x, indictest.variogram_sews_single, 
-                                nperm, null_method, ...)
+                                nulln, null_method, ...)
   
   # Add replicate column with correct replicate number
   for ( nb in seq_along(results) ) { 
@@ -100,7 +100,7 @@ indictest.variogram_sews_list <- function(x,
 }
 
 indictest.variogram_sews_single <- function(x, 
-                                            nperm = 999, 
+                                            nulln = 999, 
                                             null_method = "perm", 
                                             ...) { 
   
@@ -110,11 +110,11 @@ indictest.variogram_sews_single <- function(x,
   }
   
   test_values <- compute_indicator_with_null(x[['orig_data']], 
-                                             nreplicates = nperm, 
+                                             nreplicates = nulln, 
                                              indicf = metric_compute, 
                                              null_method = null_method)
   # Format result
-  results <- c(test_values, list(nperm = nperm))
+  results <- c(test_values, list(nulln = nulln))
   class(results) <- c('variogram_sews_test_single', 'sews_test', 'list')
   attr(results, "indicname") <- attr(x, "indicname")
   return(results)

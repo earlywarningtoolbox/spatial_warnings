@@ -6,28 +6,28 @@
 #' @rdname generic_sews
 # /!\ Do not document x here as it already document in plot()
 #' 
-#' @param nperm The number of replicates to use to compute a null 
+#' @param nulln The number of replicates to use to compute a null 
 #'   distribution
 #'   
 #' @param ... Additional arguments passed onto methods
 #' 
 #' @export
-indictest.generic_sews <- function(x, nperm = 999, ...) { 
+indictest.generic_sews <- function(x, nulln = 999, ...) { 
   NextMethod('indictest')
 }
 
 #'@export 
-indictest.generic_sews_single <- function(x, nperm = 999, ...) { 
+indictest.generic_sews_single <- function(x, nulln = 999, ...) { 
   
   # We do not support low numbers of replicates
-  if ( nperm < 3 ) { 
+  if ( nulln < 3 ) { 
     stop('The number of null replicates should be above 3 to ', 
          'assess significance')
   }
   
   # Compute a distribution of null values
   null_values <- compute_indicator_with_null(x[["orig_data"]],
-                                             nreplicates = nperm, 
+                                             nreplicates = nulln, 
                                              indicf = x[["indicf"]])
   
   results <- as.data.frame(null_values)
@@ -40,16 +40,16 @@ indictest.generic_sews_single <- function(x, nperm = 999, ...) {
                         results)
   rownames(results) <- indic_list
   
-  attr(results, 'nreplicates') <- nperm
+  attr(results, 'nreplicates') <- nulln
   class(results) <- c('generic_sews_test', 'sews_test', 'data.frame')
   results
 }
 
 #'@export
-indictest.generic_sews_list <- function(x, nperm = 999, ...) { 
+indictest.generic_sews_list <- function(x, nulln = 999, ...) { 
   
   results <- parallel::mclapply(x, indictest.generic_sews_single, 
-                                nperm, ...)
+                                nulln, ...)
   
   # Replace replicate column with correct number
   for ( nb in seq_along(results) ) { 
@@ -57,7 +57,7 @@ indictest.generic_sews_list <- function(x, nperm = 999, ...) {
   }
   results <- do.call(rbind, results)
   
-  attr(results, 'nreplicates') <- nperm
+  attr(results, 'nreplicates') <- nulln
   class(results) <- c('generic_sews_test', 'sews_test', 'data.frame')
   return(results)
 }

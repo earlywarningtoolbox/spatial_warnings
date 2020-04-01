@@ -55,7 +55,7 @@
 #' 
 #' \dontrun{ 
 #' # Assess significance and display trends
-#' mp_test <- indictest(mp_indic, nperm = 49)
+#' mp_test <- indictest(mp_indic, nulln = 49)
 #' plot(mp_test)
 #' }
 #' 
@@ -80,7 +80,7 @@
 #' plot(cv_indic2, along = serengeti.rain)
 #' 
 #' \dontrun{ 
-#' indictest(cv_indic, nperm = 99)
+#' indictest(cv_indic, nulln = 99)
 #' }
 #'@export
 create_indicator <- function(fun, 

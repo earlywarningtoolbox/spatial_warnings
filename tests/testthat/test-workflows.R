@@ -45,7 +45,7 @@ test_that("The workflow functions work", {
                  datal*4, indics) # l(dataset) * 4 indics
     # test_methods("Generic Spatial Early-Warnings", 4, indics[[1]])
     
-    indics.test <- indictest(indics, nperm = 9)
+    indics.test <- indictest(indics, nulln = 9)
     test_methods("Generic Indicators", 
                   datal*4, indics.test)
     
@@ -65,7 +65,7 @@ test_that("The workflow functions work", {
                  length(dataset), indics, .test_df = FALSE)
     expect_warning({ spectral_sews(dataset) }) # give a warning when no args are passed
     
-    indics.test <- indictest(indics, nperm = 9)
+    indics.test <- indictest(indics, nulln = 9)
     test_methods("Spectral Spatial Early-Warnings", 
                   datal, indics.test, .test_df = FALSE)
     
@@ -85,7 +85,7 @@ test_that("The workflow functions work", {
                  datal*4, indics) # l(dataset) * 4 psd types fitted
     # test_methods("Patch-based Early-Warnings results", 
     #              datal*4, indics[[1]])
-    indics.test <- indictest(indics, nperm = 9)
+    indics.test <- indictest(indics, nulln = 9)
     test_methods("Patch-based Early-Warnings", 
                   datal*4, indics.test, .test_df = FALSE)
     
@@ -109,7 +109,7 @@ test_that("The workflow functions work", {
       suppressWarnings( print( plot(indics) ) )
     }
     
-    indics.test <- indictest(indics, nperm = 3)
+    indics.test <- indictest(indics, nulln = 3)
     test_methods("Spatial Early-Warning: Flow length", 
                   datal, indics.test, .test_df = FALSE)
     

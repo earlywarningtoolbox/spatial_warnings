@@ -16,7 +16,7 @@ patchdistr_sews(
   wrap = FALSE
 )
 
-\method{indictest}{patchdistr_sews}(x, nperm = 999, null_method = "perm")
+\method{indictest}{patchdistr_sews}(x, nulln = 999, null_method = "perm")
 }
 \arguments{
 \item{mat}{A logical matrix (TRUE/FALSE values) or a list of these}
@@ -44,7 +44,7 @@ matrix when reaching the side}
 
 \item{x}{An object returned by \code{patchdistr_sews}}
 
-\item{nperm}{The number of simulations to use to compute the null 
+\item{nulln}{The number of simulations to use to compute the null 
 distribution of indicator values}
 
 \item{null_method}{The method to use to compute null indicator values 

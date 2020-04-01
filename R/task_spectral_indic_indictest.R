@@ -5,11 +5,11 @@
 
 #' @rdname spectral_sews
 #' 
-#' @param nperm The number of replicates to use to compute use in the 
+#' @param nulln The number of replicates to use to compute use in the 
 #'   null distribution
 #' 
 #' @export
-indictest.spectral_sews <- function(x, nperm = 999, ...) { 
+indictest.spectral_sews <- function(x, nulln = 999, ...) { 
   NextMethod('indictest')
 }
 
@@ -17,11 +17,11 @@ indictest.spectral_sews <- function(x, nperm = 999, ...) {
 # Indictest functions for spectral_sews objects.
 #' @method indictest spectral_sews_list
 #' @export
-indictest.spectral_sews_list <- function(x, nperm = 999, ...) { 
+indictest.spectral_sews_list <- function(x, nulln = 999, ...) { 
   
   # Compute a distribution of null values for SDR
   results <- parallel::mclapply(x, indictest.spectral_sews_single, 
-                                nperm, ...)
+                                nulln, ...)
   
   # Transfer names 
   names(results) <- names(x)
@@ -34,7 +34,7 @@ indictest.spectral_sews_list <- function(x, nperm = 999, ...) {
   results <- do.call(rbind, results)
   
   # Format and return output
-  attr(results, "nreplicates") <- nperm
+  attr(results, "nreplicates") <- nulln
   class(results) <- c('spectral_sews_test', 'sews_test', 'data.frame')
   
   return(results)
@@ -42,7 +42,7 @@ indictest.spectral_sews_list <- function(x, nperm = 999, ...) {
 
 #' @method indictest spectral_sews_single
 #' @export
-indictest.spectral_sews_single <- function(x, nperm = 999, ...) { 
+indictest.spectral_sews_single <- function(x, nulln = 999, ...) { 
   
   # Build closure passed to compute_indicator_with_null that uses the correct
   #   high and low ranges, and is compatible with the use of replicate(). 
@@ -57,7 +57,7 @@ indictest.spectral_sews_single <- function(x, nperm = 999, ...) {
   # Compute a distribution of null values for SDR
   null_values_sdr <- 
     compute_indicator_with_null(x[['orig_data']], 
-                                nreplicates = nperm, 
+                                nreplicates = nulln, 
                                 indicf = sdr_indicf)
   
   results <- rbind(
@@ -72,7 +72,7 @@ indictest.spectral_sews_single <- function(x, nperm = 999, ...) {
   row.names(results) <- NULL
   
   # Format output
-  attr(results, "nreplicates") <- nperm
+  attr(results, "nreplicates") <- nulln
   class(results) <- c('spectral_sews_test', 'sews_test', 'data.frame')
   
   return(results)

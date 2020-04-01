@@ -43,7 +43,7 @@ irr_pars <- str_extract(irr_allmats, "homall[0-9]+.*.txt") %>%
 # Compute generic indicators as a reference
 irr_mats_bin <- lapply(irr_mats_bin, function(mat) mat > mean(mat))
 irr_genindics <- generic_sews(irr_mats_bin, subsize = 4) %>% 
-                   indictest(nperm = 199)
+                   indictest(nulln = 199)
 plot(irr_genindics, along = irr_pars) + 
   labs(x = 'Rainfall') # Stress increases as rainfall decreases
 
@@ -83,6 +83,6 @@ indic_kbdm <- create_indicator(get_kbdm)
 # Somehow in Dakos 2016 they manage to use string lengths of 16 (4x4 
 # submatrices) ? (or there is a misunderstanding ?)
 all_kbdms <- indic_kbdm(irr_mats_bin, subsize = 3) %>% 
-               indictest(nperm = 19)
+               indictest(nulln = 19)
 
 plot(all_kbdms, along = irr_pars)

@@ -10,7 +10,7 @@
 \usage{
 spectral_sews(mat, sdr_low_range = NULL, sdr_high_range = NULL, quiet = FALSE)
 
-\method{indictest}{spectral_sews}(x, nperm = 999, ...)
+\method{indictest}{spectral_sews}(x, nulln = 999, ...)
 
 \method{plot}{spectral_sews_test}(x, ..., along = NULL, what = "value", display_null = TRUE)
 
@@ -33,7 +33,7 @@ c(.8, 1). See also the Details section.}
 
 \item{x}{A \code{spectral_sews_test} object as produced by \link{indictest}}
 
-\item{nperm}{The number of replicates to use to compute use in the 
+\item{nulln}{The number of replicates to use to compute use in the 
 null distribution}
 
 \item{...}{Ignored}
@@ -117,7 +117,7 @@ plot(spec_indic, along = serengeti.rain)
 # computing using: options(mc.cores = n)
 
 # Assess significance
-spec_test <- indictest(spec_indic, nperm = 199)
+spec_test <- indictest(spec_indic, nulln = 199)
 summary(spec_test)
 
 # Display the SDR trend, now with a grey ribbon representing 5\%-95\% 

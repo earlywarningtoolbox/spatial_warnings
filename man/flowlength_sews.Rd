@@ -57,7 +57,7 @@ fl_result <- flowlength_sews(arizona, slope = 20, cell_size = 1)
 # Compute the Z-score (standardized deviation to null distribution) and plot 
 #   its variations along the gradient. This Z-score is suggested by 
 #   Rodriguez et al. (2017) as an indicator of degradation. 
-fl_test <- indictest(fl_result, nperm = 19)
+fl_test <- indictest(fl_result, nulln = 19)
 plot(fl_test, what = "z_score")
 }
 

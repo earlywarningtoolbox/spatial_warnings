@@ -16,7 +16,7 @@ generic_sews(
   moranI_coarse_grain = FALSE
 )
 
-\method{indictest}{generic_sews}(x, nperm = 999, ...)
+\method{indictest}{generic_sews}(x, nulln = 999, ...)
 
 \method{plot}{generic_sews_test}(x, along = NULL, what = "value", display_null = TRUE, ...)
 
@@ -37,7 +37,7 @@ computing the Moran's I indicator value ?}
 \item{x}{A \code{generic_sews} object (as provided by the 
 \code{generic_sews} function).}
 
-\item{nperm}{The number of replicates to use to compute a null 
+\item{nulln}{The number of replicates to use to compute a null 
 distribution}
 
 \item{...}{Additional arguments passed onto methods}
@@ -115,7 +115,7 @@ plot(gen_indic, along = serengeti.rain)
 
 # Compute significance (long)
 \dontrun{
-gen_test <- indictest(gen_indic, nperm = 199)
+gen_test <- indictest(gen_indic, nulln = 199)
 
 print(gen_test)
 

@@ -4,13 +4,13 @@
 \alias{indictest}
 \title{Significance-assessment of spatial early-warning signals}
 \usage{
-indictest(x, nperm = 999, null_method = "perm", ...)
+indictest(x, nulln = 999, null_method = "perm", ...)
 }
 \arguments{
 \item{x}{A spatial warning object such as one produced by the \code{*_sews} 
 function family}
 
-\item{nperm}{The number of permutations to carry out to produce the null 
+\item{nulln}{The number of values to compute to produce the null 
 distribution}
 
 \item{null_method}{The method used to test significance (right now 
@@ -30,13 +30,13 @@ Assess the significance of spatial early-warning values
   against 'null matrices', which represent the expected spatial structure 
   in the absence of the biological process of interest. This is done based 
   on the following procedure: (1) a set of N null matrices is 
-  generated (this number is set by the argument \code{nperm}); (2) indicator
+  generated (this number is set by the argument \code{nulln}); (2) indicator
   values are recomputed on this set of null matrices and (3) the significance 
   of the observed indicator value is tested against this distribution. 
   
 Several methods are available to produce the set of null matrices. If 
   \code{null_method} is set ot "perm", the original matrix is reshuffled 
-  \code{nperm} times to obtain the null distribution of indicator values.
+  \code{nulln} times to obtain the null distribution of indicator values.
 }
 \references{
 Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 

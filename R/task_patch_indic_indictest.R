@@ -5,7 +5,7 @@
 #' 
 #' @param x An object returned by \code{patchdistr_sews}
 #' 
-#' @param nperm The number of simulations to use to compute the null 
+#' @param nulln The number of simulations to use to compute the null 
 #' distribution of indicator values 
 #' 
 #' @param null_method The method to use to compute null indicator values 
@@ -13,20 +13,20 @@
 # 
 #'@export
 indictest.patchdistr_sews <- function(x, 
-                                     nperm = 999, 
+                                     nulln = 999, 
                                      null_method = "perm") { 
   NextMethod("patchdistr_sews")
 }
 
 indictest.patchdistr_sews_single <- function(x, 
-                                             nperm = 999, 
+                                             nulln = 999, 
                                              null_method = "perm") { 
   
   
   # Obtain null distributions + plrange values. We compute both at the same 
   # time so we do not reshuffle matrices twice. 
   nulldistr <- generate_null_distr(x[["orig_data"]], 
-                                   nreplicates = nperm, 
+                                   nreplicates = nulln, 
                                    null_method = null_method, 
                                    function(nullmat) { 
       list(plrange = raw_plrange(nullmat), 
@@ -42,7 +42,7 @@ indictest.patchdistr_sews_single <- function(x,
   } else { 
     # Compute the actual P-value
     plrange_pval <- rank(c(x[["plrange"]][["plrange"]], plrange_null_distr))[1] / 
-                      (1 + nperm)
+                      (1 + nulln)
     plrange_pval <- 1 - plrange_pval
   }
   
@@ -76,7 +76,7 @@ indictest.patchdistr_sews_single <- function(x,
   ans <- c(x, 
            cumpsd_null = list(cumpsd_null_distr), 
            plrange_pval = plrange_pval, 
-           nreplicates = nperm, 
+           nreplicates = nulln, 
            null_method = null_method)
   class(ans) <- c('patchdistr_sews_test_single', 
                   'patchdistr_sews_single', 
@@ -86,12 +86,12 @@ indictest.patchdistr_sews_single <- function(x,
 
 #'@export
 indictest.patchdistr_sews_list <- function(x, 
-                                           nperm = 999, 
+                                           nulln = 999, 
                                            null_method = "perm") { 
   
   # Compute a distribution of null values for SDR
   results <- parallel::mclapply(x, indictest.patchdistr_sews_single, 
-                                nperm, null_method)
+                                nulln, null_method)
   
   # Transfer names 
   names(results) <- names(x)

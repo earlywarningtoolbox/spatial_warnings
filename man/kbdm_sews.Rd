@@ -42,7 +42,7 @@ be a useful indicator to anticipate transitions in model ecological
 kbdm_result <- kbdm_sews(serengeti, subsize = 3)
 plot(kbdm_result, along = serengeti.rain)
 
-kbdm_test <- indictest(kbdm_result, nperm = 99)
+kbdm_test <- indictest(kbdm_result, nulln = 99)
 plot(kbdm_test, along = serengeti.rain)
 
 # Plot deviation to a random matrix

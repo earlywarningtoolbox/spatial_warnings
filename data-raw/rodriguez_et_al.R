@@ -17,7 +17,7 @@ names(imgs) <- gsub(".csv", "", basename(pics))
 
 # Compute a test of indicators  
 ics <- flowlength_sews(imgs) 
-ics <- indictest(ics, nperm = 19)
+ics <- indictest(ics, nulln = 19)
 plot(ics, along = names(psds))
 
 # Store dataset now

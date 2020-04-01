@@ -16,7 +16,7 @@ patchdistr_sews(
   wrap = FALSE
 )
 
-\method{indictest}{patchdistr_sews}(x, nulln = 999, null_method = "perm")
+\method{indictest}{patchdistr_sews}(x, nulln = 999, null_method = "perm", ...)
 }
 \arguments{
 \item{mat}{A logical matrix (TRUE/FALSE values) or a list of these}

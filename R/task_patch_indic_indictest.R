@@ -13,14 +13,16 @@
 # 
 #'@export
 indictest.patchdistr_sews <- function(x, 
-                                     nulln = 999, 
-                                     null_method = "perm") { 
+                                      nulln = 999, 
+                                      null_method = "perm", 
+                                      ...) { 
   NextMethod("patchdistr_sews")
 }
 
 indictest.patchdistr_sews_single <- function(x, 
                                              nulln = 999, 
-                                             null_method = "perm") { 
+                                             null_method = "perm", 
+                                             ...) { 
   
   
   # Obtain null distributions + plrange values. We compute both at the same 
@@ -87,7 +89,8 @@ indictest.patchdistr_sews_single <- function(x,
 #'@export
 indictest.patchdistr_sews_list <- function(x, 
                                            nulln = 999, 
-                                           null_method = "perm") { 
+                                           null_method = "perm", 
+                                           ...) { 
   
   # Compute a distribution of null values for SDR
   results <- parallel::mclapply(x, indictest.patchdistr_sews_single, 
@@ -119,13 +122,13 @@ print.patchdistr_sews_test_single <- function(x, ...) {
 }
 
 #'@export
-summary.patchdistr_sews_test_list <- function(x, ...) { 
-  summary.patchdistr_sews(x, ...)
+summary.patchdistr_sews_test_list <- function(object, ...) { 
+  summary.patchdistr_sews(object, ...)
 }
 
 #'@export
-summary.patchdistr_sews_test_single <- function(x, ...) { 
-  summary.patchdistr_sews(x, ...)
+summary.patchdistr_sews_test_single <- function(object, ...) { 
+  summary.patchdistr_sews(object, ...)
 }
 
 # Convert each element to a data frame, and a column with the matrixn number

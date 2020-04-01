@@ -18,7 +18,27 @@
 #' 
 #' @param moranI_coarse_grain Should the input matrix be coarse-grained before
 #'   computing the Moran's I indicator value ?
-#'   
+#' 
+#** For plotting trends 
+#' 
+#' @param x A \code{generic_sews} object (as provided by the 
+#'   \code{generic_sews} function). 
+#' 
+#' @param along A vector providing values over which the indicator trend 
+#'   will be plotted. If \code{NULL} then the values are plotted sequentially 
+#'   in their original order. 
+#' 
+#** For plotting trends with null 
+#' @param what The trendline to be displayed. Defaults to the indicator's 
+#'   values ("value") but other metrics can be displayed. Correct values are 
+#'   "value", "pval" or "z_score".
+#' 
+#' @param display_null Chooses whether a grey ribbon should be added to reflect
+#'   the null distribution. Note that it can not be displayed when the trend 
+#'   line reflects something else than the indicator values (when \code{what} 
+#'   is not set to "value").
+#' 
+#' 
 #' @return 
 #' 
 #' \code{generic_sews} returns an object of class \code{generic_sews_single}

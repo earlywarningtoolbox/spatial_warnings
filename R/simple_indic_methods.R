@@ -9,12 +9,12 @@
 # ---------------
 #'@method as.data.frame simple_sews_single
 #'@export
-as.data.frame.simple_sews_single <- function(x, wide = FALSE, ...) { 
+as.data.frame.simple_sews_single <- function(x, ..., wide = FALSE) { 
   as.data.frame.simple_sews_list( list(x), wide = wide )
 }
 #'@method as.data.frame simple_sews_list
 #'@export
-as.data.frame.simple_sews_list <- function(x, wide = FALSE, ...) { 
+as.data.frame.simple_sews_list <- function(x, ..., wide = FALSE) { 
   
   # Find or create the indicator names
   indicnames <- ifNULLthen(names(x[[1]][['value']]), 

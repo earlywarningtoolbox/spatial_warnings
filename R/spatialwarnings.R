@@ -22,7 +22,7 @@
 #'  functions and methods provide familiar workflows to compute the indicators 
 #'  and display their variations along environmental gradients or time-series. 
 #'  Lower-level functions are also available to integrate early-warning signals 
-#'  in a different workflow. 
+#'  into different workflows. 
 #'  
 #'  Main functions provided by this package 
 #'  
@@ -31,6 +31,8 @@
 #'    \item \code{\link{generic_sews}}: Generic spatial EWS
 #'    \item \code{\link{spectral_sews}}: Spectrum-based EWS
 #'    \item \code{\link{patchdistr_sews}}: EWS based on patch-size distributions
+#'    \item \code{\link{kbdm_sews}}: Kolmogorov entropy
+#'    \item \code{\link{flowlength_sews}}: Flow length 
 #'  }
 #'  
 #'  Individual indicators: 
@@ -41,8 +43,6 @@
 #'    \item \code{\link{indicator_sdr}}: Spectral density ratio (SDR)
 #'    \item \code{\link{indicator_psdtype}}: Patch-size distribution shape 
 #'    \item \code{\link{indicator_plrange}}: Power-law range
-#'    \item \code{\link{indicator_kbdm}}: Kolmogorov entropy
-#'    \item \code{\link{indicator_flowlength}}: Flow length 
 #'  }
 #' 
 #' The package home page is available at 

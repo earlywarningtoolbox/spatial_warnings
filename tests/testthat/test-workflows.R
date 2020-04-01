@@ -86,7 +86,7 @@ test_that("The workflow functions work", {
     # test_methods("Patch-based Early-Warnings results", 
     #              datal*4, indics[[1]])
     indics.test <- indictest(indics, nperm = 9)
-    test_methods("Spectral Spatial Early-Warnings", 
+    test_methods("Patch-based Early-Warnings", 
                   datal*4, indics.test, .test_df = FALSE)
     
     # Test prediction of PSDs
@@ -96,6 +96,7 @@ test_that("The workflow functions work", {
       suppressWarnings( print( plot(indics) ) )
     }
     suppressWarnings( print( plot_distr(indics) ) )
+    suppressWarnings( print( plot_distr(indics.test) ) )
     
     
     

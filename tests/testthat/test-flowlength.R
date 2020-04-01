@@ -6,7 +6,7 @@
 context('Test the computation of flow length')
 
 if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) { 
-
+  
   # Test raw values. rho here represents cover. We test that what is computed 
   # from the code for a random matrix matches the theoretical expectations. See 
   # Rodriguez et al. 2017 (Eco. Ind.)

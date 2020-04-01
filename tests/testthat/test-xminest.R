@@ -38,8 +38,6 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
       # Create pl object and estimate its xmin
       pl_obj <- poweRlaw::displ$new(pldat)
       est_xmin_plpkg <- poweRlaw::estimate_xmin(pl_obj)[["xmin"]]
-      cat(" Ours: ", est_xmin, ' -> poweRlaw\'s: ', est_xmin_plpkg, " [", 
-          length(unique(pldat)), " unique patches]", "\n", sep = "")
       
       if ( !is.na(est_xmin) && 
            !is.na(est_xmin_plpkg) && 
@@ -48,8 +46,14 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
         # a small difference in xmin, so we use an acceptable error here. 
         expect_true( abs(est_xmin - est_xmin_plpkg) <= 1 )
         
+        if ( est_xmin != est_xmin_plpkg ) { 
+          cat(" Ours: ", est_xmin, ' -> poweRlaw\'s: ', est_xmin_plpkg, " [", 
+              length(unique(pldat)), " unique patches]", "\n", sep = "")
+        }
+        
         # In this case, inspect the fit provided by the poweRlaw package
         if ( exists('GRAPHICAL') && GRAPHICAL && est_xmin != est_xmin_plpkg ) { 
+          
           dev.new()
           par(mfrow = c(1,2))
           plot(log10(cumpsd(pldat[pldat >= est_xmin])))

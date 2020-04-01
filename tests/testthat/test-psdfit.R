@@ -185,9 +185,11 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
           # Normalizing coeff
           # Here, we check that the binary called by the Clauset code actually 
           # returns something. 
-          clauset_result <- suppressWarnings( discpowerexp.norm(xmin, expo, rate) )
-  #         if (length(clauset_result) == 0) stop()
-          if (length(clauset_result) > 0) { 
+          clauset_result <- suppressWarnings({ 
+            discpowerexp.norm(xmin, expo, rate) 
+          })
+          
+          if ( length(clauset_result) > 0 ) { 
             expect_equal(clauset_result, 
                         tplnorm(expo, rate, xmin))
           }

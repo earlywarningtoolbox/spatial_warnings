@@ -7,45 +7,45 @@
 \title{Early Spatial-Warnings of Ecosystem Degradation}
 \description{
 Many dynamical systems such as ecosystems exhibit non-linear responses to 
- changes in their external drivers, resulting in possible wide state shifts 
- with strong ecological or economical consequences. This often happens when 
- a system exhibit a change in its stability properties as a threshold is 
- crossed, \emph{e.g.} going from multiple stable states to a single stable 
- state. For a few decades, much research has been dedicated to finding a 
- way to anticipate these tipping points in ecological systems. This has led 
- to the suggestion of several indicators that could reflect the proximity 
- of an ecosystem to a tipping point. 
- 
- This package implements the computation of these indicators, or 
- \emph{early-warning signals} (EWS), on spatial raster data. High-level 
- functions and methods provide familiar workflows to compute the indicators 
- and display their variations along environmental gradients or time-series. 
- Lower-level functions are also available to integrate early-warning signals 
- into different workflows. 
- 
- Main functions provided by this package 
- 
- "Workflow" functions:
- \itemize{ 
-   \item \code{\link{generic_sews}}: Generic spatial EWS
-   \item \code{\link{spectral_sews}}: Spectrum-based EWS
-   \item \code{\link{patchdistr_sews}}: EWS based on patch-size distributions
-   \item \code{\link{kbdm_sews}}: Kolmogorov entropy
-   \item \code{\link{flowlength_sews}}: Flow length 
- }
- 
- Individual indicators: 
- \itemize{ 
-   \item \code{\link{indicator_moran}}: lag-1 spatial autocorrelation 
-   \item \code{\link{indicator_variance}}: Spatial variance
-   \item \code{\link{indicator_skewness}}: Spatial skewness
-   \item \code{\link{indicator_sdr}}: Spectral density ratio (SDR)
-   \item \code{\link{indicator_psdtype}}: Patch-size distribution shape 
-   \item \code{\link{indicator_plrange}}: Power-law range
- }
+changes in their external drivers, resulting in possible wide state shifts 
+with strong ecological or economical consequences. This often happens when 
+a system exhibit a change in its stability properties as a threshold is 
+crossed, \emph{e.g.} going from multiple stable states to a single stable 
+state. For a few decades, much research has been dedicated to finding a 
+way to anticipate these tipping points in ecological systems. This has led 
+to the suggestion of several indicators that could reflect the proximity 
+of an ecosystem to a tipping point. 
+
+This package implements the computation of these indicators, or 
+\emph{early-warning signals} (EWS), on spatial raster data. High-level 
+functions and methods provide familiar workflows to compute the indicators 
+and display their variations along environmental gradients or time-series. 
+Lower-level functions are also available to integrate early-warning signals 
+into different workflows. 
+
+Main functions provided by this package 
+
+"Workflow" functions:
+\itemize{ 
+  \item \code{\link{generic_sews}}: Generic spatial EWS
+  \item \code{\link{spectral_sews}}: Spectrum-based EWS
+  \item \code{\link{patchdistr_sews}}: EWS based on patch-size distributions
+  \item \code{\link{kbdm_sews}}: Kolmogorov entropy
+  \item \code{\link{flowlength_sews}}: Flow length 
+}
+
+Individual indicators: 
+\itemize{ 
+  \item \code{\link{raw_cg_moran}}: lag-1 spatial autocorrelation 
+  \item \code{\link{raw_cg_variance}}: Spatial variance
+  \item \code{\link{raw_cg_skewness}}: Spatial skewness
+  \item \code{\link{raw_sdr}}: Spectral density ratio (SDR)
+  \item \code{\link{indicator_psdtype}}: Patch-size distribution shape 
+  \item \code{\link{indicator_plrange}}: Power-law range
+}
 
 The package home page is available at 
-\link[=https://github.com/spatial-ews/spatialwarnings]{Github}
-and a \link[=https://alex.lecairn.org/spatialwarnings-faq.html]{FAQ 
+\href{https://github.com/spatial-ews/spatialwarnings}{Github}
+and a \href{https://alex.lecairn.org/spatialwarnings-faq.html}{FAQ 
   covering technical issues} is also available.
 }

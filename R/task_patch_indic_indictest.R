@@ -1,24 +1,27 @@
-# 
-# Functions that help compute significance of patch-size distributions
-# 
-#' @rdname patchdistr_sews
-#' 
-#' @param x An object returned by \code{patchdistr_sews}
-#' 
-#' @param nulln The number of simulations to use to compute the null 
-#' distribution of indicator values 
-#' 
-#' @param null_method The method to use to compute null indicator values 
-#'   (can be one of "perm", "bernouilli", or a function, see Details)
-# 
-#'@export
-indictest.patchdistr_sews <- function(x, 
-                                      nulln = 999, 
-                                      null_method = "perm", 
-                                      ...) { 
-  NextMethod("patchdistr_sews")
-}
+# # 
+# # Functions that help compute significance of patch-size distributions
+# # 
+# #' @rdname patchdistr_sews
+# #' 
+# #' @param x An object returned by \code{patchdistr_sews}
+# #' 
+# #' @param nulln The number of simulations to use to compute the null 
+# #' distribution of indicator values 
+# #' 
+# #' @param null_method The method to use to compute null indicator values 
+# #'   (can be one of "perm", "bernouilli", or a function, see Details)
+# #' 
+# #' @param ... Other arguments passed onto methods. 
+# #'
+# #'@export
+# indictest.patchdistr_sews <- function(x, 
+#                                       nulln = 999, 
+#                                       null_method = "perm", 
+#                                       ...) { 
+#   NextMethod("indictest")
+# }
 
+#'@export
 indictest.patchdistr_sews_single <- function(x, 
                                              nulln = 999, 
                                              null_method = "perm", 
@@ -61,12 +64,12 @@ indictest.patchdistr_sews_single <- function(x,
     cumpsd(o[["psd"]], x = xpsd)
   })
   cumpsd_null_distr <- do.call(rbind, cumpsd_null_distr)
-  cumpsd_null_distr <- ddply(cumpsd_null_distr, ~ patchsize, summarise, 
-                             q05 = quantile(y, 0.05), 
-                             q95 = quantile(y, 0.95), 
-                             median = median(y), 
-                             mean   = mean(y))
-  
+  cumpsd_null_distr <- ddply(cumpsd_null_distr, ~ patchsize, function(df) { 
+    data.frame(q05 = quantile(df[ ,"y"], 0.05), 
+               q95 = quantile(df[ ,"y"], 0.95), 
+               median = median(df[ ,"y"]), 
+               mean   = mean(df[ ,"y"]))
+  })
 #   ggplot(cumpsd_null_distr, aes(x = patchsize)) + 
 #     geom_ribbon(aes(ymin = q05, ymax = q95), 
 #                 alpha = .2) + 

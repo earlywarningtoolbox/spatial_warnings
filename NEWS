@@ -12,9 +12,12 @@ Improvements:
       quantiles of null patch size distributions. 
 
 Removals: 
-  * All the deprecated `*_spews` functions are now defunct. 
-
+  * All the deprecated `*_spews` functions are now defunct (removed). 
+  
+  * Most `indicator_*` functions are now deprecated. 
+  
 Misc changes: 
+  * Lots of duplicated code has been removed
   * Minor changes in print/summary methods
 
 

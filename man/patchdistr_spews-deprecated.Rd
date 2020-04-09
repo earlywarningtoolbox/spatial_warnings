@@ -2,7 +2,7 @@
 % Please edit documentation in R/deprecation.R
 \name{patchdistr_spews}
 \alias{patchdistr_spews}
-\title{(DEPRECATED) Early-warning signals based on patch size distributions}
+\title{(DEFUNCT) Early-warning signals based on patch size distributions}
 \usage{
 patchdistr_spews(
   x,

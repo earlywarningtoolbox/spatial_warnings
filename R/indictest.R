@@ -7,9 +7,10 @@
 
 #' @title Significance-assessment of spatial early-warning signals
 #' 
-#' @description Assess the significance of spatial early-warning values
+#' @description Assess the significance of spatial early-warning indicators
 #' 
-#' @param x A spatial warning object such as one produced by the \code{*_sews} 
+#' @param x A spatial warning object such as one produced by the \code{*_sews}
+#'   functions, or \code{\link{compute_indicator}}
 #'   function family
 #' 
 #' @param nulln The number of values to compute to produce the null 
@@ -35,7 +36,7 @@
 #'   
 #' Several methods are available to produce the set of null matrices. If 
 #'   \code{null_method} is set ot "perm", the original matrix is reshuffled 
-#'   \code{nulln} times to obtain the null distribution of indicator values. 
+#'   to obtain a null matrix. 
 #' 
 #' @seealso \code{\link{generic_sews}}, \code{\link{spectral_sews}}
 #' 

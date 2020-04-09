@@ -26,6 +26,8 @@ values ("value") but other metrics can be displayed. Correct values are
 the null distribution. Note that it can not be displayed when the trend 
 line reflects something else than the indicator values (when \code{what} 
 is not set to "value").}
+
+\item{...}{Other arguments are silently ignored.}
 }
 \description{
 Spatial early-warning signals: display of trends

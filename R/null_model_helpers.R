@@ -17,7 +17,7 @@ compute_indicator_with_null <- function(input,
   if (nulln > 2) { 
     
     nulldistr <- generate_null_distr(input, indicf, nulln, 
-                                       null_method)
+                                     null_method)
     
     # nulldistr is a list so far => combine it to a matrix, with each null 
     # replicate as a row

@@ -2,23 +2,27 @@
 % Please edit documentation in R/task_custom.R
 \name{create_indicator}
 \alias{create_indicator}
-\alias{custom_indicator}
+\alias{compute_indicator}
 \title{Custom Spatial Early-Warning signals}
 \usage{
-create_indicator(fun, indicname = as.character(substitute(fun)))
+create_indicator(fun, taskname = as.character(substitute(fun)))
 
-custom_indicator(mat, fun, indicname = as.character(substitute(fun)), ...)
+compute_indicator(mat, fun, taskname = as.character(substitute(fun)), ...)
 }
 \arguments{
-\item{fun}{A function that takes a real-valued matrix as input and returns 
-a single, numerical value.}
+\item{fun}{A function that takes a matrix as input and returns 
+a vector of numerical values. If the function returns a named vector, 
+then the names will be used in plots and summaries. The function may also
+accept extra arguments.}
 
-\item{indicname}{The indicator name. Optional, used for plots and textual 
-summaries, but mandatory if \code{fun} is an anonymous function.}
+\item{taskname}{The task name. A character string used used for plots and
+textual summaries that describes the indicator (or set of indicators) 
+being computed. If a task name cannot be derived from \code{fun}, then 
+default name is used.}
 
 \item{mat}{A matrix or a list of matrices.}
 
-\item{...}{Additional arguments that are passed to the function \code{fun}}
+\item{...}{Additional arguments being passed to the function \code{fun}}
 }
 \value{
 \code{create_indicator} returns a function that can be used in the same way 
@@ -31,23 +35,17 @@ Computation, significance assessment and display of trends
 \details{
 Spatial Early-warning signals (EWS) are metrics that are based on the 
   spatial structure of a system and measure the degradation of an ecological 
-  system. The package \code{spatialwarnings} provides 
-  generic indicators (\code{\link{generic_sews}}), spectrum-based 
-  indicators (\code{\link{spectral_sews}}) and indicators based on patch 
-  size distributions (\code{\link{patchdistr_sews}}). 
-  
+  system. The package provides "workflow functions", named \code{*_sews}, 
+  that assist the user in computing, displaying and assessing the 
+  significance of indicator values. 
+
 \code{create_indicator} extends the package to any arbitrary function. 
   It takes a function `fun` and returns another function that can be used 
-  as an indicator similar to the \code{*_sews} function family. The 
+  as an indicator similar to the \code{*_sews} functions. The 
   results of this function can be assessed for significance using 
   \code{indictest} and trends can be displayed using 
-  \code{plot}, \code{summary}, etc. (see Examples). \code{custom_indicator} 
-  does the same but without creating an intermediate indicator function. 
-
-\code{fun} should be a function that takes as input a matrix and possibly
-  more arguments, and return a single numeric value. Note that the matrix 
-  is converted internally to numeric values, as a side effect of using 
-  c++ code when assessing significance.
+  \code{plot}, \code{summary}, etc. (see Examples). \code{compute_indicator} 
+  does the same but without needing an intermediate indicator function.
 }
 \examples{
 
@@ -86,8 +84,8 @@ cv_sews <- create_indicator(spatial_cv)
 cv_indic <- cv_sews(serengeti, subsize = 3)
 plot(cv_indic, along = serengeti.rain)
 
-# We can do the same work in one run using custom_indicator
-cv_indic2 <- custom_indicator(serengeti, spatial_cv, subsize = 3)
+# We can do the same work in one run using compute_indicator
+cv_indic2 <- compute_indicator(serengeti, spatial_cv, subsize = 3)
 plot(cv_indic2, along = serengeti.rain)
 
 \dontrun{ 

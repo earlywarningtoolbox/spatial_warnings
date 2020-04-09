@@ -22,22 +22,6 @@ raw values ?}
 
 \item{moranI_coarse_grain}{Should the input matrix be coarse-grained before
 computing the Moran's I indicator value ?}
-
-\item{x}{A \code{generic_sews} object (as provided by the 
-\code{generic_sews} function).}
-
-\item{along}{A vector providing values over which the indicator trend 
-will be plotted. If \code{NULL} then the values are plotted sequentially 
-in their original order.}
-
-\item{what}{The trendline to be displayed. Defaults to the indicator's 
-values ("value") but other metrics can be displayed. Correct values are 
-"value", "pval" or "z_score".}
-
-\item{display_null}{Chooses whether a grey ribbon should be added to reflect
-the null distribution. Note that it can not be displayed when the trend 
-line reflects something else than the indicator values (when \code{what} 
-is not set to "value").}
 }
 \value{
 \code{generic_sews} returns an object of class \code{generic_sews_single}
@@ -48,7 +32,7 @@ is not set to "value").}
   a data.frame). 
 
 \code{plot} methods return ggplot objects, usually immediately displayed 
-  when used interactively.
+  when R is being used interactively.
 }
 \description{
 Computation, significance assessment and display of spatial 
@@ -133,6 +117,6 @@ Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M.,
   systems. Theoretical Ecology, 2(1), 3-12.
 }
 \seealso{
-\code{\link{indicator_moran}}, \code{\link{indicator_variance}} and 
-  \code{\link{indicator_skewness}} for individual indicators.
+\code{\link{indictest}}, for a way to test the significance of indicator 
+    values.
 }

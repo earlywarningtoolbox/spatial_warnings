@@ -1,8 +1,7 @@
 #
 #' @title Early-warning signals based on patch size distributions
 #' 
-#' @description Compute early-warnings based on patch size distributions 
-#'   and review or plot the results
+#' @description Compute early-warning signals based on patch size distributions 
 #' 
 #' @param mat A logical matrix (TRUE/FALSE values) or a list of these
 #' 

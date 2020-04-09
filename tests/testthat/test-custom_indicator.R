@@ -56,11 +56,11 @@ test_that('Custom indicators work', {
     
   }
   
-  # Test that create_indicator and custom_indicator work the same
+  # Test that create_indicator and compute_indicator work the same
   indicator_mp <- create_indicator(maxpatchsize)
   a <- indicator_mp(dataset)
   expect_true({ 
-    all.equal(a, custom_indicator(dataset, fun = maxpatchsize))
+    all.equal(a, compute_indicator(dataset, fun = maxpatchsize))
   })
   
 })
@@ -73,7 +73,7 @@ test_that('Custom indicators handles anonymous functions correctly', {
   )
   expect_true({
     anon_fun_indic <- create_indicator(function(mat) mean(mat), 
-                                       indicname = "testfun")
+                                       taskname = "TestTask")
     TRUE
   })
 })

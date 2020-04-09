@@ -7,13 +7,16 @@
 raw_plrange(mat, xmin_bounds = NULL)
 }
 \arguments{
-\item{mat}{A logical matrix (TRUE/FALSE values)}
+\item{mat}{A logical matrix, or a list of logical matrices}
 
 \item{xmin_bounds}{A vector of two integer values, defining a range in which 
 to search for the best xmin (see Details).}
 }
 \value{
-The power-law range value of the matrix, a single number
+A data.frame with columns minsize, maxsize which are the observed 
+  minimum and maximum patch sizes. The estimated \eqn{x_{min}}{x_min} and the 
+  value of the power-law range. If multiple matrices were provided, then 
+  a list of data.frames is returned
 }
 \description{
 Compute the power-law range of a matrix
@@ -22,8 +25,8 @@ Compute the power-law range of a matrix
 Some ecosystems show typical changes in their patch-size 
 distribution as they become more and more degraded. In particular, an 
 increase in the truncation of the patch-size distribution (PSD) is expected 
-to occur. The power-law range (PLR) measures the truncation of the PSD in 
-a single value (see also \code{\link{patchdistr_sews}} for more details). 
+to occur. The power-law range (PLR) measures the truncation of the PSD 
+in a single value (see also \code{\link{patchdistr_sews}} for more details). 
 
 To compute the PLR, power-laws are fitted with a variable 
 minimum patch size (xmin) and the one with the lowest Kolmogorov-Smirnov
@@ -36,9 +39,21 @@ where \eqn{x_{max}}{x_max} is the maximum observed patch size, and
 \eqn{x_{smallest}}{x_smallest} is the minimum observed patch size.
 }
 \examples{
-raw_plrange(serengeti[[1]])
+\dontrun{
+forestgap.plr <- raw_plrange(forestgap[[2]]) 
 
+# Restrict to small xmins 
+forestgap.plr2 <- indicator_plrange(forestgap[[2]], xmin_bounds = c(1, 10)) 
+}
+}
+\references{
+Clauset, A., Shalizi, C. R., & Newman, M. E. (2009). 
+  Power-law distributions in empirical data. SIAM review, 51(4), 661-703.
+
+Berdugo, M., Kefi, S., Soliveres, S. & Maestre, F.T. (2017). Plant spatial 
+patterns identify alternative ecosystem multifunctionality states in 
+global drylands. Nature in Ecology and Evolution.
 }
 \seealso{
-\code{\link{indicator_plrange}}, \code{\link{patchdistr_sews}}
+\code{\link{patchdistr_sews}}
 }

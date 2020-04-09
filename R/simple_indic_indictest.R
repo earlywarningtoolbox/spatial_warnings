@@ -56,7 +56,7 @@ indictest.simple_sews_list <- function(x,
   
   return(results)
 }
- 
+
 #'@method as.data.frame simple_sews_test_single
 #'@export
 as.data.frame.simple_sews_test_single <- function(x, ...) { 
@@ -117,7 +117,7 @@ summary.simple_sews_test_list <- function(object,
   
   # Reshape the table 
   tab_pretty <- llply(unique(tab[['indic']]), function(current_indic) { 
-    a <- subset(tab, indic == current_indic)[ ,c('value', 'pval', 'stars')]
+    a <- tab[tab[ ,"indic"] == current_indic, c('value', 'pval', 'stars')]
     names(a) <- c(as.character(current_indic), 
                   paste0('pval_', current_indic), 
                   paste0('stars_', current_indic))
@@ -137,12 +137,17 @@ summary.simple_sews_test_list <- function(object,
   names(tab_pretty) <- header
   
   cat('Spatial Early-Warning:', indicname, '\n') 
+  cat("\n")
+  display_size_info(object)
+
   cat('\n')
   print.data.frame(tab_pretty, row.names = FALSE, digits = DIGITS)
   cat('\n')
   cat(' Significance tested against', nulln, 
       'randomly shuffled matrices\n')
   cat(" Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1", '\n')
+  cat('\n')
+  cat("Use as.data.frame() to export values\n")
   cat('\n')
   
   invisible(tab)
@@ -180,6 +185,8 @@ print.simple_sews_test_list <- function(x, ...) {
 #'   line reflects something else than the indicator values (when \code{what} 
 #'   is not set to "value").
 #' 
+#' @param ... Other arguments are silently ignored.
+#' 
 #'@rdname simple_sews_methods
 #'@method plot simple_sews_test
 #'@export
@@ -198,7 +205,7 @@ plot.simple_sews_test_single <- function(x,
                                          what = "value", 
                                          display_null = TRUE, 
                                          ...) { 
-  stop('I cannot plot a trend with only one value')
+  stop('I cannot plot a trend with only one indicator value')
 }
                                           
 #'@method plot simple_sews_test_list

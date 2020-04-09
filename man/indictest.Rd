@@ -7,7 +7,8 @@
 indictest(x, nulln = 999, null_method = "perm", ...)
 }
 \arguments{
-\item{x}{A spatial warning object such as one produced by the \code{*_sews} 
+\item{x}{A spatial warning object such as one produced by the \code{*_sews}
+functions, or \code{\link{compute_indicator}}
 function family}
 
 \item{nulln}{The number of values to compute to produce the null 
@@ -23,7 +24,7 @@ An object of class ending in \code{*_sews_test}, whose exact class
   depends on the input object (in reality a data.frame)
 }
 \description{
-Assess the significance of spatial early-warning values
+Assess the significance of spatial early-warning indicators
 }
 \details{
 \code{indictest} is used to test the significance of early-warning signals
@@ -36,7 +37,7 @@ Assess the significance of spatial early-warning values
   
 Several methods are available to produce the set of null matrices. If 
   \code{null_method} is set ot "perm", the original matrix is reshuffled 
-  \code{nulln} times to obtain the null distribution of indicator values.
+  to obtain a null matrix.
 }
 \references{
 Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 

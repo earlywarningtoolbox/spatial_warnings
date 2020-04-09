@@ -2,7 +2,7 @@
 % Please edit documentation in R/deprecation.R
 \name{generic_spews}
 \alias{generic_spews}
-\title{(DEPRECATED) Generic Spatial Early-Warning signals}
+\title{(DEFUNCT) Generic Spatial Early-Warning signals}
 \usage{
 generic_spews(
   mat,

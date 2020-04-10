@@ -13,7 +13,6 @@ datasets <- list(forestgap[[3]],
                  serengeti[5:6])
 
 test_methods <- function(teststring, datalength, obj, .test_df = TRUE) { 
-  
   ok_print <- any(grepl(teststring, capture.output(print(obj))))
   expect_true(ok_print)
   

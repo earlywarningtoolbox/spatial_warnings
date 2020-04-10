@@ -9,8 +9,8 @@ raw_variogram_metrics(mat, subset_frac = 0.5, model = "sph")
 \arguments{
 \item{mat}{A matrix (TRUE/FALSE values) or a list of matrices}
 
-\item{subset_frac}{The number of points to consider in the matrix (as a 
-proportion of the total number of cells) used to computed the variogram. 
+\item{subset_frac}{The number of matrix cells to consider (as a 
+proportion of the total number in the matrix) to compute the variogram. 
 A lower value here will speed up computations, at the expense of precision.}
 
 \item{model}{The variogram model to use, either "sph" (for a spherical model)

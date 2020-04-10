@@ -168,7 +168,6 @@ plot_variogram.variogram_sews_test_list <- function(x, along = NULL, ...) {
 }
 #'@export
 plot_variogram.variogram_sews_test_single <- function(x, ...) { 
-  browser()
   ggobj <- plot_variogram.variogram_sews_single(x)
   # Extract null values and display them 
   variodf <- extract_variogram(x)

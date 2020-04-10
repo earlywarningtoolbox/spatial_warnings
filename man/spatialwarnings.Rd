@@ -32,6 +32,7 @@ Main functions provided by this package
   \item \code{\link{patchdistr_sews}}: EWS based on patch-size distributions
   \item \code{\link{kbdm_sews}}: Kolmogorov entropy
   \item \code{\link{flowlength_sews}}: Flow length 
+  \item \code{\link{variogram_sews}}: Flow length 
 }
 
 Individual indicators: 
@@ -40,6 +41,7 @@ Individual indicators:
   \item \code{\link{raw_cg_variance}}: Spatial variance
   \item \code{\link{raw_cg_skewness}}: Spatial skewness
   \item \code{\link{raw_sdr}}: Spectral density ratio (SDR)
+  \item \code{\link{raw_variogram_metrics}}: Variogram-based metrics
   \item \code{\link{indicator_psdtype}}: Patch-size distribution shape 
   \item \code{\link{indicator_plrange}}: Power-law range
 }

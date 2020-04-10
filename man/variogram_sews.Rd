@@ -9,8 +9,8 @@ variogram_sews(mat, subset_frac = 0.05, model = "sph")
 \arguments{
 \item{mat}{A matrix (TRUE/FALSE values) or a list of matrices}
 
-\item{subset_frac}{The number of points to consider in the matrix (as a 
-proportion of the total number of cells) used to computed the variogram. 
+\item{subset_frac}{The number of matrix cells to consider (as a 
+proportion of the total number in the matrix) to compute the variogram. 
 A lower value here will speed up computations, at the expense of precision.}
 
 \item{model}{The variogram model to use, either "sph" (for a spherical model)
@@ -26,11 +26,11 @@ Compute Early-warning signals based on metrics derived
   form semi-variograms.
 }
 \details{
-During ecosystem degradation and especially before a collapse occurs in 
-  some ecosystems, autocorrelation is expected to increase in a landscape. 
-  This increase can be measured based on variograms, which represent how 
-  the difference (variance) between two points in a landscape varies as 
-  a function of distance. 
+During ecosystem degradation and especially before a regime shift occurs in 
+  some ecosystems, spatial autocorrelation is expected to increase in a
+  landscape. This increase can be measured based on variograms, which
+  represent how the difference (variance) between two points in a landscape
+  varies as a function of distance. 
 
 The approach used to derive variogram-based EWS is to compute the 
   empirical variogram of a landscape (represented passed as a matrix of 
@@ -42,17 +42,20 @@ The approach used to derive variogram-based EWS is to compute the
     \item The \emph{partial sill}, i.e. the reduction in semivariance at 
       distance zero
     \item The \emph{correlation range}, i.e. the distance at which the 
-      relationship between semivariance and distance becomes flat
+      relationship between semivariance and distance flattens
   }
 
-Additionnally, the \emph{structural variance} is computed as 
+Additionally, the \emph{structural variance} is computed as 
   (partial sill)/(nugget + partial sill), wich quantifies whether the 
   data are spatially structured (structural variance of one), or completely 
-  unstructured (value of zero).
+  unstructured (value of zero). Theoretical work suggests that partial sill,
+  correlation range and structural variance should increase before a regime
+  shift occurs in an ecosystem (Nijp et al. 2019). 
 
-Theoretical work suggests that partial sill, correlation range and 
-  structural variance should increase before a regime shift occurs in 
-  an ecosystem (Nijp et al. 2019).
+This function offers to fit a spherical model or 
+  an exponential model. The best-fitting model depends on your data, you 
+  should try different options and review the fits using
+  \code{\link{plot_variogram}}.
 }
 \examples{
 
@@ -74,11 +77,10 @@ Nijp, Jelmer J., Arnaud J.A.M. Temme, George A.K. Voorn, Lammert Kooistra,
   Geerten M. Hengeveld, Merel B. Soons, Adriaan J. Teuling, and Jakob
   Wallinga. (2019) Spatial Early Warning Signals for Impending Regime Shifts:
   A Practical Framework for Application in Real-world Landscapes. Global
-  Change Biology 25 (6): 1905-21. <doi:10.1111/gcb.14591>
+  Change Biology 25 (6): 1905-21. \doi{10.1111/gcb.14591}
 }
 \seealso{
-\
-  \code{\link[=variogram_sews_plot]{plot}}, 
+\code{\link[=variogram_sews_plot]{plot}}, 
   \code{\link[=variogram_sews_plot]{plot_variogram}}, 
   \code{\link[=variogram_sews_predict]{predict}}, 
   \code{\link{indictest}}

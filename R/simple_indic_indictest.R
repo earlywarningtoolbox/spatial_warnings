@@ -31,11 +31,13 @@ indictest.simple_sews_single <- function(x,
                                              null_method = null_method)
   
   # Format result
-  results <- c(null_values, list(nulln = nulln))
-  class(results) <- c('simple_sews_test_single', 'sews_test', 'list')
-  attr(results, "indicname") <- attr(x, "indicname")
+  for ( i in seq_along(null_values) ) { 
+    n <- names(null_values)[i]
+    x[[n]] <- null_values[[n]]
+  }
+  class(x) <- c('simple_sews_test_single', 'sews_test', 'list')
   
-  return(results)
+  return(x)
 }
 #'@export
 indictest.simple_sews_list <- function(x, 
@@ -64,11 +66,15 @@ as.data.frame.simple_sews_test_single <- function(x, ...) {
   indicnames <- ifNULLthen(names(x[['value']]), 
                            paste0("indic_", seq_along(x[['value']])))
   
+  # Names of components to extract from x 
+  test_names <- c("value", "null_mean", "null_sd", "null_95",
+                  "null_05", "z_score", "pval")
+  
   # We need to explicitely add a `matrixn` column because it will 
   # be used by funs down the stream. 
   ans <- data.frame(matrixn = 1, 
                     indic = indicnames, 
-                    as.data.frame.list(x))
+                    as.data.frame.list(x[test_names]))
   
   return(ans)
 }
@@ -79,8 +85,15 @@ as.data.frame.simple_sews_test_list <- function(x, ...) {
   indicnames <- ifNULLthen(names(x[[1]][['value']]), 
                            paste0("indic_", seq_along(x[[1]][['value']])))
 
-  tab <- ldply(x, function(x) { data.frame(indic = indicnames, 
-                                           as.data.frame.list(x)) } )
+  # Extract the relevant components from the object, and put them in a data 
+  # frame. 
+  test_names <- c("matrixn", "value", "null_mean", "null_sd", "null_95",
+                  "null_05", "z_score", "pval")
+  tab <- ldply(x, function(x) { 
+    data.frame(indic = indicnames, 
+               as.data.frame.list(x[test_names])) 
+  } )
+  
   # Reorder cols so that 'matrixn' is first'
   tab <- data.frame(matrixn = tab[ ,'matrixn'], 
                     tab[ ! names(tab) %in% 'matrixn'])

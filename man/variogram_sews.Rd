@@ -73,8 +73,8 @@ summary(serengeti_test)
 Nijp, Jelmer J., Arnaud J.A.M. Temme, George A.K. Voorn, Lammert Kooistra,
   Geerten M. Hengeveld, Merel B. Soons, Adriaan J. Teuling, and Jakob
   Wallinga. (2019) Spatial Early Warning Signals for Impending Regime Shifts:
-  A Practical Framework for Application in Real‐world Landscapes. Global
-  Change Biology 25 (6): 1905–21. <doi:10.1111/gcb.14591>
+  A Practical Framework for Application in Real-world Landscapes. Global
+  Change Biology 25 (6): 1905-21. <doi:10.1111/gcb.14591>
 }
 \seealso{
 \

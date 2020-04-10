@@ -98,7 +98,7 @@
 #'   distributions before extinction: Patch size distributions towards 
 #'   extinction. Ecology Letters, 14, 29-35.
 #' 
-#' Berdugo, M, Sonia Kéfi, Santiago Soliveres, and Fernando T. Maestre. (2017) 
+#' Berdugo, M, Sonia Kefi, Santiago Soliveres, and Fernando T. Maestre. (2017) 
 #'   Plant Spatial Patterns Identify Alternative Ecosystem Multifunctionality 
 #'   States in Global Drylands. Nature in Ecology and Evolution, no. 1.
 #' 

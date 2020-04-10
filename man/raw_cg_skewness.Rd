@@ -38,7 +38,7 @@ Computing spatial skewness is straightforward. However, detecting trends of
 skewness that correspond to critical slowing down can be tricky, especially 
 if data come from discrete classification of state variable.
 
-For example, many high resolution spatial data are classified as FALSE (empty) 
+Many high resolution spatial data are classified as FALSE (empty) 
 or TRUE (occupied by plant). In such cases, spatial skewness captures just 
 the skewness in data, but not that of spatial structure. 
 To resolve the issue, this function employs a method called coarse-graining, 

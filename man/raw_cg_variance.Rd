@@ -30,7 +30,7 @@ they are expected to show increased fluctuations in space. Thus, increasing
 spatial variance is proposed as an early warning signal of impending 
 critical transitions. 
 
-For example, many high resolution spatial data are classified as FALSE (empty) 
+Many high resolution spatial data are classified as FALSE (empty) 
 or TRUE (occupied by plant). In such cases, spatial variance captures just 
 the variance in data, but not that of spatial structure. 
 To resolve the issue, this function employs a method called coarse-graining, 

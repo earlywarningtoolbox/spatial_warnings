@@ -44,7 +44,7 @@ indicator values provided in the object \code{x}.}
 
 \item{what}{What the trend-line to be displayed should represent about the 
 indicator. Defaults to the indicator's values ("value") but other metrics 
-can be displayed. Correct values are "value", "pval" or "z_score".}
+can be displayed. Accepted values are "value", "pval" or "z_score".}
 
 \item{display_null}{Sets whether a grey ribbon should be added to reflect
 the null distribution. Note that it can not be displayed when the trend 

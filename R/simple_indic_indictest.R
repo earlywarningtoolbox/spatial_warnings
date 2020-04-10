@@ -43,8 +43,8 @@ indictest.simple_sews_list <- function(x,
                                        null_method = "perm", 
                                        ...) { 
                                          
-  results <- parallel::mclapply(x, indictest.simple_sews_single, 
-                                nulln, null_method, ...)
+  results <- future.apply::future_lapply(x, indictest.simple_sews_single, 
+                                         nulln, null_method, ...)
   
   # Add matrixn column with correct number
   for ( nb in seq_along(results) ) { 
@@ -88,7 +88,6 @@ as.data.frame.simple_sews_test_list <- function(x, ...) {
 }
 
 
-#'@method as.data.frame simple_sews_test_list
 #'@export
 summary.simple_sews_test_single <- function(object, 
                                             indicname = attr(object, "indicname"), 
@@ -166,8 +165,8 @@ print.simple_sews_test_list <- function(x, ...) {
 
 #' @title Spatial early-warning signals: display of trends
 #' 
-#' @param x A \code{simple_sews} object (as provided by **_sews functions, such 
-#'   as \code{generic_sews()} or \code{kbdm_sews()}). 
+#' @param x A \code{simple_sews_test} object (as provided by **_sews functions, such 
+#'   as \code{generic_sews()}
 #' 
 #' @param along A vector providing values over which the indicator trend 
 #'   will be plotted. If \code{NULL} then the values are plotted sequentially 
@@ -177,7 +176,7 @@ print.simple_sews_test_list <- function(x, ...) {
 #'   \code{along} is numeric or not. 
 #' 
 #' @param what The trendline to be displayed. Defaults to the indicator's 
-#'   values ("value") but other metrics can be displayed. Correct values are 
+#'   values ("value") but other metrics can be displayed. Accepted values are 
 #'   "value", "pval" or "z_score".
 #' 
 #' @param display_null Chooses whether a grey ribbon should be added to reflect
@@ -185,7 +184,7 @@ print.simple_sews_test_list <- function(x, ...) {
 #'   line reflects something else than the indicator values (when \code{what} 
 #'   is not set to "value").
 #' 
-#' @param ... Other arguments are silently ignored.
+#' @param ... Other arguments are ignored.
 #' 
 #'@rdname simple_sews_methods
 #'@method plot simple_sews_test

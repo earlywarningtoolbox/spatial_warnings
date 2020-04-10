@@ -106,7 +106,7 @@ create_indicator <- function(fun,
   # Actual function produced
   function(mat, ...) { 
     if ( is.list(mat) ) { 
-      result <- parallel::mclapply(mat, get_one_result, ...)
+      result <- future.apply::future_lapply(mat, get_one_result, ...)
       names(result) <- names(mat)
       class(result) <- c('custom_sews_single', 'simple_sews_list', 'custom_sews', 'list')
       attr(result, 'taskname') <- taskname

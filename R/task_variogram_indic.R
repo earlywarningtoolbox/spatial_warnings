@@ -8,8 +8,9 @@
 #' 
 #' @param mat A matrix (TRUE/FALSE values) or a list of matrices 
 #' 
-#' @param subset_frac The fraction of the matrix to use to compute the 
-#'   variogram
+#' @param subset_frac The number of points to consider in the matrix (as a 
+#'   proportion of the total number of cells) used to computed the variogram. 
+#'   A lower value here will speed up computations, at the expense of precision.
 #' 
 #' @param model The variogram model to use, either "sph" (for a spherical model)
 #'   or "exp" (for an exponential model)
@@ -51,7 +52,8 @@
 #' @seealso \
 #'   \code{\link[=variogram_sews_plot]{plot}}, 
 #'   \code{\link[=variogram_sews_plot]{plot_variogram}}, 
-#'   \code{\link[=variogram_sews_predict]{predict}}
+#'   \code{\link[=variogram_sews_predict]{predict}}, 
+#'   \code{\link{indictest}}
 #' 
 #' @references 
 #' 
@@ -60,7 +62,22 @@
 #'   Wallinga. (2019) Spatial Early Warning Signals for Impending Regime Shifts:
 #'   A Practical Framework for Application in Real‐world Landscapes. Global
 #'   Change Biology 25 (6): 1905–21. <doi:10.1111/gcb.14591>
+#'
+#' @examples 
 #' 
+#' \dontrun{
+#' serengeti_ews <- variogram_sews(serengeti, subset_frac = 0.01, 
+#'                                 model ="exp")
+#' plot(serengeti_ews)
+#' summary(serengeti_ews)
+#' 
+#' # nulln should be set to a higher values for meaningful results
+#' serengeti_test <- indictest(serengeti_ews, nulln = 9)
+#' plot(serengeti_test) # gray ribbons indicate the null indicator values 
+#' summary(serengeti_test)
+#' }
+#' 
+#'@export
 variogram_sews <- function(mat, 
                            subset_frac = 0.05, 
                            model = "sph") { 
@@ -153,11 +170,41 @@ as.data.frame.variogram_sews_list <- function(x, ...) {
 }
 
 # Extract the variogram as a data frame from a variogram_sews object
-# 
-#'@export
+#' 
+#' @title extract_variogram() method for variogram_sews objects
+#' 
+#' @description Extract the empirical variogram from a \code{variogram_sews} 
+#'   object
+#' 
+#' @param x An object produced by \code{variogram_sews}, or
+#'   \code{indictest}
+#' 
+#' @param ... Additional arguments (ignored)
+#' 
+#' @return A data.frame containing the variogram with the distances 
+#'   (column \code{dist}), the empirical semivariance values (\code{gamma}), 
+#'   and if object contains more than one matrix, a column named \code{matrixn}. 
+#' 
+#' @examples 
+#' 
+#' \dontrun{ 
+#' vario_indics <- variogram_sews(serengeti)
+#' predict(vario_indics)
+#' vario_test <- indictest(vario_indics, nulln = 19)
+#' predict(vario_test) # same result
+#' }
+#' 
+#' @seealso \code{\link{variogram_sews}}, 
+#'   \code{\link[=variogram_sews_plot]{plot}}, 
+#'   \code{\link[=variogram_sews_plot]{plot_variogram}}, 
+#'   \code{\link[=variogram_sews_predict]{predict}}, 
+#'   \code{\link{extract_variogram}}, 
+#' 
+#'@export 
 extract_variogram <- function(x, ...) { 
   UseMethod("extract_variogram")
 }
+#'@method extract_variogram variogram_sews_list
 #'@export
 extract_variogram.variogram_sews_list <- function(x, ...) { 
   all_varios <- Map(function(n, o) { 
@@ -165,13 +212,48 @@ extract_variogram.variogram_sews_list <- function(x, ...) {
   }, n = seq_along(x), o = x)
   do.call(rbind, all_varios)
 }
+#'@method extract_variogram variogram_sews_single
 #'@export
 extract_variogram.variogram_sews_single <- function(x, ...) { 
   data.frame(matrixn = 1, x[["variogram"]]) 
 }
 
-# Predict the fitted variogram values 
-# 
+
+
+# Predict methods 
+# --------------------------------------------------
+#' @rdname variogram_sews_predict
+#' @name variogram_sews_predict
+#' 
+#' @title predict() method for variogram_sews objects
+#' 
+#' @description Export the fitted variogram(s)
+#' 
+#' @param object An object produced by variogram_sews 
+#' 
+#' @param newdist A vector of distances at which to return the variogram fit 
+#'   values (defaults to 128 regularly-spaced values). 
+#' 
+#' @param ... Additional arguments (ignored)
+#' 
+#' @return A data.frame with the distances (column \code{dist}), the fitted 
+#'   values (\code{gamma}), and if object contains more than one matrix, 
+#'   a column \code{matrixn}. 
+#' 
+#' @examples 
+#' 
+#' \dontrun{ 
+#' vario_indics <- variogram_sews(serengeti)
+#' predict(vario_indics)
+#' vario_test <- indictest(vario_indics, nulln = 19)
+#' predict(vario_test) # same result
+#' }
+#' 
+#' @seealso \code{\link{variogram_sews}}, 
+#'   \code{\link[=variogram_sews_plot]{plot}}, 
+#'   \code{\link[=variogram_sews_plot]{plot_variogram}}, 
+#'   \code{\link{extract_variogram}}
+#' 
 #'@export 
 predict.variogram_sews_list <- function(object, newdist = NULL, ...) { 
   all_preds <- llply(object, predict.variogram_sews_single, newdist = newdist)
@@ -190,6 +272,56 @@ predict.variogram_sews_single <- function(object, newdist = NULL, ...) {
   data.frame(dist = newdist, gamma = y)
 }
 
+# Plot methods for variogram sews 
+#' 
+#' @rdname variogram_sews_plot
+#' @name variogram_sews_plot
+#' 
+#' @title Early-warning signals based on variograms 
+#' 
+#' @description Plot trends of indicators based on variograms
+#' 
+#' @param x An object produced by \code{\link{variogram_sews}}, or the 
+#'   result of applying \code{indictest} on such object.
+#' 
+#' @param along A vector providing values along which the indicator trends 
+#'   will be plotted. If \code{NULL} then the indicator values are plotted
+#'   sequentially in their original order. 
+#' 
+#' @details The \code{plot()} function will display how the estimated 
+#'   variogram parameters change along a set of values (passed with argument
+#'   \code{along}). If the object passed has been processed through 
+#'   \code{indictest}, then the null values are also displayed. 
+#'   \code{plot_variogram()} can be used to display the individual variograms
+#'   that have been fit to the data. 
+#' 
+#' @seealso 
+#' 
+#'   \code{\link{variogram_sews}}, \code{\link{indictest}}
+#' 
+#' @examples 
+#'   
+#' serengeti_ews <- variogram_sews(serengeti, subset_frac = 0.01, 
+#'                                 model ="exp")
+#' # Display the change in variogram parameters 
+#' plot(serengeti_ews, along = serengeti.rain) + 
+#'   ggplot2::labs(x = "Rainfall (mm)")
+#' 
+#' # Visualize the fitted variograms
+#' plot_variogram(serengeti_ews, along = serengeti.rain) 
+#' 
+#' \dontrun{ 
+#'   # Test the trends (nulln should be set to a higher value to obtain 
+#'   # meaningful results
+#'   serengeti_test <- indictest(serengeti_ews, nulln = 19)
+#'   plot(serengeti_test, along = serengeti.rain)
+#'   plot_variogram(serengeti_test, along = serengeti.rain)
+#' }
+#' 
+#'@export
+plot.variogram_sews <- function(x, along = NULL, ...) { 
+  NextMethod("plot")
+}
 #'@export 
 plot.variogram_sews_list <- function(x, along = NULL, ...) { 
   # Adjust x, then pass it on to the method for simple_sews plotting. Here 
@@ -201,17 +333,24 @@ plot.variogram_sews_list <- function(x, along = NULL, ...) {
   plot.simple_sews_list(x, along = along, ...)
 }
 #'@export 
-plot.variogram_sews_single <- function(x, ...) { 
+plot.variogram_sews_single <- function(x, along = NULL, ...) { 
   stop(paste0('I cannot plot a trend with only one value ! Did you want to ', 
               'display a variogram? Use plot_variogram() instead. '))
 }
 
+#'@rdname variogram_sews_plot
 #'@export
-plot_variogram <- function(x, ...) { 
+plot_variogram <- function(x, along = NULL, ...) { 
+  UseMethod("plot_variogram")
+}
+#'@rdname variogram_sews_plot
+#'@method plot_variogram variogram_sews
+#'@export
+plot_variogram.variogram_sews <- function(x, along = NULL, ...) { 
   UseMethod("plot_variogram")
 }
 #'@export
-plot_variogram.variogram_sews_single <- function(x, ...) { 
+plot_variogram.variogram_sews_single <- function(x, along = NULL, ...) { 
   df <- extract_variogram(x)
   df_pred <- predict(x)
   
@@ -226,9 +365,7 @@ plot_variogram.variogram_sews_single <- function(x, ...) {
   
   return(ggobj)
 }
-# Here we should put as example how to get free y axes by modifying the 
-# resulting ggplot2 object. 
-#'@export 
+#'@export
 plot_variogram.variogram_sews_list <- function(x, along = NULL, ...) { 
   
   # Extract data and add along data
@@ -368,8 +505,27 @@ compute_vario_metrics <- function(pars) {
 }
 
 # Raw version of the function
+#' 
+#' @title Variogram parameters
+#' 
+#' @description Compute the nugget, partial sill, correlation range and 
+#'   structural variance on a matrix. 
+#' 
+#' @param mat A matrix (TRUE/FALSE values) or a list of matrices 
+#' 
+#' @param subset_frac The number of points to consider in the matrix (as a 
+#'   proportion of the total number of cells) used to computed the variogram. 
+#'   A lower value here will speed up computations, at the expense of precision.
+#' 
+#' @param model The variogram model to use, either "sph" (for a spherical model)
+#'   or "exp" (for an exponential model)
+#' 
 #'@export
 raw_variogram_metrics <- function(mat, subset_frac = 0.5, model = "sph") { 
+  if ( ! is.matrix(mat) ) { 
+    stop("raw_variogram_metrics only accepts a single matrix as input.")
+  }
+  
   vario <- fit_variogram(mat, subset_frac = subset_frac, model = model)
   compute_vario_metrics(vario[["pars"]])
 }

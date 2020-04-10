@@ -101,7 +101,7 @@ flowlength_sews <- function(mat,
   }
   
   if ( is.list(mat) ) { 
-    result <- parallel::mclapply(mat, flfun, slope, cell_size)
+    result <- future.apply::future_lapply(mat, flfun, slope, cell_size)
     names(result) <- names(mat)
     class(result) <- c('flowlength_sews', 'simple_sews_list', 'list')
     attr(result, "indicname") <- paste0("Flow length (", method, ")")

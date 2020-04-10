@@ -13,11 +13,11 @@ plot_distr(x, along = NULL, best_only = TRUE, plrange = TRUE)
 \arguments{
 \item{x}{An object as produced by \code{\link{patchdistr_sews}}}
 
-\item{along}{A vector providing values over which the indicator trend 
+\item{along}{A vector providing values along which the indicator trends 
 will be plotted. If \code{NULL} then the values are plotted sequentially 
 in their original order.}
 
-\item{...}{Further arguments passed to methods}
+\item{...}{Ignored}
 
 \item{best_only}{Plot only the best fit the empirical (inverse cumulative) 
 patch-size distribution with an overlay of the estimated fits.}

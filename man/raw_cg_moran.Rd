@@ -7,8 +7,7 @@
 raw_cg_moran(mat, subsize = 1)
 }
 \arguments{
-\item{mat}{An matrix or a list of matrix object. It should 
-be a square matrix}
+\item{mat}{A matrix}
 
 \item{subsize}{logical. Dimension of the submatrix used to coarse-grain the 
 original matrix (set to 1 for no coarse-graining).}

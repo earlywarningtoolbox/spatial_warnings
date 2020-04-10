@@ -11,40 +11,45 @@
 #' 
 #' @param x A spatial warning object such as one produced by the \code{*_sews}
 #'   functions, or \code{\link{compute_indicator}}
-#'   function family
 #' 
 #' @param nulln The number of values to compute to produce the null 
 #'   distribution 
 #' 
-#' @param null_method The method used to test significance (right now 
+#' @param null_method The method used to produce the null values (right now 
 #'   only the permutation method is supported, 'perm')
 #' 
-#' @param ... Additional arguments passed to methods 
+#' @param ... Additional arguments are ignored
 #' 
-#' @return An object of class ending in \code{*_sews_test}, whose exact class 
-#'   depends on the input object (in reality a data.frame)
+#' @return An object with a class ending in \code{*_sews_test}, whose exact
+#'   class depends on the input object. \code{plot}, \code{summary} methods are
+#'   available to display the results of computations, and additional methods
+#'   may be available depending on the input object (e.g. see
+#'   \link{variogram_sews_plot}). 
 #' 
 #' @details 
 #' 
 #' \code{indictest} is used to test the significance of early-warning signals
 #'   against 'null matrices', which represent the expected spatial structure 
-#'   in the absence of the biological process of interest. This is done based 
-#'   on the following procedure: (1) a set of N null matrices is 
-#'   generated (this number is set by the argument \code{nulln}); (2) indicator
-#'   values are recomputed on this set of null matrices and (3) the significance 
-#'   of the observed indicator value is tested against this distribution. 
-#'   
+#'   in the absence of the biological process of interest. 
+#' 
+#' For a given indicator, a null distribution is obtained by producing a set 
+#'   of 'null' matrices on which indicator values are recomputed. This produces 
+#'   a null distribution of \code{nulln} values against which the observed
+#'   value is tested. 
+#' 
 #' Several methods are available to produce the set of null matrices. If 
 #'   \code{null_method} is set ot "perm", the original matrix is reshuffled 
 #'   to obtain a null matrix. 
 #' 
-#' @seealso \code{\link{generic_sews}}, \code{\link{spectral_sews}}
+#' @seealso \code{\link{generic_sews}}, \code{\link{spectral_sews}}, 
+#'   \code{\link{kbdm_sews}}, \code{\link{variogram_sews}}, 
+#'   \code{\link{compute_indicator}}
 #' 
 #' @references 
 #' 
-#'   Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 
-#'   V.N., et al. (2014). Early Warning Signals of Ecological Transitions: 
-#'   Methods for Spatial Patterns. PLoS ONE, 9, e92097
+#' Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 
+#' V.N., et al. (2014). Early Warning Signals of Ecological Transitions: 
+#' Methods for Spatial Patterns. PLoS ONE, 9, e92097
 #' 
 #'@export
 indictest <- function(x, 

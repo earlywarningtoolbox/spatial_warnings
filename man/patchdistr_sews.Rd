@@ -47,8 +47,7 @@ A list object of class 'psdfit' containing among other things
   `merge` was TRUE, then the average percolation value is returned)
 }
 \description{
-Compute early-warnings based on patch size distributions 
-  and review or plot the results
+Compute early-warning signals based on patch size distributions
 }
 \details{
 Patterned ecosystems can exhibit a change in their spatial structure as they 

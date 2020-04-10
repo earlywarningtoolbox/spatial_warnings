@@ -11,15 +11,15 @@
 \method{plot}{simple_sews_list}(x, along = NULL, ...)
 }
 \arguments{
-\item{x}{A \code{simple_sews} object (as provided by **_sews functions, such 
-as \code{generic_sews()} or \code{kbdm_sews()}).}
+\item{x}{A \code{simple_sews_test} object (as provided by **_sews functions, such 
+as \code{generic_sews()}}
 
 \item{along}{A vector providing values over which the indicator trend 
 will be plotted. If \code{NULL} then the values are plotted sequentially 
 in their original order.}
 
 \item{what}{The trendline to be displayed. Defaults to the indicator's 
-values ("value") but other metrics can be displayed. Correct values are 
+values ("value") but other metrics can be displayed. Accepted values are 
 "value", "pval" or "z_score".}
 
 \item{display_null}{Chooses whether a grey ribbon should be added to reflect
@@ -27,7 +27,7 @@ the null distribution. Note that it can not be displayed when the trend
 line reflects something else than the indicator values (when \code{what} 
 is not set to "value").}
 
-\item{...}{Other arguments are silently ignored.}
+\item{...}{Other arguments are ignored.}
 }
 \description{
 Spatial early-warning signals: display of trends

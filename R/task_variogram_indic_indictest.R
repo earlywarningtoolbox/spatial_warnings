@@ -5,13 +5,14 @@
 # 
 # 
 # Testing method 
+#'@export
 indictest.variogram_sews_list <- function(x, 
                                           nulln = 999, 
                                           null_method = "perm", 
                                           ...) { 
   
-  results <- parallel::mclapply(x, indictest.variogram_sews_single, 
-                                nulln, null_method, ...)
+  results <- future.apply::future_lapply(x, indictest.variogram_sews_single, 
+                                         nulln, null_method, ...)
   
   # Add matrixn column with correct matrixn number
   for ( nb in seq_along(results) ) { 
@@ -20,11 +21,11 @@ indictest.variogram_sews_list <- function(x,
   
   class(results) <- c('variogram_sews_test_list', 
                       'variogram_sews_list', 
-                      'sews_test', 'list')
+                      'variogram_sews_test', 'list')
   attr(results, "indicname") <- attr(x, "indicname")
   return(results)
 }
-
+#'@export
 indictest.variogram_sews_single <- function(x, 
                                             nulln = 999, 
                                             null_method = "perm", 
@@ -62,7 +63,7 @@ indictest.variogram_sews_single <- function(x,
   x[["metrics_test"]] <- pars
   class(x) <- c('variogram_sews_test_single', 
                 'variogram_sews_single', 
-                'sews_test', 'list')
+                'variogram_sews_test', 'list')
   return(x)
 }
 
@@ -96,10 +97,31 @@ as.data.frame.variogram_sews_test_single <- function(x, ...) {
   data.frame(matrixn = 1, x[["metrics_test"]])
 }
 
+#' @rdname variogram_sews_plot
+#' 
+#' @param what The trendline to be displayed. Defaults to the indicator's 
+#'   values ("value") but other metrics can be displayed. Accepted values are 
+#'   "value", "pval" or "z_score".
+#' 
+#' @param display_null Chooses whether a grey ribbon should be added to reflect
+#'   the null distribution. Note that it can not be displayed when the trend 
+#'   line reflects something else than the indicator values (when \code{what} 
+#'   is not set to "value").
+#' 
+#' @param ... Other arguments are ignored.
+#'@export
+plot.variogram_sews_test <- function(x, 
+                                along = NULL, 
+                                what = "value", 
+                                display_null = TRUE, 
+                                ...) { 
+  NextMethod("plot")
+}
 #'@export
 plot.variogram_sews_test_list <- function(x, along = NULL, 
                                           what = "value", 
-                                          display_null = TRUE, ...) { 
+                                          display_null = TRUE, 
+                                          ...) { 
   plot.simple_sews_test_list(x, along, what, display_null, ...)
 }
 #'@export
@@ -109,6 +131,17 @@ plot.variogram_sews_test_single <- function(x, along = NULL,
   plot.simple_sews_test_single(x, along, what, display_null, ...)
 }
 
+# We need to put that into the plot help page for variogram-based indics
+#'@rdname variogram_sews_plot
+#'@method plot_variogram variogram_sews_test
+#'@export
+plot_variogram.variogram_sews_test <- function(x, 
+                                along = NULL, 
+                                what = "value", 
+                                display_null = TRUE, 
+                                ...) { 
+  NextMethod("plot")
+}
 #'@export
 plot_variogram.variogram_sews_test_list <- function(x, along = NULL, ...) { 
   ggobj <- plot_variogram.variogram_sews_list(x, along = along)

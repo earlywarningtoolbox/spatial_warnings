@@ -11,7 +11,7 @@
 # #' @param null_method The method to use to compute null indicator values 
 # #'   (can be one of "perm", "bernouilli", or a function, see Details)
 # #' 
-# #' @param ... Other arguments passed onto methods. 
+# #' @param ... Additional arguments are ignored. 
 # #'
 # #'@export
 # indictest.patchdistr_sews <- function(x, 

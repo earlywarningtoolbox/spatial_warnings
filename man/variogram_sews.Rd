@@ -9,8 +9,9 @@ variogram_sews(mat, subset_frac = 0.05, model = "sph")
 \arguments{
 \item{mat}{A matrix (TRUE/FALSE values) or a list of matrices}
 
-\item{subset_frac}{The fraction of the matrix to use to compute the 
-variogram}
+\item{subset_frac}{The number of points to consider in the matrix (as a 
+proportion of the total number of cells) used to computed the variogram. 
+A lower value here will speed up computations, at the expense of precision.}
 
 \item{model}{The variogram model to use, either "sph" (for a spherical model)
 or "exp" (for an exponential model)}
@@ -44,7 +45,7 @@ The approach used to derive variogram-based EWS is to compute the
       relationship between semivariance and distance becomes flat
   }
 
-Additionnaly, the \emph{structural variance} is computed as 
+Additionnally, the \emph{structural variance} is computed as 
   (partial sill)/(nugget + partial sill), wich quantifies whether the 
   data are spatially structured (structural variance of one), or completely 
   unstructured (value of zero).
@@ -53,10 +54,32 @@ Theoretical work suggests that partial sill, correlation range and
   structural variance should increase before a regime shift occurs in 
   an ecosystem (Nijp et al. 2019).
 }
+\examples{
+
+\dontrun{
+serengeti_ews <- variogram_sews(serengeti, subset_frac = 0.01, 
+                                model ="exp")
+plot(serengeti_ews)
+summary(serengeti_ews)
+
+# nulln should be set to a higher values for meaningful results
+serengeti_test <- indictest(serengeti_ews, nulln = 9)
+plot(serengeti_test) # gray ribbons indicate the null indicator values 
+summary(serengeti_test)
+}
+
+}
 \references{
 Nijp, Jelmer J., Arnaud J.A.M. Temme, George A.K. Voorn, Lammert Kooistra,
   Geerten M. Hengeveld, Merel B. Soons, Adriaan J. Teuling, and Jakob
   Wallinga. (2019) Spatial Early Warning Signals for Impending Regime Shifts:
   A Practical Framework for Application in Real‐world Landscapes. Global
   Change Biology 25 (6): 1905–21. <doi:10.1111/gcb.14591>
+}
+\seealso{
+\
+  \code{\link[=variogram_sews_plot]{plot}}, 
+  \code{\link[=variogram_sews_plot]{plot_variogram}}, 
+  \code{\link[=variogram_sews_predict]{predict}}, 
+  \code{\link{indictest}}
 }

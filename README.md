@@ -35,6 +35,8 @@ a FAQ is also available [there](https://alex.lecairn.org/spatialwarnings-faq.htm
 Alain Danet, [Alexandre Génin (Maintainer)](mailto:alexandre.genin@umontpellier.fr),
 Vishwesha Guttal, Sonia Kefi, Sabiha Majumder, Sumithra Sankaran, Florian Schneider
 
+`spatial_warnings` has also benefited from contributions from Angeles Garcia-Mayor 
+
 ## Installation
 
 `spatialwarnings` is available on CRAN and can be installed through:

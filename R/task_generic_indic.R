@@ -217,7 +217,7 @@ raw_generic_indic <- function(mat, subsize, abs_skewness, moranI_coarse_grain) {
 #' spatial variance is proposed as an early warning signal of impending 
 #' critical transitions. 
 #' 
-#' For example, many high resolution spatial data are classified as FALSE (empty) 
+#' Many high resolution spatial data are classified as FALSE (empty) 
 #' or TRUE (occupied by plant). In such cases, spatial variance captures just 
 #' the variance in data, but not that of spatial structure. 
 #' To resolve the issue, this function employs a method called coarse-graining, 
@@ -256,6 +256,10 @@ raw_generic_indic <- function(mat, subsize, abs_skewness, moranI_coarse_grain) {
 #' 
 #'@export
 raw_cg_variance <- function(mat, subsize = 5) { 
+  if ( ! is.matrix(mat) ) { 
+    stop("raw_cg_variance only accepts a single matrix as input.")
+  }
+  
   c(variance = var( as.vector( coarse_grain(mat, subsize) ) ))
 }
 
@@ -274,8 +278,7 @@ raw_cg_variance <- function(mat, subsize = 5) {
 #' Legendre, P., & Legendre, L. F. J. (2012). Numerical Ecology.
 #' Elsevier Science.
 #'
-#' @param mat An matrix or a list of matrix object. It should 
-#'   be a square matrix 
+#' @param mat A matrix
 #' 
 #' @param subsize logical. Dimension of the submatrix used to coarse-grain the 
 #'   original matrix (set to 1 for no coarse-graining).
@@ -291,6 +294,9 @@ raw_cg_variance <- function(mat, subsize = 5) {
 #' 
 #'@export
 raw_cg_moran <- function(mat, subsize = 1) { 
+  if ( ! is.matrix(mat) ) { 
+    stop("raw_cg_moran only accepts a single matrix as input.")
+  }
   c(moran = raw_moran( coarse_grain(mat, subsize) ))
 }
 
@@ -328,7 +334,7 @@ raw_cg_moran <- function(mat, subsize = 1) {
 #' skewness that correspond to critical slowing down can be tricky, especially 
 #' if data come from discrete classification of state variable.
 #' 
-#' For example, many high resolution spatial data are classified as FALSE (empty) 
+#' Many high resolution spatial data are classified as FALSE (empty) 
 #' or TRUE (occupied by plant). In such cases, spatial skewness captures just 
 #' the skewness in data, but not that of spatial structure. 
 #' To resolve the issue, this function employs a method called coarse-graining, 
@@ -367,6 +373,10 @@ raw_cg_moran <- function(mat, subsize = 1) {
 #' 
 #'@export
 raw_cg_skewness <- function(mat, subsize = 5, absolute = TRUE) { 
+  if ( ! is.matrix(mat) ) { 
+    stop("raw_cg_skewness only accepts a single matrix as input.")
+  }
+  
   a <- cpp_skewness( coarse_grain(mat, subsize) )
   if (absolute) { 
     a <- abs(a) 

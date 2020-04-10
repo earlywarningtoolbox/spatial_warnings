@@ -75,7 +75,7 @@ kbdm_sews <- function(mat,
   }
   
   if ( is.list(mat) ) { 
-    result <- parallel::mclapply(mat, kbdmfun, subsize)
+    result <- future.apply::future_lapply(mat, kbdmfun, subsize)
     names(result) <- names(mat)
     class(result) <- c('kbdm_sews', 'simple_sews_list', 'list')
     attr(result, "indicname") <- "Kbdm Complexity"

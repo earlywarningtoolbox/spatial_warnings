@@ -2,13 +2,17 @@
 spatialwarnings v1.4.0 (Release date: unknown)
 ===============================================
 
+New indicators: 
+  * Variogram-based indicators (Nijp et al. 2019). These indicators measure 
+      changes in spatial correlation based on variograms
+  
 Improvements: 
   * Increase the precision of the optimizer when fitting distributions. This 
-      fixes some differences in results produced by this package and the 
-      poweRlaw package. (FIXME: check that it really fixes the problems)
+      reduces some discrepancies that occur sometimes between this package and
+      the poweRlaw package. 
   
-  * Significance of Power-law range can be tested using `indictest()`. Using 
-      `plot_distr()` on the resulting objects will display the 0.05/0.95 
+  * Significance of Power-law range can now be tested using `indictest()`. 
+      Using `plot_distr()` on the resulting objects will display the 0.05/0.95 
       quantiles of null patch size distributions. 
 
 Removals: 

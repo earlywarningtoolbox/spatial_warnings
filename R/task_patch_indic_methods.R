@@ -17,11 +17,11 @@
 #' 
 #' @param x An object as produced by \code{\link{patchdistr_sews}}
 #' 
-#' @param along A vector providing values over which the indicator trend 
+#' @param along A vector providing values along which the indicator trends 
 #'   will be plotted. If \code{NULL} then the values are plotted sequentially 
 #'   in their original order. 
 #' 
-#' @param ... Further arguments passed to methods
+#' @param ... Ignored 
 #' 
 #' @details 
 #'   
@@ -75,7 +75,8 @@ plot.patchdistr_sews <- function(x, along = NULL, ...) {
 #   have a plot of distributions, use plot_distr
 # 
 #'@method plot patchdistr_sews_list
-plot.patchdistr_sews_list <- function(x, along = NULL) { 
+#'@export
+plot.patchdistr_sews_list <- function(x, along = NULL, ...) { 
   
   if ( !is.null(along) && (length(along) != length(x)) ) { 
     stop('The along values are unfit for plotting (size mismatch)')
@@ -211,8 +212,8 @@ plot_distr.patchdistr_sews_single <- function(x,
   
   # Create base plot 
   plot <- ggplot() + 
-    scale_y_log10() +
-    scale_x_log10() + 
+    scale_x_continuous(trans = "log10") +
+    scale_y_continuous(trans = "log10") + 
     xlab('Patch size') + 
     ylab('Frequency (P>=x)') + 
     theme_spwarnings()

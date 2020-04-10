@@ -20,8 +20,8 @@ indictest.spectral_sews <- function(x, nulln = 999, ...) {
 indictest.spectral_sews_list <- function(x, nulln = 999, ...) { 
   
   # Compute a distribution of null values for SDR
-  results <- parallel::mclapply(x, indictest.spectral_sews_single, 
-                                nulln, ...)
+  results <- future.apply::future_lapply(x, indictest.spectral_sews_single, 
+                                         nulln) # , ...)
   
   # Transfer names 
   names(results) <- names(x)

@@ -3,7 +3,23 @@
 # Textual output options 
 DIGITS <- 2
 
-# Default thread number 
+# This is going to run when the user loads the package
+# 
+.onAttach <- function(libname, pkgname){
+  
+  parallelism_message <- 
+    ifelse(.Platform$OS.type == "unix", 
+           "Use plan(multiprocess) or plan(multicore) to set up parallel processing", 
+           "Use plan(multiprocess) to set up parallel processing")
+  
+  packageStartupMessage({ 
+    paste0("This is spatialwarnings ", 
+           utils::packageDescription("spatialwarnings", fields = "Version"), 
+           "\n", parallelism_message)
+    }, appendLF = TRUE)
+  
+}
+
 
 
 # A function returning a theme that gives visual homogenity to all the plots 

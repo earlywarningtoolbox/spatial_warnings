@@ -5,9 +5,13 @@
 \alias{forestgap}
 \alias{forestgap.pars}
 \title{A list of binary matrices and their associated parameters}
-\format{A list of logical matrices which are the end results of simulations 
+\format{
+A list of logical matrices which are the end results of simulations 
   from Kubo's Forest Gap model along a gradient of increasing values of 
-  stress (see references).}
+  stress (see references).
+
+The parameters used for the simulations, as a data frame.
+}
 \source{
 Generated using the implementation of Kubo's model in caspr 0.2.0 
   \url{https://github.com/fdschneider/caspr}.

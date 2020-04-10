@@ -4,8 +4,10 @@
 \name{arizona}
 \alias{arizona}
 \title{A list of classified aerial images of vegetation}
-\format{A list of logical matrices which were obtained through the 
-  classification of aerial images of vegetation taken in Arizona (USA).}
+\format{
+A list of logical matrices which were obtained through the 
+  classification of aerial images of vegetation taken in Arizona (USA).
+}
 \source{
 Derived from the images provided in the Supplementary Material of 
   Rodriguez et al. (2017).

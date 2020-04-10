@@ -444,7 +444,9 @@ fit_variogram <- function(mat, subset_frac, model, locations = NULL) {
     return(default_answer)
   }
   
-  # Fit variogram. We use weights as suggested by gstat::fit.variogram
+  # Fit variogram. We first use a segmented regression to find a breakpoint in 
+  # the empirical variogram, then use that as starting values for correlation 
+  # range. 
   brk_model <- suppressWarnings(segmented::segmented(lm(gamma ~ dist, 
                                                         data = vario)))
   brk_coefs <- coef(brk_model)

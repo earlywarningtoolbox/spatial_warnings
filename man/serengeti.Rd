@@ -5,7 +5,12 @@
 \alias{serengeti}
 \alias{serengeti.rain}
 \title{Serengeti dataset}
-\format{A list of logical matrices}
+\format{
+A list of logical matrices
+
+The annual rainfall corresponding to the matrices in the serengeti 
+  dataset, in the corresponding order.
+}
 \source{
 Extracted from Eby's et al (2017) supplementary material 
   \url{https://github.com/tee-lab/spacetime-csd/}

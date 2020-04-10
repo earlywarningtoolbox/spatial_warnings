@@ -96,8 +96,8 @@ indictest.patchdistr_sews_list <- function(x,
                                            ...) { 
   
   # Compute a distribution of null values for SDR
-  results <- parallel::mclapply(x, indictest.patchdistr_sews_single, 
-                                nulln, null_method)
+  results <- future.apply::future_lapply(x, indictest.patchdistr_sews_single, 
+                                         nulln, null_method)
   
   # Transfer names 
   names(results) <- names(x)

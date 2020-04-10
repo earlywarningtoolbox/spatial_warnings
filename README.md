@@ -35,7 +35,7 @@ a FAQ is also available [there](https://alex.lecairn.org/spatialwarnings-faq.htm
 Alain Danet, [Alexandre Génin (Maintainer)](mailto:alexandre.genin@umontpellier.fr),
 Vishwesha Guttal, Sonia Kefi, Sabiha Majumder, Sumithra Sankaran, Florian Schneider
 
-`spatial_warnings` has also benefited from contributions from Angeles Garcia-Mayor 
+`spatial_warnings` has also benefited from contributions from Angeles Garcia-Mayor, Vasilis Dakos
 
 ## Installation
 
@@ -89,6 +89,7 @@ in the literature:
   - Power-law range (Berdugo et al. 2017)
   - Flowlength (Rodriguez et al. 2017)
   - Kolmogorov complexity (Dakos et al. 2017)
+  - Variogram-based indicators (Nijp et al. 2019)
 
 ## Code sample
 

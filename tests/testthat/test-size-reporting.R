@@ -2,6 +2,8 @@
 # 
 # 
 
+context("Test that matrix sizes are being correctly reported")
+
 test_that("Correct sizes are reported", { 
   
   a <- generic_sews(serengeti)

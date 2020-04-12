@@ -1,6 +1,7 @@
 
 
 note <- sprintf("R package version %s", meta$Version)
+year <- substr(as.character(Sys.Date()), 1, 4)
 
 bibentry(bibtype = "Article",
          title = "Monitoring ecosystem degradation using spatial data and the R 'spatialwarnings'",
@@ -16,6 +17,6 @@ bibentry(bibtype = "Article",
                     person("Vishvesha", "Guttal"),
                     person("Florian D.", "Schneider"),
                     person("Sonia", "Kefi")), 
-         year = "2018",
+         year = year, 
          note = note,
          url = "https://CRAN.R-project.org/package=spatialwarnings")

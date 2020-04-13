@@ -3,7 +3,6 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
-\alias{moment}
 \alias{plan}
 \title{Objects exported from other packages}
 \keyword{internal}
@@ -13,7 +12,5 @@ below to see their documentation.
 
 \describe{
   \item{future}{\code{\link[future]{plan}}}
-
-  \item{moments}{\code{\link[moments]{moment}}}
 }}
 

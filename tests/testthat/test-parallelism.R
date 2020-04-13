@@ -6,7 +6,9 @@ context("Test that parallel computing works")
 
 test_that("Parallelism work", { 
   
-  if ( requireNamespace("future", quietly = TRUE) && 
+  if ( exists("EXTENDED_TESTS") && 
+       EXTENDED_TESTS && 
+       requireNamespace("future", quietly = TRUE) && 
        availableCores() > 1 ) { 
     a <- generic_sews(forestgap)
     

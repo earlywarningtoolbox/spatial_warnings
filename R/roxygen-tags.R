@@ -29,9 +29,12 @@ NULL
 # See: https://groups.google.com/forum/#!topic/rdevtools/qT6cJt6DLJ0
 #' @importFrom moments moment
 #' @importFrom poweRlaw get_n
+moments::moment
+poweRlaw::get_n 
 
 # Spatialwarnings will load the `future` package at boot, but does not use 
 # directly its functions. Here we import plan() explicitely to make sure 
 # check() does not complain that we depend on a package we don't use. 
 #
 #'@importFrom future plan 
+future::plan

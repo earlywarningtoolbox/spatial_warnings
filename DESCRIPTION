@@ -24,11 +24,14 @@ Suggests:
     poweRlaw,
     testthat,
     covr,
-    acss, 
-    segmented, 
-    gstat, 
-    sp
+    acss,
+    segmented,
+    gstat,
+    sp,
+    knitr,
+    rmarkdown
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
 RoxygenNote: 7.1.0
 Encoding: UTF-8
+VignetteBuilder: knitr

@@ -1,9 +1,1 @@
-.Rproj.user
-.Rhistory
-.RData
-spatial_warnings.Rproj
-.rsetup
-draft/plosone_code_bak/
-draft/angie_data
-draft/miguel_data
-.directory
+inst/doc

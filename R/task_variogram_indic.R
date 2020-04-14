@@ -491,12 +491,9 @@ fit_variogram <- function(mat, subset_frac, model, locations = NULL) {
 }
 
 spherical_model <- function(X, nugget, psill, range) { 
-#   ifelse(X < range, 
-#          nugget + psill * ( (3/2) * (X/range) - (1/2) * (X/range)^3 ), 
-#          nugget + psill)
-  # Exponential model 
-  nugget + psill * (1 - exp(-X/range))
-  
+  ifelse(X < range, 
+         nugget + psill * ( (3/2) * (X/range) - (1/2) * (X/range)^3 ), 
+         nugget + psill)
 }
 
 exponential_model <- function(X, nugget, psill, range) { 

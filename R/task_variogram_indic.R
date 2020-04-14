@@ -272,7 +272,11 @@ predict.variogram_sews_single <- function(object, newdist = NULL, ...) {
    newdist <- with(object[["variogram"]], seq(0, max(dist), length.out = 128))
   }
   pars <- object[["metrics"]]
-  y <- spherical_model(newdist, pars[1], pars[2], pars[3])
+  if ( object[["pars"]][["model"]] == "sph" ) { 
+    y <- spherical_model(newdist, pars[1], pars[2], pars[3])
+  } else { 
+    y <- exponential_model(newdist, pars[1], pars[2], pars[3])
+  }
   data.frame(dist = newdist, gamma = y)
 }
 

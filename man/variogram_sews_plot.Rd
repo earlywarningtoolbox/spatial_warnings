@@ -10,13 +10,19 @@
 \alias{plot_variogram.variogram_sews_test}
 \title{Early-warning signals based on variograms}
 \usage{
-\method{plot}{variogram_sews}(x, along = NULL, ...)
+plot.variogram_sews(x, along = NULL, ...)
 
 plot_variogram(x, along = NULL, ...)
 
 \method{plot_variogram}{variogram_sews}(x, along = NULL, ...)
 
-\method{plot}{variogram_sews_test}(x, along = NULL, what = "value", display_null = TRUE, ...)
+plot.variogram_sews_test(
+  x,
+  along = NULL,
+  what = "value",
+  display_null = TRUE,
+  ...
+)
 
 \method{plot_variogram}{variogram_sews_test}(x, along = NULL, what = "value", display_null = TRUE, ...)
 }

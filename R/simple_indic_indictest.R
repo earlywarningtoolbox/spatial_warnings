@@ -35,7 +35,8 @@ indictest.simple_sews_single <- function(x,
     n <- names(null_values)[i]
     x[[n]] <- null_values[[n]]
   }
-  class(x) <- c('simple_sews_test_single', 'sews_test', 'list')
+  class(x) <- c('simple_sews_test_single', 'sews_test', 'sews_result_single', 
+                'list')
   
   return(x)
 }
@@ -53,7 +54,8 @@ indictest.simple_sews_list <- function(x,
     results[[nb]][['matrixn']] <- nb
   }
   
-  class(results) <- c('simple_sews_test_list', 'sews_test', 'list')
+  class(results) <- c('simple_sews_test_list', 'sews_test', 
+                      'sews_result_list', 'list')
   attr(results, "indicname") <- attr(x, "indicname")
   
   return(results)
@@ -238,7 +240,7 @@ plot.simple_sews_test_list <- function(x,
     set_default_xlab <- TRUE 
   }
   
-  check_suitable_for_plots(x.df, along, display_null)
+  check_suitable_for_plots(x.df, along)
   
   plot_data <- data.frame(as.data.frame(x.df), 
                           gradient = along[x.df[ ,'matrixn']])

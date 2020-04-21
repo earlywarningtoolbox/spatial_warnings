@@ -4,10 +4,10 @@
 \alias{raw_variogram_metrics}
 \title{Variogram parameters}
 \usage{
-raw_variogram_metrics(mat, subset_frac = 0.5, model = "sph")
+raw_variogram_metrics(mat, subset_frac = 0.05, model = "sph")
 }
 \arguments{
-\item{mat}{A matrix (TRUE/FALSE values) or a list of matrices}
+\item{mat}{A matrix}
 
 \item{subset_frac}{The number of matrix cells to consider (as a 
 proportion of the total number in the matrix) to compute the variogram. 
@@ -19,4 +19,12 @@ or "exp" (for an exponential model)}
 \description{
 Compute the nugget, partial sill, correlation range and 
   structural variance on a matrix.
+}
+\examples{
+
+raw_variogram_metrics(serengeti[[5]])
+
+}
+\seealso{
+variogram_sews, raw_structvar
 }

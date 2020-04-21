@@ -60,10 +60,13 @@ This function offers to fit a spherical model or
 \examples{
 
 \dontrun{
-serengeti_ews <- variogram_sews(serengeti, subset_frac = 0.01, 
+serengeti_ews <- variogram_sews(serengeti, 
+                                subset_frac = 0.01, 
                                 model ="exp")
 plot(serengeti_ews)
 summary(serengeti_ews)
+
+plot_variogram(serengeti_ews)
 
 # nulln should be set to a higher values for meaningful results
 serengeti_test <- indictest(serengeti_ews, nulln = 9)

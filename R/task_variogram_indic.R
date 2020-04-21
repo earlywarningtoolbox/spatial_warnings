@@ -70,10 +70,13 @@
 #' @examples 
 #' 
 #' \dontrun{
-#' serengeti_ews <- variogram_sews(serengeti, subset_frac = 0.01, 
+#' serengeti_ews <- variogram_sews(serengeti, 
+#'                                 subset_frac = 0.01, 
 #'                                 model ="exp")
 #' plot(serengeti_ews)
 #' summary(serengeti_ews)
+#' 
+#' plot_variogram(serengeti_ews)
 #' 
 #' # nulln should be set to a higher values for meaningful results
 #' serengeti_test <- indictest(serengeti_ews, nulln = 9)
@@ -96,7 +99,8 @@ variogram_sews <- function(mat,
     results <- lapply(mat, variogram_sews, 
                       subset_frac, model)
     names(results) <- names(mat)
-    class(results) <- c('variogram_sews_list',  'variogram_sews', 'list')
+    class(results) <- c('variogram_sews_list',  'variogram_sews', 
+                        'sews_result_list', 'list')
     attr(results, 'indicname') <- "Variogram-based indicators"
     return(results)
   }
@@ -116,7 +120,8 @@ variogram_sews <- function(mat,
                  # Locations at which the variogram was sampled
                  locations = vario[["locations"]], 
                  call = match.call())
-  class(output) <- c('variogram_sews_single', 'variogram_sews', 'list')
+  class(output) <- c('variogram_sews_single', 'variogram_sews', 
+                     'sews_result_list', 'list')
   attr(output, 'indicname') <- "Variogram-based indicators"
   
   return(output)
@@ -405,6 +410,9 @@ plot_variogram.variogram_sews_list <- function(x, along = NULL, ...) {
 # a bit unreliable. We initialize the varioram with a segmented regression 
 # first, then refine that fit with bounded BFGS. 
 fit_variogram <- function(mat, subset_frac, model, locations = NULL) { 
+  # Make the model choice case-insensitive
+  model <- tolower(model)
+  
   # Check if mat is suitable
   check_mat(mat)
   
@@ -479,7 +487,7 @@ fit_variogram <- function(mat, subset_frac, model, locations = NULL) {
   fit <- optim(pars0, ssq, method = "L-BFGS-B", 
                lower = c(0, 0, 0), 
                control = list(maxit = 20e3))
-
+  
   vario[ ,"pred"] <- with(as.list(fit$par), 
                           spherical_model(vario[ ,"dist"], 
                                           nugget, psill, range))
@@ -518,7 +526,7 @@ compute_vario_metrics <- function(pars) {
 #' @description Compute the nugget, partial sill, correlation range and 
 #'   structural variance on a matrix. 
 #' 
-#' @param mat A matrix (TRUE/FALSE values) or a list of matrices 
+#' @param mat A matrix 
 #' 
 #' @param subset_frac The number of matrix cells to consider (as a 
 #'   proportion of the total number in the matrix) to compute the variogram. 
@@ -527,12 +535,42 @@ compute_vario_metrics <- function(pars) {
 #' @param model The variogram model to use, either "sph" (for a spherical model)
 #'   or "exp" (for an exponential model)
 #' 
+#' @examples 
+#' 
+#' raw_variogram_metrics(serengeti[[5]])
+#' 
+#' @seealso variogram_sews, raw_structvar
+#' 
 #'@export
-raw_variogram_metrics <- function(mat, subset_frac = 0.5, model = "sph") { 
+raw_variogram_metrics <- function(mat, subset_frac = 0.05, model = "sph") { 
   if ( ! is.matrix(mat) ) { 
     stop("raw_variogram_metrics only accepts a single matrix as input.")
   }
   
   vario <- fit_variogram(mat, subset_frac = subset_frac, model = model)
   compute_vario_metrics(vario[["pars"]])
+}
+
+#' @title Structural variance
+#' 
+#' @description Compute the structural variance on a matrix. 
+#' 
+#' @param mat A matrix 
+#' 
+#' @param subset_frac The number of matrix cells to consider (as a 
+#'   proportion of the total number in the matrix) to compute the variogram. 
+#'   A lower value here will speed up computations, at the expense of precision.
+#' 
+#' @param model The variogram model to use, either "sph" (for a spherical model)
+#'   or "exp" (for an exponential model)
+#' 
+#' @seealso raw_variogram_metrics, variogram_sews
+#' 
+#' @examples 
+#' 
+#' raw_structvar(serengeti[[5]])
+#' 
+#'@export
+raw_structvar <- function(mat, subset_frac = 0.05, model = "sph") { 
+  raw_variogram_metrics(mat, subset_frac, model)["structvar"]
 }

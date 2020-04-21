@@ -129,7 +129,8 @@ generic_sews <- function(mat,
     results <- lapply(mat, generic_sews, subsize, abs_skewness,
                       moranI_coarse_grain)
     names(results) <- names(mat) # import list names
-    class(results) <- c('generic_sews', 'simple_sews_list', 'list')
+    class(results) <- c('generic_sews', 'simple_sews_list', 
+                        'sews_result_list', 'list')
     attr(results, "indicname") <- "Generic Indicators"
     return(results)
   }
@@ -154,7 +155,8 @@ generic_sews <- function(mat,
                                   abs_skewness = abs_skewness, 
                                   moranI_coarse_grain = moranI_coarse_grain))
   
-  class(results) <- c('generic_sews', 'simple_sews_single', 'list')
+  class(results) <- c('generic_sews', 'simple_sews_single', 
+                      'sews_result_single', 'list')
   attr(results, "indicname") <- "Generic Indicators"
   return(results)
 }

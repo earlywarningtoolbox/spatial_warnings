@@ -21,7 +21,9 @@ indictest.variogram_sews_list <- function(x,
   
   class(results) <- c('variogram_sews_test_list', 
                       'variogram_sews_list', 
-                      'variogram_sews_test', 'list')
+                      'variogram_sews_test', 
+                      'sews_result_list', 
+                      'list')
   attr(results, "indicname") <- attr(x, "indicname")
   return(results)
 }
@@ -63,6 +65,7 @@ indictest.variogram_sews_single <- function(x,
   x[["metrics_test"]] <- pars
   class(x) <- c('variogram_sews_test_single', 
                 'variogram_sews_single', 
+                'sews_result_single', 
                 'variogram_sews_test', 'list')
   return(x)
 }

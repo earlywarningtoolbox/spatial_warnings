@@ -85,7 +85,9 @@ indictest.patchdistr_sews_single <- function(x,
            null_method = null_method)
   class(ans) <- c('patchdistr_sews_test_single', 
                   'patchdistr_sews_single', 
-                  'sews_test', 'list')
+                  'sews_result_single', 
+                  'sews_test', 
+                  'list')
   return(ans)
 }
 
@@ -105,6 +107,7 @@ indictest.patchdistr_sews_list <- function(x,
   # Format and return output
   class(results) <- c('patchdistr_sews_test_list', 
                       'patchdistr_sews_list', 
+                      'sews_result_list', 
                       'sews_test', 'list')
   
   return(results)

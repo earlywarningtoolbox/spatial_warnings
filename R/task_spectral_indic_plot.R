@@ -33,7 +33,7 @@ plot.spectral_sews_test <- function(x, # an indictest object
     set_default_xlab <- TRUE 
   }
   
-  check_suitable_for_plots(x, along, display_null)
+  check_suitable_for_plots(x, along)
   
   # This function only plots summary sdr so we subset the indictest data.frame
   is_sdr <- x[ ,'type'] == 'sdr'

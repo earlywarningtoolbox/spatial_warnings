@@ -39,8 +39,16 @@ as.data.frame.spectral_sews_single <- function(x, ...) {
   
 }
 
+extract_spectrum <- function(x, ...) { 
+  UseMethod("extract_spectrum")
+}
 
-
+extract_spectrum.spectral_sews_list <- function(x, ...) { 
+  browser()
+}
+extract_spectrum.spectral_sews_single <- function(x, ...) { 
+  browser()
+}
 
 # Print methods
 # --------------------------------------------------

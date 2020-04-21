@@ -64,15 +64,14 @@ warn_if_not_square <- function(mat) {
 # Check whether some variables are suited to make plots : used in task_generic
 #   and task_spectral sews
 check_suitable_for_plots <- function(obj, 
-                                     along, 
-                                     display_null) { 
+                                     along) { 
   
   if ( ! 'matrixn' %in% colnames(obj) || 
-        !is.null(along) && length(along) <= 1 ) { 
+        ( !is.null(along) && length(along) <= 1 ) ) { 
     stop('I cannot plot a trend with only one value')
   }
   
-  if ( length(unique(obj[ ,'matrixn'])) != length(along) ) { 
+  if ( !is.null(along) && max(obj[ ,'matrixn']) != length(along) ) { 
     stop('External data length (along = ...) does not match ',
          'the number of matrices !')
   }

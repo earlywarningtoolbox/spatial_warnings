@@ -121,9 +121,9 @@
 #' }
 #' @export
 spectral_sews <- function(mat, 
-                           sdr_low_range  = NULL, 
-                           sdr_high_range = NULL, 
-                           quiet = FALSE) { 
+                          sdr_low_range  = NULL, 
+                          sdr_high_range = NULL, 
+                          quiet = FALSE) { 
   
   # Check if mat is suitable
   check_mat(mat)

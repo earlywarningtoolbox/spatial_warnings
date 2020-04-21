@@ -55,7 +55,7 @@ check_list <- function(l) {
 }
 
 warn_if_not_square <- function(mat) { 
-  if (diff(dim(mat)) != 0) { 
+  if ( diff(dim(mat)) != 0 ) { 
     warning('The matrix is not square: indicator_sdr will only use a square ', 
             'subset centered around the middle point.')
   } 
@@ -68,7 +68,7 @@ check_suitable_for_plots <- function(obj,
   
   if ( ! 'matrixn' %in% colnames(obj) || 
         ( !is.null(along) && length(along) <= 1 ) ) { 
-    stop('I cannot plot a trend with only one value')
+    warning('Trying to display a trend with only one value')
   }
   
   if ( !is.null(along) && max(obj[ ,'matrixn']) != length(along) ) { 

@@ -131,7 +131,6 @@ generic_sews <- function(mat,
     names(results) <- names(mat) # import list names
     class(results) <- c('generic_sews', 'simple_sews_list', 
                         'sews_result_list', 'list')
-    attr(results, "indicname") <- "Generic Indicators"
     return(results)
   }
   
@@ -153,11 +152,11 @@ generic_sews <- function(mat,
                   indicf  = raw_generic_indic, 
                   fun.args = list(subsize = subsize, 
                                   abs_skewness = abs_skewness, 
-                                  moranI_coarse_grain = moranI_coarse_grain))
+                                  moranI_coarse_grain = moranI_coarse_grain), 
+                  taskname = "Generic indicators")
   
   class(results) <- c('generic_sews', 'simple_sews_single', 
                       'sews_result_single', 'list')
-  attr(results, "indicname") <- "Generic Indicators"
   return(results)
 }
 

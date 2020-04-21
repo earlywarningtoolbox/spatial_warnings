@@ -75,3 +75,20 @@ display_size_info.sews_result_list <- display_size_info.list <- function(x) {
 ifNULLthen <- function(a, b) { 
   if (is.null(a)) b else a 
 }
+
+list_methods <- function(class) { 
+  all_methods <- lapply(class, function(class) { 
+    tab <- attr(methods(class = class), "info")
+    subset(tab, from == "spatialwarnings")[ ,"generic"]
+  })
+  all_methods <- sort(unique(unlist(all_methods)))
+  
+  # Cleanup the methods if required
+  if ( any(grepl("_sews_test_", class)) ) { 
+    all_methods <- all_methods[!grepl("indictest", all_methods)]
+  }
+  
+  all_methods <- all_methods[!grepl("display_size_info", all_methods)]
+  
+  return(all_methods)
+}

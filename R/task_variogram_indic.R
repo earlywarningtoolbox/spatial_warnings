@@ -99,8 +99,10 @@ variogram_sews <- function(mat,
     results <- lapply(mat, variogram_sews, 
                       subset_frac, model)
     names(results) <- names(mat)
-    class(results) <- c('variogram_sews_list',  'variogram_sews', 
-                        'sews_result_list', 'list')
+    class(results) <- c('variogram_sews_list',  
+                        'variogram_sews', 
+                        'simple_sews_list', 
+                        'sews_result_list')
     attr(results, 'indicname') <- "Variogram-based indicators"
     return(results)
   }
@@ -113,69 +115,23 @@ variogram_sews <- function(mat,
   # Return list containing both
   output <- list(variogram = vario[['vario']], 
                  fit = vario[['pars']], 
-                 metrics = metrics, 
+                 value = metrics, 
                  orig_data = mat, 
                  pars = list(subset_frac = subset_frac, 
                              model = model), 
                  # Locations at which the variogram was sampled
                  locations = vario[["locations"]], 
-                 call = match.call())
-  class(output) <- c('variogram_sews_single', 'variogram_sews', 
-                     'sews_result_list', 'list')
+                 call = match.call(), 
+                 taskname = "Variogram-based indicators")
+  
+  class(output) <- c('variogram_sews_single', 
+                     'variogram_sews', 
+                     'simple_sews_single', 
+                     'sews_result_list',
+                     'list')
   attr(output, 'indicname') <- "Variogram-based indicators"
   
   return(output)
-}
-
-
-# Methods 
-#'@export
-summary.variogram_sews_list <- function(object, ...) { 
-  
-  cat('Spatial Early-Warning:', attr(object, "indicname"), '\n') 
-  cat('\n')
-  display_size_info(object)
-  cat('\n')
-  
-  summary.tab <- as.data.frame(object)
-  summary.tab <- reshape2::dcast(summary.tab, 
-                                 matrixn ~ indic, value.var = "value")
-  names(summary.tab)[1] <- c('Mat. #')
-  print.data.frame(summary.tab, row.names = FALSE, digits = DIGITS)
-  
-  cat('\n')
-  cat(paste0('Use as.data.frame() or extract_variogram() to retrieve values ', 
-             'in a convenient form\n'))
-  
-  invisible(summary.tab)
-}
-#'@export
-summary.variogram_sews_single <- function(object, ...) { 
-  object_list <- list(object)
-  attr(object_list, "indicname") <- attr(object, "indicname")
-  summary.variogram_sews_list(object_list)
-}
-
-#'@export
-print.variogram_sews_list <- function(x, ...) { 
-  summary.variogram_sews_list(x, ...)
-}
-#'@export
-print.variogram_sews_single <- function(x, ...) { 
-  summary.variogram_sews_single(x, ...)
-}
-
-#'@export
-as.data.frame.variogram_sews_single <- function(x, ...) { 
-  as.data.frame.variogram_sews_list(list(x))
-}
-#'@export
-as.data.frame.variogram_sews_list <- function(x, ...) { 
-  x <- lapply(x, function(o) { 
-    o[["value"]] <- o[["metrics"]]
-    o
-  })
-  as.data.frame.simple_sews_list(x, ...)
 }
 
 # Extract the variogram as a data frame from a variogram_sews object
@@ -224,7 +180,7 @@ extract_variogram.variogram_sews_list <- function(x, ...) {
 #'@method extract_variogram variogram_sews_single
 #'@export
 extract_variogram.variogram_sews_single <- function(x, ...) { 
-  data.frame(matrixn = 1, x[["variogram"]]) 
+  x[["variogram"]]
 }
 
 
@@ -276,11 +232,13 @@ predict.variogram_sews_single <- function(object, newdist = NULL, ...) {
   if ( is.null(newdist) ) { 
    newdist <- with(object[["variogram"]], seq(0, max(dist), length.out = 128))
   }
-  pars <- object[["metrics"]]
+  pars <- object[["value"]]
   if ( object[["pars"]][["model"]] == "sph" ) { 
     y <- spherical_model(newdist, pars[1], pars[2], pars[3])
-  } else { 
+  } else if ( object[["pars"]][["model"]] == "exp" ) { 
     y <- exponential_model(newdist, pars[1], pars[2], pars[3])
+  } else { 
+    stop("Unknown model")
   }
   data.frame(dist = newdist, gamma = y)
 }
@@ -344,11 +302,6 @@ plot.variogram_sews_list <- function(x, along = NULL, ...) {
   }
   
   plot.simple_sews_list(x, along = along, ...)
-}
-#'@export 
-plot.variogram_sews_single <- function(x, along = NULL, ...) { 
-  stop(paste0('I cannot plot a trend with only one value ! Did you want to ', 
-              'display a variogram? Use plot_variogram() instead. '))
 }
 
 #'@rdname variogram_sews_plot
@@ -443,6 +396,9 @@ fit_variogram <- function(mat, subset_frac, model, locations = NULL) {
                             data = locations.gstat, 
                             width = 5, 
                             cutoff = 100)
+  
+  # Drop some columns in vario that we won't use later
+  vario <- vario[ , ! names(vario) %in% c("id")]
   
   # Check if sample has only a single type of values. In that case we return 
   # a default answer with missing values for parameters as the model will not 

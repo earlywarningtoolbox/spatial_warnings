@@ -67,7 +67,8 @@ kbdm_sews <- function(mat,
     result <- list(value     = raw_kbdm(mat, subsize), 
                    orig_data = mat, 
                    fun.args  = list(subsize = subsize), 
-                   indicf    = raw_kbdm)
+                   indicf    = raw_kbdm, 
+                   taskname  = "Kbdm Complexity")
     
     class(result) <- c('kbdm_sews', 'simple_sews_single', 'list')
     attr(result, "indicname") <- "Kbdm Complexity"

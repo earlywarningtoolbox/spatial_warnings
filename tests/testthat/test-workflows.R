@@ -8,8 +8,13 @@ context('Test workflows')
 data(forestgap)
 data(serengeti)
 
+# We run theses tests without parallelism as it appears to produce spurious
+# warnings. See: https://github.com/HenrikBengtsson/future/issues/13
+# Note that this is not entirely satisfactory as the above issue claims that 
+# this problem has been fixed. 
+plan(sequential)
+
 datasets <- list(forestgap[[3]], 
-                 forestgap[2:4], 
                  serengeti[5:6])
 
 test_methods <- function(teststring, datalength, obj, .test_df = TRUE) { 
@@ -40,12 +45,12 @@ test_that("The workflow functions work", {
     
     # Generic indicators
     indics <- generic_sews(dataset) 
-    test_methods("Generic Indicators", 
+    test_methods("Generic indicators", 
                  datal*4, indics) # l(dataset) * 4 indics
     # test_methods("Generic Spatial Early-Warnings", 4, indics[[1]])
     
     indics.test <- indictest(indics, nulln = 3)
-    test_methods("Generic Indicators", 
+    test_methods("Generic indicators", 
                   datal*4, indics.test)
     
     if ( datal > 1 ) { # multiple values
@@ -60,12 +65,12 @@ test_that("The workflow functions work", {
     indics <- spectral_sews(dataset, 
                             sdr_low_range  = c(0,  0.2), 
                             sdr_high_range = c(.8, 1)) 
-    test_methods("Spectral Spatial Early-Warnings", 
+    test_methods("Spectrum-based indicators", 
                  length(dataset), indics, .test_df = FALSE)
     expect_warning({ spectral_sews(dataset) }) # give a warning when no args are passed
     
     indics.test <- indictest(indics, nulln = 3)
-    test_methods("Spectral Spatial Early-Warnings", 
+    test_methods("Spectrum-based indicators", 
                   datal, indics.test, .test_df = FALSE)
     
     if ( datal > 1 ) { # multiple values
@@ -78,14 +83,17 @@ test_that("The workflow functions work", {
     
     
     
-    # PSD-based indicators
+    # PSD-based indicators. Suppress warnings that can be produced by optim() 
+    # here. 
     indics <- suppressWarnings( patchdistr_sews(dataset, fit_lnorm = TRUE) )
-    test_methods("Patch-based Early-Warnings results", 
+    test_methods("Patch-based indicators", 
                  datal*4, indics) # l(dataset) * 4 psd types fitted
     # test_methods("Patch-based Early-Warnings results", 
     #              datal*4, indics[[1]])
-    indics.test <- indictest(indics, nulln = 3)
-    test_methods("Patch-based Early-Warnings", 
+    # Here, indictest may produce warnings on the testing datasets, so we 
+    # quiet them down
+    indics.test <- suppressWarnings( indictest(indics, nulln = 3) )
+    test_methods("Patch-based indicators", 
                   datal*4, indics.test, .test_df = FALSE)
     
     # Test prediction of PSDs
@@ -115,7 +123,7 @@ test_that("The workflow functions work", {
     
     
     # KBDM indicator
-    indics <- suppressWarnings( kbdm_sews(dataset) )
+    indics <- kbdm_sews(dataset) 
     test_methods("Spatial Early-Warning: Kbdm Complexity", 
                  datal, indics) # l(dataset) * 4 psd types fitted
     
@@ -127,10 +135,10 @@ test_that("The workflow functions work", {
     # Variogram-based indicators
     indics <- variogram_sews(dataset)
     test_methods("Spatial Early-Warning: Variogram-based indicators", 
-                 datal*4, indics, .test_df = FALSE) # l(dataset) * 4 metrics produce
+                 datal*4, indics, .test_df = FALSE) # l(dataset) * 4 metrics produced
     indics.test <- indictest(indics, 3)
     test_methods("Spatial Early-Warning: Variogram-based indicators", 
-                 datal*4, indics, .test_df = FALSE) # l(dataset) * 4 metrics produce
+                 datal*4, indics.test, .test_df = FALSE) # l(dataset) * 4 metrics produced
     
   }
   

@@ -93,10 +93,10 @@ flowlength_sews <- function(mat,
     result <- list(value     = raw_flowlength_uniform(mat, slope, cell_size), 
                    orig_data = mat, 
                    fun.args  = list(slope, cell_size), 
-                   indicf    = raw_flowlength_uniform)
+                   indicf    = raw_flowlength_uniform, 
+                   taskname  = paste0("Flow length (", method, ")"))
     
     class(result) <- c('flowlength_sews', 'simple_sews_single', 'list')
-    attr(result, "indicname") <- paste0("Flow length (", method, ")")
     return(result)
   }
   
@@ -104,7 +104,6 @@ flowlength_sews <- function(mat,
     result <- future.apply::future_lapply(mat, flfun, slope, cell_size)
     names(result) <- names(mat)
     class(result) <- c('flowlength_sews', 'simple_sews_list', 'list')
-    attr(result, "indicname") <- paste0("Flow length (", method, ")")
   } else { 
     result <- flfun(mat, slope, cell_size)
   }
@@ -184,5 +183,5 @@ raw_flowlength_uniform <- function(mat,        # Input matrix
   
   fl <- flmean * p_slope
   
-  return(fl)
+  return(c(fl_uniform = fl))
 }

@@ -22,9 +22,8 @@ indictest.variogram_sews_list <- function(x,
   class(results) <- c('variogram_sews_test_list', 
                       'variogram_sews_list', 
                       'variogram_sews_test', 
-                      'sews_result_list', 
-                      'list')
-  attr(results, "indicname") <- attr(x, "indicname")
+                      'simple_sews_test_list', 
+                      'sews_result_list')
   return(results)
 }
 #'@export
@@ -52,9 +51,10 @@ indictest.variogram_sews_single <- function(x,
   
   # Format results. The first four values are parameters, the rest is the 
   # variogram.
-  pars <- as.data.frame(do.call(cbind, 
-                                lapply(test_values, function(o) o[1:4])))
-  pars <- data.frame(indic = row.names(pars), pars)
+  pars <- llply(test_values, function(o) o[1:4])
+  pars <- pars[ ! names(pars) %in% names(x) ]
+  x[names(pars)] <- pars
+  
   vario <- as.data.frame(do.call(cbind, 
                                  lapply(test_values, function(o) o[-(1:4)])))
   vario <- data.frame(x[["variogram"]], vario)
@@ -62,42 +62,12 @@ indictest.variogram_sews_single <- function(x,
   
   # We replace or add things in x
   x[["variogram"]] <- vario
-  x[["metrics_test"]] <- pars
+  
   class(x) <- c('variogram_sews_test_single', 
                 'variogram_sews_single', 
-                'sews_result_single', 
-                'variogram_sews_test', 'list')
+                'simple_sews_test_single', 
+                'sews_result_single')
   return(x)
-}
-
-#'@export 
-summary.variogram_sews_test_list <- function(object, ...) { 
-  summary.simple_sews_test_list(object, ...)
-}
-#'@export 
-summary.variogram_sews_test_single <- function(object, ...) { 
-  summary.simple_sews_test_single(object, ...)
-}
-
-#'@export
-print.variogram_sews_test_list <- function(x, ...) { 
-  summary.variogram_sews_test_list(x, ...)
-}
-#'@export
-print.variogram_sews_test_single <- function(x, ...) { 
-  summary.variogram_sews_test_single(x, ...)
-}
-
-#'@export
-as.data.frame.variogram_sews_test_list <- function(x, ...) { 
-  all_df <- Map(function(n, o) { 
-    data.frame(matrixn = n, o[["metrics_test"]])
-  }, seq_along(x), x)
-  do.call(rbind, all_df)
-}
-#'@export
-as.data.frame.variogram_sews_test_single <- function(x, ...) { 
-  data.frame(matrixn = 1, x[["metrics_test"]])
 }
 
 #' @rdname variogram_sews_plot
@@ -157,33 +127,34 @@ plot_variogram.variogram_sews_test_list <- function(x, along = NULL, ...) {
     variodf[ ,"along"] <- variodf[ ,"matrixn"]
   }
   
-  ggobj$layers <- c(geom_line(aes_string(x = "dist", y = "null_mean"), 
-                              data = variodf, 
-                              color = 'black', alpha = .1), 
-                    geom_ribbon(aes_string(x = "dist", ymin = "null_05", 
+  ggobj$layers <- c(geom_ribbon(aes_string(x = "dist", ymin = "null_05", 
                                            ymax = "null_95"), 
                                 data = variodf, 
                                 fill = 'grey',
                                 group = 1, 
                                 alpha = .8), 
+                    geom_line(aes_string(x = "dist", y = "null_mean"), 
+                              data = variodf, 
+                              color = 'black', alpha = .1), 
                     ggobj$layers)
   return(ggobj)
 }
+
 #'@export
 plot_variogram.variogram_sews_test_single <- function(x, ...) { 
   ggobj <- plot_variogram.variogram_sews_single(x)
   # Extract null values and display them 
   variodf <- extract_variogram(x)
   
-  ggobj$layers <- c(geom_line(aes_string(x = "dist", y = "null_mean"), 
-                              data = variodf, 
-                              color = 'black', alpha = .1), 
-                    geom_ribbon(aes_string(x = "dist", ymin = "null_05", 
+  ggobj$layers <- c(geom_ribbon(aes_string(x = "dist", ymin = "null_05", 
                                            ymax = "null_95"), 
                                 data = variodf, 
                                 fill = 'grey',
                                 group = 1, 
                                 alpha = .8), 
+                    geom_line(aes_string(x = "dist", y = "null_mean"), 
+                              data = variodf, 
+                              color = 'black', alpha = .1), 
                     ggobj$layers)
   return(ggobj)
 }

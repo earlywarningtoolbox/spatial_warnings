@@ -8,7 +8,7 @@
 compute_indicator_with_null <- function(input, 
                                         nulln, 
                                         indicf, 
-                                        null_method = "perm") { 
+                                        null_method) { 
   
   # Compute the observed value
   value  <- indicf(input)

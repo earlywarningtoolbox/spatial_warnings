@@ -554,7 +554,7 @@ prepare_summary_table <- function(x, ...) {
 summary.patchdistr_sews <- function(object, ...) { 
   dat <- prepare_summary_table(object)
   
-  cat('Patch-based Early-Warnings results\n') 
+  cat('Spatial Early-Warning: Patch-based indicators\n') 
   cat('\n')
   print.data.frame(dat, row.names = FALSE, digits = DIGITS)
   cat('\n')

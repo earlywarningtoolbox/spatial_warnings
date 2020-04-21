@@ -44,7 +44,6 @@ as.data.frame.simple_sews_list <- function(x, ..., wide = FALSE) {
 #'@export
 print.simple_sews_single <- function(x, ...) { 
   x.list <- list(x)
-  attr(x.list, "indicname") <- attr(x, "indicname")
   summary.simple_sews_list(x.list, ...)
 }
 #'@method print simple_sews_list
@@ -60,22 +59,16 @@ print.simple_sews_list <- function(x, ...) {
 #'@method summary simple_sews_single
 #'@export
 summary.simple_sews_single <- function(object, 
-                                       indicname = attr(object, "indicname"), 
+                                       indicname = object[["taskname"]], 
                                        ...) { 
   object.list <- list(object)
-  attr(object.list, "indicname") <- attr(object, "indicname")
-  
   summary.simple_sews_list( object.list )
 }
 #'@method summary simple_sews_list
 #'@export
 summary.simple_sews_list <- function(object, 
-                                     indicname = attr(object, "indicname"), 
+                                     indicname = object[[1]][["taskname"]], 
                                      ...) { 
-  
-  if ( is.null(indicname) ) { 
-    indicname <- "unknown indicator(s)"
-  }
   
   cat('Spatial Early-Warning:', indicname, '\n') 
   cat('\n')
@@ -87,8 +80,10 @@ summary.simple_sews_list <- function(object,
   names(output)[1] <- c('Mat. #')
   
   print.data.frame(output, row.names = FALSE, digits = DIGITS)
+  
   cat('\n')
-  cat('Use as.data.frame() to retrieve values in a convenient form\n')
+  cat("The following methods are available: \n")
+  cat(list_methods("simple_sews_list"), "\n")
   
   invisible(output)
 }
@@ -104,10 +99,5 @@ plot.simple_sews_list <- function(x, along = NULL, ...) {
   plot.simple_sews_test_list(x, along = along, display_null = FALSE)
 }
 
-#'@method plot simple_sews_single
-#'@export
-plot.simple_sews_single <- function(x, ...) { 
-  stop('I cannot plot a trend with only one value !')  
-}
 
 

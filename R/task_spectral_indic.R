@@ -131,17 +131,17 @@ spectral_sews <- function(mat,
   if ( is.null(sdr_low_range) ) { 
     if ( !quiet ) { 
       warning("Choosing the 20% lowest frequencies for spectral density ratio ",
-              "as no range was specified. Use parameter sdr_low_range to choose ", 
-              "a different value.")
+              "as no range was specified. Use parameter sdr_low_range to ", 
+              "choose a different value.")
     }
     sdr_low_range <- c(0, .2)
   }
   
   if ( is.null(sdr_high_range) ) { 
     if ( !quiet ) { 
-      warning("Choosing the 20% highest frequencies for spectral density ratio ",
-              "as no range was specified. Use parameter sdr_high_range to choose ", 
-              "a different value.")
+      warning("Choosing the 20% highest frequencies for spectral density ", 
+              "ratio as no range was specified. Use parameter sdr_high_range ", 
+              "to choose a different value.")
     }
     sdr_high_range <- c(.8, 1)
   }
@@ -151,8 +151,12 @@ spectral_sews <- function(mat,
     results <- lapply(mat, spectral_sews, sdr_low_range, 
                       sdr_high_range, quiet)
     names(results) <- names(mat)
-    class(results) <- c('spectral_sews_list',  'spectral_sews', 
-                        'sews_result_list', 'list')
+    class(results) <- c('spectral_sews_list',  
+                        'spectral_sews', 
+                        'simple_sews_list', 
+                        'simple_sews', 
+                        'sews_result_list')
+    
     return(results)
   }
   
@@ -162,8 +166,8 @@ spectral_sews <- function(mat,
   # Check and warn if not square
   if ( nrow(mat) != ncol(mat) ) { 
     if ( !quiet ) { 
-      warning('The matrix is not square: only a squared subset in the left part ', 
-              'will be used.')
+      warning('The matrix is not square: only a squared subset of the left ", 
+              "part will be used.')
     }
     
     mindim <- min(dim(mat))
@@ -182,13 +186,20 @@ spectral_sews <- function(mat,
                                       ranges_absolute[["high"]])
   
   # Return list containing both
-  output <- list(results = list(spectrum = spectrum, sdr = sdr_value), 
+  output <- list(value = c(sdr = sdr_value), 
+                 spectrum = spectrum, 
                  orig_data = orig_input, 
                  call = match.call(), 
                  low_range = ranges_absolute[['low']], 
-                 high_range = ranges_absolute[['high']])
-  class(output) <- c('spectral_sews_single', 'spectral_sews', 
-                     'sews_result_single', 'list')
+                 high_range = ranges_absolute[['high']], 
+                 taskname = "Spectrum-based indicators")
+  class(output) <- c('spectral_sews_single', 
+                     'spectral_sews', 
+                     'simple_sews_single', 
+                     'simple_sews', 
+                     'sews_result_single', 
+                     'list')
+  
   return(output)
 }
 
@@ -269,7 +280,9 @@ raw_sdr <- function(mat,
   ranges_absolute <- convert_ranges_to_absolute(mat, sdr_low_range, 
                                                 sdr_high_range)
   
-  indicator_sdr_core(mat, ranges_absolute[["low"]], ranges_absolute[["high"]])
+  c(sdr = indicator_sdr_core(mat, 
+                             ranges_absolute[["low"]],
+                             ranges_absolute[["high"]]))
 }
 
 indicator_sdr_core <- function(mat, low_range, high_range) { 
@@ -296,7 +309,8 @@ indicator_sdr_do_ratio <- function(spectrum, low_range, high_range) {
   }
   
   # Return ratio of means
-  return( with(spectrum, mean(rspec[low_subset]) / mean(rspec[high_subset])) )
+  return( c(sdr = with(spectrum, 
+                       mean(rspec[low_subset]) / mean(rspec[high_subset])) ) )
   
 }
 

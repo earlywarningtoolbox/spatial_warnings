@@ -35,6 +35,11 @@ indictest.simple_sews_single <- function(x,
     n <- names(null_values)[i]
     x[[n]] <- null_values[[n]]
   }
+  
+  # Save the information about the number of null matrices used
+  x[["nulln"]] <- nulln
+  x[["null_method"]] <- null_method
+  
   class(x) <- c('simple_sews_test_single', 'sews_test', 'sews_result_single', 
                 'list')
   
@@ -56,7 +61,6 @@ indictest.simple_sews_list <- function(x,
   
   class(results) <- c('simple_sews_test_list', 'sews_test', 
                       'sews_result_list', 'list')
-  attr(results, "indicname") <- attr(x, "indicname")
   
   return(results)
 }
@@ -89,12 +93,15 @@ as.data.frame.simple_sews_test_list <- function(x, ...) {
 
   # Extract the relevant components from the object, and put them in a data 
   # frame. 
-  test_names <- c("matrixn", "value", "null_mean", "null_sd", "null_95",
+  test_names <- c("value", "null_mean", "null_sd", "null_95",
                   "null_05", "z_score", "pval")
-  tab <- ldply(x, function(x) { 
-    data.frame(indic = indicnames, 
+  tab <- Map(function(n, x) { 
+    data.frame(matrixn = n, 
+               indic = indicnames, 
                as.data.frame.list(x[test_names])) 
-  } )
+  }, seq_along(x), x)
+  
+  tab <- do.call(rbind, tab)
   
   # Reorder cols so that 'matrixn' is first'
   tab <- data.frame(matrixn = tab[ ,'matrixn'], 
@@ -105,24 +112,17 @@ as.data.frame.simple_sews_test_list <- function(x, ...) {
 
 #'@export
 summary.simple_sews_test_single <- function(object, 
-                                            indicname = attr(object, "indicname"), 
+                                            taskname = object[["taskname"]], 
                                             ...) { 
   object.list <- list(object)
-  attr(object.list, "indicname") <- attr(object, "indicname")
-  summary.simple_sews_test_list( object.list )
+  summary.simple_sews_test_list(object.list, taskname, ...)
 }
 #'@export
 summary.simple_sews_test_list <- function(object, 
-                                          indicname = attr(object, "indicname"), 
+                                          taskname = object[[1]][["taskname"]], 
                                           ...) { 
-  if ( is.null(indicname) ) { 
-    indicname <- "unknown indicator(s)"
-  }
   
   tab <- as.data.frame(object)
-  
-  # Get some info about the computation
-  nulln <- tab[1, "nulln"]
   
   # Format pvalues 
   tab[ ,'stars'] <- pval_stars(tab[ ,'pval'])
@@ -150,19 +150,20 @@ summary.simple_sews_test_list <- function(object,
   header[grepl('matrixn', header)] <- 'Mat #'
   names(tab_pretty) <- header
   
-  cat('Spatial Early-Warning:', indicname, '\n') 
+  cat('Spatial Early-Warning:', taskname, '\n') 
   cat("\n")
   display_size_info(object)
 
   cat('\n')
   print.data.frame(tab_pretty, row.names = FALSE, digits = DIGITS)
   cat('\n')
-  cat(' Significance tested against', nulln, 
-      'randomly shuffled matrices\n')
+  cat(" Null model: ", object[[1]][["null_method"]], " (", 
+      object[[1]][["nulln"]], " null matrices used)", "\n", sep = "")
   cat(" Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1", '\n')
   cat('\n')
-  cat("Use as.data.frame() to export values\n")
-  cat('\n')
+  
+  cat("The following methods are available:\n")
+  cat(list_methods("simple_sews_test_list"), "\n")
   
   invisible(tab)
 }
@@ -210,16 +211,6 @@ plot.simple_sews_test <- function(x,
                                   display_null = TRUE, 
                                   ...) { 
   NextMethod('plot')
-}
-
-#' @method plot simple_sews_test_single
-#'@export
-plot.simple_sews_test_single <- function(x, 
-                                         along = NULL, 
-                                         what = "value", 
-                                         display_null = TRUE, 
-                                         ...) { 
-  stop('I cannot plot a trend with only one indicator value')
 }
                                           
 #'@method plot simple_sews_test_list

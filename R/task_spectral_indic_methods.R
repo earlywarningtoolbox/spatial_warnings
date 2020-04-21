@@ -19,7 +19,7 @@ indictest.spectral_sews <- function(x,
 # 
 # Indictest functions for spectral_sews objects.
 #' @method indictest spectral_sews_list
-#' @export
+#'@export
 indictest.spectral_sews_list <- function(x, 
                                          nulln = 999, 
                                          null_method = 'perm', 
@@ -27,7 +27,7 @@ indictest.spectral_sews_list <- function(x,
   
   # Compute a distribution of null values for SDR
   results <- future.apply::future_lapply(x, indictest.spectral_sews_single, 
-                                         nulln, null_method) # , ...)
+                                         nulln, null_method, ...)
   
   # Format and return output
   class(results) <- c('spectral_sews_test_list', 
@@ -69,7 +69,7 @@ indictest.spectral_sews_single <- function(x,
   x[names(sdr_values)] <- sdr_values
   
   spec <- as.data.frame(do.call(cbind, 
-                                 lapply(test_values, function(o) o[-1])))
+                                lapply(test_values, function(o) o[-1])))
   spec <- data.frame(x[["spectrum"]], spec)
   row.names(spec) <- as.character(seq.int(nrow(spec)))
   
@@ -82,8 +82,7 @@ indictest.spectral_sews_single <- function(x,
                 'spectral_sews_single', 
                 'simple_sews_test_single', 
                 'simple_sews_single', 
-                'sews_result_single', 
-                'list')
+                'sews_result_single')
   
   return(x)
 }

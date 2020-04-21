@@ -189,7 +189,6 @@ spectral_sews <- function(mat,
   output <- list(value = c(sdr = sdr_value), 
                  spectrum = spectrum, 
                  orig_data = orig_input, 
-                 call = match.call(), 
                  low_range = ranges_absolute[['low']], 
                  high_range = ranges_absolute[['high']], 
                  taskname = "Spectrum-based indicators")

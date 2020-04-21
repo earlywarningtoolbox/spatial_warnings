@@ -121,7 +121,6 @@ variogram_sews <- function(mat,
                              model = model), 
                  # Locations at which the variogram was sampled
                  locations = vario[["locations"]], 
-                 call = match.call(), 
                  taskname = "Variogram-based indicators")
   
   class(output) <- c('variogram_sews_single', 

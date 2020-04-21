@@ -50,7 +50,7 @@ indictest.simple_sews_list <- function(x,
                                        nulln = 999, 
                                        null_method = "perm", 
                                        ...) { 
-                                         
+  
   results <- future.apply::future_lapply(x, indictest.simple_sews_single, 
                                          nulln, null_method, ...)
   

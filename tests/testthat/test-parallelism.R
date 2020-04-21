@@ -26,6 +26,9 @@ test_that("Parallelism work", {
     }
     
     plan(sequential) # restore plan to no-parallelism
+  } else { 
+    # This is a dummy test so that testhat does not report an empty test
+    expect_true(TRUE)
   }
   
 })

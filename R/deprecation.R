@@ -180,7 +180,8 @@ indicator_moran <- function(input,
       indicf <- raw_moran
     }
     
-    return( compute_indicator_with_null(input, nulln, indicf) )
+    return( compute_indicator_with_null(input, nulln, indicf, 
+                                        null_method = "perm") )
   }
 }
 
@@ -295,7 +296,8 @@ indicator_skewness <- function(input,
     }
     
     # Compute and return the indicator
-    return( compute_indicator_with_null(input, nulln, indicf) ) 
+    return( compute_indicator_with_null(input, nulln, indicf, 
+                                        null_method = "perm") ) 
     
   }
 }
@@ -400,7 +402,8 @@ indicator_variance <- function(input,
       raw_cg_variance(mat, subsize = subsize) 
     }
     # Compute and return indicator
-    return( compute_indicator_with_null(input, nulln, indicf) ) 
+    return( compute_indicator_with_null(input, nulln, indicf, 
+                                        null_method = "perm") ) 
     
   }
 }
@@ -517,7 +520,8 @@ indicator_sdr <- function(input,
   return( 
     compute_indicator_with_null(input, 
                                 nulln = nulln, 
-                                indicf = indicf)
+                                indicf = indicf, 
+                                null_method = "perm")
   )
   
 }

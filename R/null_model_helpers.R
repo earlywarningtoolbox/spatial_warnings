@@ -46,7 +46,17 @@ generate_null_distr <- function(input, indicf, nulln, null_method) {
     # Compute the index on the same matrix as randomization will do nothing
     nulldistr <- matrix(rep(indicf(input), nulln), 
                         nrow = 1, ncol = nulln)
-                        
+  
+  
+  
+  } else if ( is.function(null_method) ) { 
+    
+    nulldistr <- lapply(seq.int(nulln), function(n) { 
+      indicf( null_method(input) )
+    })
+  
+  
+  
   } else if ( null_method == "perm" ) { 
     
     # Compute the index on a randomized matrix
@@ -59,8 +69,14 @@ generate_null_distr <- function(input, indicf, nulln, null_method) {
     } else { 
       nulldistr <- shuffle_and_compute(input, indicf, nulln)
     }
-    
+  
+  
+  
   } else if ( null_method == "binom" ) { 
+    
+    if ( ! is.logical(input) ) { 
+      stop("Method binom requires matrices with TRUE/FALSE values")
+    }
     
     nulldistr <- lapply(seq.int(nulln), function(n) { 
       newinput <- input
@@ -68,9 +84,34 @@ generate_null_distr <- function(input, indicf, nulln, null_method) {
       indicf(input)
     })
     
+    
+    
+  } else if ( null_method == "smooth" ) { 
+    if ( ! requireNamespace("mgcv") ) { 
+      stop("The 'gam' method requires mgcv. Please install it beforehand.")
+    }
+    
+    
+    # We fit a smoother over the matrix, with automatic parameter selection 
+    # for the smoother. 
+    mat_tab <- data.frame(expand.grid(row = seq.int(nrow(input)), 
+                                      col = seq.int(ncol(input))), 
+                          value = as.vector(input))
+    mod <- mgcv::gam(value ~ s(row, col, bs = "tp"), data = mat_tab, 
+                    family = binomial())
+    
+    nulldistr <- lapply(seq.int(nulln), function(n) { 
+      # Replace values of 
+      newmat <- matrix(stats::simulate(mod)[ ,1], 
+                       nrow = nrow(input), ncol = ncol(input))
+      indicf(newmat)
+    })
+    
   } else { 
     stop(paste0("Unknown null-model method: ", null_method))
   }
+  
+  
   
   return(nulldistr)
 }
@@ -84,3 +125,20 @@ safe_quantile <- function(nulldistr, p) {
   }
   quantile(nulldistr, p, na.rm = TRUE)
 }
+
+get_one_smoothed_null <- function(mat) { 
+  
+  mat_tab <- data.frame(expand.grid(row = seq.int(nrow(mat)), 
+                                    col = seq.int(ncol(mat))), 
+                        value = as.vector(mat))
+  
+  # We set up caching so we don't refit the model every time 
+  browser()
+  
+  mod <- mgcv::gam(value ~ s(row, col, bs = "tp"), data = data, 
+                   family = binomial())
+
+  mat[ , ] <- simulate(mod) > .5 
+  return(mat)
+}
+

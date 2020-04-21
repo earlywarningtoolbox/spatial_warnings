@@ -27,9 +27,8 @@ Suggests:
     acss,
     segmented,
     gstat,
-    sp,
-    knitr,
-    rmarkdown
+    sp, 
+    mgcv
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
 RoxygenNote: 7.1.0

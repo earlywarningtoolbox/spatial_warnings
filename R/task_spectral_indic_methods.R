@@ -3,22 +3,16 @@
 # This file contains the indictest functions for spectral sews
 # 
 
-#' @rdname spectral_sews
-#' 
-#' @param nulln Number of simulations used to produce the null 
-#'   distribution of indicator values.
-#' 
 #' @export
 indictest.spectral_sews <- function(x, 
-                      nulln = 999, 
-                      null_method = 'perm', 
-                      ...) { 
+                                    nulln = 999, 
+                                    null_method = 'perm', 
+                                    ...) { 
   NextMethod('indictest')
 }
 
 # 
 # Indictest functions for spectral_sews objects.
-#' @method indictest spectral_sews_list
 #'@export
 indictest.spectral_sews_list <- function(x, 
                                          nulln = 999, 
@@ -39,7 +33,6 @@ indictest.spectral_sews_list <- function(x,
   return(results)
 }
 
-#' @method indictest spectral_sews_single
 #' @export
 indictest.spectral_sews_single <- function(x, 
                                            nulln = 999, 
@@ -87,33 +80,69 @@ indictest.spectral_sews_single <- function(x,
   return(x)
 }
 
-# Plot function for r-spectrum
-# 
-# We define the S3 method. Note that args are already defined in plot() method
-# 
-
 
 # Methods to extract the spectrum from spectal_sews objects
 # ---------------------------------------------------------
 
+#' @title Extract the r-spectrum from objects 
+#'
+#' @description Extract the r-spectrum from objects produced by
+#'   \code{spectral_sews}. 
+#'
+#' @param x An object produced by \code{spectral_sews} or the result of the 
+#'   \code{indictest} function called on such object
+#' 
+#' @param ... Other arguments are ignored 
+#' 
+#' @return The empirical r-spectrum as a \code{data.frame}
+#' 
+#' @seealso \code{\link{spectral_sews}}, \code{\link{rspectrum}}
+#' 
+#' @examples 
+#' 
+#' # Extract the r-spectrum after computing indicators
+#' indics <- spectral_sews(serengeti[2:3])
+#' extract_spectrum(indics) 
+#' 
+#'@export
 extract_spectrum <- function(x, ...) { 
   UseMethod("extract_spectrum")
 }
-
+#'@export
 extract_spectrum.spectral_sews_list <- function(x, ...) { 
   values <- Map(function(n, o) data.frame(matrixn = n, o[["spectrum"]]), 
                 seq_along(x), x)
   do.call(rbind, values)
 }
+#'@export
 extract_spectrum.spectral_sews_single <- function(x, ...) { 
   x[["spectrum"]]
 }
 
-#' @title Spectrum plot
-#'
-#' @rdname spectral_sews
+#' @title Display the r-spectrum of a \code{spectral_sews} object
 #' 
-#' @export
+#' @description Display the r-spectrum (or multiple spectra) that are contained
+#'   in an object returned by \code{\link{spectral_sews}} object (or the result 
+#'   of \code{\link{indictest}} applied on such object. 
+#' 
+#' @param x An object produced by \code{\link{spectral_sews}} or the result 
+#'   returned by \code{\link{indictest}} applied on such object
+#' 
+#' @param along A vector providing numerical or categorical values along 
+#'   which the indicator trends will be plotted. If \code{NULL} then the
+#'   indicator values are plotted sequentially in their original order. 
+#' 
+#' @param log Whether to use a log scale or a linear scale on the y axis
+#' 
+#' @param display_null Whether to display null information. This argument is 
+#'   ignored if \code{x} has not been produced through \code{\link{indictest}} 
+#'   (and thus does not contain data regarding the null model)
+#' 
+#' @param ... Other arguments are ignored 
+#' 
+#' @family spectral_sews
+#' 
+#'@export
 plot_spectrum <- function(x, 
                           along = NULL, 
                           log = TRUE, 
@@ -132,16 +161,18 @@ plot_spectrum.spectral_sews_test_list <- function(x,
   
   ggobj <- plot_spectrum.spectral_sews_list(x, along, log)
   
-  # Add layers with null model information
-  ggobj$layers <- c(geom_line(aes_string(x = "dist", y = "null_mean"), 
-                              color = 'black', alpha = .1), 
-                    geom_ribbon(aes_string(x = "dist", ymin = "null_05", 
-                                           ymax = "null_95"), 
-                                fill = 'grey',
-                                group = 1, 
-                                alpha = .8), 
-                    ggobj$layers)
-  
+  # Add layers with null model information. We use this method so that the 
+  # ribbon appears below the line corresponding to observed values. 
+  if ( display_null ) { 
+    ggobj$layers <- c(geom_line(aes_string(x = "dist", y = "null_mean"), 
+                                color = 'black', alpha = .1), 
+                      geom_ribbon(aes_string(x = "dist", ymin = "null_05", 
+                                            ymax = "null_95"), 
+                                  fill = 'grey',
+                                  group = 1, 
+                                  alpha = .8), 
+                      ggobj$layers)
+  }
     
   return(ggobj) 
 }
@@ -156,15 +187,18 @@ plot_spectrum.spectral_sews_test_single <- function(x,
   # Get base plot 
   ggobj <- plot_spectrum.spectral_sews_single(x, along, log)
   
-  # Add layers with null model information
-  ggobj$layers <- c(geom_line(aes_string(x = "dist", y = "null_mean"), 
-                              color = 'black', alpha = .1), 
-                    geom_ribbon(aes_string(x = "dist", ymin = "null_05", 
-                                           ymax = "null_95"), 
-                                fill = 'grey',
-                                group = 1, 
-                                alpha = .8), 
-                    ggobj$layers)
+  # Add layers with null model information. We use this method so that the 
+  # ribbon appears below the line corresponding to observed values. 
+  if ( display_null ) { 
+    ggobj$layers <- c(geom_line(aes_string(x = "dist", y = "null_mean"), 
+                                color = 'black', alpha = .1), 
+                      geom_ribbon(aes_string(x = "dist", ymin = "null_05", 
+                                            ymax = "null_95"), 
+                                  fill = 'grey',
+                                  group = 1, 
+                                  alpha = .8), 
+                      ggobj$layers)
+  }
   
   return(ggobj)
 }

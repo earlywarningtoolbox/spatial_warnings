@@ -11,10 +11,12 @@ display_matrix(object, palette = "RdYlBu", along = NULL, ...)
 \code{*_sews} functions or \code{indictest()}}
 
 \item{palette}{A color palette to use in the plot. It can be any color 
-palette understood by \link[pkg=ggplo2]{scale_fill_brewer}.}
+palette understood by \link[ggplot2]{scale_fill_brewer}.}
 
 \item{along}{A vector of values used in facet headers. If \code{object} is 
 a matrix, this is ignored.}
+
+\item{...}{Other arguments are ignored.}
 }
 \value{
 A ggplot2 object, which is printed when this function is used 
@@ -30,10 +32,11 @@ This function will plot a matrix using ggplot2, using the provided
 }
 \examples{
 
-display_matrix(serengeti)
-display_matrix(forestgap)
+# display_matrix works with single matrices or lists of matrices 
+display_matrix(serengeti[2:5])
 
-indics <- compute_indicator(serengeti, raw_moran) 
+# display_matrix is also compatible with "*_sews" objects
+indics <- compute_indicator(serengeti[2:5], raw_moran) 
 display_matrix(indics)
 
 }

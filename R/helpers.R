@@ -79,7 +79,7 @@ ifNULLthen <- function(a, b) {
 list_methods <- function(class) { 
   all_methods <- lapply(class, function(class) { 
     tab <- attr(methods(class = class), "info")
-    subset(tab, from == "spatialwarnings")[ ,"generic"]
+    tab[tab[ ,"from"] == "spatialwarnings", "generic"]
   })
   all_methods <- sort(unique(unlist(all_methods)))
   

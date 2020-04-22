@@ -39,7 +39,15 @@
 #' 
 #' Several methods are available to produce the set of null matrices. If 
 #'   \code{null_method} is set ot "perm", the original matrix is reshuffled 
-#'   to obtain a null matrix. 
+#'   to obtain a null matrix. If the method is "binom", the mean cover of a 
+#'   matrix \deqn{mu} is computed, then the matrix is filled randomly with 
+#'   TRUE values (with probability \deqn{mu}) and FALSE (with probability 
+#'   \deqn{1 - mu}). This method only works with logical matrices (with 
+#'   TRUE/FALSE values). 
+#' 
+#' \code{null_method} can be set to 'smooth'. In that case, an isotropic spline 
+#'   will be fitted to the matrix (using \link[mgcv]{gam}), and values will 
+#'   be 
 #' 
 #' @seealso \code{\link{generic_sews}}, \code{\link{spectral_sews}}, 
 #'   \code{\link{kbdm_sews}}, \code{\link{variogram_sews}}, 

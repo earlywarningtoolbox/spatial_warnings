@@ -1,5 +1,6 @@
 # 
-# This file contains a function to visualize matrices used in spatialwarnings 
+# This file contains a function to vizualise matrices as those we use in
+#   spatialwarnings 
 # 
 
 #' @title Plot a matrix 
@@ -10,10 +11,12 @@
 #'   \code{*_sews} functions or \code{indictest()}
 #' 
 #' @param palette A color palette to use in the plot. It can be any color 
-#'   palette understood by \link[pkg=ggplo2]{scale_fill_brewer}. 
+#'   palette understood by \link[ggplot2]{scale_fill_brewer}. 
 #' 
 #' @param along A vector of values used in facet headers. If \code{object} is 
 #'   a matrix, this is ignored. 
+#' 
+#' @param ... Other arguments are ignored. 
 #' 
 #' @details This function will plot a matrix using ggplot2, using the provided 
 #'   palette. Its use-case is very much like \code{image()}, but its produces 
@@ -24,10 +27,11 @@
 #' 
 #' @examples 
 #' 
-#' display_matrix(serengeti)
-#' display_matrix(forestgap)
+#' # display_matrix works with single matrices or lists of matrices 
+#' display_matrix(serengeti[2:5])
 #' 
-#' indics <- compute_indicator(serengeti, raw_moran) 
+#' # display_matrix is also compatible with "*_sews" objects
+#' indics <- compute_indicator(serengeti[2:5], raw_moran) 
 #' display_matrix(indics)
 #' 
 #'@export
@@ -46,8 +50,8 @@ display_matrix.matrix <- function(object, palette = "RdYlBu",
     fillscale <- scale_fill_brewer(palette = palette)
   }
   
-  ggplot(tabularize(object), aes(x = x, y = y)) + 
-    geom_raster(aes(fill = value)) + 
+  ggplot(tabularize(object), aes_string(x = "x", y = "y")) + 
+    geom_raster(aes_string(fill = "value")) + 
     fillscale + 
     theme_spwarnings() + 
     theme(axis.title.x = element_blank(), 
@@ -80,8 +84,8 @@ display_matrix.list <- function(object, palette = "RdYlBu",
     fillscale <- scale_fill_brewer(palette = palette)
   }
   
-  ggplot(all_tabs, aes(x = x, y = y)) + 
-    geom_raster(aes(fill = value)) + 
+  ggplot(all_tabs, aes_string(x = "x", y = "y")) + 
+    geom_raster(aes_string(fill = "value")) + 
     facet_wrap( ~ along ) + 
     fillscale + 
     theme_spwarnings() + 

@@ -97,12 +97,6 @@ plot.variogram_sews_test_list <- function(x, along = NULL,
                                           ...) { 
   plot.simple_sews_test_list(x, along, what, display_null, ...)
 }
-#'@export
-plot.variogram_sews_test_single <- function(x, along = NULL, 
-                                            what = "value", 
-                                            display_null = TRUE, ...) { 
-  plot.simple_sews_test_single(x, along, what, display_null, ...)
-}
 
 # We need to put that into the plot help page for variogram-based indics
 #'@rdname variogram_sews_plot

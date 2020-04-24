@@ -4,7 +4,8 @@
 
 context("Handling of gis formats") 
 if ( requireNamespace("png", quietly = TRUE) && 
-     requireNamespace("raster", quietly = TRUE) ) { 
+     requireNamespace("raster", quietly = TRUE) && 
+     requireNamespace("rgdal", quietly = TRUE) ) { 
     
   test_that("RasterLayers are correctly handled", { 
     

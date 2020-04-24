@@ -29,7 +29,8 @@ Suggests:
     sp, 
     mgcv, 
     raster, 
-    png
+    png, 
+    rgdal
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
 RoxygenNote: 7.1.0

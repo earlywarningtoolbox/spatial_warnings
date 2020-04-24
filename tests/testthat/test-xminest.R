@@ -75,9 +75,7 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
       data.frame(df, est_xmin = est_xmin)
     }
     
-    if ( require(plyr) ) { 
-      xmin_ests <- ddply(parms, ~ expo + rate, estim_xmin)
-    }
+    xmin_ests <- ddply(parms, ~ expo + rate, estim_xmin)
     
   })
 

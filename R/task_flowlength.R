@@ -65,9 +65,6 @@
 #' @param cell_size The horizontal size of a cell in the matrix (as viewed 
 #'   from above). 
 #' 
-#' @param method The method to use to compute the flow length (for now only 
-#'   the method "uniform", using a single slope approximation, is implemented)
-#' 
 #' @return The flow length numerical value. 
 #' 
 #' @examples 

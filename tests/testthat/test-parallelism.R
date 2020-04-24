@@ -8,7 +8,6 @@ test_that("Parallelism work", {
   
   if ( exists("EXTENDED_TESTS") && 
        EXTENDED_TESTS && 
-       requireNamespace("future", quietly = TRUE) && 
        availableCores() > 1 ) { 
     a <- generic_sews(forestgap)
     

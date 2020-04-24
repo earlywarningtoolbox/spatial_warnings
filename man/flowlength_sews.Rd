@@ -13,9 +13,6 @@ flowlength_sews(mat, slope = 20, cell_size = 1)
 
 \item{cell_size}{The horizontal size of a cell in the matrix (as viewed 
 from above).}
-
-\item{method}{The method to use to compute the flow length (for now only 
-the method "uniform", using a single slope approximation, is implemented)}
 }
 \value{
 The flow length numerical value.

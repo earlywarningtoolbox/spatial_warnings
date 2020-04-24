@@ -8,8 +8,6 @@ context("Test that results match those in PLOS One")
 
 test_that('results matches those in PLOS One', { 
   
-  stopifnot(require(reshape2))
-  
   datdir <- './plosone/' # mind the trailing /
   source(paste0(datdir,'early_warning_generic_R_code.R'), chdir = TRUE)
   
@@ -38,9 +36,14 @@ test_that('results matches those in PLOS One', {
   # Now compute indicators
   test_results  <- generic_sews(matrices, subsize = 10, 
                                 moranI_coarse_grain = TRUE)
-  test_reshaped <- acast(as.data.frame(test_results), 
-                         matrixn ~ indic)
-    
+  test_reshaped <- ddply(as.data.frame(test_results), ~ matrixn, function(df) { 
+    a <- as.list(df[ ,"value"])
+    names(a) <- df[ ,"indic"]
+    a <- a[c("mean", "moran", "skewness", "variance")]
+    as.data.frame(a)
+  })
+  test_reshaped <- as.matrix(test_reshaped[ ,-1])
+  
   # Now test for concordance
   ref_results <- cbind(mean = mean_reduced,  # ! order matters !
                        corr = corr_reduced, 

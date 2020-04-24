@@ -87,7 +87,7 @@ generate_null_distr <- function(input, indicf, nulln, null_method) {
     
     
   } else if ( null_method == "smooth" ) { 
-    if ( ! requireNamespace("mgcv") ) { 
+    if ( ! requireNamespace("mgcv", quietly = TRUE) ) { 
       stop("The 'gam' method requires mgcv. Please install it beforehand.")
     }
     

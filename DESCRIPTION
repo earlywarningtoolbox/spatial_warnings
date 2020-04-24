@@ -1,7 +1,7 @@
 Package: spatialwarnings
 Type: Package
 Title: Spatial Early Warning Signals of Ecosystem Degradation
-Version: 1.3.99
+Version: 1.9.99
 Author: Alain Danet, Alexandre Genin, Vishwesha Guttal, Sonia Kefi,
   Sabiha Majumder, Sumithra Sankaran, Florian Schneider
 License: MIT + file LICENSE
@@ -13,21 +13,23 @@ Imports:
     Rcpp,
     ggplot2 (>= 1.0.0),
     plyr,
-    reshape2,
     tidyr,
     stats,
     utils,
-    future.apply
+    future.apply, 
+    gsl
 Suggests:
-    moments,
-    poweRlaw,
-    testthat,
-    covr,
-    acss,
-    segmented,
+    moments, 
+    poweRlaw, 
+    testthat, 
+    covr, 
+    acss, 
+    segmented, 
     gstat,
     sp, 
-    mgcv
+    mgcv, 
+    raster, 
+    png
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
 RoxygenNote: 7.1.0

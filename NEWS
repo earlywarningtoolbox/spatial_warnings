@@ -16,6 +16,9 @@ Improvements:
       Using `plot_distr()` on the resulting objects will display the 0.05/0.95 
       quantiles of null patch size distributions. 
   
+  * The package gains a generic function `display_matrix`, to quickly display 
+      the matrices being used using ggplot2
+  
   * Improved the fitting of distributions, which should be more robust now. 
   
   * Dependency to VGAM is now removed 

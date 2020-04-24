@@ -1,4 +1,5 @@
-library(testthat)
-library(spatialwarnings)
 
-test_check("spatialwarnings")
+library(spatialwarnings)
+if ( require("testthat") ) { 
+  test_check("spatialwarnings")
+}

@@ -4,7 +4,7 @@
 \alias{raw_kbdm}
 \title{Kolmogorov complexity of a matrix}
 \usage{
-raw_kbdm(mat, subsize = 3)
+raw_kbdm(mat, subsize)
 }
 \arguments{
 \item{mat}{A logical matrix (with TRUE/FALSE values)}

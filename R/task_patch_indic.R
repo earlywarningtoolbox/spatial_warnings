@@ -136,8 +136,6 @@ patchdistr_sews <- function(mat,
                             xmin_bounds = NULL, 
                             wrap = FALSE) {
   
-  check_mat(mat) # Check input matrix
-  
   # If input is a list -> apply on each element
   if ( !merge & is.list(mat)) { 
     results <- future.apply::future_lapply(mat, patchdistr_sews, merge,
@@ -147,6 +145,15 @@ patchdistr_sews <- function(mat,
                         'sews_result_list', 'list')
     return(results)
   } 
+  
+  # Convert object to matrix form (or list of matrices) and check if it is
+  # suitable for spatialwarnings
+  mat <- convert_to_matrix(mat)
+  if ( is.list(mat) ) { 
+    lapply(mat, check_mat)
+  } else { 
+    check_mat(mat)
+  }
   
   # Get patch size distribution
   psd <- patchsizes(mat, merge = merge, wrap = wrap)

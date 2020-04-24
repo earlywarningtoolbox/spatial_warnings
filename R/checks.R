@@ -5,19 +5,10 @@
 NULL
 
 # A function that checks the arguments passed to the indicator functions.
-#
 check_mat <- function(mat) { 
   
-  # If a list is passed then we do list-level cheks and check all elements
-  if ( is.list(mat) ) { 
-    check_list(mat)
-    lapply(mat, check_mat)
-    
-    return(TRUE)
-  }
-  
-  # Not a matrix ? 
-  if ( ! inherits(mat, 'matrix') ) {
+  # Not a matrix or something we can handle ? 
+  if ( ! inherits(mat, "matrix") ) {
     stop('I don\'t know what to do with an object of class ', class(mat))
   }
   
@@ -25,33 +16,14 @@ check_mat <- function(mat) {
   if ( any( is.na(mat) ) ) { 
     stop('NAs in provided matrix.')
   }
-    
+  
+  # Has only two unique values but it is not a logical matrix
+  if ( length(unique(as.vector(mat))) == 2 && (!is.logical(mat) ) ) { 
+    warning("The matrix has only two unique values, but it is not of logical ", 
+            "type. Did you mean to use TRUE/FALSE values?")
+  }
+  
   return(TRUE)
-}
-
-check_list <- function(l) { 
-  
-  # Check that lists all contain the same elements
-  are_matrix <- sapply(l, function(x) is.matrix(x) )
-  if ( ! all(are_matrix) ) { 
-    stop('The provided list does not contain only matrices')
-  }
-  
-  
-  unique_types <- unique(sapply(l, function(x) typeof(x)))
-  if ( length(unique_types) > 1 ) { 
-    warning('The provided list contains matrices of different data types: this ',
-            'is most likely an error')
-  }
-  
-  # Check if matrices have the same dimension. We compare them sequentially 
-  # and check for a change in dimensions.
-  dims <- do.call(rbind, lapply(l, dim))
-  ddims <- apply(dims, 2, diff)
-  if ( any(ddims > 0) ) { 
-    warning('Matrices in the provided list do not have the same size.')
-  }
-  
 }
 
 warn_if_not_square <- function(mat) { 

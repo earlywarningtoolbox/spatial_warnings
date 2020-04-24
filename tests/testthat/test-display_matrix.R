@@ -20,16 +20,9 @@ test_that("display_matrix methods work", {
     isgg(a)
   })
   
-  # Test the list method 
-  expect_warning({ # warn for matrices with different sizes
-    display_matrix(arizona)
-  }) 
-  
   # Test the sews methods
   sets <- suppressWarnings({ # spectral_sews will produce warnings
-    list(patchdistr_sews(serengeti[2:3]), 
-         generic_sews(serengeti[2:3]), 
-         spectral_sews(serengeti[2:3]), 
+    list(spectral_sews(serengeti[2:3]), 
          compute_indicator(serengeti[2:3], raw_moran))
   })
   

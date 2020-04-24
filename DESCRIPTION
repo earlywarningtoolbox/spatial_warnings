@@ -13,7 +13,6 @@ Imports:
     Rcpp,
     ggplot2 (>= 1.0.0),
     plyr,
-    VGAM,
     reshape2,
     tidyr,
     stats,

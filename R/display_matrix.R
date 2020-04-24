@@ -39,6 +39,13 @@ display_matrix <- function(object, palette = "RdYlBu", along = NULL, ...) {
   UseMethod("display_matrix")
 }
 
+#'@export 
+display_matrix.RasterLayer <- function(object, palette = "RdYlBu", 
+                                       along = NULL, ...) { 
+  
+  display_matrix(raster::as.matrix(object), palette, along, ...)
+}
+
 #'@export
 display_matrix.matrix <- function(object, palette = "RdYlBu", 
                                   along = NULL, ...) { 
@@ -62,7 +69,10 @@ display_matrix.matrix <- function(object, palette = "RdYlBu",
 #'@export 
 display_matrix.list <- function(object, palette = "RdYlBu", 
                                 along = NULL, ...) { 
-  check_mat(object)
+                                  
+  # Convert and check objects
+  object <- lapply(object, convert_to_matrix)
+  lapply(object, check_mat)
 
   # Convert all matrices to data frames
   all_tabs <- Map(function(n, o) { data.frame(matrixn = n, tabularize(o)) }, 
@@ -78,7 +88,7 @@ display_matrix.list <- function(object, palette = "RdYlBu",
   }
   
   # Choose proper color scale 
-  if ( is.numeric(object) ) { 
+  if ( is.numeric(all_tabs[ ,"value"]) ) { 
     fillscale <- scale_fill_distiller(palette = palette)
   } else { 
     fillscale <- scale_fill_brewer(palette = palette)

@@ -8,12 +8,6 @@ context('Test workflows')
 data(forestgap)
 data(serengeti)
 
-# We run theses tests without parallelism as it appears to produce spurious
-# warnings. See: https://github.com/HenrikBengtsson/future/issues/13
-# Note that this is not entirely satisfactory as the above issue claims that 
-# this problem has been fixed. 
-plan(sequential)
-
 datasets <- list(forestgap[[3]], 
                  serengeti[5:6])
 
@@ -58,7 +52,11 @@ test_that("The workflow functions work", {
       suppressWarnings( print( plot(indics) ) )
     }
     
-    
+    # Warn when matrix is logical but no cg will be performed
+    expect_warning({ 
+      generic_sews(forestgap, subsize = 1)
+    })
+
     
     
     # Spectral indicators
@@ -108,37 +106,15 @@ test_that("The workflow functions work", {
     
     
     
-    # Flowlength indicator
-    indics <- flowlength_sews(dataset)
-    test_methods("Spatial Early-Warning: Flow length", 
-                 length(dataset), indics, .test_df = FALSE)
-    if ( ! is.matrix(dataset) ) { 
-      suppressWarnings( print( plot(indics) ) )
-    }
-    
-    indics.test <- indictest(indics, nulln = 3)
-    test_methods("Spatial Early-Warning: Flow length", 
-                  datal, indics.test, .test_df = FALSE)
-    
-    
-    
-    # KBDM indicator
-    indics <- kbdm_sews(dataset) 
-    test_methods("Spatial Early-Warning: Kbdm Complexity", 
-                 datal, indics) # l(dataset) * 4 psd types fitted
-    
-    if ( ! is.matrix(dataset) ) { 
-      suppressWarnings( print( plot(indics) ) )
-    }
-    
-    
     # Variogram-based indicators
     indics <- variogram_sews(dataset)
     test_methods("Spatial Early-Warning: Variogram-based indicators", 
-                 datal*4, indics, .test_df = FALSE) # l(dataset) * 4 metrics produced
+                 # l(dataset) * 4 metrics produced
+                 datal*4, indics, .test_df = FALSE) 
     indics.test <- indictest(indics, 3)
     test_methods("Spatial Early-Warning: Variogram-based indicators", 
-                 datal*4, indics.test, .test_df = FALSE) # l(dataset) * 4 metrics produced
+                 # l(dataset) * 4 metrics produced
+                 datal*4, indics.test, .test_df = FALSE) 
     
   }
   

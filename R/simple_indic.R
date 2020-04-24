@@ -93,9 +93,23 @@ create_indicator <- function(fun,
   
   # Subfunction that works only on a matrix
   get_one_result <- function(mat, ...) { 
+    mat <- convert_to_matrix(mat)
+    check_mat(mat)
+    
+    # Handle the arguments passed to the function and store them in the returned
+    # object
+    fun.args <- as.list(match.call(expand.dots = FALSE))[['...']]
+    fun.args <- lapply(fun.args, eval, envir = parent.frame())
+    
+    # Sometimes the indicator does not take any extra arguments. In that case 
+    # ... is NULL, so we need to replace that with an empty list
+    if ( is.null(fun.args) ) { 
+      fun.args <- list()
+    }
+    
     result <- list(value     = fun(mat, ...), 
                    orig_data = mat, 
-                   fun.args  = as.list(match.call(expand.dots = FALSE))[['...']], 
+                   fun.args  = fun.args, 
                    taskname = taskname, 
                    indicf = fun)
     

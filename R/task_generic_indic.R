@@ -117,53 +117,35 @@
 #' 
 #' @export
 generic_sews <- function(mat, 
-                         subsize = 4,
-                         abs_skewness = FALSE,
-                         moranI_coarse_grain = FALSE) {
-  
-  check_mat(mat)
-  
-  orig_mat <- mat
-  
-  if ( is.list(mat) ) { 
-    results <- lapply(mat, generic_sews, subsize, abs_skewness,
-                      moranI_coarse_grain)
-    names(results) <- names(mat) # import list names
-    class(results) <- c('generic_sews', 'simple_sews_list', 
-                        'sews_result_list', 'list')
-    return(results)
-  }
-  
-  # Warn if the matrix is continuous but we will coarse grain anyway
-  if ( is.numeric(mat) && subsize > 1 ) { 
-    warning(paste('Input matrix has continous values but will be coarse-grained', 
-                  'anyway. Set subsize=1 to disable coarse graining.'))
-  }
-  
-  if ( is.logical(mat) && subsize == 1 ) { 
-    warning(paste('Input matrix is binary but no coarse-graining will be',
-                  'performed.'))
-  }
-  
-  # Compute the indicators and store the parameters used
-  results <- list(value = raw_generic_indic(mat, subsize, abs_skewness, 
-                                            moranI_coarse_grain), 
-                  orig_data = orig_mat,
-                  indicf  = raw_generic_indic, 
-                  fun.args = list(subsize = subsize, 
-                                  abs_skewness = abs_skewness, 
-                                  moranI_coarse_grain = moranI_coarse_grain), 
-                  taskname = "Generic indicators")
-  
-  class(results) <- c('generic_sews', 'simple_sews_single', 
-                      'sews_result_single', 'list')
-  return(results)
+                         subsize = 4, 
+                         abs_skewness = FALSE, 
+                         moranI_coarse_grain = FALSE) { 
+  compute_indicator(mat, raw_generic_indic, 
+                    subsize = subsize, 
+                    abs_skewness = abs_skewness, 
+                    moranI_coarse_grain = moranI_coarse_grain, 
+                    taskname = "Generic indicators")
 }
 
 
 # Build the right indicator function (closure) that take into accounts the 
 #   above options. 
-raw_generic_indic <- function(mat, subsize, abs_skewness, moranI_coarse_grain) { 
+raw_generic_indic <- function(mat, 
+                              subsize, 
+                              abs_skewness, 
+                              moranI_coarse_grain) { 
+  
+  # Warn if the matrix is continuous but we will coarse grain anyway
+  if ( is.numeric(mat) && subsize > 1 ) { 
+    warning(paste("Input matrix has continous values but will be", 
+                  "coarse-grained anyway. Set subsize=1 to disable coarse", 
+                  "graining."))
+  }
+  
+  if ( is.logical(mat) && subsize == 1 ) { 
+    warning(paste("Input matrix is binary but no coarse-graining will be",
+                  "performed."))
+  }
   
   # We do coarse-graining only once for the whole matrix
   mat_cg <- coarse_grain(mat, subsize)

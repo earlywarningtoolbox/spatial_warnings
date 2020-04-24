@@ -31,8 +31,7 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
             chmod +x discpowerexp")
   
   test_that('PL fitting works', { 
-    skip_on_cran()
-
+    
     expos <- c(1.2, 1.5, 2.5)
     xmins <- c(1,  10, 100)
     for ( expo in expos ) { 
@@ -171,8 +170,8 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
   # For TPL xmax must not be too low (>3?)
   test_that('TPL fitting works', { 
     
-    rates <- c(0.1, .5, 1.1, 1.3)
-    expos <- c(1.1, 1.3, 1.5)
+    rates <- c(0.05, 0.1, .5, 1.1)
+    expos <- c(1.1, 1.3)
     xmins <- c(1, 2, 4) 
     for (xmin in xmins) { 
       for ( rate in rates ) { 
@@ -190,8 +189,8 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
           })
           
           if ( length(clauset_result) > 0 ) { 
-            expect_equal(clauset_result, 
-                        tplnorm(expo, rate, xmin))
+            expect_equal(clauset_result, tplnorm(expo, rate, xmin), 
+                         tolerance = 1e-4)
           }
           
           # P(X=x)
@@ -202,7 +201,9 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
               as.numeric( ddiscpowerexp(dat, expo, rate, threshold = xmin) )
             )
           if ( ! all( is.na(dtpl_result) ) ) { 
-            expect_equal(dtpl_result, ddpxp_result)
+            expect_equal(dtpl_result, ddpxp_result, 
+                         tolerance = 1e-4)
+
           }
           
           # Here, we check that the binary called by the Clauset code actually 
@@ -212,33 +213,50 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
             )
           if (length(clauset_result) > 0) { 
             expect_equal(tpl_ll(tpldat, expo, rate, xmin),
-                        clauset_result)
+                         clauset_result, 
+                         tolerance = 1e-4)
           }
           
           our_fit <- tpl_fit(tpldat, xmin = xmin)
           
           # The fit with pli can fail, so we check only the results 
-          # when it succeeds 
+          # when it succeeds. Sometimes the returned fits are on the boundary
+          # (expo ~= 1), so we do not test in those cases. 
           clauset_fit <- tryNULL(discpowerexp.fit(tpldat, threshold = xmin))
           
+          if ( !is.null(clauset_fit) && 
+               abs(clauset_fit$exponent - (-1)) > 1e-4 && 
+               !is.na(our_fit$ll) ) { 
+            if ( our_fit$ll < clauset_fit$loglike ) { 
+              if ( abs(our_fit$ll - clauset_fit$loglike) > 1e-3 ) { 
+                message("We found a better fit than the reference code")
+              }
+            } else { 
+              # If the difference is not floating-point error
+              if ( abs(our_fit$ll - clauset_fit$loglike) > 1e-3 ) { 
+                message("Reference code found a better fit")
+                fail()
+              }
+              # These tests will fail
+#               expect_equal(our_fit$expo, clauset_fit$exponent, tol = 5e-2)
+#               expect_equal(our_fit$rate, clauset_fit$rate, tol = 5e-2)
+            }
+          }
           if ( !is.null(clauset_fit) ) { 
-#             if ( ! (our_fit$ll < clauset_fit$loglike) ) { 
-              expect_equal(our_fit$expo, clauset_fit$exponent, tol = 1e-2)
-              expect_equal(our_fit$rate, clauset_fit$rate, tol = 1e-2)
-#             }
-          
-          # Look at fit
-          plot(log10(cumpsd(tpldat[tpldat >= xmin])))
-          xs <- unique( round( seq(min(tpldat), max(tpldat), length.out = 100) )) 
-          lines(log10(xs), 
+            # Look at fit
+            plot(log10(cumpsd(tpldat[tpldat >= xmin])))
+            xs <- unique( round( seq(min(tpldat), max(tpldat), 
+                                      length.out = 100) )) 
+            lines(log10(xs), 
                   log10(ptpl(xs, 
                             clauset_fit[["exponent"]], 
-                            clauset_fit[["rate"]], xmin)), col = 'blue', lwd = 2)
-          lines(log10(xs), 
-                  log10(ptpl(xs, our_fit[["expo"]], our_fit[["rate"]], xmin)), col = 'red')
-          title('TPLFIT')
+                            clauset_fit[["rate"]], xmin)), col = 'blue', 
+                  lwd = 2)
+            lines(log10(xs), 
+                  log10(ptpl(xs, our_fit[["expo"]], our_fit[["rate"]], xmin)), 
+                  col = 'red')
+            title('TPLFIT')
           }
-          
         }
       }
     }
@@ -258,7 +276,7 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
         
         # Test dpl with xmin != 1
         expect_equal(dzeta(x, xmin, expo), 
-                    dpl(x, expo, xmin))
+                     dpl(x, expo, xmin))
         
         # Test ppl 
         expect_equal(pzeta(x, xmin, expo, lower.tail = FALSE),

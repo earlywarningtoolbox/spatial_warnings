@@ -4,7 +4,7 @@
 \alias{flowlength_sews}
 \title{Flowlength connectivity indicator (uniform topography)}
 \usage{
-flowlength_sews(mat, slope = 20, cell_size = 1, method = "uniform topography")
+flowlength_sews(mat, slope = 20, cell_size = 1)
 }
 \arguments{
 \item{mat}{The input matrix (must be a logical matrix)}

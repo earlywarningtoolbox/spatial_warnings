@@ -125,9 +125,6 @@ spectral_sews <- function(mat,
                           sdr_high_range = NULL, 
                           quiet = FALSE) { 
   
-  # Check if mat is suitable
-  check_mat(mat)
-  
   if ( is.null(sdr_low_range) ) { 
     if ( !quiet ) { 
       warning("Choosing the 20% lowest frequencies for spectral density ratio ",
@@ -160,7 +157,9 @@ spectral_sews <- function(mat,
     return(results)
   }
   
-  orig_input <- mat # Save original data for null models later
+  # Convert object to matrix and check if it is suitable for spatialwarnings
+  mat <- convert_to_matrix(mat)
+  check_mat(mat)
   
   # Now the mat is always a matrix -> process it
   # Check and warn if not square
@@ -188,7 +187,7 @@ spectral_sews <- function(mat,
   # Return list containing both
   output <- list(value = c(sdr = sdr_value), 
                  spectrum = spectrum, 
-                 orig_data = orig_input, 
+                 orig_data = mat, 
                  low_range = ranges_absolute[['low']], 
                  high_range = ranges_absolute[['high']], 
                  taskname = "Spectrum-based indicators")

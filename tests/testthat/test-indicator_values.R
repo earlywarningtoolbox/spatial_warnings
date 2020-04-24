@@ -77,7 +77,7 @@ if ( exists("EXTENDED_TESTS") ) {
 
     # Test one fit on the whole dataset
     expect_true(with(indicator_psdtype(forestgap, merge = TRUE), 
-                     as.character(type[best])) == "pl") 
+                     as.character(type[best])) == "tpl") 
     
     # Test individual fits
     if ( exists("EXTENDED_TESTS") ) { 
@@ -88,9 +88,9 @@ if ( exists("EXTENDED_TESTS") ) {
                                   "tpl", "exp"))))
     }
   })
-
-
-
+  
+  
+  
   test_that('Indicator plrange returns correct values', { 
     skip_on_cran()
     
@@ -112,7 +112,6 @@ if ( exists("EXTENDED_TESTS") ) {
     
     # Parameters
     size <- 4
-    moran_do_cg <- FALSE
     moran_do_cg <- FALSE
     
     genindic_result <- generic_sews(testmat, 

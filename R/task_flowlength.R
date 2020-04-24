@@ -83,33 +83,14 @@
 #' }
 #' 
 #'@export
-flowlength_sews <- function(mat, 
-                            slope = 20, 
-                            cell_size = 1, 
-                            method = "uniform topography") { 
+flowlength_sews <- function(mat,        # Input matrix
+                            slope = 20, # Slope (in degrees)
+                            cell_size = 1) { # Cell size
   
-  # This is a formatted function to compute the flow length
-  flfun <- function(mat, slope, cell_size) { 
-    result <- list(value     = raw_flowlength_uniform(mat, slope, cell_size), 
-                   orig_data = mat, 
-                   fun.args  = list(slope, cell_size), 
-                   indicf    = raw_flowlength_uniform, 
-                   taskname  = paste0("Flow length (", method, ")"))
-    
-    class(result) <- c('flowlength_sews', 'simple_sews_single', 'list')
-    return(result)
-  }
-  
-  if ( is.list(mat) ) { 
-    result <- future.apply::future_lapply(mat, flfun, slope, cell_size)
-    names(result) <- names(mat)
-    class(result) <- c('flowlength_sews', 'simple_sews_list', 'list')
-  } else { 
-    result <- flfun(mat, slope, cell_size)
-  }
-  
-  return(result)
-  
+  compute_indicator(mat, raw_flowlength_uniform, 
+                    slope = slope, 
+                    cell_size = cell_size, 
+                    taskname = paste0("Flow length (uniform topography)"))
 }
 
 #
@@ -155,7 +136,7 @@ flowlength_sews <- function(mat,
 #' 
 #'@export
 raw_flowlength_uniform <- function(mat,        # Input matrix
-                                   slope,      # Slope (in degrees)
+                                   slope, # Slope (in degrees)
                                    cell_size) { # Cell size
   
   if ( is.vector(mat) ) { 

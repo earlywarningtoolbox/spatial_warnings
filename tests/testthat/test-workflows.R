@@ -103,6 +103,14 @@ test_that("The workflow functions work", {
     suppressWarnings( print( plot_distr(indics) ) )
     suppressWarnings( print( plot_distr(indics.test) ) )
     
+    # We print a warning when there is no data to display because all fits 
+    # failed. This can happen e.g. when there is a single patch in a matrix
+    a <- matrix(FALSE, ncol = 10, nrow = 10) 
+    a[1,1] <- TRUE
+    a <- list(a, a)
+    expect_warning({ 
+      plot(patchdistr_sews(a))
+    })
     
     
     

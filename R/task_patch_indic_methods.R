@@ -87,6 +87,12 @@ plot.patchdistr_sews_list <- function(x, along = NULL, ...) {
   # Subset table for best fits
   obj_table <- obj_table[is.na(obj_table[ ,'best']) | obj_table[ ,'best'], ]
   
+  if ( all(is.na(obj_table[ ,"best"])) && 
+       all(is.na( obj_table[ ,"plrange"])) ) { 
+    warning("There is no non-missing data to plot in the provided object")
+    return( invisible(NULL) )
+  }
+  
   # If along is provided, then add it to the table
   xtitle <- deparse(substitute(along))
   if ( is.null(along) ) { 
@@ -98,7 +104,7 @@ plot.patchdistr_sews_list <- function(x, along = NULL, ...) {
   
   # Now we summarise the obj_table
   alltypes <- na.omit(unique(obj_table[ ,"type"]))
-  
+  browser()
   summ <- ddply(obj_table, 'along',
                 function(df) { 
                   type_freqs <- sapply(alltypes, 

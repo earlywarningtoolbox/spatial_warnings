@@ -235,6 +235,7 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
               # If the difference is not floating-point error
               if ( abs(our_fit$ll - clauset_fit$loglike) > 1e-3 ) { 
                 message("Reference code found a better fit")
+                browser()
                 fail()
               }
               # These tests will fail

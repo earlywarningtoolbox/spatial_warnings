@@ -315,9 +315,7 @@ indicator_sdr_do_ratio <- function(spectrum, low_range, high_range) {
   }
   
   # Return ratio of means
-  return( c(sdr = with(spectrum, 
-                       mean(rspec[low_subset]) / mean(rspec[high_subset])) ) )
-  
+  with(spectrum, mean(rspec[low_subset]) / mean(rspec[high_subset])) 
 }
 
 # Convert ranges from proportional values to absolute distance values

@@ -88,7 +88,7 @@ plot.patchdistr_sews_list <- function(x, along = NULL, ...) {
   obj_table <- obj_table[is.na(obj_table[ ,'best']) | obj_table[ ,'best'], ]
   
   if ( all(is.na(obj_table[ ,"best"])) && 
-       all(is.na( obj_table[ ,"plrange"])) ) { 
+       all(is.na(obj_table[ ,"plrange"])) ) { 
     warning("There is no non-missing data to plot in the provided object")
     return( invisible(NULL) )
   }
@@ -104,7 +104,6 @@ plot.patchdistr_sews_list <- function(x, along = NULL, ...) {
   
   # Now we summarise the obj_table
   alltypes <- na.omit(unique(obj_table[ ,"type"]))
-  browser()
   summ <- ddply(obj_table, 'along',
                 function(df) { 
                   type_freqs <- sapply(alltypes, 
@@ -151,14 +150,14 @@ plot.patchdistr_sews_list <- function(x, along = NULL, ...) {
                position = "stack", stat = "identity") + 
       stat_summary(aes_q(x = ~along, y = ~percolation, 
                          linetype = "Perc. (full)", group = 1), 
-                   fun.y = mean, geom = "line") + 
+                   fun = mean, geom = "line") + 
       stat_summary(aes_q(x = ~along, y = ~percolation_empty, 
                          linetype = "Perc. (empty)", group = 1), 
-                   fun.y = mean, geom = "line") + 
+                   fun = mean, geom = "line") + 
       stat_summary(aes_q(x = ~along, y = ~cover, 
                          linetype = "Mean cover", group = 1), 
-                   fun.y = mean, geom = "line") 
-      
+                   fun = mean, geom = "line") 
+  
   } else { 
     plot <- plot + 
       geom_area(aes_q(x = ~along, y = ~type_freq, fill = ~type), 

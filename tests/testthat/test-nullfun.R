@@ -13,6 +13,31 @@ test_that("All null model methods work", {
     expect_true(TRUE)
   }
   
+  # Check that we warn when the null method is a function and does not return 
+  # logical values when the input matrix is logical 
+  nullfun <- function(mat) { mat * rnorm(prod(dim(mat))) } 
+  expect_warning({ 
+    indictest(compute_indicator(serengeti[[1]], raw_cg_moran), 3, 
+              null_method = nullfun)
+  })
+  
+  # Check that arguments are properly set 
+  expect_warning({ 
+    null_control_set_args(serengeti[[1]], list(a = "opl"))
+  })
+  expect_true({ 
+    a <- null_control_set_args(serengeti[[1]], 
+                               list(family = "binomial"))[["family"]]
+    is.binomial(a)
+  }) 
+  expect_true({ 
+    a <- null_control_set_args(serengeti[[1]], 
+                               list(family = binomial()))[["family"]]
+    is.binomial(a)
+  }) 
+  
+  
+  
 })
 
 # 

@@ -3,20 +3,13 @@
 # This file contains the indictest functions for spectral sews
 # 
 
-#' @export
-indictest.spectral_sews <- function(x, 
-                                    nulln = 999, 
-                                    null_method = 'perm', 
-                                    ...) { 
-  NextMethod('indictest')
-}
-
 # 
 # Indictest functions for spectral_sews objects.
 #'@export
 indictest.spectral_sews_list <- function(x, 
                                          nulln = 999, 
                                          null_method = 'perm', 
+                                         null_control = NULL, 
                                          ...) { 
   
   # Compute a distribution of null values for SDR
@@ -37,6 +30,7 @@ indictest.spectral_sews_list <- function(x,
 indictest.spectral_sews_single <- function(x, 
                                            nulln = 999, 
                                            null_method = 'perm', 
+                                           null_control = NULL, 
                                            ...) { 
   
   # Build closure passed to compute_indicator_with_null that uses the correct
@@ -49,27 +43,35 @@ indictest.spectral_sews_single <- function(x,
       spectrum = spectrum[ ,'rspec'])
   }
   
-  # Compute a distribution of null values for SDR
-  test_values <- 
-    compute_indicator_with_null(x[['orig_data']], 
-                                nulln = nulln, 
-                                indicf = sdr_indicf, 
-                                null_method = null_method)
+  # Compute null values for SDR
+  test_values <- compute_indicator_with_null(x[['orig_data']], 
+                                             nulln = nulln, 
+                                             indicf = sdr_indicf, 
+                                             null_method = null_method, 
+                                             null_control = null_control)
   
-  # Format results. The first four values are parameters, the rest is the 
-  # variogram.
-  sdr_values <- llply(test_values, function(o) o[1])
-  x[names(sdr_values)] <- sdr_values
+  # Format results. We import SDR values, both summary stats + raw null 
+  # distribution 
+  summary_stats <- c("null_mean", "null_sd", "null_qsup", 
+                     "null_qinf", "z_score", "pval")
+  for ( par in c("nulldistr", summary_stats) ) { 
+    if ( is.matrix(test_values[[par]]) ) { 
+      x[[par]] <- test_values[[par]][ ,1]
+    } else { 
+      x[[par]] <- test_values[[par]][1]
+    }
+  }
   
-  spec <- as.data.frame(do.call(cbind, 
-                                lapply(test_values, function(o) o[-1])))
-  spec <- data.frame(x[["spectrum"]], spec)
+  # We extract spectrum values 
+  spec <- llply(test_values[summary_stats], function(o) o[-1])
+  spec <- data.frame(x[["spectrum"]], as.data.frame(spec))
   row.names(spec) <- as.character(seq.int(nrow(spec)))
-  
-  # We replace or add things in x
   x[["spectrum"]] <- spec
-  x[["nulln"]] <- nulln
-  x[["null_method"]] <- null_method
+  
+  # We import information about the null computation in x 
+  for ( c in c("nulln", "null_method", "nullf") ) { 
+    x[[c]] <- test_values[[c]]
+  }
   
   class(x) <- c('spectral_sews_test_single', 
                 'spectral_sews_single', 

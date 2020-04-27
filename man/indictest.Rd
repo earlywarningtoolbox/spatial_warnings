@@ -4,7 +4,7 @@
 \alias{indictest}
 \title{Significance-assessment of spatial early-warning signals}
 \usage{
-indictest(x, nulln = 999, null_method = "perm", ...)
+indictest(x, nulln = 999, null_method = "perm", null_control = NULL, ...)
 }
 \arguments{
 \item{x}{A spatial warning object such as one produced by the \code{*_sews}
@@ -15,6 +15,10 @@ distribution}
 
 \item{null_method}{The method used to produce the null values (right now 
 only the permutation method is supported, 'perm')}
+
+\item{null_control}{List of arguments used to control the generation of 
+null matrices. If NULL, then arguments then sensible defaults are chosen 
+(see Details)}
 
 \item{...}{Additional arguments are ignored}
 }

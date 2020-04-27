@@ -23,6 +23,9 @@ Improvements:
   
   * Dependency to VGAM is now removed 
   
+  * Added a `display_matrix()` function that can be used to display the matrices
+      used to compute indicators.
+  
 Bug fixes: 
   
   * Fixed a bug where the normalization constant for truncated power-laws was 

@@ -1,10 +1,12 @@
 # 
 # This file contains functions to test significance and plot simple indicators 
 # 
+
 #' @export
 indictest.simple_sews <- function(x, 
                                   nulln = 999, 
                                   null_method = 'perm', 
+                                  null_control = NULL, 
                                   ...) { 
   NextMethod('indictest')
 }
@@ -12,6 +14,7 @@ indictest.simple_sews <- function(x,
 indictest.simple_sews_single <- function(x, 
                                          nulln = 999, 
                                          null_method = 'perm', 
+                                         null_control = NULL, 
                                          ...) { 
   
   # We do not support low numbers of null simulations
@@ -28,17 +31,14 @@ indictest.simple_sews_single <- function(x,
   null_values <- compute_indicator_with_null(x[["orig_data"]],
                                              nulln = nulln, 
                                              indicf = new_indicf, 
-                                             null_method = null_method)
+                                             null_method = null_method, 
+                                             null_control = null_control)
   
-  # Format result
+  # Add or replace components of the original object with null results 
   for ( i in seq_along(null_values) ) { 
     n <- names(null_values)[i]
     x[[n]] <- null_values[[n]]
   }
-  
-  # Save the information about the number of null matrices used
-  x[["nulln"]] <- nulln
-  x[["null_method"]] <- null_method
   
   class(x) <- c('simple_sews_test_single', 'sews_test', 'sews_result_single', 
                 'list')
@@ -48,7 +48,8 @@ indictest.simple_sews_single <- function(x,
 #'@export
 indictest.simple_sews_list <- function(x, 
                                        nulln = 999, 
-                                       null_method = "perm", 
+                                       null_method = 'perm', 
+                                       null_control = NULL, 
                                        ...) { 
   
   results <- future.apply::future_lapply(x, indictest.simple_sews_single, 
@@ -73,8 +74,8 @@ as.data.frame.simple_sews_test_single <- function(x, ...) {
                            paste0("indic_", seq_along(x[['value']])))
   
   # Names of components to extract from x 
-  test_names <- c("value", "null_mean", "null_sd", "null_95",
-                  "null_05", "z_score", "pval")
+  test_names <- c("value", "null_mean", "null_sd", "null_qsup",
+                  "null_qinf", "z_score", "pval")
   
   # We need to explicitely add a `matrixn` column because it will 
   # be used by funs down the stream. 
@@ -93,8 +94,8 @@ as.data.frame.simple_sews_test_list <- function(x, ...) {
 
   # Extract the relevant components from the object, and put them in a data 
   # frame. 
-  test_names <- c("value", "null_mean", "null_sd", "null_95",
-                  "null_05", "z_score", "pval")
+  test_names <- c("value", "null_mean", "null_sd", "null_qsup",
+                  "null_qinf", "z_score", "pval")
   tab <- Map(function(n, x) { 
     data.frame(matrixn = n, 
                indic = indicnames, 
@@ -258,8 +259,8 @@ plot.simple_sews_test_list <- function(x,
   
   if ( add_null ) { 
     null_data <- data.frame(plot_data,
-                            null_ymin = x.df[ ,'null_05'],
-                            null_ymax = x.df[ ,'null_95'])
+                            null_ymin = x.df[ ,'null_qinf'],
+                            null_ymax = x.df[ ,'null_qsup'])
     
     plot <- plot + 
       ggplot2::geom_ribbon(ggplot2::aes_string(x = 'gradient',

@@ -8,7 +8,8 @@
 #'@export
 indictest.variogram_sews_list <- function(x, 
                                           nulln = 999, 
-                                          null_method = "perm", 
+                                          null_method = 'perm', 
+                                          null_control = NULL, 
                                           ...) { 
   
   results <- future.apply::future_lapply(x, indictest.variogram_sews_single, 
@@ -29,7 +30,8 @@ indictest.variogram_sews_list <- function(x,
 #'@export
 indictest.variogram_sews_single <- function(x, 
                                             nulln = 999, 
-                                            null_method = "perm", 
+                                            null_method = 'perm', 
+                                            null_control = NULL, 
                                             ...) { 
   
   # This function will produce a vector, with the 4 first values holding 
@@ -47,21 +49,33 @@ indictest.variogram_sews_single <- function(x,
   test_values <- compute_indicator_with_null(x[['orig_data']], 
                                              nulln = nulln, 
                                              indicf = metric_compute, 
-                                             null_method = null_method)
+                                             null_method = null_method, 
+                                             null_control = null_control)
   
   # Format results. The first four values are parameters, the rest is the 
   # variogram.
-  pars <- llply(test_values, function(o) o[1:4])
-  pars <- pars[ ! names(pars) %in% names(x) ]
-  x[names(pars)] <- pars
+  par_names <- c("nulldistr", "null_mean", "null_sd", "null_qsup", 
+                 "null_qinf", "z_score", "pval")
+  for ( par in par_names ) { 
+    if ( is.matrix(test_values[[par]]) ) { 
+      x[[par]] <- test_values[[par]][ ,1:4]
+    } else { 
+      x[[par]] <- test_values[[par]][1:4]
+    }
+  }
   
-  vario <- as.data.frame(do.call(cbind, 
-                                 lapply(test_values, function(o) o[-(1:4)])))
-  vario <- data.frame(x[["variogram"]], vario)
+  # Import variogram data in original object
+  par_names <- c("null_mean", "null_sd", "null_qsup", "null_qinf", "z_score",
+                 "pval")
+  vario <- lapply(test_values[par_names], function(o) o[-(1:4)])
+  vario <- data.frame(x[["variogram"]], as.data.frame(vario))
   row.names(vario) <- as.character(seq.int(nrow(vario)))
-  
-  # We replace or add things in x
   x[["variogram"]] <- vario
+  
+  # Store information about the computation
+  for ( par in c("nulln", "null_method", "null_control") ) { 
+    x[[par]] <- test_values[[par]]
+  }
   
   class(x) <- c('variogram_sews_test_single', 
                 'variogram_sews_single', 
@@ -121,8 +135,8 @@ plot_variogram.variogram_sews_test_list <- function(x, along = NULL, ...) {
     variodf[ ,"along"] <- variodf[ ,"matrixn"]
   }
   
-  ggobj$layers <- c(geom_ribbon(aes_string(x = "dist", ymin = "null_05", 
-                                           ymax = "null_95"), 
+  ggobj$layers <- c(geom_ribbon(aes_string(x = "dist", ymin = "null_qinf", 
+                                           ymax = "null_qsup"), 
                                 data = variodf, 
                                 fill = 'grey',
                                 group = 1, 
@@ -140,8 +154,8 @@ plot_variogram.variogram_sews_test_single <- function(x, ...) {
   # Extract null values and display them 
   variodf <- extract_variogram(x)
   
-  ggobj$layers <- c(geom_ribbon(aes_string(x = "dist", ymin = "null_05", 
-                                           ymax = "null_95"), 
+  ggobj$layers <- c(geom_ribbon(aes_string(x = "dist", ymin = "null_qinf", 
+                                           ymax = "null_qsup"), 
                                 data = variodf, 
                                 fill = 'grey',
                                 group = 1, 

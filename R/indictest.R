@@ -18,6 +18,10 @@
 #' @param null_method The method used to produce the null values (right now 
 #'   only the permutation method is supported, 'perm')
 #' 
+#' @param null_control List of arguments used to control the generation of 
+#'   null matrices. If NULL, then arguments then sensible defaults are chosen 
+#'   (see Details)
+#' 
 #' @param ... Additional arguments are ignored
 #' 
 #' @return An object with a class ending in \code{*_sews_test}, whose exact
@@ -63,6 +67,7 @@
 indictest <- function(x, 
                       nulln = 999, 
                       null_method = 'perm', 
+                      null_control = NULL, 
                       ...) { 
   # If indictest has already run on the object, return itself
   if ( any(grepl("_sews_test_", class(x))) ) { 

@@ -69,8 +69,8 @@ generate_nulls <- function(input, indicf, nulln, null_method,
     
     # We warn if the function does not return logical values 
     if ( is.logical(input) && ! is.logical(null_method(input)) ) { 
-      warning(p("The original data is logical (TRUE/FALSE), but the null ", 
-                "method does not return logical values"))
+      warning("The original data is logical (TRUE/FALSE), but the null ", 
+              "method does not return logical values")
     }
     
     null_mod <- NULL # No model involved when the function is provided
@@ -114,7 +114,8 @@ generate_nulls <- function(input, indicf, nulln, null_method,
   if ( is.character(null_method) && null_method == "intercept" ) { 
     null_mod <- glm(y ~ 1, data = data.frame(y = as.vector(input)), 
                     family = null_control[["family"]])
-    nullf <- create_nullmat_generator(null_mod, input)
+    nullf <- create_nullmat_generator(null_mod, null_control[["family"]], 
+                                      input)
   }
   
   
@@ -133,7 +134,8 @@ generate_nulls <- function(input, indicf, nulln, null_method,
                           value = as.vector(input))
     null_mod <- mgcv::gam(value ~ s(row, col, bs = "tp"), data = mat_tab, 
                           family = null_control[["family"]])
-    nullf <- create_nullmat_generator(null_mod, input)
+    nullf <- create_nullmat_generator(null_mod, null_control[["family"]], 
+                                      input)
   }
   
   
@@ -198,17 +200,16 @@ null_control_set_args <- function(mat, arglist) {
 
 # Returns a function that generates matrices, given a null model and the 
 # original matrix
-create_nullmat_generator <- function(null_mod, input) { 
+create_nullmat_generator <- function(null_mod, family, input) { 
   function() { 
-    # When the family is binomial, simulate returns 1/0 instead of TRUE/FALSE, 
-    # so we need to convert back here. 
-    if ( is.binomial(null_control[["family"]]) ) { 
-      indicf( newmat > 0.5 )
-    } else { 
-      indicf( newmat )
+    # When the family is binomial, simulate often returns 1/0 instead of 
+    # TRUE/FALSE values so we need to convert it back here. 
+    sim <- matrix(stats::simulate(null_mod)[ ,1], 
+                  nrow = nrow(input), ncol = ncol(input)) 
+    if ( is.binomial(family) ) { 
+      sim <- sim > .5
     }
-    matrix(stats::simulate(null_mod)[ ,1], 
-           nrow = nrow(input), ncol = ncol(input))
+    return(sim)
   }
 }
 

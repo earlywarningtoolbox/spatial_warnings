@@ -43,7 +43,5 @@ predict(patch_indics)
 
 }
 \seealso{
-\code{\link{patchdistr_sews}}, 
-  \code{\link[=patchdistr_sews_plot]{plot}}, 
-  \code{\link[=patchdistr_sews_plot]{plot_distr}},
+\code{\link{patchdistr_sews}}
 }

@@ -57,5 +57,7 @@ Carpenter, S.R. & Brock, W.A. (2010). Early warnings of regime shifts in
   spatial dynamics using the discrete Fourier transform. Ecosphere
 }
 \seealso{
-spectral_sews, rspectrum
+\code{\link{indictest}}, 
+  \code{\link{rspectrum}}, \code{\link{plot_spectrum}}, 
+  \code{\link{spectral_sews}}, \code{\link{extract_spectrum}}
 }

@@ -53,11 +53,12 @@
 #'   \code{\link{plot_variogram}}.
 #'   
 #' 
+#' @seealso \code{\link{raw_structvar}},
+#'   \code{\link{plot_variogram}}, \code{\link{extract_variogram}},
+#'   \code{\link[=predict.variogram_sews_list]{predict}} 
+#' 
 #' @seealso 
-#'   \code{\link[=variogram_sews_plot]{plot}}, 
-#'   \code{\link[=variogram_sews_plot]{plot_variogram}}, 
-#'   \code{\link[=variogram_sews_predict]{predict}}, 
-#'   \code{\link{indictest}}
+#'   \code{\link{indictest}}, to test the significance of indicator values. 
 #' 
 #' @references 
 #' 
@@ -158,11 +159,7 @@ variogram_sews <- function(mat,
 #' predict(vario_test) # same result
 #' }
 #' 
-#' @seealso \code{\link{variogram_sews}}, 
-#'   \code{\link[=variogram_sews_plot]{plot}}, 
-#'   \code{\link[=variogram_sews_plot]{plot_variogram}}, 
-#'   \code{\link[=variogram_sews_predict]{predict}}, 
-#'   \code{\link{extract_variogram}}, 
+#' @seealso \code{\link{variogram_sews}}
 #' 
 #'@export 
 extract_variogram <- function(x, ...) { 
@@ -213,10 +210,7 @@ extract_variogram.variogram_sews_single <- function(x, ...) {
 #' predict(vario_test) # same result
 #' }
 #' 
-#' @seealso \code{\link{variogram_sews}}, 
-#'   \code{\link[=variogram_sews_plot]{plot}}, 
-#'   \code{\link[=variogram_sews_plot]{plot_variogram}}, 
-#'   \code{\link{extract_variogram}}
+#' @seealso \code{\link{variogram_sews}}
 #' 
 #'@export 
 predict.variogram_sews_list <- function(object, newdist = NULL, ...) { 

@@ -117,6 +117,7 @@ Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M.,
   systems. Theoretical Ecology, 2(1), 3-12.
 }
 \seealso{
-\code{\link{indictest}}, for a way to test the significance of indicator 
-    values.
+\code{\link{indictest}}, to test the significance of indicator values. 
+  Individual indicators: \code{\link{raw_cg_moran}}
+    \code{\link{raw_cg_variance}}, \code{\link{raw_cg_skewness}}
 }

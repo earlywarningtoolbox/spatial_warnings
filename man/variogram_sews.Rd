@@ -83,8 +83,9 @@ Nijp, Jelmer J., Arnaud J.A.M. Temme, George A.K. Voorn, Lammert Kooistra,
   Change Biology 25 (6): 1905-21. \doi{10.1111/gcb.14591}
 }
 \seealso{
-\code{\link[=variogram_sews_plot]{plot}}, 
-  \code{\link[=variogram_sews_plot]{plot_variogram}}, 
-  \code{\link[=variogram_sews_predict]{predict}}, 
-  \code{\link{indictest}}
+\code{\link{raw_structvar}},
+  \code{\link{plot_variogram}}, \code{\link{extract_variogram}},
+  \code{\link[=predict.variogram_sews_list]{predict}}
+
+\code{\link{indictest}}, to test the significance of indicator values.
 }

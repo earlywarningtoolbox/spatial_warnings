@@ -22,7 +22,7 @@
 #'   with integer values representing the ID of each unique patch (contiguous
 #'    cells). Empty cells are labelled as \code{NA}.
 #' 
-#' @seealso \code{\link{patchsizes}}
+#' @seealso \code{\link{patchsizes}}, \code{\link{patchdistr_sews}}
 #' 
 #' @examples 
 #' 

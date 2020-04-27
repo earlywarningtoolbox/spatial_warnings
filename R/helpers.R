@@ -76,19 +76,21 @@ ifNULLthen <- function(a, b) {
   if (is.null(a)) b else a 
 }
 
-list_methods <- function(class) { 
+list_methods <- function(class, 
+                         exclude = c("print", "display_size_info")) { 
   all_methods <- lapply(class, function(class) { 
     tab <- attr(methods(class = class), "info")
     tab[tab[ ,"from"] == "spatialwarnings", "generic"]
   })
   all_methods <- sort(unique(unlist(all_methods)))
   
-  # Cleanup the methods if required
+  # For _test_ objects, we do not report indictest
   if ( any(grepl("_sews_test_", class)) ) { 
     all_methods <- all_methods[!grepl("indictest", all_methods)]
   }
   
-  all_methods <- all_methods[!grepl("display_size_info", all_methods)]
+  # Exclude some reported methods 
+  all_methods <- all_methods[! all_methods %in% exclude]
   
   return(all_methods)
 }

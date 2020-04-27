@@ -76,9 +76,10 @@
 #'   systems. Theoretical Ecology, 2(1), 3-12. 
 #'   
 #' @seealso 
-#'   \code{\link{indictest}}, for a way to test the significance of indicator 
-#'     values. 
-#'
+#'   \code{\link{indictest}}, to test the significance of indicator values. 
+#'   Individual indicators: \code{\link{raw_cg_moran}}
+#'     \code{\link{raw_cg_variance}}, \code{\link{raw_cg_skewness}}
+#' 
 #' @examples
 #' 
 #' data(serengeti)
@@ -229,6 +230,8 @@ raw_generic_indic <- function(mat,
 #' of being discrete and spatial in detecting early warning signals
 #' of regime shifts. Ecological Indicators. 
 #' 
+#' @seealso \code{\link{generic_sews}}
+#' 
 #' @examples
 #' 
 #' \dontrun{
@@ -268,6 +271,8 @@ raw_cg_variance <- function(mat, subsize = 5) {
 #' 
 #' @return The Moran's I index measuring autocorrelation at lag 1
 #'
+#' @seealso \code{\link{generic_sews}}
+#' 
 #' @examples 
 #' 
 #' \dontrun{
@@ -345,6 +350,8 @@ raw_cg_moran <- function(mat, subsize = 1) {
 #' Sankaran, S., Majumder, S., Kefi, S., and Guttal, V. (2017). Implication of 
 #' being discrete and spatial in detecting early warning signals of regime 
 #' shifts. Ecological indicators. 
+#' 
+#' @seealso \code{\link{generic_sews}}
 #' 
 #' @examples 
 #' 

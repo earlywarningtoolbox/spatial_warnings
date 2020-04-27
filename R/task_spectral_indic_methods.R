@@ -81,7 +81,7 @@ indictest.spectral_sews_single <- function(x,
 }
 
 
-# Methods to extract the spectrum from spectal_sews objects
+# Methods to extract the spectrum from spectral_sews objects
 # ---------------------------------------------------------
 
 #' @title Extract the r-spectrum from objects 
@@ -96,7 +96,7 @@ indictest.spectral_sews_single <- function(x,
 #' 
 #' @return The empirical r-spectrum as a \code{data.frame}
 #' 
-#' @seealso \code{\link{spectral_sews}}, \code{\link{rspectrum}}
+#' @seealso \code{\link{spectral_sews}}
 #' 
 #' @examples 
 #' 
@@ -140,7 +140,8 @@ extract_spectrum.spectral_sews_single <- function(x, ...) {
 #' 
 #' @param ... Other arguments are ignored 
 #' 
-#' @family spectral_sews
+#' @seealso \code{\link{rspectrum}}, \code{\link{spectral_sews}}, 
+#'   \code{\link{extract_spectrum}}
 #' 
 #'@export
 plot_spectrum <- function(x, 

@@ -33,5 +33,5 @@ Suggests:
     rgdal
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.0.9000
 Encoding: UTF-8

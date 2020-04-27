@@ -35,3 +35,6 @@ catastrophic shifts. Theoretical Ecology, 3(3), 163-174.
 Legendre, P., & Legendre, L. F. J. (2012). Numerical Ecology.
 Elsevier Science.
 }
+\seealso{
+\code{\link{generic_sews}}
+}

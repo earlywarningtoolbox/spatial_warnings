@@ -27,4 +27,7 @@ Display the r-spectrum (or multiple spectra) that are contained
   in an object returned by \code{\link{spectral_sews}} object (or the result 
   of \code{\link{indictest}} applied on such object.
 }
-\concept{spectral_sews}
+\seealso{
+\code{\link{rspectrum}}, \code{\link{spectral_sews}}, 
+  \code{\link{extract_spectrum}}
+}

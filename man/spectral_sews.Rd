@@ -117,3 +117,9 @@ Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M.,
   Livina, V.N., et al. (2014). Early Warning Signals of Ecological 
   Transitions: Methods for Spatial Patterns. PLoS ONE, 9, e92097.
 }
+\seealso{
+\code{\link{rspectrum}}, \code{\link{plot_spectrum}}, 
+  \code{\link{raw_sdr}}, \code{\link{extract_spectrum}}
+
+\code{\link{indictest}}, to test the significance of indicator values.
+}

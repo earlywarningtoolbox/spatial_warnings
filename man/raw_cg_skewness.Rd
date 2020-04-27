@@ -75,3 +75,6 @@ Sankaran, S., Majumder, S., Kefi, S., and Guttal, V. (2017). Implication of
 being discrete and spatial in detecting early warning signals of regime 
 shifts. Ecological indicators.
 }
+\seealso{
+\code{\link{generic_sews}}
+}

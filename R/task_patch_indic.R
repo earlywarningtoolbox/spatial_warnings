@@ -77,16 +77,19 @@
 #' 
 #' Results can be displayed using the text-based \code{summary} and \code{print}, 
 #' but graphical options are also available to plot the trends (\code{plot}) and 
-#' the fitted distributions (\code{plot_distr}). Plotting functions are 
+#' the fitted distributions ( \code{\link{plot_distr}}). Plotting functions are 
 #' documented in a \link[=patchdistr_sews_plot]{separate page}. Observed and 
 #' fitted distributions can be produced using the \code{predict} function, 
 #' as documented in \link[=patchdistr_sews_predict]{this page}. 
 #' 
-#' @seealso \code{\link{indicator_psdtype}}, \code{\link{patchsizes}}, 
-#'   \code{\link[=patchdistr_sews_plot]{plot}}, 
-#'   \code{\link[=patchdistr_sews_plot]{plot_distr}}, 
-#'   \code{\link[=patchdistr_sews_predict]{predict}}
+#' @seealso \code{\link{patchsizes}}, \code{\link{plot_distr}}, 
+#'   \code{\link[=predict.patchdistr_sews_single]{predict}}, 
+#'   \code{\link[=plot.patchdistr_sews]{plot}}, 
+#'   
 #' 
+#' @seealso 
+#'   \code{\link{indictest}}, to test the significance of indicator values. 
+#'     
 #' @references 
 #' 
 #' Kefi, S., Rietkerk, M., Alados, C. L., Pueyo, Y., Papanastasis, 

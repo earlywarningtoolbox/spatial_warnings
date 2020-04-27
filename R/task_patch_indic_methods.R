@@ -60,7 +60,7 @@
 #' # Display individual distributions
 #' plot_distr(psd_indic, along = forestgap.pars[ ,"d"])
 #' }
-#' 
+#'
 #'@method plot patchdistr_sews
 #'@export
 plot.patchdistr_sews <- function(x, along = NULL, ...) { 
@@ -370,9 +370,7 @@ plot_distr.patchdistr_sews_list <- function(x,
 #' 
 #' }
 #' 
-#' @seealso \code{\link{patchdistr_sews}}, 
-#'   \code{\link[=patchdistr_sews_plot]{plot}}, 
-#'   \code{\link[=patchdistr_sews_plot]{plot_distr}}, 
+#' @seealso \code{\link{patchdistr_sews}}
 #' 
 #'@export
 predict.patchdistr_sews_single <- function(object, ..., 
@@ -564,7 +562,9 @@ summary.patchdistr_sews <- function(object, ...) {
   cat('\n')
   print.data.frame(dat, row.names = FALSE, digits = DIGITS)
   cat('\n')
-  cat('Use as.data.frame() to retrieve values in a convenient form\n')
+  cat("The following methods are available: \n")
+  cat(list_methods("simple_sews_list"), "\n")
+  
   invisible(dat)
 }
 

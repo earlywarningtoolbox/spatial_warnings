@@ -32,9 +32,5 @@ predict(vario_test) # same result
 
 }
 \seealso{
-\code{\link{variogram_sews}}, 
-  \code{\link[=variogram_sews_plot]{plot}}, 
-  \code{\link[=variogram_sews_plot]{plot_variogram}}, 
-  \code{\link[=variogram_sews_predict]{predict}}, 
-  \code{\link{extract_variogram}},
+\code{\link{variogram_sews}}
 }

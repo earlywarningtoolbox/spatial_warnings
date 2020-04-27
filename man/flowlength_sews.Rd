@@ -84,3 +84,7 @@ Okin, G.S., Moreno-de las Heras, M., Saco, P.M., Throop, H.L., Vivoni, E.R.,
   dryland landscapes: shifting concepts of spatial interactions. 
   Front. Ecol. Environ. 13 (1), 20-27.
 }
+\seealso{
+\code{\link{raw_flowlength_uniform}}, 
+  \code{\link{indictest}} to test the significance of indicator values.
+}

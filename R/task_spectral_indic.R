@@ -75,6 +75,12 @@
 #'   Livina, V.N., et al. (2014). Early Warning Signals of Ecological 
 #'   Transitions: Methods for Spatial Patterns. PLoS ONE, 9, e92097.
 #' 
+#' @seealso \code{\link{rspectrum}}, \code{\link{plot_spectrum}}, 
+#'   \code{\link{raw_sdr}}, \code{\link{extract_spectrum}}
+#' 
+#' @seealso 
+#'   \code{\link{indictest}}, to test the significance of indicator values. 
+#' 
 #' @examples
 #' \dontrun{
 #' 
@@ -237,7 +243,9 @@ spectral_sews <- function(mat,
 #'   the average of low frequencies. \code{sdr_high_range = c(.8, 1)} uses the 
 #'   higher 20% for the average of high frequencies. 
 #' 
-#' @seealso spectral_sews, rspectrum
+#' @seealso \code{\link{indictest}}, 
+#'   \code{\link{rspectrum}}, \code{\link{plot_spectrum}}, 
+#'   \code{\link{spectral_sews}}, \code{\link{extract_spectrum}}
 #' 
 #' @references 
 #' 

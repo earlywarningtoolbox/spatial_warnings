@@ -40,7 +40,8 @@
 #' @param subsize A submatrix size to carry out the Block Decomposition Method
 #'   (must be between 1 and 3)
 #' 
-#' @seealso \code{\link{raw_kbdm}}, \code{\link[acss]{acss}}
+#' @seealso \code{\link{raw_kbdm}}, \code{\link[acss]{acss}}, 
+#'   \code{\link{indictest}}, to test the significance of indicator values. 
 #' 
 #' @examples 
 #' 

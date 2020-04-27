@@ -58,5 +58,6 @@ Dakos, V., and F. Soler-Toscano. 2017. Measuring complexity to infer
   Complexity 32:144-155.
 }
 \seealso{
-\code{\link{raw_kbdm}}, \code{\link[acss]{acss}}
+\code{\link{raw_kbdm}}, \code{\link[acss]{acss}}, 
+  \code{\link{indictest}}, to test the significance of indicator values.
 }

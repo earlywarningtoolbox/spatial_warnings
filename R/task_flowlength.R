@@ -67,6 +67,11 @@
 #' 
 #' @return The flow length numerical value. 
 #' 
+#' 
+#' @seealso 
+#'   \code{\link{raw_flowlength_uniform}}, 
+#'   \code{\link{indictest}} to test the significance of indicator values. 
+#' 
 #' @examples 
 #' 
 #' \dontrun{ 
@@ -123,6 +128,8 @@ flowlength_sews <- function(mat,        # Input matrix
 #' @return The flow length numerical value. 
 #' 
 #' @seealso \code{\link{flowlength_sews}}
+#' @seealso 
+#'   \code{\link{indictest}}, to test the significance of indicator values. 
 #' 
 #' @examples 
 #' 

@@ -60,5 +60,5 @@ image(label(rmat, nbmask8, wrap = FALSE))
 
 }
 \seealso{
-\code{\link{patchsizes}}
+\code{\link{patchsizes}}, \code{\link{patchdistr_sews}}
 }

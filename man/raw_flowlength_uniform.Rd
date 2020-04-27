@@ -43,4 +43,6 @@ Rodriguez, F., A. G. Mayor, M. Rietkerk, and S. Bautista. 2017. A null model
 }
 \seealso{
 \code{\link{flowlength_sews}}
+
+\code{\link{indictest}}, to test the significance of indicator values.
 }

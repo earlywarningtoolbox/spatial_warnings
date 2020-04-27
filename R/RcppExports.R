@@ -78,7 +78,7 @@ shuffle_and_compute <- function(mat, indic, nrep) {
 #'   is not square, then only the largest square matrix fitting in the upper 
 #'   right corner is used. 
 #' 
-#' @seealso \code{\link{spectral_sews}}, \code{\link{indicator_sdr}}
+#' @seealso \code{\link{spectral_sews}}
 #' 
 #' @examples 
 #' 

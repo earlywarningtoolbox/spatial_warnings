@@ -61,9 +61,10 @@ display_matrix.matrix <- function(object, palette = "RdYlBu",
     fillscale <- scale_fill_brewer(palette = palette)
   }
   
-  ggplot(tabularize(object), aes_string(x = "x", y = "y")) + 
+  ggplot(tabularize(object), aes_string(x = "col", y = "row")) + 
     geom_raster(aes_string(fill = "value")) + 
     fillscale + 
+    scale_y_reverse() + 
     theme_spwarnings() + 
     theme(axis.title.x = element_blank(), 
           axis.title.y = element_blank()) + 
@@ -98,10 +99,11 @@ display_matrix.list <- function(object, palette = "RdYlBu",
     fillscale <- scale_fill_brewer(palette = palette)
   }
   
-  ggplot(all_tabs, aes_string(x = "x", y = "y")) + 
+  ggplot(all_tabs, aes_string(x = "col", y = "row")) + 
     geom_raster(aes_string(fill = "value")) + 
     facet_wrap( ~ along ) + 
     fillscale + 
+    scale_y_reverse() + 
     theme_spwarnings() + 
     theme(axis.title.x = element_blank(), 
           axis.title.y = element_blank()) + 
@@ -127,8 +129,8 @@ display_matrix.sews_result_single <- function(object, palette = "RdYlBu",
 }
 
 tabularize <- function(mat) { 
-  data.frame(expand.grid(x = seq.int(nrow(mat)), 
-                         y = seq.int(ncol(mat))), 
+  data.frame(expand.grid(row = seq.int(nrow(mat)), 
+                         col = seq.int(ncol(mat))), 
              value = as.vector(mat))
 }
 

@@ -37,7 +37,9 @@ test_that("The workflow functions work", {
     # Length of data
     datal <- ifelse(is.matrix(dataset), 1, length(dataset))
     
-    # Generic indicators
+    
+    
+    # Simple/generic indicators
     indics <- generic_sews(dataset) 
     test_methods("Generic indicators", 
                  datal*4, indics) # l(dataset) * 4 indics

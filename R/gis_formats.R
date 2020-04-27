@@ -27,8 +27,7 @@ convert_to_matrix <- function(object) {
   if ( inherits(object, "RasterBrick") || 
        inherits(object, "RasterStack") ) { 
     stop("spatialwarnings cannot use RasterBrick/RasterStack objects. You ", 
-         "must extract single layers from these objects first, then ", 
-         "use the package")
+         "must extract single RasterLayers from these objects first")
   }
   
   # Ultimately, try to use the search path default method to convert it 

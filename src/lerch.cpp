@@ -32,10 +32,9 @@ long int lerchphi(double z, double s, long int v) {
   }
   
   // In other cases, we proceed with computing the sum
-  double sumterm; 
   double total = 0; 
   for (int k=1; k<=MAXIT; k++) { 
-    sumterm = pow(z, k) / pow(k + v, s); 
+    double sumterm = pow(z, k) / pow(k + v, s); 
     total+= sumterm; 
     if ( (sumterm/total) < TOL ) { 
       break; 

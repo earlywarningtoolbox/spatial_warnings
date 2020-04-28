@@ -168,8 +168,8 @@ plot_distr.patchdistr_sews_test_single <- function(x,
   # Add the null data to that plot. We modify the layers so that the ribbon 
   # appears underneath the observed values
   gplot$layers <- c(geom_ribbon(aes_q(x = ~patchsize, 
-                                      ymin = ~q05, 
-                                      ymax = ~q95), 
+                                      ymin = ~qinf, 
+                                      ymax = ~qsup), 
                                 data = x[['cumpsd_null']], alpha = .2), 
                     gplot$layers)
 

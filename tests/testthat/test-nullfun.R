@@ -6,6 +6,7 @@ context("Test that all null model method work")
 
 # Here we just run the code to check that it works
 test_that("All null model methods work", { 
+  
   all_methods <- c("perm") 
   a <- generic_sews(serengeti[2:3])
   for ( m in all_methods ) { 

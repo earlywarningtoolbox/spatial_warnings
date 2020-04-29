@@ -82,7 +82,7 @@
 #'   \code{\link{indictest}}, to test the significance of indicator values. 
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' 
 #' data(serengeti) 
 #' data(serengeti.rain) 
@@ -254,7 +254,7 @@ spectral_sews <- function(mat,
 #' 
 #' @examples 
 #' 
-#' \dontrun{ 
+#' \donttest{ 
 #' data(serengeti)
 #' serengeti.sdr <- raw_sdr(serengeti[[1]], 
 #'                          sdr_low_range = c(0, 0.2), 

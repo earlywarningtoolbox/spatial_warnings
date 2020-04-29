@@ -63,7 +63,7 @@ Low and high frequencies are averaged in order to compute the SDR. The
 }
 \examples{
 
-\dontrun{ 
+\donttest{ 
 serengeti.sdr <- indicator_sdr(serengeti, nulln = 499)
 do.call(rbind, serengeti.sdr) # convert results to data.frame
 }

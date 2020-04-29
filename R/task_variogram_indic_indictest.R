@@ -13,7 +13,7 @@ indictest.variogram_sews_list <- function(x,
                                           ...) { 
   
   results <- future.apply::future_lapply(x, indictest.variogram_sews_single, 
-                                         nulln, null_method, ...)
+                                         nulln, null_method, null_control, ...)
   
   # Add matrixn column with correct matrixn number
   for ( nb in seq_along(results) ) { 
@@ -54,28 +54,16 @@ indictest.variogram_sews_single <- function(x,
   
   # Format results. The first four values are parameters, the rest is the 
   # variogram.
-  par_names <- c("nulldistr", "null_mean", "null_sd", "null_qsup", 
-                 "null_qinf", "z_score", "pval")
-  for ( par in par_names ) { 
-    if ( is.matrix(test_values[[par]]) ) { 
-      x[[par]] <- test_values[[par]][ ,1:4]
-    } else { 
-      x[[par]] <- test_values[[par]][1:4]
-    }
-  }
+  x <- append(x, llply(test_values[["summary_values"]], function(o) o[1:4]))
   
   # Import variogram data in original object
-  par_names <- c("null_mean", "null_sd", "null_qsup", "null_qinf", "z_score",
-                 "pval")
-  vario <- lapply(test_values[par_names], function(o) o[-(1:4)])
+  vario <- lapply(test_values[["summary_values"]], function(o) o[-(1:4)])
   vario <- data.frame(x[["variogram"]], as.data.frame(vario))
   row.names(vario) <- as.character(seq.int(nrow(vario)))
   x[["variogram"]] <- vario
   
-  # Store information about the computation
-  for ( par in c("nulln", "null_method", "null_control") ) { 
-    x[[par]] <- test_values[[par]]
-  }
+  # Import information
+  x <- append(x, test_values[["info"]])
   
   class(x) <- c('variogram_sews_test_single', 
                 'variogram_sews_single', 

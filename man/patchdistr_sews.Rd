@@ -33,7 +33,8 @@ the special value "estimate" to compute first the xmin that produces
 the best power-law fit, then use this estimated value to fit all 
 distributions.}
 
-\item{xmin_bounds}{Bounds when estimating the xmin for power-law distributions}
+\item{xmin_bounds}{Bounds when estimating the xmin for power-law
+distributions}
 
 \item{wrap}{Determines whether patches are considered to wrap around the 
 matrix when reaching the side}
@@ -101,7 +102,7 @@ as documented in \link[=patchdistr_sews_predict]{this page}.
 
 data(forestgap)
 
-\dontrun{
+\donttest{
 psd_indic <- patchdistr_sews(forestgap)
 
 summary(psd_indic)

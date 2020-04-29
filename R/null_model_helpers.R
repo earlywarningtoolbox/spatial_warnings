@@ -12,7 +12,7 @@ compute_indicator_with_null <- function(input,
                                         null_control) { 
   
   # Create null_control list with default arguments 
-  null_control <- null_control_set_args(input, null_control)
+  null_control <- null_control_set_args(input, null_control, null_method)
   
   # Compute the observed value
   value  <- indicf(input)
@@ -31,18 +31,28 @@ compute_indicator_with_null <- function(input,
     summ_stats <- 
       list(null_mean = apply(null_results[["nulldistr"]], 2, mean), 
            null_sd   = apply(null_results[["nulldistr"]], 2, sd), 
-           null_qsup   = apply(null_results[["nulldistr"]], 2, safe_quantile,
-                               null_control[["qsup"]]), 
-           null_qinf   = apply(null_results[["nulldistr"]], 2, safe_quantile,
-                               null_control[["qinf"]]), 
+           null_qsup = apply(null_results[["nulldistr"]], 2, safe_quantile,
+                             null_control[["qsup"]]), 
+           null_qinf = apply(null_results[["nulldistr"]], 2, safe_quantile,
+                             null_control[["qinf"]]), 
            z_score   = apply(rbind(value, null_results[["nulldistr"]]), 2, 
                              function(X) (X[1] - mean(X[-1])) / sd(X[-1])),
            pval      = apply(rbind(value, null_results[["nulldistr"]]), 2, 
                              function(X) 1 - rank(X)[1] / length(X)))
     
+    # If null_method is a function, we need to convert it to a sensible string 
+    # for display in summary(), etc. 
+    if ( is.function(null_method) ) { 
+      null_method <- "custom function"
+    }
+    
     # Add to that list what is returned from null + some stats
-    result <- c(result, null_results, summ_stats, nulln = nulln, 
-                null_method = null_method)
+    result <- list(nulldistr = null_results[["nulldistr"]], 
+                   summary_values = summ_stats, 
+                   info = list(null_method = null_method, 
+                               nulln = nulln, 
+                               get_nullmat = null_results[["get_nullmat"]]))
+    
   }
   
   return(result)
@@ -74,7 +84,7 @@ generate_nulls <- function(input, indicf, nulln, null_method,
     }
     
     null_mod <- NULL # No model involved when the function is provided
-    nullf <- null_method
+    get_nullmat <- function() { null_method(input) }
   }
   
   
@@ -82,10 +92,9 @@ generate_nulls <- function(input, indicf, nulln, null_method,
   
   # If the null method is set to permutation
   if ( is.character(null_method) && null_method == "perm" ) { 
-    
-    # Compute the index on a randomized matrix. Here we use a dedidcated 
+    # Compute the index on a randomized matrix. Here we use a dedicated 
     # function that can do the shuffling in-place in C++, instead of relying 
-    # on R which may copy matrices in memory many times. 
+    # on R which copies matrices in memory many times. 
     # 
     # shuffle_and_compute will convert all matrices to numeric matrices 
     # internally. We need to explicitely convert back to logical after 
@@ -98,7 +107,7 @@ generate_nulls <- function(input, indicf, nulln, null_method,
     }
     has_computed_nulldistr <- TRUE
     null_mod <- NULL # No model involved when we are permuting
-    nullf <- function() { 
+    get_nullmat <- function() { 
       if ( is.logical(input) ) { 
         shuffle_matrix(input) > 0.5 
       } else { 
@@ -112,30 +121,39 @@ generate_nulls <- function(input, indicf, nulln, null_method,
   
   # If the null method is to fit an intercept only 
   if ( is.character(null_method) && null_method == "intercept" ) { 
-    null_mod <- glm(y ~ 1, data = data.frame(y = as.vector(input)), 
-                    family = null_control[["family"]])
-    nullf <- create_nullmat_generator(null_mod, null_control[["family"]], 
-                                      input)
+    
+    values <- as.vector(input)
+    sub <- select_subset(length(values), null_control[["model_subset"]], 
+                         min(length(values), 512))
+    null_mod <- glm(values[sub] ~ 1, family = null_control[["family"]])
+    get_nullmat <- create_nullmat_generator(input, 
+                                            null_mod, 
+                                            null_control[["family"]])
   }
   
   
   
-  # If the null method is to fit a smoother to the matrix
+  # If the null method is to fit a smoothing spline to the matrix
   if ( is.character(null_method) && null_method == "smooth" ) { 
     
     if ( ! requireNamespace("mgcv", quietly = TRUE) ) { 
       stop("The 'gam' method requires mgcv. Please install it beforehand.")
     }
     
-    # We fit a smoother over the matrix, with automatic parameter selection 
-    # for the smoother. 
+    # We fit a smoothing isotropic spline over the matrix, with automatic
+    # parameter selection for the spline. 
     mat_tab <- data.frame(expand.grid(row = seq.int(nrow(input)), 
                                       col = seq.int(ncol(input))), 
                           value = as.vector(input))
+    sub <- select_subset(nrow(mat_tab), 
+                         null_control[["model_subset"]], 
+                         min(nrow(mat_tab), 512))
+    mat_tab <- mat_tab[sub, ]
     null_mod <- mgcv::gam(value ~ s(row, col, bs = "tp"), data = mat_tab, 
                           family = null_control[["family"]])
-    nullf <- create_nullmat_generator(null_mod, null_control[["family"]], 
-                                      input)
+    get_nullmat <- create_nullmat_generator(input, 
+                                            null_mod, 
+                                            null_control[["family"]])
   }
   
   
@@ -144,14 +162,13 @@ generate_nulls <- function(input, indicf, nulln, null_method,
   # not already done)
   if ( ! has_computed_nulldistr ) { 
     nulldistr <- lapply(seq.int(nulln), function(n) { 
-      indicf(nullf())
+      indicf(get_nullmat())
     })
   }
 
-  # We did not generate a null distribution
-  list(nulldistr = nulldistr, 
-       nullf     = nullf, 
-       null_mod  = null_mod)
+  list(nulldistr   = nulldistr, 
+       get_nullmat = get_nullmat, 
+       null_mod    = null_mod)
 }
 
 # We use a safe version of quantile that reports as warnings 
@@ -171,21 +188,33 @@ is.binomial <- function(fam) {
 }
 
 # Set default arguments for null methods 
-null_control_set_args <- function(mat, arglist) { 
+null_control_set_args <- function(mat, arglist, null_method) { 
   
-  # Choose a sensible default if family is unset
-  family <- NULL
+  # Choose a sensible default if family is unset. Note that if null_method can 
+  # be a function that the user provided. 
   if ( ! "family" %in% names(arglist) ) { 
+    
     if ( is.logical(mat) ) { 
       family <- binomial()
+      if ( is.character(null_method) && 
+           null_method %in% c("smooth", "intercept") ) { 
+        warning("indictest: using a binomial() family with default options")
+      }
+      
     } else { 
       family <- gaussian()
+      if ( is.character(null_method) && 
+           null_method %in% c("smooth", "intercept") ) { 
+        warning("indictest: using a gaussian() family with default options")
+      }
     }
+    
   } 
   
   args <- list(family = family, 
                qinf = .05, 
-               qsup = .95) # Add other arguments here
+               qsup = .95, 
+               model_subset = 0.1) # Add other arguments here
   
   for ( i in seq_along(arglist) ) { 
     if ( names(arglist)[i] %in% names(args) ) { 
@@ -200,16 +229,28 @@ null_control_set_args <- function(mat, arglist) {
 
 # Returns a function that generates matrices, given a null model and the 
 # original matrix
-create_nullmat_generator <- function(null_mod, family, input) { 
+create_nullmat_generator <- function(mat, null_mod, family) { 
   function() { 
     # When the family is binomial, simulate often returns 1/0 instead of 
     # TRUE/FALSE values so we need to convert it back here. 
     sim <- matrix(stats::simulate(null_mod)[ ,1], 
-                  nrow = nrow(input), ncol = ncol(input)) 
+                  nrow = nrow(mat), ncol = ncol(mat)) 
     if ( is.binomial(family) ) { 
       sim <- sim > .5
     }
     return(sim)
   }
+}
+
+# Select a subset of values in the matrix. We take the minimum of 512 points 
+# and the fraction of the matrix asked for 
+select_subset <- function(N, subset_frac, at_least) { 
+  if ( N <= at_least ) { 
+    return(tab)
+  }
+  
+  keep_every <- min(floor(N / at_least), 
+                    floor(1 / subset_frac))
+  seq.int(N) %% keep_every == 0
 }
 

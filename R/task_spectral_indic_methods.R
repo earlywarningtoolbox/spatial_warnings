@@ -14,7 +14,7 @@ indictest.spectral_sews_list <- function(x,
   
   # Compute a distribution of null values for SDR
   results <- future.apply::future_lapply(x, indictest.spectral_sews_single, 
-                                         nulln, null_method, ...)
+                                         nulln, null_method, null_control, ...)
   
   # Format and return output
   class(results) <- c('spectral_sews_test_list', 
@@ -50,28 +50,17 @@ indictest.spectral_sews_single <- function(x,
                                              null_method = null_method, 
                                              null_control = null_control)
   
-  # Format results. We import SDR values, both summary stats + raw null 
-  # distribution 
-  summary_stats <- c("null_mean", "null_sd", "null_qsup", 
-                     "null_qinf", "z_score", "pval")
-  for ( par in c("nulldistr", summary_stats) ) { 
-    if ( is.matrix(test_values[[par]]) ) { 
-      x[[par]] <- test_values[[par]][ ,1]
-    } else { 
-      x[[par]] <- test_values[[par]][1]
-    }
-  }
+  # Format results. We import summary stats for SDR results 
+  x <- append(x, lapply(test_values[["summary_values"]], function(o) o[1]))
   
   # We extract spectrum values 
-  spec <- llply(test_values[summary_stats], function(o) o[-1])
+  spec <- llply(test_values[["summary_values"]], function(o) o[-1])
   spec <- data.frame(x[["spectrum"]], as.data.frame(spec))
   row.names(spec) <- as.character(seq.int(nrow(spec)))
   x[["spectrum"]] <- spec
   
   # We import information about the null computation in x 
-  for ( c in c("nulln", "null_method", "nullf") ) { 
-    x[[c]] <- test_values[[c]]
-  }
+  x <- append(x, test_values[["info"]])
   
   class(x) <- c('spectral_sews_test_single', 
                 'spectral_sews_single', 

@@ -48,7 +48,7 @@
 #' 
 #' @examples
 #' 
-#' \dontrun{ 
+#' \donttest{ 
 #' data(forestgap)
 #' psd_indic <- patchdistr_sews(forestgap)
 #' 
@@ -362,7 +362,7 @@ plot_distr.patchdistr_sews_list <- function(x,
 #' 
 #' @examples 
 #' 
-#' \dontrun{ 
+#' \donttest{ 
 #' patch_indics <- patchdistr_sews(forestgap)
 #' 
 #' predict(patch_indics)

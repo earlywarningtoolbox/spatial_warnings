@@ -93,7 +93,7 @@
 #' plot(gen_indic, along = serengeti.rain)
 #' 
 #' # Compute significance (long)
-#' \dontrun{
+#' \donttest{
 #' gen_test <- indictest(gen_indic, nulln = 199)
 #' 
 #' print(gen_test)
@@ -234,7 +234,7 @@ raw_generic_indic <- function(mat,
 #' 
 #' @examples
 #' 
-#' \dontrun{
+#' \donttest{
 #' data(serengeti)
 #' raw_cg_variance(serengeti[[1]])
 #' compute_indicator(serengeti, fun = raw_cg_variance, subsize = 5)
@@ -275,7 +275,7 @@ raw_cg_variance <- function(mat, subsize = 5) {
 #' 
 #' @examples 
 #' 
-#' \dontrun{
+#' \donttest{
 #' data(serengeti)
 #' raw_cg_moran(serengeti[[1]], subsize = 1)
 #' }
@@ -356,7 +356,7 @@ raw_cg_moran <- function(mat, subsize = 1) {
 #' @examples 
 #' 
 #' data(serengeti)
-#' \dontrun{
+#' \donttest{
 #' raw_cg_skewness(serengeti[[1]])
 #' compute_indicator(serengeti, fun = raw_cg_skewness, subsize = 5)
 #' }

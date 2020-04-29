@@ -21,7 +21,8 @@
 #'   the best power-law fit, then use this estimated value to fit all 
 #'   distributions. 
 #' 
-#' @param xmin_bounds Bounds when estimating the xmin for power-law distributions
+#' @param xmin_bounds Bounds when estimating the xmin for power-law
+#'   distributions
 #' 
 #' @param wrap Determines whether patches are considered to wrap around the 
 #'  matrix when reaching the side 
@@ -113,7 +114,7 @@
 #' 
 #' data(forestgap)
 #' 
-#' \dontrun{
+#' \donttest{
 #' psd_indic <- patchdistr_sews(forestgap)
 #' 
 #' summary(psd_indic)

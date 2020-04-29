@@ -94,7 +94,8 @@ IntegerVector flood_fill(const IntegerMatrix &mat,
     int j = xy.second;
     
     // We paint the pixel in our fill color (it always starts with vegetation)
-    output(i,j) = fillcol;
+    output(i, j) = fillcol;
+    
     // We update the max coordinates of the patch
     xmin = i < xmin ? i : xmin;
     xmax = i > xmax ? i : xmax;
@@ -109,7 +110,7 @@ IntegerVector flood_fill(const IntegerMatrix &mat,
       int newx = nb(n, 0);
       int newy = nb(n, 1);
       
-      if ( !is_marked(newx, newy) && (mat(newx, newy) > 0) ) { 
+      if ( (!is_marked(newx, newy)) && (mat(newx, newy) > 0) ) { 
         // Add the cell to the queue
         std::pair<int,int> xynew = std::make_pair(newx, newy);
         to_fill.push(xynew);

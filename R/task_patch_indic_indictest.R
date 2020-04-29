@@ -6,7 +6,8 @@ indictest.patchdistr_sews_single <- function(x,
                                              null_control = NULL, 
                                              ...) { 
   
-  null_control <- null_control_set_args(x, null_control)
+  null_control <- null_control_set_args(x[["orig_data"]], null_control, 
+                                        null_method)
   
   # Obtain null distributions + plrange values. We compute both at the same 
   # time so we do not reshuffle matrices twice. 
@@ -59,7 +60,7 @@ indictest.patchdistr_sews_single <- function(x,
            plrange_pval = plrange_pval, 
            nulln = nulln, 
            null_method = null_method, 
-           null_control = null_control)
+           null_control = list(null_control))
   class(ans) <- c('patchdistr_sews_test_single', 
                   'patchdistr_sews_single', 
                   'sews_result_single', 
@@ -77,7 +78,7 @@ indictest.patchdistr_sews_list <- function(x,
   
   # Compute a distribution of null values for SDR
   results <- future.apply::future_lapply(x, indictest.patchdistr_sews_single, 
-                                         nulln, null_method)
+                                         nulln, null_method, null_control, ...)
   
   # Transfer names 
   names(results) <- names(x)

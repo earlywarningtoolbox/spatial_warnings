@@ -39,11 +39,11 @@ This functions computes the Moran's spatial correlation index
 }
 \examples{
 
-\dontrun{
+\donttest{
 data(serengeti)
 
 # One matrix
-indicator_moran(serengeti[1])
+indicator_moran(serengeti[[1]])
 
 # Several matrices
 indicator_moran(serengeti)

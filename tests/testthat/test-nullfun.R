@@ -2,17 +2,60 @@
 # 
 # 
 
-context("Test that all null model method work") 
+context("Test that all null model methods work") 
 
 # Here we just run the code to check that it works
 test_that("All null model methods work", { 
   
-  all_methods <- c("perm") 
+  
+  # Check that all methods run 
+  all_methods <- c("perm", "intercept", "smooth") 
   a <- generic_sews(serengeti[2:3])
+  b <- patchdistr_sews(serengeti[2:3])
+  c <- suppressWarnings( spectral_sews(serengeti[2:3]) )
+  d <- variogram_sews(serengeti[2:3])
+  null_control <- list(family = binomial())
   for ( m in all_methods ) { 
-    b <- indictest(a, nulln = 3, null_method = m)
+    indictest(a, nulln = 3, null_method = m, 
+              null_control = null_control) 
+    indictest(b, nulln = 3, null_method = m, 
+              null_control = null_control) 
+    indictest(c, nulln = 3, null_method = m, 
+              null_control = null_control) 
+    indictest(d, nulln = 3, null_method = m, 
+              null_control = null_control) 
     expect_true(TRUE)
   }
+  
+  # Check the values returned by the null model 
+  ictest <- indictest(a[[2]], 3, null_method = "intercept", 
+                      null_control = null_control)
+  nullmean <- mean(replicate(99, mean( ictest$get_nullmat() )))
+  expect_equal(mean(ictest[["orig_data"]]), nullmean, 
+               tol = 0.01)
+  
+  # Check the values returned by the null model 
+  ictest <- indictest(a[[2]], 3, null_method = "smooth", 
+                      null_control = null_control)
+  nullmean <- mean(replicate(99, mean( ictest$get_nullmat() )))
+  expect_equal(mean(ictest[["orig_data"]]), nullmean, 
+               tol = 0.01)
+  
+  # Check that smoothed null model is closer to reality than the intercept model
+  ictest <- indictest(a[[2]], 3, null_method = "intercept", 
+                      null_control = null_control)
+  error_intercept <- replicate(49, { 
+    mean( abs(ictest$get_nullmat() - a[[2]][["orig_data"]]) )
+  })
+  ictest <- indictest(a[[2]], 3, null_method = "smooth", 
+                      null_control = null_control)
+                      
+  error_smooth <- replicate(49, { 
+    mean( abs(ictest$get_nullmat() - a[[2]][["orig_data"]]) )
+  })
+  expect_true({ 
+    mean(error_intercept) > mean(error_smooth)
+  })
   
   # Check that we warn when the null method is a function and does not return 
   # logical values when the input matrix is logical 
@@ -24,18 +67,30 @@ test_that("All null model methods work", {
   
   # Check that arguments are properly set 
   expect_warning({ 
-    null_control_set_args(serengeti[[1]], list(a = "opl"))
+    null_control_set_args(serengeti[[1]], list(a = "opl"), "perm")
   })
   expect_true({ 
     a <- null_control_set_args(serengeti[[1]], 
-                               list(family = "binomial"))[["family"]]
+                               list(family = "binomial"), 
+                               "intercept")[["family"]]
     is.binomial(a)
   }) 
   expect_true({ 
     a <- null_control_set_args(serengeti[[1]], 
-                               list(family = binomial()))[["family"]]
+                               list(family = binomial()), 
+                               "intercept")[["family"]]
     is.binomial(a)
   }) 
+  
+  # Model option are honored
+  expect_warning({
+      null_control_set_args(serengeti[[1]], list(), "intercept")
+  }, regexp = "using a binomial")
+  expect_warning({
+    null_control_set_args(coarse_grain(serengeti[[1]], 5), 
+                          list(), "intercept")
+  }, regexp = "using a gaussian")
+  
   
   
   

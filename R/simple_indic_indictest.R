@@ -24,7 +24,7 @@ indictest.simple_sews_single <- function(x,
   }
   
   new_indicf <- function(mat) { 
-    do.call(x[['indicf']], c(mat = list(mat), x[['fun.args']]))
+    do.call(x[['indicf']], c(list(mat), x[['fun.args']]))
   }
   
   # Compute a distribution of null values
@@ -34,14 +34,13 @@ indictest.simple_sews_single <- function(x,
                                              null_method = null_method, 
                                              null_control = null_control)
   
-  # Add or replace components of the original object with null results 
-  for ( i in seq_along(null_values) ) { 
-    n <- names(null_values)[i]
-    x[[n]] <- null_values[[n]]
-  }
+  # Add data into original object
+  x[["nulldistr"]] <- null_values[["nulldistr"]]
+  x <- append(x, null_values[["summary_values"]])
+  x <- append(x, null_values[["info"]])
   
-  class(x) <- c('simple_sews_test_single', 'sews_test', 'sews_result_single', 
-                'list')
+  class(x) <- c('simple_sews_test_single', 'sews_test', 
+                'sews_result_single', 'list')
   
   return(x)
 }
@@ -53,7 +52,8 @@ indictest.simple_sews_list <- function(x,
                                        ...) { 
   
   results <- future.apply::future_lapply(x, indictest.simple_sews_single, 
-                                         nulln, null_method, ...)
+                                         nulln, null_method, null_control, 
+                                         ...)
   
   # Add matrixn column with correct number
   for ( nb in seq_along(results) ) { 

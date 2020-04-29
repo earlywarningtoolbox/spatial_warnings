@@ -17,10 +17,6 @@ label_cpp <- function(mat, nbmask, wrap) {
     .Call('_spatialwarnings_label_cpp', PACKAGE = 'spatialwarnings', mat, nbmask, wrap)
 }
 
-lerchphi <- function(z, s, v) {
-    .Call('_spatialwarnings_lerchphi', PACKAGE = 'spatialwarnings', z, s, v)
-}
-
 #' 
 #' @title Spatial correlation at lag 1
 #'
@@ -54,6 +50,10 @@ tplsum <- function(expo, rate, xs, xmin) {
 
 tplinfsum <- function(expo, rate, xmin) {
     .Call('_spatialwarnings_tplinfsum', PACKAGE = 'spatialwarnings', expo, rate, xmin)
+}
+
+lerchphi <- function(z, s, v) {
+    .Call('_spatialwarnings_lerchphi', PACKAGE = 'spatialwarnings', z, s, v)
 }
 
 shuffle_matrix <- function(mat) {

@@ -31,14 +31,15 @@ NumericVector tplsum(double expo, double rate, IntegerVector xs, int xmin) {
 // or reaches a maximum number of iterations. The constant returned is used 
 // as a normalization term when computing the probabilities of truncated 
 // power laws. 
-const double TOL = 1e-8; 
-const int MAXIT = 1e6L; 
 //[[Rcpp::export]]
 double tplinfsum(double expo, double rate, int xmin) { 
   
+  const double TOL = 1e-7; 
+  const int MAXIT = 1e6L; 
+  
   double current_term = pow(xmin, -expo) * exp(-xmin*rate);
   double total = current_term;
-  double rel_change = current_term / total; 
+  double rel_change = 1.0; 
   double it = 0; 
   int k = xmin + 1; 
   
@@ -55,4 +56,44 @@ double tplinfsum(double expo, double rate, int xmin) {
   return(total);
 }
 
+// 
+// This function will compute the lerch phi function. It is a simplified 
+// version of what is done in the VGAM source code (© Thomas Yee), which was 
+// originally written by 
+// 
+// Sergej V. Aksenov (http://www.geocities.com/saksenov) and 
+// Ulrich D. Jentschura (jentschura@physik.tu-dresden.de), 2002.
+// 
+// 
+//[[Rcpp::export]]
+long int lerchphi(double z, double s, long int v) { 
+  
+  const int MAXIT = 1000; 
+  const double TOL = 1e-10; 
+  
+  // If z is above 1.0, the sum diverges. Return Inf
+  if ( z > 1.0 ) { 
+    return(R_PosInf); 
+  }
+  
+  // If z *is* 1.0, but s is below one, then the series diverges
+  // CASE NOT HANDLED
+  
+  // If v is below zero, the function is undefined 
+  if ( v <= 0.0 ) { 
+    return(R_NaN); 
+  }
+  
+  // In other cases, we proceed with computing the sum
+  double total = 0; 
+  for (int k=1; k<=MAXIT; k++) { 
+    double sumterm = pow(z, k) / pow(k + v, s); 
+    total+= sumterm; 
+    if ( (sumterm/total) < TOL ) { 
+      break; 
+    }
+  }
+  
+  return(total); 
+}
 

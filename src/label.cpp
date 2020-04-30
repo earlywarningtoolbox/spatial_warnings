@@ -12,6 +12,12 @@ using namespace Rcpp;
 // Default value for non-patch cells
 #define DEFAULT_VALUE NA_INTEGER
 
+// These are the number rows and columns of the neighbor mask. They are assumed
+// to be 3 (only considering the directly-adjacent neighbors) because it speeds
+// up computations. 
+const int maskrow = 3; 
+const int maskcol = 3; 
+
 // [[Rcpp::export]]
 IntegerMatrix label_cpp(IntegerMatrix mat, 
                         IntegerMatrix nbmask,
@@ -64,13 +70,16 @@ IntegerMatrix label_cpp(IntegerMatrix mat,
 IntegerVector flood_fill(const IntegerMatrix &mat, 
                          LogicalMatrix &is_marked,
                          IntegerMatrix &output,
-                         IntegerMatrix nbmask,
+                         const IntegerMatrix nbmask,
                          std::pair<int, int> xy,
                          int fillcol,
                          bool wrap) { 
   
   // Create empty queue
   std::queue <std::pair<int, int> > to_fill;
+  
+  int W = mat.ncol();
+  int H = mat.nrow();
   
   // Keep a count of the number of cell counted (== patch size)
   int patch_size = 0;
@@ -87,7 +96,7 @@ IntegerVector flood_fill(const IntegerMatrix &mat,
   is_marked(xy.first, xy.second) = 1; // The cell has been pushed to the queue
   patch_size++;
   
-  while ( !to_fill.empty() ) { 
+  while ( ! to_fill.empty() ) { 
     xy = to_fill.front();
     to_fill.pop(); 
     int i = xy.first;
@@ -103,25 +112,25 @@ IntegerVector flood_fill(const IntegerMatrix &mat,
     ymax = j > ymax ? j : ymax;
     
     // We consider its neighbors
-    IntegerMatrix nb = get_nb_coords(mat, xy, nbmask, wrap);
+    std::queue <std::pair<int, int>> nb = get_nb_coords(W, H, xy, nbmask, wrap);
     
     // We add the neighbors to the queue if needed
-    for (int n=0; n<nb.nrow(); n++) { 
-      int newx = nb(n, 0);
-      int newy = nb(n, 1);
-      
-      if ( (!is_marked(newx, newy)) && (mat(newx, newy) > 0) ) { 
-        // Add the cell to the queue
-        std::pair<int,int> xynew = std::make_pair(newx, newy);
-        to_fill.push(xynew);
+    while ( ! nb.empty() ) { 
+      std::pair<int, int> cur_nb = nb.front(); 
+      nb.pop(); 
+      int newx = cur_nb.first; 
+      int newy = cur_nb.second; 
+      if ( !is_marked(newx, newy) && (mat(newx, newy) > 0) ) { 
+        // Add the cell to the queue of things to fill
+        to_fill.push(cur_nb);
         // We mark this cell to know it has been put in the queue and update
         //   the total number of cells marked (= patch size)
-        is_marked(newx, newy) = 1;
+        is_marked(newx, newy) = true;
         patch_size++;
       }
     }
   }
-  
+    
   if ( (xmax - xmin + 1) == mat.nrow() || (ymax - ymin + 1) == mat.ncol() ) { 
     percolation = 1;
   }
@@ -131,55 +140,37 @@ IntegerVector flood_fill(const IntegerMatrix &mat,
 
 // A function that returns the coordinates of neighboring cells in a matrix,
 //   taking into account the wraparound
-IntegerMatrix get_nb_coords(IntegerMatrix mat, 
-                            std::pair<int,int> X,
-                            IntegerMatrix nbmask, 
-                            bool wrap) { 
+std::queue <std::pair<int, int>> get_nb_coords(const int W, // width
+                                               const int H, // height
+                                               const std::pair<int,int> X,
+                                               const IntegerMatrix& nbmask, 
+                                               const bool wrap) { 
   
-  // We insert the result in a nb*3 matrix for the cell's i, j and value
-  int nbmax = sum(nbmask); // total nb of neighbors considered
+  std::queue <std::pair<int, int>> neighbors_xy; 
   
-  IntegerMatrix neighbors_xy(nbmax, 2);
-  
-  int W = mat.ncol();
-  int H = mat.nrow();
-  
-  int curnb = 0;
-  for (int nbi=0; nbi<nbmask.nrow(); nbi++) { 
-    for (int nbj=0; nbj<nbmask.ncol(); nbj++) { 
+  for (int nbi=0; nbi<maskrow; nbi++) { 
+    for (int nbj=0; nbj<maskcol; nbj++) { 
       // If the neighbor is to be considered, record the necessary shifts
-      if ( nbmask(nbi, nbj) > 0) { 
-        int shift_x = nbi - (nbmask.nrow()-1)/2;
-        int shift_y = nbj - (nbmask.ncol()-1)/2;
+      if ( nbmask(nbi, nbj) > 0 ) { 
+        int shift_x = nbi - (maskrow-1)/2;
+        int shift_y = nbj - (maskcol-1)/2;
         
         // Actual coordinates of the neighbor
-        int nb_x = (X.first + shift_x);
-        int nb_y = (X.second + shift_y);
+        int nb_x = X.first  + shift_x;
+        int nb_y = X.second + shift_y;
         
         // Does the neighbor fall outside the matrix ? 
-        bool is_out = (nb_x < 0) | (nb_x >= H) | (nb_y < 0) | (nb_y >= W);
+        bool is_out = (nb_x < 0) || (nb_x >= H) || (nb_y < 0) || (nb_y >= W);
         
         // It is out and we don't wrap around: do not count this neighbor
-        if ( !wrap && is_out ) { 
+        if ( (!wrap) && is_out ) { 
           // Nothing
         } else { // The neighbors falls within the field (or we wrap around)
-          neighbors_xy(curnb, 0) = (nb_x + H) % H;
-          neighbors_xy(curnb, 1) = (nb_y + W) % W;
-          curnb++;
+          neighbors_xy.push( std::make_pair((nb_x + H) % H, 
+                                            (nb_y + W) % W) );
         }
       }
     }
-  }
-  
-  // We ignored some neighbors because they were out of the field: we might 
-  // need to shorten the output matrix
-  if (!wrap && curnb < nbmax) { 
-    IntegerMatrix tmp(curnb, 2);
-    for (int i=0; i<curnb; i++) { 
-      tmp(i,0) = neighbors_xy(i,0);
-      tmp(i,1) = neighbors_xy(i,1);
-    }
-    neighbors_xy = tmp;
   }
   
   return neighbors_xy; 

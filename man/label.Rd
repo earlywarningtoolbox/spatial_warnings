@@ -49,14 +49,17 @@ data(forestgap)
 
 par(mfrow=c(1, 2))
 rmat <- matrix(rnorm(100) > .1, ncol = 10)
-image(rmat)
-image(label(rmat))
+display_matrix(rmat)
+display_matrix(label(rmat))
 
 # With 8-way neighborhood mask and no wrapping around borders
 nbmask8 <- matrix(c(1,1,1,
                     1,0,1,
                     1,1,1), ncol=3)
-image(label(rmat, nbmask8, wrap = FALSE))
+display_matrix(label(rmat, nbmask8, wrap = FALSE))
+
+# On real data: 
+display_matrix(label(forestgap[[5]], nbmask8, wrap = FALSE))
 
 }
 \seealso{

@@ -8,20 +8,21 @@
 
 using namespace Rcpp;
 
-IntegerMatrix get_nb_coords(IntegerMatrix mat, 
-                            std::pair<int,int> X,
-                            IntegerMatrix nbmask, 
-                            bool wrap);
+std::queue <std::pair<int, int>> get_nb_coords(const int W, // width
+                                               const int H, // height
+                                               const std::pair<int,int> X,
+                                               const IntegerMatrix& nbmask, 
+                                               const bool wrap); 
 
 IntegerVector flood_fill(const IntegerMatrix &mat, 
-                         LogicalMatrix &is_marked,
-                         IntegerMatrix &output,
-                         IntegerMatrix nbmask,
-                         std::pair<int, int> xy,
-                         int fillcol,
-                         bool wrap);
+                               LogicalMatrix &is_marked,
+                               IntegerMatrix &output,
+                               IntegerMatrix nbmask,
+                               std::pair<int, int> xy,
+                               int fillcol,
+                               bool wrap);
 
-Rcpp::NumericMatrix coarse_grain(NumericMatrix mat, 
+NumericMatrix coarse_grain(NumericMatrix mat, 
                                  int subsize);
 
 #endif

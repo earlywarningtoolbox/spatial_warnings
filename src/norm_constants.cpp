@@ -34,7 +34,7 @@ NumericVector tplsum(double expo, double rate, IntegerVector xs, int xmin) {
 //[[Rcpp::export]]
 double tplinfsum(double expo, double rate, int xmin) { 
   
-  const double TOL = 1e-7; 
+  const double TOL = 1e-8; 
   const int MAXIT = 1e6L; 
   
   double current_term = pow(xmin, -expo) * exp(-xmin*rate);

@@ -92,6 +92,148 @@ test_that("All null model methods work", {
   }, regexp = "using a gaussian")
   
   
+  # Test the simulation of new values 
+  
+#   # Intercept-only models 
+#   mu <- 10
+#   dat <- rnorm(1000, mu, 2)
+#   gmod <- glm(y ~ 1, data = data.frame(y = dat), family = gaussian())
+#   newvals <- simulate_newdat(gmod, seq(0, 10000), family = gaussian())
+#   expect_equal(mu, mean(newvals), tol = 0.1)
+#   
+#   lambda <- 10
+#   dat <- rpois(1000, lambda)
+#   gmod <- glm(y ~ 1, data = data.frame(y = dat), family = poisson())
+#   newvals <- simulate_newdat(gmod, seq(0, 10000), family = poisson())
+#   expect_equal(lambda, mean(newvals), tol = 0.1)
+#   
+#   prob <- 0.4
+#   dat <- rbinom(1000, size = 1, prob = prob)
+#   gmod <- glm(y ~ 1, data = data.frame(y = dat), family =  binomial())
+#   newvals <- simulate_newdat(gmod, seq(0, 10000), family = binomial())
+#   expect_equal(prob, mean(newvals), tol = 0.1)
+#   
+#   
+#   # Helper function for whats following
+#   matricize <- function(tab) { 
+#     matrix(tab[ ,3], nrow = max(tab[ ,1]), ncol = max(tab[ ,1]))
+#   }
+#   
+#   
+#   # Smooth models: binomial
+#   input <- serengeti[[7]]
+#   # parameter selection for the spline. 
+#   mat_tab <- data.frame(expand.grid(row = seq.int(nrow(input)), 
+#                                     col = seq.int(ncol(input))), 
+#                         value = as.vector(input))
+#   null_mod <- mgcv::gam(value ~ s(row, col, bs = "tp"), 
+#                         data = mat_tab, 
+#                         family = binomial())
+#   ovals <- expand.grid(row = seq.int(nrow(input)), 
+#                       col = seq.int(ncol(input)))
+#   newvals <- simulate_newdat(null_mod, 
+#                             ovals, 
+#                             family = binomial())
+#   ovals[ ,"y"] <- newvals
+#   ovals[ ,"yref"] <- simulate(null_mod)[, 1]
+#   ggplot(ovals, aes(x = row, y = col)) + 
+#     geom_raster(aes(fill = y > 0.5))
+#   
+#   m    <- coarse_grain(matricize(ovals[ ,c("row", "col", "y")]),    20)
+#   mref <- coarse_grain(matricize(ovals[ ,c("row", "col", "yref")]), 20)
+#   expect_true({ 
+#     mean( abs(m - mref) ) < 0.05
+#   })
+#   
+#   if ( exists("VISUAL_TESTS") && VISUAL_TESTS ) { 
+#     display_matrix(matricize(ovals[ ,c("row", "col", "y")])) + 
+#       labs(title = "produced")
+#     dev.new()
+#     display_matrix(matricize(ovals[ ,c("row", "col", "yref")])) + 
+#       labs(title = "ref")
+#   
+#   }
+#   
+#   
+#   # Smooth models: gaussian
+#   input <- matrix(ifelse(serengeti[[7]][], 
+#                          rnorm(prod(dim(serengeti[[7]])), mean = 20 , sd = 8), 
+#                          rnorm(prod(dim(serengeti[[7]])), mean = 100, sd = 8)), 
+#                   nrow = nrow(serengeti[[7]]), 
+#                   ncol = ncol(serengeti[[7]]))
+#   # parameter selection for the spline. 
+#   mat_tab <- data.frame(expand.grid(row = seq.int(nrow(input)), 
+#                                     col = seq.int(ncol(input))), 
+#                         value = as.vector(input))
+#   null_mod <- mgcv::gam(value ~ s(row, col, bs = "tp"), 
+#                         data = mat_tab, 
+#                         family = gaussian())
+#   ovals <- expand.grid(row = seq.int(nrow(input)), 
+#                        col = seq.int(ncol(input)))
+#   newvals <- simulate_newdat(null_mod, 
+#                              ovals, 
+#                              family = gaussian())
+#   ovals[ ,"y"] <- newvals
+#   ovals[ ,"yref"] <- simulate(null_mod)[, 1]
+#   
+#   m    <- coarse_grain(matricize(ovals[ ,c("row", "col", "y")]),    20)
+#   mref <- coarse_grain(matricize(ovals[ ,c("row", "col", "yref")]), 20)
+#   expect_true({ 
+#     cor(as.vector(m), as.vector(mref)) > 0.95
+#   })
+#   expect_equal(var(ovals$y), var(ovals$yref), tol = 4)
+#   
+#   if ( exists("VISUAL_TESTS") && VISUAL_TESTS ) { 
+#     display_matrix(matricize(ovals[ ,c("row", "col", "y")])) + 
+#       labs(title = "produced")
+#     dev.new()
+#     display_matrix(matricize(ovals[ ,c("row", "col", "yref")])) + 
+#       labs(title = "ref")
+#   
+#   }
+#   
+#   
+#   
+#   
+#   # Smooth models: poisson
+#   input <- matrix(ifelse(serengeti[[7]][], 
+#                          rpois(prod(dim(serengeti[[7]])), lambda = 20 ), 
+#                          rpois(prod(dim(serengeti[[7]])), lambda = 100)), 
+#                   nrow = nrow(serengeti[[7]]), 
+#                   ncol = ncol(serengeti[[7]]))
+#   # parameter selection for the spline. 
+#   mat_tab <- data.frame(expand.grid(row = seq.int(nrow(input)), 
+#                                     col = seq.int(ncol(input))), 
+#                         value = as.vector(input))
+#   null_mod <- mgcv::gam(value ~ s(row, col, bs = "tp"), 
+#                         data = mat_tab, 
+#                         family = gaussian())
+#   ovals <- expand.grid(row = seq.int(nrow(input)), 
+#                        col = seq.int(ncol(input)))
+#   newvals <- simulate_newdat(null_mod, 
+#                              ovals, 
+#                              family = gaussian())
+#   ovals[ ,"y"] <- newvals
+#   ovals[ ,"yref"] <- simulate(null_mod)[, 1]
+#   
+#   m    <- coarse_grain(matricize(ovals[ ,c("row", "col", "y")]),    20)
+#   mref <- coarse_grain(matricize(ovals[ ,c("row", "col", "yref")]), 20)
+#   expect_true({ 
+#     cor(as.vector(m), as.vector(mref)) > 0.95
+#   })
+#   expect_equal(var(ovals$y), var(ovals$yref), tol = 4)
+#   
+#   if ( exists("VISUAL_TESTS") && VISUAL_TESTS ) { 
+#     display_matrix(matricize(ovals[ ,c("row", "col", "y")])) + 
+#       labs(title = "produced")
+#     dev.new()
+#     display_matrix(matricize(ovals[ ,c("row", "col", "yref")])) + 
+#       labs(title = "ref")
+#   }
+  
+  
+  
+  
   
   
 })

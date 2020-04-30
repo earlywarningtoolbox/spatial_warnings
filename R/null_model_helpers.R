@@ -123,9 +123,9 @@ generate_nulls <- function(input, indicf, nulln, null_method,
   if ( is.character(null_method) && null_method == "intercept" ) { 
     
     values <- as.vector(input)
-    sub <- select_subset(length(values), null_control[["model_subset"]], 
-                         min(length(values), 512))
-    null_mod <- glm(values[sub] ~ 1, family = null_control[["family"]])
+#     sub <- select_subset(length(values), null_control[["model_subset"]], 
+#                          min(length(values), 512))
+    null_mod <- glm(values ~ 1, family = null_control[["family"]])
     get_nullmat <- create_nullmat_generator(input, 
                                             null_mod, 
                                             null_control[["family"]])
@@ -145,11 +145,12 @@ generate_nulls <- function(input, indicf, nulln, null_method,
     mat_tab <- data.frame(expand.grid(row = seq.int(nrow(input)), 
                                       col = seq.int(ncol(input))), 
                           value = as.vector(input))
-    sub <- select_subset(nrow(mat_tab), 
-                         null_control[["model_subset"]], 
-                         min(nrow(mat_tab), 512))
-    mat_tab <- mat_tab[sub, ]
-    null_mod <- mgcv::gam(value ~ s(row, col, bs = "tp"), data = mat_tab, 
+#     sub <- select_subset(nrow(mat_tab), 
+#                          null_control[["model_subset"]], 
+#                          min(nrow(mat_tab), 512))
+#     mat_tab <- mat_tab[sub, ]
+    null_mod <- mgcv::gam(value ~ s(row, col, bs = "tp"), 
+                          data = mat_tab, 
                           family = null_control[["family"]])
     get_nullmat <- create_nullmat_generator(input, 
                                             null_mod, 
@@ -231,9 +232,12 @@ null_control_set_args <- function(mat, arglist, null_method) {
 # original matrix
 create_nullmat_generator <- function(mat, null_mod, family) { 
   function() { 
+    newdat <- expand.grid(row = seq.int(nrow(mat)), 
+                          col = seq.int(ncol(mat)))
+    
     # When the family is binomial, simulate often returns 1/0 instead of 
     # TRUE/FALSE values so we need to convert it back here. 
-    sim <- matrix(stats::simulate(null_mod)[ ,1], 
+    sim <- matrix(stats::simulate(null_mod, newdata = newdat)[ ,1], 
                   nrow = nrow(mat), ncol = ncol(mat)) 
     if ( is.binomial(family) ) { 
       sim <- sim > .5
@@ -242,15 +246,44 @@ create_nullmat_generator <- function(mat, null_mod, family) {
   }
 }
 
-# Select a subset of values in the matrix. We take the minimum of 512 points 
-# and the fraction of the matrix asked for 
-select_subset <- function(N, subset_frac, at_least) { 
-  if ( N <= at_least ) { 
-    return(tab)
-  }
-  
-  keep_every <- min(floor(N / at_least), 
-                    floor(1 / subset_frac))
-  seq.int(N) %% keep_every == 0
-}
-
+# Select a subset of values in N values We take the maximum of at_least points 
+# and the fraction of the N values asked for
+# select_subset <- function(N, subset_frac, at_least) { 
+#   if ( N <= at_least ) { 
+#     return(tab)
+#   }
+#   
+#   keep_every <- min(floor(N / at_least), 
+#                     floor(1 / subset_frac))
+#   seq.int(N) %% keep_every == 0
+# }
+# 
+# # Here newdata is assumed to have columns and x, y
+# simulate_newdat <- function(mod, newdata, family) { 
+#   
+#   # If we passed a vector of values, convert that to a data.frame so it is 
+#   # compatible with predict()
+#   if ( is.vector(newdata) && !is.data.frame(newdata) ) { 
+#     newdata <- data.frame(blank = newdata)
+#   }
+#   n <- nrow(newdata)
+#   
+#   # Extract the string from family object if needed
+#   fam <- family$family
+#   linv <- family$linkinv 
+#   
+#   if ( fam == "gaussian" ) { 
+#     mu_pred <- predict(mod, newdata, type = "response")
+#     resp_pred <- rnorm(n, mu_pred, sigma(mod))
+#   } else if ( fam == "binomial" ) { 
+#     mu_pred <- predict(mod, newdata, type = "response")
+#     resp_pred <- rbinom(n, size = 1, prob = mu_pred)
+#   } else if ( fam == "poisson" ) { 
+#     lambda_pred <- predict(mod, newdata, type = "response")
+#     resp_pred <- rpois(n, lambda = lambda_pred)
+#   } else { 
+#     stop("Family ", fam, " is not handled by this function")
+#   }
+#   
+#   return(resp_pred)
+# }

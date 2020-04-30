@@ -5,7 +5,7 @@
 NULL
 
 # A function that checks the arguments passed to the indicator functions.
-check_mat <- function(mat) { 
+check_mat <- function(mat, NAerror = TRUE) { 
   
   # Not a matrix or something we can handle ? 
   if ( ! inherits(mat, "matrix") ) {
@@ -13,7 +13,7 @@ check_mat <- function(mat) {
   }
   
   # Has NA values
-  if ( any( is.na(mat) ) ) { 
+  if ( NAerror && any( is.na(mat) ) ) { 
     stop('NAs in provided matrix.')
   }
   

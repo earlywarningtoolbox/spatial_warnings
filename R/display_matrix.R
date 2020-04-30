@@ -53,7 +53,7 @@ display_matrix.RasterLayer <- function(object, palette = "RdYlBu",
 #'@export
 display_matrix.matrix <- function(object, palette = "RdYlBu", 
                                   along = NULL, ...) { 
-  check_mat(object) 
+  check_mat(object, NAerror = FALSE) 
   
   if ( is.numeric(object) ) { 
     fillscale <- scale_fill_distiller(palette = palette)
@@ -77,7 +77,7 @@ display_matrix.list <- function(object, palette = "RdYlBu",
                                   
   # Convert and check objects
   object <- lapply(object, convert_to_matrix)
-  lapply(object, check_mat)
+  lapply(object, check_mat, NAerror = FALSE)
 
   # Convert all matrices to data frames
   all_tabs <- Map(function(n, o) { data.frame(matrixn = n, tabularize(o)) }, 

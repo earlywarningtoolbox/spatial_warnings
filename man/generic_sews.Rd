@@ -79,7 +79,7 @@ summary(gen_indic)
 plot(gen_indic, along = serengeti.rain)
 
 # Compute significance (long)
-\donttest{
+\dontrun{
 gen_test <- indictest(gen_indic, nulln = 199)
 
 print(gen_test)

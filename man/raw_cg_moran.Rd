@@ -21,7 +21,7 @@ This functions computes the Moran's spatial correlation index
 }
 \examples{
 
-\donttest{
+\dontrun{
 data(serengeti)
 raw_cg_moran(serengeti[[1]], subsize = 1)
 }

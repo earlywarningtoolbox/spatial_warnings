@@ -102,7 +102,7 @@ as documented in \link[=patchdistr_sews_predict]{this page}.
 
 data(forestgap)
 
-\donttest{
+\dontrun{
 psd_indic <- patchdistr_sews(forestgap)
 
 summary(psd_indic)

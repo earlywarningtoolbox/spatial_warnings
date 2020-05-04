@@ -59,7 +59,7 @@ This function offers to fit a spherical model or
 }
 \examples{
 
-\donttest{
+\dontrun{
 serengeti_ews <- variogram_sews(serengeti, 
                                 subset_frac = 0.01, 
                                 model ="exp")

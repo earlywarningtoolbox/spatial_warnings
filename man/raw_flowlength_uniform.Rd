@@ -30,7 +30,7 @@ This function computes the Flowlength of a given matrix, using a
 }
 \examples{
 
-\donttest{ 
+\dontrun{ 
 raw_flowlength_uniform(arizona[[1]], slope = 20, cell_size = 1)
 }
 

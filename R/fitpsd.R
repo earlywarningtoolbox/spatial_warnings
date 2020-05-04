@@ -248,7 +248,7 @@ pl_fit <- function(dat, xmin = 1) {
 #' 
 #' @examples 
 #' 
-#' \donttest{ 
+#' \dontrun{ 
 #' psd <- patchsizes(forestgap[[5]])
 #' xmin_estim(psd)
 #' }

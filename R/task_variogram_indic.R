@@ -70,7 +70,7 @@
 #'
 #' @examples 
 #' 
-#' \donttest{
+#' \dontrun{
 #' serengeti_ews <- variogram_sews(serengeti, 
 #'                                 subset_frac = 0.01, 
 #'                                 model ="exp")
@@ -152,7 +152,7 @@ variogram_sews <- function(mat,
 #' 
 #' @examples 
 #' 
-#' \donttest{ 
+#' \dontrun{ 
 #' vario_indics <- variogram_sews(serengeti)
 #' predict(vario_indics)
 #' vario_test <- indictest(vario_indics, nulln = 19)
@@ -203,7 +203,7 @@ extract_variogram.variogram_sews_single <- function(x, ...) {
 #' 
 #' @examples 
 #' 
-#' \donttest{ 
+#' \dontrun{ 
 #' vario_indics <- variogram_sews(serengeti)
 #' predict(vario_indics)
 #' vario_test <- indictest(vario_indics, nulln = 19)
@@ -274,7 +274,7 @@ predict.variogram_sews_single <- function(object, newdist = NULL, ...) {
 #' # Visualize the fitted variograms
 #' plot_variogram(serengeti_ews, along = serengeti.rain) 
 #' 
-#' \donttest{ 
+#' \dontrun{ 
 #'   # Test the trends (nulln should be set to a higher value to obtain 
 #'   # meaningful results
 #'   serengeti_test <- indictest(serengeti_ews, nulln = 19)

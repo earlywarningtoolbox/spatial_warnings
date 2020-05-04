@@ -48,7 +48,7 @@ In general, Flowlength can be used as indicator of dryland functional status
 }
 \examples{
 
-\donttest{ 
+\dontrun{ 
 fl_result <- flowlength_sews(arizona, slope = 20, cell_size = 1)
 
 # Compute the Z-score (standardized deviation to null distribution) and plot 

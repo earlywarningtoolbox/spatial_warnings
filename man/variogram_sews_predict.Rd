@@ -25,7 +25,7 @@ Export the fitted variogram(s)
 }
 \examples{
 
-\donttest{ 
+\dontrun{ 
 vario_indics <- variogram_sews(serengeti)
 predict(vario_indics)
 vario_test <- indictest(vario_indics, nulln = 19)

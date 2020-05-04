@@ -74,7 +74,7 @@
 #' 
 #' @examples 
 #' 
-#' \donttest{ 
+#' \dontrun{ 
 #' fl_result <- flowlength_sews(arizona, slope = 20, cell_size = 1)
 #' 
 #' # Compute the Z-score (standardized deviation to null distribution) and plot 
@@ -133,7 +133,7 @@ flowlength_sews <- function(mat,        # Input matrix
 #' 
 #' @examples 
 #' 
-#' \donttest{ 
+#' \dontrun{ 
 #' raw_flowlength_uniform(arizona[[1]], slope = 20, cell_size = 1)
 #' }
 #' 

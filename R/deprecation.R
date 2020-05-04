@@ -147,7 +147,7 @@ spectral_spews <- function(mat,
 #'
 #' @examples 
 #' 
-#' \donttest{
+#' \dontrun{
 #' data(serengeti)
 #' 
 #' # One matrix
@@ -271,7 +271,7 @@ indicator_moran <- function(input,
 #' 
 #' @examples 
 #' 
-#' \donttest{
+#' \dontrun{
 #' data(serengeti)
 #' indicator_skewness(serengeti)
 #' }
@@ -382,7 +382,7 @@ indicator_skewness <- function(input,
 #' @examples
 #' 
 #' data(serengeti)
-#' \donttest{
+#' \dontrun{
 #' indicator_variance(serengeti, nulln = 499)
 #' }
 #' 
@@ -476,7 +476,7 @@ indicator_variance <- function(input,
 #' 
 #' @examples 
 #' 
-#' \donttest{ 
+#' \dontrun{ 
 #' serengeti.sdr <- indicator_sdr(serengeti, nulln = 499)
 #' do.call(rbind, serengeti.sdr) # convert results to data.frame
 #' }

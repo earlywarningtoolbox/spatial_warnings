@@ -39,7 +39,7 @@ This functions computes the Moran's spatial correlation index
 }
 \examples{
 
-\donttest{
+\dontrun{
 data(serengeti)
 
 # One matrix

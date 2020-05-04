@@ -24,7 +24,7 @@ ifnotfinite <- function(x, otherwise = .Machine$double.xmax) {
 optim_safe <- function(f, pars0, 
                        lower = rep(-Inf, length(pars0)), 
                        upper = rep(Inf,  length(pars0)), 
-                       fit_on_logscale = FALSE) { 
+                       fit_on_logscale = FALSE, ...) { 
   
   
   if ( fit_on_logscale ) { 
@@ -42,7 +42,7 @@ optim_safe <- function(f, pars0,
     optim(pars0, optimf, 
           control = list(maxit = ITERLIM), 
           lower = lower, upper = upper, 
-          method = "L-BFGS-B")
+          method = "L-BFGS-B", ...)
   }, silent = TRUE)
   
   # Code results above 3 means a true problem, below 3 the 
@@ -57,7 +57,7 @@ optim_safe <- function(f, pars0,
     optiresult_bfgs <- try({ 
       optim(pars0, optimf, 
             control = list(maxit = ITERLIM), 
-            method = "BFGS")
+            method = "BFGS", ...)
     }, silent = TRUE)
     # If success, go with BFGS results
     if ( class(optiresult_bfgs) != "try-error" ) { 

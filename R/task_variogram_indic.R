@@ -433,9 +433,8 @@ fit_variogram <- function(mat, subset_frac, model, locations = NULL) {
     sum( ( (vario[ ,"gamma"] - pred) )^2 )
   }
   
-  fit <- optim(pars0, ssq, method = "L-BFGS-B", 
-               lower = c(0, 0, 0), 
-               control = list(maxit = 20e3))
+  fit <- optim_safe(ssq, pars0, 
+                    lower = c(0, 0, 0))
   
   vario[ ,"pred"] <- with(as.list(fit$par), 
                           spherical_model(vario[ ,"dist"], 

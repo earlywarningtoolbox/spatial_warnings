@@ -164,7 +164,7 @@ indicator_moran <- function(input,
   .Deprecated(new = "compute_indicator(input, f = raw_moran)", 
               package = "spatialwarnings")
   
-  check_mat(input) # checks if binary and sensible
+#   check_mat(input) # checks if binary and sensible
   # We do not check for binary status as moran's I can be computed on both. 
   
   if (is.list(input)) {
@@ -284,7 +284,7 @@ indicator_skewness <- function(input,
   .Deprecated(new = "compute_indicator(input, f = raw_cg_skewness)", 
               package = "spatialwarnings")
   
-  check_mat(input) # checks if binary and sensible
+#   check_mat(input) # checks if binary and sensible
   
   if ( is.list(input) ) {
     # Returns a list of lists
@@ -393,7 +393,7 @@ indicator_variance <- function(input,
   .Deprecated(new = "compute_indicator(input, f = raw_cg_variance)", 
               package = "spatialwarnings")
   
-  check_mat(input) # checks data input
+#   check_mat(input) # checks data input
   
   if (is.list(input)) { 
     # Returns a list of lists
@@ -487,7 +487,7 @@ indicator_sdr <- function(input,
                           sdr_high_range = NULL, 
                           nulln = 999) { 
   
-  check_mat(input) # checks if binary and sensible
+#   check_mat(input) # checks if binary and sensible
   
   if ( is.null(sdr_low_range) ) { 
     warning("Choosing the 20% lowest frequencies for spectral density ratio ",

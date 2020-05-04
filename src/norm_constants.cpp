@@ -45,6 +45,7 @@ double tplinfsum(double expo, double rate, int xmin) {
   
   while ( it < MAXIT && TOL < rel_change ) { 
     current_term = pow(k, - expo) * exp(- k * rate);
+//     current_term = exp( - log(k) * expo - rate * k); 
     rel_change = current_term / total; 
     total += current_term; 
 //     Rcpp::Rcerr << "it : " << it << " ct: " << current_term << " relc: " << 

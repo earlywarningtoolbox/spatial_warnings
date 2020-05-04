@@ -33,7 +33,7 @@
 #'   \item \code{\link{patchdistr_sews}}: EWS based on patch-size distributions
 #'   \item \code{\link{kbdm_sews}}: Kolmogorov entropy
 #'   \item \code{\link{flowlength_sews}}: Flow length 
-#'   \item \code{\link{variogram_sews}}: Flow length 
+#'   \item \code{\link{variogram_sews}}: Variogram-based indicators
 #' }
 #' 
 #' Individual indicators: 

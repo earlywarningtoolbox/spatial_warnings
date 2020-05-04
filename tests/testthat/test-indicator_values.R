@@ -76,12 +76,12 @@ if ( exists("EXTENDED_TESTS") ) {
     skip_on_cran()
 
     # Test one fit on the whole dataset
-    expect_true(with(indicator_psdtype(forestgap, merge = TRUE), 
+    expect_true(with((forestgap, merge = TRUE), 
                      as.character(type[best])) == "tpl") 
     
     # Test individual fits
     if ( exists("EXTENDED_TESTS") ) { 
-      a <- sapply(indicator_psdtype(forestgap, best_by = 'BIC'), 
+      a <- sapply((forestgap, best_by = 'BIC'), 
                   with, as.character(type[best]))
       expect_true(all(c(is.na(a[1]), 
                         a[-1] == c("pl", "pl", "pl", "tpl", "tpl", "tpl", 

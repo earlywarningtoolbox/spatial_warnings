@@ -112,12 +112,16 @@ indicator_psdtype <- function(x,
                               best_by = "AIC", 
                               wrap = FALSE) { 
   
-  check_mat(x)
-  
   if ( !merge && is.list(x) ) { 
     return( lapply(x, indicator_psdtype, xmin, merge, fit_lnorm, xmin_bounds, 
                    best_by, wrap) )
   } 
+  
+  # Here we do not test if x is not a matrix. This happens when merge = TRUE, 
+  # when we pool patch size distributions together 
+  if ( ! is.list(x) ) { 
+    check_mat(x)
+  }
   
   # Estimate power-law range and set xmin to the estimated value if set to 
   # auto. 

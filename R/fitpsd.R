@@ -142,14 +142,17 @@ zeta_w_xmin <- function(expo, xmins) {
 # PL fitting 
 # ---------------------------------------
 
+# Normalizing constant for pl with xmin
+displnorm <- function(expo, xmin) { 
+  # Adjust constant for threshold (note that this has no effect if xmin == 1, 
+  #   as expected)
+  const <- gsl::zeta(expo)
+  const - sum_all_one_over_k(from = 1, to = xmin, expo)
+}
 
 # PL: P(x=k)
 dpl <- function(x, expo, xmin = 1, log = FALSE) { 
-  const <- gsl::zeta(expo)
-  
-  # Adjust constant for threshold (note that this has no effect if xmin == 1, 
-  #   as expected)
-  const <- const - sum_all_one_over_k(from = 1, to = xmin, expo)
+  const <- displnorm(expo, xmin)
   
   # Compute values
   if ( ! log ) { 
@@ -170,13 +173,9 @@ dpl <- function(x, expo, xmin = 1, log = FALSE) {
 
 # PL: P(x>=k) 
 ppl <- function(x, expo, xmin = 1) { 
-  const <- gsl::zeta(expo)
+  const <- displnorm(expo, xmin)
   
   is_below_xmin <- x < xmin
-  
-  # Adjust constant for threshold (note that this has no effect if xmin == 1, 
-  #   as expected)
-  const <- const - sum_all_one_over_k(from = 1, to = xmin, expo)
   
   ps <- zeta_w_xmin(expo, x[!is_below_xmin]) / const 
   
@@ -449,11 +448,16 @@ tplnorm <- function(expo, rate, xmin) {
 }
 
 # P(x=k)
-dtpl <- function(x, expo, rate, xmin) { 
-  const <- tplnorm(expo, rate, xmin)
-  p_equals_x <- x^(-expo) * exp(- x * rate)
+dtpl <- function(x, expo, rate, xmin, log = FALSE) { 
   
-  return( ifelse(x < xmin, NaN, p_equals_x / const) )
+  const <- tplnorm(expo, rate, xmin)
+  if ( ! log ) { 
+    ps <- x^(-expo) * exp(- x * rate) / const
+  } else { 
+    ps <- - expo * log(x) - rate * x - log(const)
+  }
+  
+  return( ifelse(x < xmin, NaN, ps) )
 }
 
 # P(x>=k)
@@ -466,9 +470,11 @@ ptpl <- function(x, expo, rate, xmin) {
   return( 1 - p_inf_to_k ) 
 }
 
-tpl_ll <- function(x, expo, rate, xmin) { 
+tpl_ll <- function(x, expo, rate, xmin, approximate = FALSE) { 
   x <- x[x>=xmin]
-  ll <- sum( log(dtpl(x, expo, rate, xmin)) )
+  
+  ll <- sum( dtpl(x, expo, rate, xmin, log = TRUE) )
+  
   if ( !is.finite(ll) ) { 
     ll <- sign(ll) * .Machine$double.xmax
   }
@@ -478,7 +484,7 @@ tpl_ll <- function(x, expo, rate, xmin) {
 tpl_fit <- function(dat, xmin = 1) { 
   
   negll <- function(pars) { 
-    - tpl_ll(dat, pars[1], exp(-pars[2]), xmin)
+    - tpl_ll(dat, pars[1], pars[2], xmin)
   }
   
   # Initialize and find minimum
@@ -486,7 +492,7 @@ tpl_fit <- function(dat, xmin = 1) {
   
   # Do a line search over the rate to find a minimum, starting from zero 
   # up to 100
-  is <- seq(0, 100)
+  is <- seq(0, 100, length = 128)
   lls <- unlist(lapply(is, function(i) { 
     negll(c(expo0, i))
   }))
@@ -495,13 +501,13 @@ tpl_fit <- function(dat, xmin = 1) {
   pars0 <- c(expo0, expmrate0)
   
   est <- optim_safe(negll, pars0, 
-                    lower = c(TPL_EXPOMIN, -log(TPL_RATEMIN)), 
-                    upper = c(TPL_EXPOMAX, -log(TPL_RATEMAX)))
+                    lower = c(TPL_EXPOMIN, TPL_RATEMIN), 
+                    upper = c(TPL_EXPOMAX, TPL_RATEMAX))
   
   result <- list(type = 'tpl',
                  method = 'll', 
                  expo = est[['par']][1], 
-                 rate = exp(-est[['par']][2]), 
+                 rate = est[['par']][2], 
                  ll = - est[["value"]],
                  npars = 2)
   return(result)

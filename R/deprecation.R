@@ -160,7 +160,7 @@ spectral_spews <- function(mat,
 #'@export
 indicator_moran <- function(input, 
                             subsize = 1, # default = no cg
-                            nulln = 999) {
+                            nulln = 99) {
   .Deprecated(new = "compute_indicator(input, f = raw_moran)", 
               package = "spatialwarnings")
   
@@ -280,7 +280,7 @@ indicator_moran <- function(input,
 indicator_skewness <- function(input, 
                                subsize     = 5, 
                                absolute = TRUE,
-                               nulln = 999) {
+                               nulln = 99) {
   .Deprecated(new = "compute_indicator(input, f = raw_cg_skewness)", 
               package = "spatialwarnings")
   
@@ -389,7 +389,7 @@ indicator_skewness <- function(input,
 #'@export
 indicator_variance <- function(input, 
                                subsize = 5, 
-                               nulln = 999) {
+                               nulln = 99) {
   .Deprecated(new = "compute_indicator(input, f = raw_cg_variance)", 
               package = "spatialwarnings")
   
@@ -485,7 +485,7 @@ indicator_variance <- function(input,
 indicator_sdr <- function(input, 
                           sdr_low_range  = NULL, 
                           sdr_high_range = NULL, 
-                          nulln = 999) { 
+                          nulln = 99) { 
   
 #   check_mat(input) # checks if binary and sensible
   

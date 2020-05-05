@@ -4,7 +4,7 @@
 \alias{indicator_variance}
 \title{(DEPRECATED) Spatial variance indicator}
 \usage{
-indicator_variance(input, subsize = 5, nulln = 999)
+indicator_variance(input, subsize = 5, nulln = 99)
 }
 \arguments{
 \item{input}{A matrix or a list of matrices. The matrix 

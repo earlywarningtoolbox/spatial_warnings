@@ -4,7 +4,7 @@
 \alias{indicator_skewness}
 \title{(DEPRECATED) Skewness indicator}
 \usage{
-indicator_skewness(input, subsize = 5, absolute = TRUE, nulln = 999)
+indicator_skewness(input, subsize = 5, absolute = TRUE, nulln = 99)
 }
 \arguments{
 \item{input}{A matrix or a list of matrices. The matrix 

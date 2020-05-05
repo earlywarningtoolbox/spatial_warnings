@@ -43,7 +43,7 @@
 #'   \item \code{\link{raw_cg_skewness}}: Spatial skewness
 #'   \item \code{\link{raw_sdr}}: Spectral density ratio (SDR)
 #'   \item \code{\link{raw_variogram_metrics}}: Variogram-based metrics
-#'   \item \code{\link{}}: Patch-size distribution shape 
+#'   \item \code{\link{indicator_psdtype}}: Patch-size distribution shape 
 #'   \item \code{\link{indicator_plrange}}: Power-law range
 #' }
 #' 

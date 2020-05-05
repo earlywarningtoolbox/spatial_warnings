@@ -114,18 +114,6 @@ test_that("The workflow functions work", {
       plot(patchdistr_sews(a))
     })
     
-    
-    
-    # Variogram-based indicators
-    indics <- variogram_sews(dataset)
-    test_methods("Spatial Early-Warning: Variogram-based indicators", 
-                 # l(dataset) * 4 metrics produced
-                 datal*4, indics, .test_df = FALSE) 
-    indics.test <- indictest(indics, 3)
-    test_methods("Spatial Early-Warning: Variogram-based indicators", 
-                 # l(dataset) * 4 metrics produced
-                 datal*4, indics.test, .test_df = FALSE) 
-    
   }
   
 })

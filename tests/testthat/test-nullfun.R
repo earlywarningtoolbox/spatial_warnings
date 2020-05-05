@@ -13,7 +13,6 @@ test_that("All null model methods work", {
   a <- generic_sews(serengeti[2:3])
   b <- patchdistr_sews(serengeti[2:3])
   c <- suppressWarnings( spectral_sews(serengeti[2:3]) )
-  d <- variogram_sews(serengeti[2:3])
   null_control <- list(family = binomial())
   for ( m in all_methods ) { 
     indictest(a, nulln = 3, null_method = m, 
@@ -21,8 +20,6 @@ test_that("All null model methods work", {
     indictest(b, nulln = 3, null_method = m, 
               null_control = null_control) 
     indictest(c, nulln = 3, null_method = m, 
-              null_control = null_control) 
-    indictest(d, nulln = 3, null_method = m, 
               null_control = null_control) 
     expect_true(TRUE)
   }

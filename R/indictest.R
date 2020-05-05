@@ -28,7 +28,7 @@
 #'   class depends on the input object. \code{plot}, \code{summary} methods are
 #'   available to display the results of computations, and additional methods
 #'   may be available depending on the input object (e.g. see
-#'   \link{variogram_sews_plot}). 
+#'   \link{patchdistr_sews_plot}). 
 #' 
 #' @details 
 #' 
@@ -54,7 +54,7 @@
 #'   be 
 #' 
 #' @seealso \code{\link{generic_sews}}, \code{\link{spectral_sews}}, 
-#'   \code{\link{kbdm_sews}}, \code{\link{variogram_sews}}, 
+#'   \code{\link{kbdm_sews}},
 #'   \code{\link{compute_indicator}}
 #' 
 #' @references 

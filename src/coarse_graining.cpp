@@ -14,28 +14,28 @@
 using namespace Rcpp;
 
 //[[Rcpp::export]]
-arma::mat coarse_grain_cpp(arma::mat mat, int subsize) {
+NumericMatrix coarse_grain_cpp(NumericMatrix mat, int subsize) {
 
   // Integer division (round down to nearest integer). We convert to (int) 
   // as mat.n_rows may be a uword.
-  int nr = (int)(mat.n_rows / subsize);
-  int nc = (int)(mat.n_cols / subsize);
+  int nr = (int)(mat.nrow() / subsize);
+  int nc = (int)(mat.ncol() / subsize);
   
-  arma::mat reduced_matrix = arma::mat(nr, nc);
-
+  NumericMatrix reduced_matrix = NumericMatrix(nr, nc);
+  
   // Fill in values of the submatrix
-  for (int j=0; j<nc; j++) {
-    for (int i=0; i<nr; i++) {
+  for ( int j=0; j<nc; j++ ) {
+    for ( int i=0; i<nr; i++ ) {
 
       // Compute mean of the corresponding cells in the original matrix
       double sum = 0;
-      for ( int l=(j*subsize); l< (j+1)*subsize; l++ ) {
-        for ( int k=(i*subsize); k< (i+1)*subsize; k++ ) {
+      for ( int l=(j*subsize); l < (j+1)*subsize; l++ ) {
+        for ( int k=(i*subsize); k < (i+1)*subsize; k++ ) {
           sum += mat(k,l);
         }
       }
-
-      reduced_matrix(i,j) = sum / ( subsize * subsize ) ;
+      
+      reduced_matrix(i,j) = sum / ( subsize * subsize );
     }
   }
 

@@ -7,12 +7,12 @@
 using namespace Rcpp;
 
 // coarse_grain_cpp
-arma::mat coarse_grain_cpp(arma::mat mat, int subsize);
+NumericMatrix coarse_grain_cpp(NumericMatrix mat, int subsize);
 RcppExport SEXP _spatialwarnings_coarse_grain_cpp(SEXP matSEXP, SEXP subsizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type mat(matSEXP);
     Rcpp::traits::input_parameter< int >::type subsize(subsizeSEXP);
     rcpp_result_gen = Rcpp::wrap(coarse_grain_cpp(mat, subsize));
     return rcpp_result_gen;

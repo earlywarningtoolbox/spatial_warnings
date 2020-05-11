@@ -4,13 +4,9 @@ spatialwarnings v1.4.0 (Release date: unknown)
 
 Improvements: 
   
-  * Null model can now be based on drawing random values from the observed 
-      distribution, or drawing random values based on a spline fit over the 
-      original matrix (using gam()). More information at the FAQ below. 
-  
   * New methods are available to produce null matrices, on top of shuffling the
       original matrix (e.g. based on smoothing the original matrix). 
-    
+  
   * Significance of Power-law range can now be tested using `indictest()`. 
       Using `plot_distr()` on the resulting objects will display the 0.05/0.95 
       quantiles of the null patch size distributions. 
@@ -19,9 +15,7 @@ Improvements:
       the matrices being used in `spatialwarnings` objects using ggplot2
   
   * Improved the fitting of distributions, which should be more robust now. 
-  
-  * Dependency to VGAM is now removed 
-  
+    
   * Added a `display_matrix()` function that can be used to display the matrices
       used to compute indicators.
   
@@ -46,6 +40,8 @@ Misc changes:
   
   * The FAQ has been expanded and improved. See the following page: 
       https://alex.lecairn.org/spatialwarnings-faq.html
+  
+  * Dependency to VGAM is now removed 
   
 spatialwarnings v1.3.1 (Release date: 2018-12)
 ===============================================

@@ -28,9 +28,7 @@
 #' 
 #' data(forestgap)
 #' 
-#' par(mfrow=c(1, 2))
 #' rmat <- matrix(rnorm(100) > .1, ncol = 10)
-#' display_matrix(rmat)
 #' display_matrix(label(rmat))
 #' 
 #' # With 8-way neighborhood mask and no wrapping around borders

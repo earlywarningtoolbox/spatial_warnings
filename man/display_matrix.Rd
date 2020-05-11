@@ -33,10 +33,10 @@ This function will plot a matrix using ggplot2, using the provided
 \examples{
 
 # display_matrix works with single matrices or lists of matrices 
-display_matrix(serengeti[2:5])
+display_matrix(serengeti[2:3])
 
-# display_matrix is also compatible with "*_sews" objects
-indics <- compute_indicator(serengeti[2:5], raw_moran) 
+# display_matrix is compatible with "*_sews" objects
+indics <- compute_indicator(serengeti[2:3], raw_moran) 
 display_matrix(indics)
 
 }

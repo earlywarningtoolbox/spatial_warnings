@@ -246,17 +246,18 @@ create_nullmat_generator <- function(mat, null_mod, family) {
   }
 }
 
-# Select a subset of values in N values We take the maximum of at_least points 
-# and the fraction of the N values asked for
+# # Select a subset of values in N values We take the maximum of at_least points 
+# # and the fraction of the N values asked for
 # select_subset <- function(N, subset_frac, at_least) { 
 #   if ( N <= at_least ) { 
-#     return(tab)
+#     return( rep(TRUE, N) )
 #   }
 #   
 #   keep_every <- min(floor(N / at_least), 
 #                     floor(1 / subset_frac))
 #   seq.int(N) %% keep_every == 0
 # }
+
 # 
 # # Here newdata is assumed to have columns and x, y
 # simulate_newdat <- function(mod, newdata, family) { 

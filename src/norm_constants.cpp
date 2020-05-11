@@ -8,6 +8,10 @@
 
 using namespace Rcpp; 
 
+const int MAXIT = 1e6L; 
+const double TOL = 1e-8; 
+  
+
 //[[Rcpp::export]]
 NumericVector tplsum(double expo, double rate, IntegerVector xs, int xmin) { 
   
@@ -34,9 +38,6 @@ NumericVector tplsum(double expo, double rate, IntegerVector xs, int xmin) {
 //[[Rcpp::export]]
 double tplinfsum(double expo, double rate, int xmin) { 
   
-  const double TOL = 1e-8; 
-  const int MAXIT = 1e6L; 
-  
   double current_term = pow(xmin, -expo) * exp(-xmin*rate);
   double total = current_term;
   double rel_change = 1.0; 
@@ -45,7 +46,6 @@ double tplinfsum(double expo, double rate, int xmin) {
   
   while ( it < MAXIT && TOL < rel_change ) { 
     current_term = pow(k, - expo) * exp(- k * rate);
-//     current_term = exp( - log(k) * expo - rate * k); 
     rel_change = current_term / total; 
     total += current_term; 
 //     Rcpp::Rcerr << "it : " << it << " ct: " << current_term << " relc: " << 
@@ -68,9 +68,6 @@ double tplinfsum(double expo, double rate, int xmin) {
 // 
 //[[Rcpp::export]]
 long int lerchphi(double z, double s, long int v) { 
-  
-  const int MAXIT = 1000; 
-  const double TOL = 1e-10; 
   
   // If z is above 1.0, the sum diverges. Return Inf
   if ( z > 1.0 ) { 

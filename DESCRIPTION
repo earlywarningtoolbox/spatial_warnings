@@ -13,7 +13,6 @@ Imports:
     Rcpp,
     ggplot2, 
     plyr,
-    tidyr,
     stats,
     utils,
     future.apply, 

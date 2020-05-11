@@ -39,17 +39,6 @@ display_matrix <- function(object, palette = "RdYlBu", along = NULL, ...) {
   UseMethod("display_matrix")
 }
 
-#'@export 
-display_matrix.RasterLayer <- function(object, palette = "RdYlBu", 
-                                       along = NULL, ...) { 
-  if ( requireNamespace("raster", quietly = TRUE) ) { 
-    display_matrix(raster::as.matrix(object), palette, along, ...)
-  } else { 
-    stop("spatialwarnings requires the raster package to process raster ", 
-          "objects")
-  }
-}
-
 #'@export
 display_matrix.matrix <- function(object, palette = "RdYlBu", 
                                   along = NULL, ...) { 

@@ -1,36 +1,17 @@
 # 
-# This file contains functions to handle foreign gis formats so they can be 
-# used in spatialwarnings
+# This file defines a generic function to convert matrices. spatialwarningsGis
+# will add methods to this generic function so that foreign gis formats can be 
+# directly used in spatialwarnings. 
 # 
 
-convert_to_matrix <- function(object) { 
-  
-  if ( inherits(object, "list") ) { 
-    return( lapply(object, convert_to_matrix) )
-  }
-  
-  if ( is.matrix(object) ) { 
-    return(object)
-  }
-  
-  # If it's not a matrix, then we start calling the appropriate conversion 
-  # method. 
-  if ( inherits(object, "RasterLayer") ) { 
-    if ( requireNamespace("raster", quietly = TRUE) ) { 
-      return( raster::as.matrix(object) )
-    } else { 
-      stop("spatialwarnings requires the raster package to process raster ", 
-           "objects")
-    }
-  }
-  
-  if ( inherits(object, "RasterBrick") || 
-       inherits(object, "RasterStack") ) { 
-    stop("spatialwarnings cannot use RasterBrick/RasterStack objects. You ", 
-         "must extract single RasterLayers from these objects first")
-  }
-  
-  # Ultimately, try to use the search path default method to convert it 
-  return( as.matrix(object) )
-  
+convert_to_matrix <- function(object, ...) { 
+  UseMethod("convert_to_matrix")
+}
+
+convert_to_matrix.matrix <- function(object, ...) { 
+  object
+}
+
+convert_to_matrix.list <- function(object, ...) { 
+  lapply(object, convert_to_matrix) 
 }

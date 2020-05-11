@@ -13,6 +13,7 @@ Imports:
     Rcpp,
     ggplot2, 
     plyr,
+    tidyr,
     stats,
     utils,
     future.apply, 
@@ -24,12 +25,8 @@ Suggests:
     covr, 
     acss, 
     segmented, 
-    gstat,
     sp, 
-    mgcv, 
-    raster, 
-    png, 
-    rgdal
+    mgcv
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
 RoxygenNote: 7.1.0.9000

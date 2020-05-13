@@ -18,3 +18,9 @@ tools/imgs
 ^foo.o$
 ^tools/pkg_check.R$
 ^\.unison.*$
+^examples_i386$
+^examples_x64$
+^spatialwarnings-Ex_i386.Rout$
+^spatialwarnings-Ex_x64.Rout$
+^tests_i386$
+^tests_x64$

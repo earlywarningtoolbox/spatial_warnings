@@ -112,7 +112,7 @@ IntegerVector flood_fill(const IntegerMatrix &mat,
     ymax = j > ymax ? j : ymax;
     
     // We consider its neighbors
-    std::queue <std::pair<int, int>> nb = get_nb_coords(W, H, xy, nbmask, wrap);
+    std::queue <std::pair<int, int> > nb = get_nb_coords(W, H, xy, nbmask, wrap);
     
     // We add the neighbors to the queue if needed
     while ( ! nb.empty() ) { 
@@ -140,13 +140,13 @@ IntegerVector flood_fill(const IntegerMatrix &mat,
 
 // A function that returns the coordinates of neighboring cells in a matrix,
 //   taking into account the wraparound
-std::queue <std::pair<int, int>> get_nb_coords(const int W, // width
+std::queue <std::pair<int, int> > get_nb_coords(const int W, // width
                                                const int H, // height
                                                const std::pair<int,int> X,
                                                const IntegerMatrix& nbmask, 
                                                const bool wrap) { 
   
-  std::queue <std::pair<int, int>> neighbors_xy; 
+  std::queue <std::pair<int, int> > neighbors_xy; 
   
   for (int nbi=0; nbi<maskrow; nbi++) { 
     for (int nbj=0; nbj<maskcol; nbj++) { 

@@ -10,7 +10,7 @@ test_that("All null model methods work", {
   
   # Check that all methods run 
   all_methods <- c("perm", "intercept", "smooth") 
-  testmat <- matrix(runif(30*30) > .7, ncol = 30*30)
+  testmat <- matrix(runif(30*30) > .7, ncol = 30)
   testmat[1:15, ] <- TRUE
   
   dat <- list(testmat, testmat)

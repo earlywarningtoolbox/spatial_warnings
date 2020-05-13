@@ -10,9 +10,14 @@ test_that("All null model methods work", {
   
   # Check that all methods run 
   all_methods <- c("perm", "intercept", "smooth") 
-  a <- generic_sews(serengeti[2:3])
-  b <- patchdistr_sews(serengeti[2:3])
-  c <- suppressWarnings( spectral_sews(serengeti[2:3]) )
+  testmat <- matrix(rnorm(32*32) > 0, ncol = 32)
+  testmat[1:16,1:16] <- TRUE
+  
+  dat <- list(testmat, 
+              matrix(rnorm(1024) > 0, ncol = 32))
+  a <- generic_sews(dat)
+  b <- patchdistr_sews(dat)
+  c <- suppressWarnings( spectral_sews(dat) )
   null_control <- list(family = binomial())
   for ( m in all_methods ) { 
     indictest(a, nulln = 3, null_method = m, 
@@ -38,7 +43,8 @@ test_that("All null model methods work", {
   expect_equal(mean(ictest[["orig_data"]]), nullmean, 
                tol = 0.01)
   
-  # Check that smoothed null model is closer to reality than the intercept model
+  # Check that smoothed null model is closer to reality than the intercept
+  # model
   ictest <- indictest(a[[2]], 3, null_method = "intercept", 
                       null_control = null_control)
   error_intercept <- replicate(49, { 

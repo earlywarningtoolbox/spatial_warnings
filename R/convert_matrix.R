@@ -23,7 +23,7 @@
 #' @examples 
 #' 
 #' # this does nothing
-#' convert_to_matrix(serengeti) 
+#' convert_to_matrix(serengeti[2:3]) 
 #' 
 #'@export
 convert_to_matrix <- function(object, ...) { 

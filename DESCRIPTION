@@ -24,8 +24,6 @@ Suggests:
     testthat, 
     covr, 
     acss, 
-    segmented, 
-    sp, 
     mgcv
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true

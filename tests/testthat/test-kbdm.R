@@ -6,7 +6,7 @@ context('Test that the computations for Kolmogorov complexity are correct')
 
 test_that("Kbdm results are correct", { 
   
-  if ( requireNamepasce("acss", quietly = TRUE) ) { 
+  if ( requireNamespace("acss", quietly = TRUE) ) { 
     # We can't reproduce exactly the results because we cannot compute 
     # Kbdm using 4x4 submatrices in acss::acss. We just compute the test on 
     # the scale-free patterns which do not show as much noise as the 

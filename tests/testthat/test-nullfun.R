@@ -13,8 +13,7 @@ test_that("All null model methods work", {
   testmat <- matrix(runif(50*50) > .7, ncol = 50*50)
   testmat[1:35, ] <- TRUE
   
-  dat <- list(testmat, 
-              matrix(rnorm(1024) > 0, ncol = 32))
+  dat <- list(testmat, testmat)
   a <- generic_sews(dat)
   b <- patchdistr_sews(dat)
   c <- suppressWarnings( spectral_sews(dat) )

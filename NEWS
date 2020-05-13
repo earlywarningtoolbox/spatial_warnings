@@ -11,13 +11,10 @@ Improvements:
       Using `plot_distr()` on the resulting objects will display the 0.05/0.95 
       quantiles of the null patch size distributions. 
   
-  * The package gains a generic function `display_matrix`, to quickly display 
-      the matrices being used in `spatialwarnings` objects using ggplot2
+  * The package gains a generic function `display_matrix`, to eyeball the  
+      matrices being used in `spatialwarnings` objects using ggplot2
   
   * Improved the fitting of distributions, which should be more robust now. 
-    
-  * Added a `display_matrix()` function that can be used to display the matrices
-      used to compute indicators.
   
   * Speed improvements in label()
   

@@ -117,6 +117,13 @@ display_matrix.sews_result_single <- function(object, palette = "RdYlBu",
                         along = NULL, ...)
 }
 
+#'@export
+display_matrix.default <- function(object, palette = "RdYlBu", 
+                                   along = NULL, ...) { 
+  display_matrix( convert_to_matrix(object) )
+}
+
+
 tabularize <- function(mat) { 
   data.frame(expand.grid(row = seq.int(nrow(mat)), 
                          col = seq.int(ncol(mat))), 

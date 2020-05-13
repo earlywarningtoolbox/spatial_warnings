@@ -1,9 +1,7 @@
 
 This is an update to the package spatialwarnings that fixes many bugs, 
-improves the code base and provides new functionality. 
-
-Please note that this is a reupload which should fix an issue with a file 
-previously included in error in the source archive. 
+improves the code base and provides new functionality. More information is 
+available below. 
 
 Thanks, 
 
@@ -12,7 +10,7 @@ Alexandre Génin
 ## Test environments
 
 This package was tested using the following environments: 
- 
+
  - rhub service using the following platforms: 
   Debian Linux, R-devel, GCC ASAN/UBSAN
   Fedora Linux, R-devel, clang, gfortran
@@ -25,7 +23,7 @@ This package was tested using the following environments:
  - Travis-ci (Ubuntu 14.04.5, R 3.5.0 and devel (2018-06-15 r74903) ):
    https://travis-ci.org/spatial-ews/spatialwarnings
  
- - local linux computer (Arch Linux as of 2018-12-18, R 3.5.1)
+ * local linux computer (Arch Linux as of 2020-05-13, R 4.0.0)
   
  - Solaris x86 (Solaris 11 in local virtualbox, R 3.3.0 from OpenCSW)
 
@@ -46,25 +44,32 @@ Possibly mis-spelled words in DESCRIPTION:
 
 ## Changes in this release
 
-New indicators: 
-  * Planar flowlength (Mayor et al. 2013, Rodriguez et al. 2017)
-  * Kolmogorov complexity based on Block Decomposition Method 
-      (Dakos and Soler-Toscano 2016)
-  
+
 Improvements: 
-  * Enable parallel computation of patch size distributions
-  * Added a dataset of aerial view of vegetation in Arizona ('arizona')
-  * Added functions to compute the coarse-grained variance/skewness on a 
-      single matrix 
+  * New methods are available to produce null matrices, on top of shuffling the
+      original matrix (e.g. based on smoothing the original matrix). 
+  * Significance of Power-law range can now be tested using `indictest()`. 
+      Using `plot_distr()` on the resulting objects will display the 0.05/0.95 
+      quantiles of the null patch size distributions. 
+  * The package gains a generic function `display_matrix`, to eyeball the  
+      matrices being used in `spatialwarnings` objects using ggplot2
+  * Improved the fitting of distributions, which should be more robust now. 
+  * Speed improvements in label()
   
-Bug fixes and code improvements: 
-  * Added missing methods exports for custom indicators
-  * Fixed the patch labelling for non-square images
-  * General code cleanup and improvement
+Bug fixes: 
+  * Fixed a bug where the normalization constant for truncated power-laws was 
+      miscalculated
   
-Documentation and description changes: 
-  * Updated references to reflect the publication of new paper presenting 
-      the package <doi:10.1111/2041-210X.13058>
+Removals: 
+  * All the deprecated `*_spews` functions are now defunct (removed). 
+  * Most `indicator_*` functions are now deprecated. 
+  
+Misc changes: 
+  * Lots of duplicated code has been removed
+  * Minor changes in print/summary methods
+  * The FAQ has been expanded and improved. See the following page: 
+      https://alex.lecairn.org/spatialwarnings-faq.html
+  * Dependency to VGAM is now removed 
   
   
   
@@ -93,12 +98,6 @@ Reference:
   
   * Génin, A. , Majumder, S. , Sankaran, S. , Danet, A. , Guttal, V. , 
     Schneider, F. D. and Kéfi, S. (2018),
-    Monitoring ecosystemdegradation using spatial data and the R package 
+    Monitoring ecosystem degradation using spatial data and the R package 
     'spatialwarnings'. Methods Ecol Evol. 
     doi:10.1111/2041-210X.13058
-
-  * Kéfi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 
-    V.N., et al. (2014). Early Warning Signals of Ecological Transitions: 
-    Methods for Spatial Patterns. PLoS ONE, 9, e92097.
-    http://dx.plos.org/10.1371/journal.pone.0092097
-

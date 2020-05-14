@@ -24,6 +24,6 @@ For example, \href{https://github.com/spatial-ews/spatialwarningsGis}{spatialwar
 \examples{
 
 # this does nothing
-convert_to_matrix(serengeti) 
+convert_to_matrix(serengeti[2:3]) 
 
 }

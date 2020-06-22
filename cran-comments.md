@@ -1,9 +1,17 @@
+Dear CRAN maintainers, 
 
-This is an update to the package spatialwarnings that fixes many bugs, 
-improves the code base and provides new functionality. More information is 
-available below. 
+This is an update to the package spatialwarnings that fixes bugs, improves the 
+code base and provides new functionality. spatialwarnings is a package that 
+assists ecologists in carrying out computations of early-warning signals (EWS) 
+of ecosystem degradation. More information on the package and testing results
+are available below. 
 
-Thanks, 
+Please note that the domain part of my email has changed following a 
+reorganization of our university. I am not able to send emails from 
+"@univ-montp2.fr" anymore, but I can receive mail at this old address and 
+confirm the change if needed. 
+
+Thanks in advance, 
 
 Alexandre Génin
 
@@ -11,39 +19,57 @@ Alexandre Génin
 
 This package was tested using the following environments: 
 
- - rhub service using the following platforms: 
-  Debian Linux, R-devel, GCC ASAN/UBSAN
-  Fedora Linux, R-devel, clang, gfortran
-  Ubuntu Linux 16.04 LTS, R-release, GCC
-  Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+ * rhub service using the following platforms: 
+     Fedora Linux, R-devel, clang, gfortran
+     Ubuntu Linux 16.04 LTS, R-release, GCC
+     Windows Server 2008 R2 SP1, R-devel, 32/64 bit
   
- (note that the package could not be tested on Solaris using the rhub 
-  service because of a failure to compile Rcpp there)
-  
- - Travis-ci (Ubuntu 14.04.5, R 3.5.0 and devel (2018-06-15 r74903) ):
-   https://travis-ci.org/spatial-ews/spatialwarnings
+ * Travis-ci (Ubuntu 16.04, R 4.0.0 and devel (2020-05-13 r78449) ):
+     https://travis-ci.org/spatial-ews/spatialwarnings
  
- * local linux computer (Arch Linux as of 2020-05-13, R 4.0.0)
-  
- - Solaris x86 (Solaris 11 in local virtualbox, R 3.3.0 from OpenCSW)
+ * local linux computer, with and without valgrind (Arch Linux as of 
+     2020-05-13, R 4.0.0)
+ 
+ * win builder service (R 3.6.3, R 4.0.0, R devel 2020-05-11 r78411)
+ 
+ * Solaris x86 (Solaris 10 in local virtual machine, with manually-installed 
+     R 4.0.0 and GNU gsl 2.6). 
 
 
 
 ## R CMD check results
 
-No ERRORs nor WARNINGs arose during testing on the above platforms. One NOTE 
-occured regarding a spell check false positive: 
+No ERRORs nor WARNINGs arose during testing on the above platforms. Several 
+NOTEs occurred: 
 
-Possibly mis-spelled words in DESCRIPTION:
-  al (9:322)
-  et (9:319)
-  EWS (9:82, 9:133)
-  Genin (9:313)
+On platforms Windows Server 2008 R2 SP1, R devel (rhub) and 
+Ubuntu Linux 16.04 LTS, R-release (rhub), the following NOTE was produced, 
+which I believe is a false positive: 
+  
+ * Found the following files/directories:
+   'examples_i386' 'examples_x64' 'spatialwarnings-Ex_i386.Rout'
+   'spatialwarnings-Ex_x64.Rout' 'tests_i386' 'tests_x64'
+
+My email address has changed, reflecting the change in domain name of my 
+university, hence the following NOTE: 
+
+ * checking CRAN incoming feasibility ... NOTE
+     Maintainer: 'Alexandre Genin <alexandre.genin@umontpellier.fr>'
+     New maintainer:
+       Alexandre Genin <alexandre.genin@umontpellier.fr>
+     Old maintainer(s):
+       Alexandre Genin <alexandre.genin@univ-montp2.fr>
+
+The package size is reported as exceeding 1Mb, probably due to using Rcpp: 
+
+ * checking installed package size ... NOTE
+    installed size is 5.5Mb
+    sub-directories of 1Mb or more:
+    libs 4.5Mb
 
 
 
 ## Changes in this release
-
 
 Improvements: 
   * New methods are available to produce null matrices, on top of shuffling the
@@ -52,7 +78,7 @@ Improvements:
       Using `plot_distr()` on the resulting objects will display the 0.05/0.95 
       quantiles of the null patch size distributions. 
   * The package gains a generic function `display_matrix`, to eyeball the  
-      matrices being used in `spatialwarnings` objects using ggplot2
+      matrices being used in `spatialwarnings` objects 
   * Improved the fitting of distributions, which should be more robust now. 
   * Speed improvements in label()
   
@@ -67,8 +93,6 @@ Removals:
 Misc changes: 
   * Lots of duplicated code has been removed
   * Minor changes in print/summary methods
-  * The FAQ has been expanded and improved. See the following page: 
-      https://alex.lecairn.org/spatialwarnings-faq.html
   * Dependency to VGAM is now removed 
   
   

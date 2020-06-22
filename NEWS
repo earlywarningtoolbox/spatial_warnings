@@ -1,6 +1,19 @@
 
-spatialwarnings v1.4.0 (Release date: unknown)
-===============================================
+spatialwarnings v3.0.0 (Release date: unknown) 
+==============================================
+
+Improvements: 
+
+  * Documentation extended and improved
+
+Misc changes: 
+  
+  * NAs in provided matrices produce warnings instead of errors
+  
+  * Dependency to tidyr removed
+  
+spatialwarnings v2.0.0 (Release date: may 2020) 
+================================================
 
 Improvements: 
   

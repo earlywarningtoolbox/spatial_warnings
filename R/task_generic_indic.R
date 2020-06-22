@@ -202,7 +202,7 @@ raw_generic_indic <- function(mat,
 #' critical transitions. 
 #' 
 #' Many high resolution spatial data are classified as FALSE (empty) 
-#' or TRUE (occupied by plant). In such cases, spatial variance captures just 
+#' or TRUE (occupied). In such cases, spatial variance captures just 
 #' the variance in data, but not that of spatial structure. 
 #' To resolve the issue, this function employs a method called coarse-graining, 
 #' proposed in Kefi et al (2014), and described in detail in 

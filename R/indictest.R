@@ -43,11 +43,24 @@
 #' 
 #' Several methods are available to produce the set of null matrices. If 
 #'   \code{null_method} is set ot "perm", the original matrix is reshuffled 
-#'   to obtain a null matrix. If the method is "binom", the mean cover of a 
+#'   to obtain a null matrix. If the method is "intercept", the mean cover of a 
 #'   matrix \deqn{mu} is computed, then the matrix is filled randomly with 
 #'   TRUE values (with probability \deqn{mu}) and FALSE (with probability 
 #'   \deqn{1 - mu}). This method only works with logical matrices (with 
 #'   TRUE/FALSE values). 
+#' 
+#' The list null_control can have the following components: 
+#'   \itemize{ 
+#'     \item `family` The family used in the model used to produce the null 
+#'       matrices. Typically, it is one of \code{\link[=stats]{binomial}()}, 
+#'       \code{\link[=stats]{binomial}()}, etc. 
+#' 
+#'     \item `qinf` The lower quantile to compute from the null distribution 
+#'       and display in summaries/plots. A numeric value between 0 and 1.
+#' 
+#'     \item `qsup` The upper quantile to compute from the null distribution 
+#'       and display in summaries/plots. A numeric value between 0 and 1.
+#'   }
 #' 
 #' \code{null_method} can be set to 'smooth'. In that case, an isotropic spline 
 #'   will be fitted to the matrix (using \link[mgcv]{gam}), and values will 

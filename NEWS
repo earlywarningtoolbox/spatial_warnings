@@ -5,7 +5,11 @@ spatialwarnings v3.0.0 (Release date: unknown)
 Improvements: 
 
   * Documentation extended and improved
+  
+Bug fixes: 
 
+  * Fix a bug where available methods were not displayed in `summary()`
+  
 Misc changes: 
   
   * NAs in provided matrices produce warnings instead of errors

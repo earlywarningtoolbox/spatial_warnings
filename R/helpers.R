@@ -80,7 +80,8 @@ list_methods <- function(class,
                          exclude = c("print", "display_size_info")) { 
   all_methods <- lapply(class, function(class) { 
     tab <- attr(methods(class = class), "info")
-    tab[tab[ ,"from"] == "spatialwarnings", "generic"]
+#     tab[tab[ ,"from"] == "spatialwarnings", "generic"]
+    tab[ ,"generic"]
   })
   all_methods <- sort(unique(unlist(all_methods)))
   

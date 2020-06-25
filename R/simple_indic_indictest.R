@@ -146,7 +146,7 @@ summary.simple_sews_test_list <- function(object,
   # spacing for us, but we effectively create a data.frame with duplicated 
   # column names. I don't know how brittle this is, but probably very. 
   header <- names(tab_pretty) 
-  header[grepl('pval_', header)] <- 'P>null'
+  header[grepl('pval_', header)] <- 'P<null'
   header[grepl('stars_', header)] <- ''
   header[grepl('matrixn', header)] <- 'Mat #'
   names(tab_pretty) <- header

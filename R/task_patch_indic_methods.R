@@ -543,7 +543,7 @@ prepare_summary_table <- function(x, ...) {
                                as.character(dat[ ,'plrpval']))
     
     cols <- c(cols, "plrpval", "pvalstars")
-    pretty_names <- c(pretty_names, "P>null (PLR)", "")
+    pretty_names <- c(pretty_names, "P<null (PLR)", "")
   }
   
   # Extract data and rename cols

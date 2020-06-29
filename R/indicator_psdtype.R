@@ -44,8 +44,8 @@
 #'         and Bayesion Information Criterion (BIC)
 #'       \item `best` A logical vector indicating which distribution is the 
 #'         best fit 
-#'       \item `expo`, `rate`, `meanlog`, `sdlog` the estimates for distribution
-#'         parameters. 
+#'       \item `plexpo`, `cutoff`, `meanlog`, `sdlog` the estimates for
+#'         distribution parameters (see \code{\link{pl_fit}})
 #'       \item 'percolation' A logical value indicating whether there is 
 #'         \code{\link{percolation}} in the system. 
 #'     }
@@ -160,7 +160,7 @@ indicator_psdtype <- function(x,
 psdtype <- function(psd, xmin, best_by, fit_lnorm) { 
   
   table_names <- c('method', 'type', 'npars', 'AIC', 'AICc', 'BIC', 'best', 
-                   'expo', 'rate', 'xmin_fit')
+                   'plexpo', 'cutoff', 'xmin_fit')
   if ( fit_lnorm ) { 
     table_names <- c(table_names, 'meanlog', 'sdlog')
   }

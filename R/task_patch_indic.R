@@ -65,8 +65,8 @@
 #' and optionally, a log-normal. Each distribution parameter is estimated 
 #' using maximum-likelihood, with a minimum patch size (xmin) fixed to one. 
 #' The best distribution is selected based on BIC by default. In raw results, 
-#' \code{expo} refers to the power-law exponent (\eqn{\lambda} in the previous 
-#' equations) and \code{rate} referes to the exponential decay rate
+#' \code{plexpo} refers to the power-law exponent (\eqn{\lambda} in the previous 
+#' equations) and \code{cutoff} referes to the exponential decay rate
 #' \eqn{\alpha}. 
 #' 
 #' To compute the Power-law range (PLR), power-laws are fitted with a variable 

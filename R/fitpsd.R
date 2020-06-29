@@ -216,8 +216,8 @@ pl_ll <- function(dat, expo, xmin) {
 #' Additionnaly, this list may have one or more of the following parameters 
 #'   depending on the type of distribution that has been fitted: 
 #'   \itemize{ 
-#'     \item{expo }{The exponent of the power-law}
-#'     \item{rate }{The rate of truncation, for truncated power law and 
+#'     \item{plexpo }{The exponent of the power-law}
+#'     \item{cutoff }{The rate of truncation, for truncated power law and 
 #'                 exponential fits}
 #'     \item{meanlog }{The mean of the lognormal distribution}
 #'     \item{sdlog }{The s.d. of the lognormal distribution}
@@ -239,6 +239,11 @@ pl_ll <- function(dat, expo, xmin) {
 #'   \code{\link{xmin_estim}}. Again, please note that the fitting procedure 
 #'   assumes here that xmin is equal or grater than one.
 #' 
+#' Please note that a best effort is made to have the fit converge, but 
+#'   it may sometimes fail when the parameters are far from their usual 
+#'   range. It is good practice to make sure the fits are sensible when 
+#'   convergence warnings are reported.
+#' 
 #' @seealso \code{\link{patchdistr_sews}}, \code{\link{xmin_estim}}
 #' 
 #' @references
@@ -254,13 +259,11 @@ pl_ll <- function(dat, expo, xmin) {
 #'  
 #' # Use the estimated parameters as an indicator function
 #' get_truncation <- function(mat) { 
-#'    c(exp_rate = exp_fit(patchsizes(mat))$rate)
+#'    c(exp_cutoff = exp_fit(patchsizes(mat))$cutoff)
 #'  }
 #' trunc_indic <- compute_indicator(forestgap, get_truncation)
 #' plot(trunc_indic)
-#' 
-#' # Estimate xmin on a patch size distribution
-#' xmin_estim(patchsizes(forestgap[[8]]))
+#' plot(indictest(trunc_indic, nulln = 19))
 #' 
 #'@export
 pl_fit <- function(dat, xmin = 1) { 
@@ -286,7 +289,7 @@ pl_fit <- function(dat, xmin = 1) {
   
   result <- list(type = 'pl',
                  method = 'll', 
-                 expo = est[["par"]],
+                 plexpo = est[["par"]],
                  ll = - est[['value']],
                  xmin = xmin,
                  npars = 1)
@@ -368,13 +371,13 @@ get_ks_dist <- function(xmin, dat) {
   # Fit and retrieve cdf
   fit <- pl_fit(dat, xmin = xmin)
   
-  if ( is.na(fit[['expo']]) ) { 
+  if ( is.na(fit[['plexpo']]) ) { 
     # Note: a warning was already produced in this case as it means that the 
     # fit failed to converge: we do not produce one here again. 
     return(NaN)
   }
   
-  cdf_fitted <- ippl(dat, fit[["expo"]], fit[["xmin"]])
+  cdf_fitted <- ippl(dat, fit[["plexpo"]], fit[["xmin"]])
 
 #   # debug
 #   plot(data.frame(dat, rbinom(length(dat), 1, .5)), type = 'n')
@@ -446,7 +449,7 @@ exp_fit <- function(dat, xmin = 1) {
   
   result <- list(type = 'exp',
                  method = 'll', 
-                 rate = est[['par']], 
+                 cutoff = est[['par']], 
                  ll = - est[["value"]],
                  npars = 1)
   return(result)
@@ -567,7 +570,7 @@ tpl_fit <- function(dat, xmin = 1) {
   # Initialize and find minimum
   expo0 <- pl_fit(dat, xmin)[['expo']] 
   
-  # Do a line search over the rate to find a minimum, starting from zero 
+  # Do a line search over the cutoff to find a minimum, starting from zero 
   # up to 100
   is <- seq(0, 100, length = 128)
   lls <- unlist(lapply(is, function(i) { 
@@ -583,8 +586,8 @@ tpl_fit <- function(dat, xmin = 1) {
   
   result <- list(type = 'tpl',
                  method = 'll', 
-                 expo = est[['par']][1], 
-                 rate = est[['par']][2], 
+                 plexpo = est[['par']][1], 
+                 cutoff = est[['par']][2], 
                  ll = - est[["value"]],
                  npars = 2)
   return(result)

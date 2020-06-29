@@ -63,7 +63,7 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
                       pl_ll(pldat, expo, xmin = xmin))
         
         # pl_fit <-> zeta.fit 
-        our_expo <- pl_fit(pldat, xmin = xmin)[['expo']]
+        our_expo <- pl_fit(pldat, xmin = xmin)[['plexpo']]
         clauset_expo <- zeta.fit(pldat, threshold = xmin)[['exponent']]
         powerlaw_expo <- estimate_pars( poweRlaw::displ$new(pldat) )[["pars"]]
         expect_equal(clauset_expo, our_expo, tol = 1e-3)
@@ -105,7 +105,7 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
           plot(log10(cumpsd(expdat[expdat >= xmin])))
           xs <- seq(min(expdat), max(expdat), length.out = 100)
           lines(log10(xs), 
-                log10(ipdisexp(xs, fit[["rate"]], xmin = xmin)), 
+                log10(ipdisexp(xs, fit[["cutoff"]], xmin = xmin)), 
                 col = 'red')
           title('EXPFIT')
       }
@@ -153,15 +153,15 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
           xs <- seq(min(lnormdat), max(lnormdat), length.out = 10000)
           suppressWarnings( 
             lines(log10(xs), 
-                  log10(pdislnorm(xs, 
-                                  our_fit[['meanlog']], 
-                                  our_fit[['sdlog']], 
-                                  xmin = xmin)), col = 'red')
+                  log10(ipdislnorm(xs, 
+                                   our_fit[['meanlog']], 
+                                   our_fit[['sdlog']], 
+                                   xmin = xmin)), col = 'red')
           )
           suppressWarnings(
             lines(log10(xs), 
-                  log10(pdislnorm(xs, 
-                                  fit.lnorm.disc(lnormdat, threshold = xmin)[["meanlog"]], 
+                  log10(ipdislnorm(xs, 
+                                   fit.lnorm.disc(lnormdat, threshold = xmin)[["meanlog"]], 
                                   fit.lnorm.disc(lnormdat, threshold = xmin)[["sdlog"]],
                                   xmin = xmin)), 
                                   col = "blue")
@@ -261,7 +261,8 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
                             clauset_fit[["rate"]], xmin)), col = 'blue', 
                   lwd = 2)
             lines(log10(xs), 
-                  log10(iptpl(xs, our_fit[["expo"]], our_fit[["rate"]], xmin)), 
+                  log10(iptpl(xs, our_fit[["plexpo"]], 
+                              our_fit[["cutoff"]], xmin)), 
                   col = 'red')
             title('TPLFIT')
           }
@@ -284,18 +285,18 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
         
         # Test dpl with xmin != 1
         expect_equal(dzeta(x, xmin, expo), 
-                      dpl(x, expo, xmin))
+                     dpl(x, expo, xmin))
         
-        # Test ppl 
+        # Test ippl 
         expect_equal(pzeta(x, xmin, expo, lower.tail = FALSE),
-                    ppl(x, expo, xmin))
+                     ippl(x, expo, xmin))
         
         # Test likelihood func
         expect_equal(zeta.loglike(pldat, xmin, expo),
-                    pl_ll(pldat, expo, xmin))
+                     pl_ll(pldat, expo, xmin))
         
         # Test equality of fits
-        expect_equal(pl_fit(pldat, xmin = xmin)[["expo"]], 
+        expect_equal(pl_fit(pldat, xmin = xmin)[["plexpo"]], 
                       zeta.fit(pldat, xmin)[["exponent"]], 
                       tol = 1e-3)
         

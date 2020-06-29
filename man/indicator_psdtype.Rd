@@ -48,8 +48,8 @@ A data.frame (or a list of these if x is a list) with the
         and Bayesion Information Criterion (BIC)
       \item `best` A logical vector indicating which distribution is the 
         best fit 
-      \item `expo`, `rate`, `meanlog`, `sdlog` the estimates for distribution
-        parameters. 
+      \item `plexpo`, `cutoff`, `meanlog`, `sdlog` the estimates for
+        distribution parameters (see \code{\link{pl_fit}})
       \item 'percolation' A logical value indicating whether there is 
         \code{\link{percolation}} in the system. 
     }

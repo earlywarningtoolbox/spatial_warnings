@@ -91,9 +91,13 @@ in the literature:
   - Kolmogorov complexity (Dakos et al. 2017)
   - Variogram-based indicators (Nijp et al. 2019)
 
+In addition, this package provides a straightforward way to implement and test 
+new indicators, so you can design your favorite spatial metric for your 
+ecosystem of interest. 
+
 ## Code sample
 
-A simple analysis with `spatialwarnings` could fit in a few lines of code: 
+A simple analysis with `spatialwarnings` can fit in a few lines of code: 
 
 ```r
 > library(ggplot2)
@@ -112,7 +116,7 @@ A simple analysis with `spatialwarnings` could fit in a few lines of code:
 > summary(serengeti.test)
 Generic Spatial Early-Warnings
 
- Mat. # Mean Moran's I P>null     Skewness P>null     Variance P>null
+ Mat. # Mean Moran's I P<null     Skewness P<null     Variance P<null
       1 0.98      0.58 <1e-03 ***    -6.94  0.999        0.011 <1e-03 ***
       2 0.98      0.62 <1e-03 ***    -6.17  0.999        0.012 <1e-03 ***
       3 0.97      0.51 <1e-03 ***    -5.59  0.999        0.015 <1e-03 ***
@@ -144,17 +148,26 @@ Generic Spatial Early-Warnings
 
 ![Example result](./tools/imgs/serengeti_example.png)
 
+## Getting help 
+
+There is also a quite thorough user guide with tutorials, answers to technical 
+problems and examples of analyses at this address: 
+
+[https://alex.lecairn.org/spatialwarnings-faq.html](https://alex.lecairn.org/spatialwarnings-faq.html)
+
+We also welcome any question or constructive criticism! Please feel free to 
+open an issue or send us an email if you have any question about the package, or 
+would like to see improvements. 
+
 ## Original authors and License
 
 This package is derived from the [Dakos et al.'s work](https://github.com/earlywarningtoolbox/spatial_warnings) on early warnings signals (see also the
 reference website for the [early-warnings signals toolbox](http://www.early-warning-signals.org/)).
 
-### License
-
 This work is licensed under an MIT license. Some code included in unit tests has
 been written by Cosma Rohilla Shalizi [http://bactra.org/](http://bactra.org/)
 and is redistributed in its entirety with the source of this R package as
-specified in its README file.
+per the recommandations in its README file.
 
 The MIT License (MIT)
 

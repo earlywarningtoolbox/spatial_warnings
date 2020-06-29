@@ -44,8 +44,9 @@ Individual indicators:
   \item \code{\link{indicator_plrange}}: Power-law range
 }
 
-The package home page is available at 
+The package homepage is available at 
 \href{https://github.com/spatial-ews/spatialwarnings}{Github}
-and a \href{https://alex.lecairn.org/spatialwarnings-faq.html}{FAQ 
-  covering technical issues} is also available.
+and a longer 
+\href{https://alex.lecairn.org/spatialwarnings-faq.html}{user guide} is 
+also available.
 }

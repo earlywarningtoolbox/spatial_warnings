@@ -172,7 +172,7 @@ dpl <- function(x, expo, xmin = 1, log = FALSE) {
 }
 
 # PL: P(x>=k) 
-ppl <- function(x, expo, xmin = 1) { 
+ippl <- function(x, expo, xmin = 1) { 
   const <- displnorm(expo, xmin)
   
   is_below_xmin <- x < xmin
@@ -191,7 +191,78 @@ pl_ll <- function(dat, expo, xmin) {
   sum( dpl(dat, expo, xmin, log = TRUE) )  
 }
 
-# PL: Fit by MLE
+
+#' @title Distribution-fitting functions 
+#'
+#' @description These functions fit parametric distributions to a set of
+#'   discrete values. 
+#'
+#' @param dat The set of values to which the distribution are fit 
+#'
+#' @param xmin The minimum possible value to consider when fitting the
+#'   distribution
+#'
+#' @return A list containing at list the following components: 
+#'
+#' \itemize{ 
+#'    \item{type }{The type of distribution fitted (as a character string)}
+#'    \item{method }{The method used for the fit - here, maximum likelihood,
+#'                  'll'}
+#'    \item{ll }{The negative log likelihood at the estimated parameter values}
+#'    \item{xmin }{The value of xmin used for the fit}
+#'    \item{npars }{The number of parameters of the distribution}
+#'  }
+#' 
+#' Additionnaly, this list may have one or more of the following parameters 
+#'   depending on the type of distribution that has been fitted: 
+#'   \itemize{ 
+#'     \item{expo }{The exponent of the power-law}
+#'     \item{rate }{The rate of truncation, for truncated power law and 
+#'                 exponential fits}
+#'     \item{meanlog }{The mean of the lognormal distribution}
+#'     \item{sdlog }{The s.d. of the lognormal distribution}
+#'   }
+#' 
+#' @details These functions will fit distributions to a set of values using 
+#'   maximum-likelihood estimation. In the context of the 'spatialwarnings' 
+#'   package, they are most-often used to fit parametric distributions on patch
+#'   size distributions. As a result, these functions assume that the data 
+#'   contains only integer, strictly positive values. The type of distribution
+#'   depends on the prefix of the function: 'pl' for power-law, 'tpl' for
+#'   truncated power-law, 'lnorm' for lognormal and 'exp' for an exponential
+#'   distribution. 
+#' 
+#' In the context of distribution-fitting, 'xmin' represents the minimum value 
+#'   that a distribution can take. It is often used to represent the minimum 
+#'   scale at which a power-law model is appropriate (Clauset et al. 2009), and 
+#'   can be estimated on an empirical distribution using
+#'   \code{\link{xmin_estim}}. Again, please note that the fitting procedure 
+#'   assumes here that xmin is equal or grater than one.
+#' 
+#' @seealso \code{\link{patchdistr_sews}}, \code{\link{xmin_estim}}
+#' 
+#' @references
+#' 
+#' Clauset, Aaron, Cosma Rohilla Shalizi, and M. E. J. Newman. 2009. “Power-Law
+#' Distributions in Empirical Data.” SIAM Review 51 (4): 661–703. 
+#' https://doi.org/10.1137/070710111.
+#' 
+#' @examples 
+#' 
+#' # Fit an exponential model to patch size distribution 
+#' exp_fit(patchsizes(forestgap[[8]]))
+#'  
+#' # Use the estimated parameters as an indicator function
+#' get_truncation <- function(mat) { 
+#'    c(exp_rate = exp_fit(patchsizes(mat))$rate)
+#'  }
+#' trunc_indic <- compute_indicator(forestgap, get_truncation)
+#' plot(trunc_indic)
+#' 
+#' # Estimate xmin on a patch size distribution
+#' xmin_estim(patchsizes(forestgap[[8]]))
+#' 
+#'@export
 pl_fit <- function(dat, xmin = 1) { 
   
   # Cut data to specified range
@@ -303,7 +374,7 @@ get_ks_dist <- function(xmin, dat) {
     return(NaN)
   }
   
-  cdf_fitted <- ppl(dat, fit[["expo"]], fit[["xmin"]])
+  cdf_fitted <- ippl(dat, fit[["expo"]], fit[["xmin"]])
 
 #   # debug
 #   plot(data.frame(dat, rbinom(length(dat), 1, .5)), type = 'n')
@@ -344,7 +415,7 @@ ddisexp <- function(dat, rate, xmin = 1, log = FALSE) {
 
 # EXP: P(x>=k)
 # Imported and cleaned up from powerRlaw (def_disexp.R)
-pdisexp <- function(x, rate, xmin) {
+ipdisexp <- function(x, rate, xmin) {
   # p >= k
   p <- pexp(x + .5, rate, lower.tail = FALSE) 
   # p >= 1 
@@ -356,6 +427,8 @@ exp_ll <- function(dat, rate, xmin) {
   sum( ddisexp(dat, rate, xmin, log = TRUE)) 
 }
 
+#'@rdname pl_fit
+#'@export
 exp_fit <- function(dat, xmin = 1) { 
   
   dat <- dat[dat>=xmin]
@@ -402,7 +475,7 @@ ddislnorm <- function(x, meanlog, sdlog, xmin, log = FALSE) {
 }
 
 # LNORM: P(X>=k)
-pdislnorm <- function(x, meanlog, sdlog, xmin) { 
+ipdislnorm <- function(x, meanlog, sdlog, xmin) { 
   px_supto_k <- plnorm(x - .5, meanlog, sdlog, lower.tail = FALSE)
   px_supto_xmin <- plnorm(xmin - .5, meanlog, sdlog, lower.tail = FALSE)
   ifelse(x<xmin, NaN, px_supto_k / px_supto_xmin)
@@ -415,6 +488,8 @@ lnorm_ll <- function(x, meanlog, sdlog, xmin) {
 }
 
 # LNORM: fit
+#'@rdname pl_fit
+#'@export
 lnorm_fit <- function(dat, xmin = 1) { 
   
   # Pars[1] holds mean of log-transformed data
@@ -461,7 +536,7 @@ dtpl <- function(x, expo, rate, xmin, log = FALSE) {
 }
 
 # P(x>=k)
-ptpl <- function(x, expo, rate, xmin) { 
+iptpl <- function(x, expo, rate, xmin) { 
   const <- tplnorm(expo, rate, xmin)
   
   # tplsum is vectorized over x
@@ -481,6 +556,8 @@ tpl_ll <- function(x, expo, rate, xmin, approximate = FALSE) {
   return( ll )
 } 
 
+#'@rdname pl_fit
+#'@export
 tpl_fit <- function(dat, xmin = 1) { 
   
   negll <- function(pars) { 

@@ -56,7 +56,7 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
         
         # ppl <-> pzeta with higher tail
         expect_equal(pzeta(dat, exponent = expo, threshold = xmin, lower.tail = FALSE), 
-                      ppl(dat, expo, xmin = xmin))
+                      ippl(dat, expo, xmin = xmin))
         
         # ppl_ll <-> zeta.loglike
         expect_equal(zeta.loglike(pldat, exponent = expo, threshold = xmin), 
@@ -72,11 +72,11 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
         # Look at fit
         plot(log10(cumpsd(pldat[pldat>=xmin])))
         xs <- c(min(pldat[pldat>=xmin]), max(pldat[pldat>=xmin]))
-        lines(log10(xs), log10(ppl(xs, clauset_expo, xmin = xmin)), 
+        lines(log10(xs), log10(ippl(xs, clauset_expo, xmin = xmin)), 
               lwd = 2, col = 'blue')
-        lines(log10(xs), log10(ppl(xs, powerlaw_expo, xmin = xmin)), 
+        lines(log10(xs), log10(ippl(xs, powerlaw_expo, xmin = xmin)), 
               lwd = 2, col = 'green')
-        lines(log10(xs), log10(ppl(xs, our_expo, xmin = xmin)), col = 'red')
+        lines(log10(xs), log10(ippl(xs, our_expo, xmin = xmin)), col = 'red')
         title('PLFIT')
       }
     }
@@ -95,7 +95,7 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
           expect_equal(ddiscexp(dat, rate, threshold = xmin),
                         ddisexp(dat, rate, xmin = xmin))
           
-          pdisexp(dat, rate, xmin = xmin)
+          ipdisexp(dat, rate, xmin = xmin)
           
           fit <- exp_fit(expdat, xmin = xmin)
           expect_equal(fit[['rate']],
@@ -105,7 +105,7 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
           plot(log10(cumpsd(expdat[expdat >= xmin])))
           xs <- seq(min(expdat), max(expdat), length.out = 100)
           lines(log10(xs), 
-                log10(pdisexp(xs, fit[["rate"]], xmin = xmin)), 
+                log10(ipdisexp(xs, fit[["rate"]], xmin = xmin)), 
                 col = 'red')
           title('EXPFIT')
       }
@@ -133,7 +133,7 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
           
           # plnorm.tail.disc returns negative values (?!)
   #         plnorm.tail.disc(dat, meanlog, sdlog, threshold = xmin)
-  #         pdislnorm(dat, meanlog, sdlog, xmin)
+  #         ipdislnorm(dat, meanlog, sdlog, xmin)
           
           # Note that dlnorm.disc assumes xmin = 0, so we cannot test it 
           #   with variable xmin. 
@@ -256,12 +256,12 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
             xs <- unique( round( seq(min(tpldat), max(tpldat), 
                                       length.out = 100) )) 
             lines(log10(xs), 
-                  log10(ptpl(xs, 
+                  log10(iptpl(xs, 
                             clauset_fit[["exponent"]], 
                             clauset_fit[["rate"]], xmin)), col = 'blue', 
                   lwd = 2)
             lines(log10(xs), 
-                  log10(ptpl(xs, our_fit[["expo"]], our_fit[["rate"]], xmin)), 
+                  log10(iptpl(xs, our_fit[["expo"]], our_fit[["rate"]], xmin)), 
                   col = 'red')
             title('TPLFIT')
           }

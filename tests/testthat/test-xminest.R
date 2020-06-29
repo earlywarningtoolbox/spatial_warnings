@@ -60,14 +60,14 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
           our_fit <- pl_fit(pldat, xmin = est_xmin)
           xs <- unique(round(seq(min(pldat), max(pldat), length.out = 100)))
           lines(log10(xs), 
-                log10(ppl(xs, our_fit$expo, xmin = est_xmin)))
+                log10(ippl(xs, our_fit$expo, xmin = est_xmin)))
           title("OUR FIT")
           
           plot(log10(cumpsd(pldat[pldat >= est_xmin_plpkg])))
           plpkg_expo <- poweRlaw::estimate_xmin(pl_obj)$pars
           xs <- unique(round(seq(min(pldat), max(pldat), length.out = 100)))
           lines(log10(xs), 
-                log10(ppl(xs, plpkg_expo, xmin = est_xmin_plpkg)))
+                log10(ippl(xs, plpkg_expo, xmin = est_xmin_plpkg)))
           title("PWL FIT")
         }
       }

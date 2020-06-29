@@ -11,7 +11,8 @@
 plot_distr(x, along = NULL, best_only = TRUE, plrange = TRUE)
 }
 \arguments{
-\item{x}{An object as produced by \code{\link{patchdistr_sews}}}
+\item{x}{An object as produced by \code{\link{patchdistr_sews}}, or 
+the result of \code{\link{indictest}} called on such object}
 
 \item{along}{A vector providing values along which the indicator trends 
 will be plotted. If \code{NULL} then the values are plotted sequentially 
@@ -43,9 +44,12 @@ The \code{plot} function will produce a figure summarizing the changes
  
  The \code{plot_distr} function displays each distribution in an 
    individual facet, with an overlay of the best distribution fit and a blue 
-   bar showing the power-law range. This mode of representation can be 
-   cumbersome when working with a high number of matrices but displays in 
-   full the shape of the distributions.
+   bar showing the power-law range. If appropriate, a grey ribbon is used to
+   display the expected distribution given the null expectation (i.e. when 
+   \code{plot_distr} is called on the results of \code{indictest()}. This 
+   function can produce quite crowded graphs, but it displays in full the
+   shape of the distributions, and can be useful e.g. to assess the quality 
+   of the fits.
 }
 \examples{
 
@@ -60,6 +64,11 @@ plot(psd_indic, along = as.factor(forestgap.pars[ ,"d"]))
 
 # Display individual distributions
 plot_distr(psd_indic, along = forestgap.pars[ ,"d"])
+
+# We can display the distributions along with the null expectation after 
+# indictest() is run
+psd_test <- indictest(psd_indic, nulln = 19)
+plot_distr(psd_test, along = forestgap.pars[ ,"d"])
 }
 
 }

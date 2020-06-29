@@ -15,7 +15,8 @@
 #' 
 #' @description Plot early-warning signals based on patch size distributions 
 #' 
-#' @param x An object as produced by \code{\link{patchdistr_sews}}
+#' @param x An object as produced by \code{\link{patchdistr_sews}}, or 
+#'   the result of \code{\link{indictest}} called on such object
 #' 
 #' @param along A vector providing values along which the indicator trends 
 #'   will be plotted. If \code{NULL} then the values are plotted sequentially 
@@ -40,9 +41,12 @@
 #'  
 #'  The \code{plot_distr} function displays each distribution in an 
 #'    individual facet, with an overlay of the best distribution fit and a blue 
-#'    bar showing the power-law range. This mode of representation can be 
-#'    cumbersome when working with a high number of matrices but displays in 
-#'    full the shape of the distributions. 
+#'    bar showing the power-law range. If appropriate, a grey ribbon is used to
+#'    display the expected distribution given the null expectation (i.e. when 
+#'    \code{plot_distr} is called on the results of \code{indictest()}. This 
+#'    function can produce quite crowded graphs, but it displays in full the
+#'    shape of the distributions, and can be useful e.g. to assess the quality 
+#'    of the fits. 
 #' 
 #' @seealso \code{\link{patchdistr_sews}}
 #' 
@@ -59,6 +63,11 @@
 #' 
 #' # Display individual distributions
 #' plot_distr(psd_indic, along = forestgap.pars[ ,"d"])
+#' 
+#' # We can display the distributions along with the null expectation after 
+#' # indictest() is run
+#' psd_test <- indictest(psd_indic, nulln = 19)
+#' plot_distr(psd_test, along = forestgap.pars[ ,"d"])
 #' }
 #'
 #'@method plot patchdistr_sews
@@ -407,17 +416,17 @@ predict.patchdistr_sews_single <- function(object, ...,
   vals_pred <- data.frame()
   for ( type in shptbl[ ,"type"] ) { 
     type_yvals <- switch(type, 
-                         pl  = ppl(newdata, 
+                         pl  = ippl(newdata, 
                                    shptbl[type, "expo"], 
                                    shptbl[type, "xmin_fit"]),
-                         tpl = ptpl(newdata, 
+                         tpl = iptpl(newdata, 
                                     shptbl[type, "expo"], 
                                     shptbl[type, "rate"], 
                                     shptbl[type, 'xmin_fit']),
-                         exp = pdisexp(newdata,  
+                         exp = ipdisexp(newdata,  
                                        shptbl[type, "rate"], 
                                        shptbl[type, "xmin_fit"]),
-                         lnorm = pdislnorm(newdata, 
+                         lnorm = ipdislnorm(newdata, 
                                            shptbl[type, "meanlog"], 
                                            shptbl[type, "sdlog"],  
                                            shptbl[type, "xmin_fit"]))

@@ -15,7 +15,8 @@ raw_flowlength_uniform(mat, slope, cell_size)
 from above).}
 }
 \value{
-The flow length numerical value.
+A named vector of length 1 containing the flow length numerical 
+  value
 }
 \description{
 Compute a simple approximation of the flow length assuming a 

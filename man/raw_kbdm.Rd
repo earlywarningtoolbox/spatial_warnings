@@ -13,7 +13,7 @@ raw_kbdm(mat, subsize)
 (must be between 1 and 3)}
 }
 \value{
-A numeric value
+The KBDM numeric value as a named vector
 }
 \description{
 Compute the Kolmogorov complexity of a matrix using the 

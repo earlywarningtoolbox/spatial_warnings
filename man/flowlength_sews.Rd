@@ -15,7 +15,8 @@ flowlength_sews(mat, slope = 20, cell_size = 1)
 from above).}
 }
 \value{
-The flow length numerical value.
+A `simple_sews` object containing the flow length value, among 
+  other things.
 }
 \description{
 Measures the connectivity of runoff-source areas as determined 

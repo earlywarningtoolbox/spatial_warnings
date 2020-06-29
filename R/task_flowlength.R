@@ -65,7 +65,8 @@
 #' @param cell_size The horizontal size of a cell in the matrix (as viewed 
 #'   from above). 
 #' 
-#' @return The flow length numerical value. 
+#' @return A `simple_sews` object containing the flow length value, among 
+#'   other things. 
 #' 
 #' 
 #' @seealso 
@@ -125,7 +126,8 @@ flowlength_sews <- function(mat,        # Input matrix
 #' @param cell_size The horizontal size of a cell in the matrix (as viewed 
 #'   from above). 
 #' 
-#' @return The flow length numerical value. 
+#' @return A named vector of length 1 containing the flow length numerical 
+#'   value 
 #' 
 #' @seealso \code{\link{flowlength_sews}}
 #' @seealso 

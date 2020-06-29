@@ -83,7 +83,7 @@ kbdm_sews <- function(mat, subsize = 3) {
 #'     implemented in this function. See also \code{\link{kbdm_sews}} 
 #'     for more details. 
 #' 
-#' @return A numeric value
+#' @return The KBDM numeric value as a named vector
 #' 
 #' @param mat A logical matrix (with TRUE/FALSE values)
 #' 

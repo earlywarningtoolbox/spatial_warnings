@@ -21,7 +21,7 @@ the highest 20\% (default value), set \code{sdr_high_range} to
 \code{c(.8, 1)}.}
 }
 \value{
-The SDR values computed on the matrix
+The SDR values computed on the matrix as a named vector
 }
 \description{
 Compute the ratio of low frequencies over high frequencies

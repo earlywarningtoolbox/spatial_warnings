@@ -13,10 +13,7 @@ raw_plrange(mat, xmin_bounds = NULL)
 to search for the best xmin (see Details).}
 }
 \value{
-A data.frame with columns minsize, maxsize which are the observed 
-  minimum and maximum patch sizes. The estimated \eqn{x_{min}}{x_min} and the 
-  value of the power-law range. If multiple matrices were provided, then 
-  a list of data.frames is returned
+A named vector containing the power-law range value
 }
 \description{
 Compute the power-law range of a matrix

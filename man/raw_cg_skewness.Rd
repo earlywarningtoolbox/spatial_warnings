@@ -21,7 +21,7 @@ on the coarse-grained matrix.}
 of skewness ?}
 }
 \value{
-The spatial skewness of the matrix
+The spatial skewness of the matrix as a named vector
 }
 \description{
 Compute the spatial skewness of spatial data (a matrix).

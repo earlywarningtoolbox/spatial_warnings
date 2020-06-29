@@ -13,7 +13,8 @@ raw_cg_moran(mat, subsize = 1)
 original matrix (set to 1 for no coarse-graining).}
 }
 \value{
-The Moran's I index measuring autocorrelation at lag 1
+The Moran's I index measuring autocorrelation at lag 1 as a 
+  named vector
 }
 \description{
 This functions computes the Moran's spatial correlation index 

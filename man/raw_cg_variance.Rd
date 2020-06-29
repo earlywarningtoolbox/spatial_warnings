@@ -18,7 +18,7 @@ matrix. Coarse-graining reduces the size of the matrix by a factor
 on the coarse-grained matrix.}
 }
 \value{
-The variance of the coarse-grained matrix
+The variance of the coarse-grained matrix as a named vector
 }
 \description{
 This functions computes the spatial variance of a matrix.
@@ -31,7 +31,7 @@ spatial variance is proposed as an early warning signal of impending
 critical transitions. 
 
 Many high resolution spatial data are classified as FALSE (empty) 
-or TRUE (occupied by plant). In such cases, spatial variance captures just 
+or TRUE (occupied). In such cases, spatial variance captures just 
 the variance in data, but not that of spatial structure. 
 To resolve the issue, this function employs a method called coarse-graining, 
 proposed in Kefi et al (2014), and described in detail in 

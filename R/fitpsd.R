@@ -2,7 +2,7 @@
 # This file contains code related to patch size distribution fitting. These 
 #   functions can fit Power-law (pl), Truncated Power-law (tpl), Lognormal 
 #   (lnorm) and Exponential (exp) distributions using maximum likelihood, as 
-#   per Clauset et al. 's recommendations. 
+#   per Clauset et al. 's (2007) recommandations.
 # 
 # In addition, it provides the estimation of xmin using the ks-distance for 
 # power-laws (same, following Clauset et al. 2007)
@@ -243,6 +243,18 @@ pl_ll <- function(dat, expo, xmin) {
 #'   it may sometimes fail when the parameters are far from their usual 
 #'   range. It is good practice to make sure the fits are sensible when 
 #'   convergence warnings are reported.
+#' 
+#' For reference, the shape of the distributions is as follow: 
+#' 
+#' \itemize{
+#'   \item{power-law }{\eqn{x^{-\a}}{x^(-a)} where a is the power-law exponent}
+#'   \item{exponential }{\eqn{exp(-bx)}{exp(-bx)} where b is the truncation rate
+#'           of the exponential } 
+#'   \item{truncated power-law }{\eqn{x^{-a}exp(-bx)}{x^(-a)exp(-bx)} where a
+#'     and b are the exponent of the power law and the rate of truncation}
+#' }
+#' 
+#' The lognormal form follows the \link[=dlnorm]{standard definition}.
 #' 
 #' @seealso \code{\link{patchdistr_sews}}, \code{\link{xmin_estim}}
 #' 

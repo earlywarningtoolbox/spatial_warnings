@@ -16,7 +16,7 @@ from above).}
 }
 \value{
 A `simple_sews` object containing the flow length value, among 
-  other things.
+  other things, see \code{\link{simple_sews_object}} for more information.
 }
 \description{
 Measures the connectivity of runoff-source areas as determined 

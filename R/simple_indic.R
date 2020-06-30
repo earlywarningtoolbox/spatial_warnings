@@ -2,6 +2,8 @@
 #
 #' @title Custom Spatial Early-Warning signals
 #' 
+#' @alias custom_indicator
+#' 
 #' @description Computation, significance assessment and display of trends 
 #'   of a custom, user-defined indicator.
 #' 
@@ -18,7 +20,9 @@
 #' @return 
 #' 
 #' \code{create_indicator} returns a function that can be used in the same way 
-#'   than the other \code{*_sews} functions (e.g. \code{generic_sews})
+#'   than the other \code{*_sews} functions (e.g. \code{generic_sews}). This 
+#'   function as well as \code{compute_indicator} will return
+#'   \code{\link[=simple_sews]{simple_sews_*}} objects. 
 #' 
 #' @details 
 #' 
@@ -35,6 +39,8 @@
 #'   \code{indictest} and trends can be displayed using 
 #'   \code{plot}, \code{summary}, etc. (see Examples). \code{compute_indicator} 
 #'   does the same but without needing an intermediate indicator function. 
+#' 
+#' @seelaso \code{\link{simple_sews}}
 #' 
 #' @examples
 #' 

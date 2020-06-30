@@ -66,7 +66,7 @@
 #'   from above). 
 #' 
 #' @return A `simple_sews` object containing the flow length value, among 
-#'   other things. 
+#'   other things, see \code{\link{simple_sews_object}} for more information.
 #' 
 #' 
 #' @seealso 

@@ -119,5 +119,6 @@ Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M.,
 \seealso{
 \code{\link{indictest}}, to test the significance of indicator values. 
   Individual indicators: \code{\link{raw_cg_moran}}
-    \code{\link{raw_cg_variance}}, \code{\link{raw_cg_skewness}}
+    \code{\link{raw_cg_variance}}, \code{\link{raw_cg_skewness}}, 
+    \code{\link{simple_sews}}
 }

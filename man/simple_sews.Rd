@@ -2,6 +2,7 @@
 % Please edit documentation in R/extra_doc.R
 \name{simple_sews}
 \alias{simple_sews}
+\alias{simple_sews_object}
 \title{\code{simple_sews} objects}
 \description{
 This help page describes the structure of \code{simple_sews_*} 

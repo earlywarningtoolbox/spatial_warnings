@@ -72,7 +72,7 @@ Please note that a best effort is made to have the fit converge, but
 For reference, the shape of the distributions is as follow: 
 
 \itemize{
-  \item{power-law }{\eqn{x^{-\a}}{x^(-a)} where a is the power-law exponent}
+  \item{power-law }{\eqn{x^{-a}}{x^(-a)} where a is the power-law exponent}
   \item{exponential }{\eqn{exp(-bx)}{exp(-bx)} where b is the truncation rate
           of the exponential } 
   \item{truncated power-law }{\eqn{x^{-a}exp(-bx)}{x^(-a)exp(-bx)} where a

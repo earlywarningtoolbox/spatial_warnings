@@ -24,11 +24,12 @@ test_that('results matches those in PLOS One', {
     # Read the data first
     fulldat <- read.table(paste0(datdir, 'CA_all.txt'))
     dataplos <- data.matrix(fulldat)
-    nreplicates <- nrow(data) / ncol(data)
+    nreplicates <- nrow(dataplos) / ncol(dataplos)
     
     # Extract the matrices from the binary data and conver it
-    startends <- data.frame(start = (seq.int(nreplicates)-1)*ncol(data)+1,
+    startends <- data.frame(start = (seq.int(nreplicates)-1)*ncol(dataplos)+1,
                             end   = seq.int(nreplicates)*ncol(dataplos))
+    
     matrices <- plyr::dlply(startends, ~ start + end, 
                             function(df) { 
                               dataplos[seq.int(df[['start']], df[['end']]), ]
@@ -38,7 +39,8 @@ test_that('results matches those in PLOS One', {
     # Now compute indicators
     test_results  <- generic_sews(matrices, subsize = 10, 
                                   moranI_coarse_grain = TRUE)
-    test_reshaped <- ddply(as.data.frame(test_results), ~ matrixn, function(df) { 
+    test_reshaped <- ddply(as.data.frame(test_results), ~ matrixn, 
+                           function(df) { 
       a <- as.list(df[ ,"value"])
       names(a) <- df[ ,"indic"]
       a <- a[c("mean", "moran", "skewness", "variance")]

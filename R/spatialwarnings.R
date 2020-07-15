@@ -26,23 +26,28 @@
 #' 
 #' Main functions provided by this package 
 #' 
-#' "Workflow" functions:
+#' "Workflow" functions, which may compute several indicators at once:
 #' \itemize{ 
 #'   \item \code{\link{generic_sews}}: Generic spatial EWS
 #'   \item \code{\link{spectral_sews}}: Spectrum-based EWS
 #'   \item \code{\link{patchdistr_sews}}: EWS based on patch-size distributions
-#'   \item \code{\link{kbdm_sews}}: Kolmogorov entropy
+#'   \item \code{\link{kbdm_sews}}: Kolmogorov complexity
 #'   \item \code{\link{flowlength_sews}}: Flow length 
 #' }
 #' 
-#' Individual indicators: 
+#' Individual indicators, which may be used to compute raw indicator values 
+#'   on a single matrix: 
+#' 
 #' \itemize{ 
 #'   \item \code{\link{raw_cg_moran}}: lag-1 spatial autocorrelation 
 #'   \item \code{\link{raw_cg_variance}}: Spatial variance
 #'   \item \code{\link{raw_cg_skewness}}: Spatial skewness
 #'   \item \code{\link{raw_sdr}}: Spectral density ratio (SDR)
 #'   \item \code{\link{indicator_psdtype}}: Patch-size distribution shape 
-#'   \item \code{\link{indicator_plrange}}: Power-law range
+#'   \item \code{\link{indicator_plrange}}, 
+#'           \code{\link{raw_plrange}} : Power-law range
+#'   \item \code{\link{raw_kbdm}}: Kolmogorov complexity
+#'   \item \code{\link{raw_flowlength_uniform}}: Flow Length
 #' }
 #' 
 #' The package homepage is available at 

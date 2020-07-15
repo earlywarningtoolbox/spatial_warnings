@@ -206,22 +206,22 @@ pl_ll <- function(dat, expo, xmin) {
 #' @return A list containing at list the following components: 
 #'
 #' \itemize{ 
-#'    \item{type }{The type of distribution fitted (as a character string)}
-#'    \item{method }{The method used for the fit - here, maximum likelihood,
+#'    \item{type: }{The type of distribution fitted (as a character string)}
+#'    \item{method: }{The method used for the fit - here, maximum likelihood,
 #'                  'll'}
-#'    \item{ll }{The negative log likelihood at the estimated parameter values}
-#'    \item{xmin }{The value of xmin used for the fit}
-#'    \item{npars }{The number of parameters of the distribution}
+#'    \item{ll: }{The negative log likelihood at the estimated parameter values}
+#'    \item{xmin: }{The value of xmin used for the fit}
+#'    \item{npars: }{The number of parameters of the distribution}
 #'  }
 #' 
 #' Additionnaly, this list may have one or more of the following parameters 
 #'   depending on the type of distribution that has been fitted: 
 #'   \itemize{ 
-#'     \item{plexpo }{The exponent of the power-law}
-#'     \item{cutoff }{The rate of truncation, for truncated power law and 
+#'     \item{plexpo: }{The exponent of the power-law}
+#'     \item{cutoff: }{The rate of truncation, for truncated power law and 
 #'                 exponential fits}
-#'     \item{meanlog }{The mean of the lognormal distribution}
-#'     \item{sdlog }{The s.d. of the lognormal distribution}
+#'     \item{meanlog: }{The mean of the lognormal distribution}
+#'     \item{sdlog: }{The s.d. of the lognormal distribution}
 #'   }
 #' 
 #' @details These functions will fit distributions to a set of values using 
@@ -248,7 +248,7 @@ pl_ll <- function(dat, expo, xmin) {
 #' For reference, the shape of the distributions is as follow: 
 #' 
 #' \itemize{
-#'   \item{power-law }{\eqn{x^{-\a}}{x^(-a)} where a is the power-law exponent}
+#'   \item{power-law }{\eqn{x^{-a}}{x^(-a)} where a is the power-law exponent}
 #'   \item{exponential }{\eqn{exp(-bx)}{exp(-bx)} where b is the truncation rate
 #'           of the exponential } 
 #'   \item{truncated power-law }{\eqn{x^{-a}exp(-bx)}{x^(-a)exp(-bx)} where a

@@ -25,22 +25,22 @@ distribution}
 A list containing at list the following components: 
 
 \itemize{ 
-   \item{type }{The type of distribution fitted (as a character string)}
-   \item{method }{The method used for the fit - here, maximum likelihood,
+   \item{type: }{The type of distribution fitted (as a character string)}
+   \item{method: }{The method used for the fit - here, maximum likelihood,
                  'll'}
-   \item{ll }{The negative log likelihood at the estimated parameter values}
-   \item{xmin }{The value of xmin used for the fit}
-   \item{npars }{The number of parameters of the distribution}
+   \item{ll: }{The negative log likelihood at the estimated parameter values}
+   \item{xmin: }{The value of xmin used for the fit}
+   \item{npars: }{The number of parameters of the distribution}
  }
 
 Additionnaly, this list may have one or more of the following parameters 
   depending on the type of distribution that has been fitted: 
   \itemize{ 
-    \item{plexpo }{The exponent of the power-law}
-    \item{cutoff }{The rate of truncation, for truncated power law and 
+    \item{plexpo: }{The exponent of the power-law}
+    \item{cutoff: }{The rate of truncation, for truncated power law and 
                 exponential fits}
-    \item{meanlog }{The mean of the lognormal distribution}
-    \item{sdlog }{The s.d. of the lognormal distribution}
+    \item{meanlog: }{The mean of the lognormal distribution}
+    \item{sdlog: }{The s.d. of the lognormal distribution}
   }
 }
 \description{

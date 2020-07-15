@@ -23,15 +23,15 @@ test_that('results matches those in PLOS One', {
     
     # Read the data first
     fulldat <- read.table(paste0(datdir, 'CA_all.txt'))
-    data <- data.matrix(fulldat)
+    dataplos <- data.matrix(fulldat)
     nreplicates <- nrow(data) / ncol(data)
     
     # Extract the matrices from the binary data and conver it
     startends <- data.frame(start = (seq.int(nreplicates)-1)*ncol(data)+1,
-                            end   = seq.int(nreplicates)*ncol(data))
+                            end   = seq.int(nreplicates)*ncol(dataplos))
     matrices <- plyr::dlply(startends, ~ start + end, 
                             function(df) { 
-                              data[seq.int(df[['start']], df[['end']]), ]
+                              dataplos[seq.int(df[['start']], df[['end']]), ]
                             })
     matrices <- lapply(matrices, function(x) x == 1) # veg is 1
     

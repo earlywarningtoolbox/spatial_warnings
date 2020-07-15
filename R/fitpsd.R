@@ -59,6 +59,7 @@ optim_safe <- function(f, pars0,
             control = list(maxit = ITERLIM), 
             method = "BFGS", ...)
     }, silent = TRUE)
+#     if (class(optiresult_bfgs) == "try-error") browser()
     # If success, go with BFGS results
     if ( class(optiresult_bfgs) != "try-error" ) { 
       optiresult <- optiresult_bfgs
@@ -380,8 +381,12 @@ get_ks_dist <- function(xmin, dat) {
     cdf_empirical[dat == val] <- mean(dat >= val)
   }
   
-  # Fit and retrieve cdf
-  fit <- pl_fit(dat, xmin = xmin)
+  # Fit and retrieve cdf. Note: here we suppress the warnings because finding 
+  # xmin requires removing patches below a threshold, which often leads to fit 
+  # being done on pathological cases like few unique patch sizes
+  fit <- suppressWarnings({ 
+    pl_fit(dat, xmin = xmin)
+  })
   
   if ( is.na(fit[['plexpo']]) ) { 
     # Note: a warning was already produced in this case as it means that the 

@@ -580,7 +580,7 @@ tpl_fit <- function(dat, xmin = 1) {
   }
   
   # Initialize and find minimum
-  expo0 <- pl_fit(dat, xmin)[['expo']] 
+  expo0 <- pl_fit(dat, xmin)[['plexpo']] 
   
   # Do a line search over the cutoff to find a minimum, starting from zero 
   # up to 100

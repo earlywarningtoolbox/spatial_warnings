@@ -275,16 +275,19 @@ plot_distr.patchdistr_sews_list <- function(x,
   
   # Get plottable data.frames
   values <- predict(x, best_only = best_only)
+  
+  values[['obs']][ ,"along"]  <- values[['obs']][ ,'matrixn']
+  values[['pred']][ ,"along"] <- values[['pred']][ ,'matrixn']
   # Modify matrixn column if necessary and reorder values
   if ( ! is.null(along) ) { 
-    values[['obs']][ ,'matrixn']  <- along[values[["obs"]][ ,'matrixn']]
-    values[['pred']][ ,'matrixn'] <- along[values[["pred"]][ ,'matrixn']]
+    values[['obs']][ ,'along']  <- along[values[["obs"]][ ,'matrixn']]
+    values[['pred']][ ,'along'] <- along[values[["pred"]][ ,'matrixn']]
   }
   
   plot <- ggplot() + 
     scale_y_log10() +
     scale_x_log10() + 
-    facet_wrap( ~ matrixn) + 
+    facet_wrap( ~ along ) + 
     xlab('Patch size') + 
     ylab('Frequency (P>=x)') + 
     theme_spwarnings()
@@ -293,8 +296,9 @@ plot_distr.patchdistr_sews_list <- function(x,
     # Add plrange to the plot. We need to extract info 
     # from the observed psd so that we can place the segment on the plot. 
     plrange_dat <- unique( as.data.frame(x)[ ,c("matrixn", 'xmin_est')] )
+    plrange_dat[ ,"along"] <- plrange_dat[ ,"matrixn"]
     if ( ! is.null(along) ) { 
-      plrange_dat[ ,"matrixn"] <- along[plrange_dat[ ,"matrixn"]]
+      plrange_dat[ ,"along"] <- along[plrange_dat[ ,"matrixn"]]
     }
     
     patches_minmax <- ddply(values[['obs']], "matrixn", 
@@ -327,7 +331,8 @@ plot_distr.patchdistr_sews_list <- function(x,
     pred_values <- pred_values[!is.na(pred_values[ ,"type"]), ]
     
     plot <- plot + 
-              geom_line(aes_string(x = "patchsize", y = "y", color = "type"), 
+              geom_line(aes_string(x = "patchsize", y = "y", color = "type", 
+                                   group = "matrixn"), 
                         data = pred_values)
 
   } else { 

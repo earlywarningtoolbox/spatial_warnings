@@ -143,15 +143,19 @@ plot_distr.patchdistr_sews_test_list <- function(x,
   nulldat <- Map(function(n, o) data.frame(matrixn = n, o[['cumpsd_null']]), 
                  seq_along(x), x)
   nulldat <- do.call(rbind, nulldat)
+  
+  # Create the `along` values in the table
+  nulldat[ ,"along"] <- nulldat[ ,'matrixn']
   if ( ! is.null(along) ) { 
-    nulldat[ ,'matrixn'] <- along[nulldat[ ,'matrixn']]
+    nulldat[ ,'along'] <- along[nulldat[ ,'matrixn']]
   }
   
   # NOTE: we add layers this way to the ggplot object, so null values appear 
   # below the observed ones
   gplot$layers <- c(geom_ribbon(aes_q(x = ~patchsize, 
                                       ymin = ~qinf, 
-                                      ymax = ~qsup), 
+                                      ymax = ~qsup, 
+                                      group = ~matrixn), 
                                 data = nulldat, alpha = .2), 
                     gplot$layers)
   

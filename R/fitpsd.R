@@ -319,7 +319,8 @@ pl_fit <- function(dat, xmin = 1) {
 #' 
 #' @param dat A vector of integer values
 #' 
-#' @param bounds A bounds 
+#' @param bounds A vector of two values representing the bounds in which 
+#'   the best xmin is searched
 #' 
 #' @return The estimated xmin as an integer value 
 #' 

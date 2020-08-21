@@ -9,7 +9,8 @@ xmin_estim(dat, bounds = range(dat))
 \arguments{
 \item{dat}{A vector of integer values}
 
-\item{bounds}{A bounds}
+\item{bounds}{A vector of two values representing the bounds in which 
+the best xmin is searched}
 }
 \value{
 The estimated xmin as an integer value

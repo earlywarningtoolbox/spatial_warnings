@@ -93,13 +93,14 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
           expdat <- ceiling(rexp(1000, rate = rate))
           
           expect_equal(ddiscexp(dat, rate, threshold = xmin),
-                        ddisexp(dat, rate, xmin = xmin))
+                       ddisexp(dat, rate, xmin = xmin))
           
           ipdisexp(dat, rate, xmin = xmin)
           
           fit <- exp_fit(expdat, xmin = xmin)
-          expect_equal(fit[['rate']],
-                        discexp.fit(expdat, threshold = xmin)[["lambda"]], tol = 1e-3)
+          expect_equal(fit[['cutoff']],
+                       discexp.fit(expdat, threshold = xmin)[["lambda"]], 
+                       tol = 1e-3)
           
           # Look at fit
           plot(log10(cumpsd(expdat[expdat >= xmin])))
@@ -257,8 +258,8 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
                                       length.out = 100) )) 
             lines(log10(xs), 
                   log10(iptpl(xs, 
-                            clauset_fit[["exponent"]], 
-                            clauset_fit[["rate"]], xmin)), col = 'blue', 
+                              clauset_fit[["exponent"]], 
+                              clauset_fit[["rate"]], xmin)), col = 'blue', 
                   lwd = 2)
             lines(log10(xs), 
                   log10(iptpl(xs, our_fit[["plexpo"]], 

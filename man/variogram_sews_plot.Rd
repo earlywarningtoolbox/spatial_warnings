@@ -52,8 +52,8 @@ The \code{plot()} function will display how the estimated
 }
 \examples{
   
-serengeti_ews <- variogram_sews(serengeti, subset_frac = 0.01, 
-                                model ="exp")
+serengeti_ews <- variogram_sews(serengeti, model ="exp")
+
 # Display the change in variogram parameters 
 plot(serengeti_ews, along = serengeti.rain) + 
   ggplot2::labs(x = "Rainfall (mm)")
@@ -71,5 +71,6 @@ plot_variogram(serengeti_ews, along = serengeti.rain)
 
 }
 \seealso{
-\code{\link{variogram_sews}}, \code{\link{indictest}}
+\code{\link{variogram_sews}}, \code{\link{indictest}}, 
+  \code{\link{plot_variogram}}
 }

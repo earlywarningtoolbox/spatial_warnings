@@ -16,7 +16,8 @@ Imports:
     stats,
     utils,
     future.apply, 
-    gsl
+    gsl, 
+    segmented
 Suggests:
     moments, 
     poweRlaw, 
@@ -25,7 +26,8 @@ Suggests:
     covr, 
     acss, 
     mgcv, 
-    gstat
+    gstat, 
+    sp
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
 RoxygenNote: 7.1.0.9000

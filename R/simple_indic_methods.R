@@ -43,8 +43,7 @@ as.data.frame.simple_sews_list <- function(x, ..., wide = FALSE) {
 #'@method print simple_sews_single
 #'@export
 print.simple_sews_single <- function(x, ...) { 
-  x.list <- list(x)
-  summary.simple_sews_list(x.list, ...)
+  summary.simple_sews_single(x, ...)
 }
 #'@method print simple_sews_list
 #'@export
@@ -61,8 +60,20 @@ print.simple_sews_list <- function(x, ...) {
 summary.simple_sews_single <- function(object, 
                                        indicname = object[["taskname"]], 
                                        ...) { 
-  object.list <- list(object)
-  summary.simple_sews_list( object.list )
+  cat('Spatial Early-Warning:', indicname, '\n') 
+  cat('\n')
+  display_size_info(object)
+  cat('\n')
+  
+  # Format output table
+  output <- as.data.frame(object, wide = TRUE)
+  names(output)[1] <- c('Mat. #')
+  
+  print.data.frame(output, row.names = FALSE, digits = DIGITS)
+  
+  cat('\n')
+  cat("The following methods are available: \n")
+  cat(list_methods(class(object)), "\n")
 }
 #'@method summary simple_sews_list
 #'@export
@@ -83,7 +94,7 @@ summary.simple_sews_list <- function(object,
   
   cat('\n')
   cat("The following methods are available: \n")
-  cat(list_methods("simple_sews_list"), "\n")
+  cat(list_methods(class(object)), "\n")
   
   invisible(output)
 }

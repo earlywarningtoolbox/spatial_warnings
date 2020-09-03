@@ -8,12 +8,16 @@
 #' 
 #' @param mat A matrix (TRUE/FALSE values) or a list of matrices 
 #' 
-#' @param subset_frac The number of matrix cells to consider (as a 
-#'   proportion of the total number in the matrix) to compute the variogram. 
-#'   A lower value here will speed up computations, at the expense of precision.
+#' @param model The variogram model to use, either "sph" (for a spherical
+#'   model) or "exp" (for an exponential model)
 #' 
-#' @param model The variogram model to use, either "sph" (for a spherical model)
-#'   or "exp" (for an exponential model)
+#' @param nmax The maximum number of pairs of cells to use when computing the 
+#'   variogram
+#' 
+#' @param nbins Number of distance bins to use to compute the variogram
+#' 
+#' @param cutoff Maximum distance to consider in the variogram. If NULL, then 
+#'   a distance equal to one third of the diagonal of the matrix is used
 #' 
 #' @return A list object of class "variogram_sews", that can be displayed 
 #'   using \code{summary()}, \code{plot()}, etc. Significance of values can 
@@ -72,7 +76,6 @@
 #' 
 #' \dontrun{
 #' serengeti_ews <- variogram_sews(serengeti, 
-#'                                 nmax = 1e6, 
 #'                                 model ="exp")
 #' plot(serengeti_ews, along = serengeti.rain)
 #' summary(serengeti_ews)
@@ -102,7 +105,6 @@ variogram_sews <- function(mat,
     results <- lapply(mat, variogram_sews, model, nmax, nbins, cutoff)
     names(results) <- names(mat)
     class(results) <- c('variogram_sews_list',  
-                        'variogram_sews', 
                         'simple_sews_list', 
                         'sews_result_list')
     attr(results, 'indicname') <- "Variogram-based indicators"
@@ -127,10 +129,8 @@ variogram_sews <- function(mat,
                  taskname = "Variogram-based indicators")
   
   class(output) <- c('variogram_sews_single', 
-                     'variogram_sews', 
                      'simple_sews_single', 
-                     'sews_result_list',
-                     'list')
+                     'sews_result_list')
   attr(output, 'indicname') <- "Variogram-based indicators"
   
   return(output)
@@ -263,12 +263,13 @@ predict.variogram_sews_single <- function(object, newdist = NULL, ...) {
 #' 
 #' @seealso 
 #' 
-#'   \code{\link{variogram_sews}}, \code{\link{indictest}}
+#' \code{\link{variogram_sews}}, \code{\link{indictest}}, 
+#'   \code{\link{plot_variogram}}  
 #' 
 #' @examples 
 #'   
-#' serengeti_ews <- variogram_sews(serengeti, subset_frac = 0.01, 
-#'                                 model ="exp")
+#' serengeti_ews <- variogram_sews(serengeti, model ="exp")
+#' 
 #' # Display the change in variogram parameters 
 #' plot(serengeti_ews, along = serengeti.rain) + 
 #'   ggplot2::labs(x = "Rainfall (mm)")
@@ -361,7 +362,7 @@ fit_variogram <- function(mat, model, nmax, nbins, cutoff) {
   
   # Handle missing arguments 
   if ( is.null(cutoff) ) { 
-    cutoff <- sqrt(nrow(mat)^2 + ncol(mat)^2) / 10
+    cutoff <- (1/3) * sqrt(nrow(mat)^2 + ncol(mat)^2) 
   }
   
   # Make the model choice case-insensitive
@@ -388,8 +389,10 @@ fit_variogram <- function(mat, model, nmax, nbins, cutoff) {
   # Fit variogram. We first use a segmented regression to find a breakpoint in 
   # the empirical variogram, then use that as starting values for correlation 
   # range. 
-  brk_model <- suppressWarnings(segmented::segmented(lm(gamma ~ dist, 
-                                                        data = vario)))
+  brk_model <- suppressWarnings({ 
+    segmented::segmented(lm(gamma ~ dist, 
+                            data = vario))
+  })
   brk_coefs <- coef(brk_model)
   
   # Extract the break value, if there is one
@@ -440,7 +443,7 @@ variogram_internal <- function(mat, nmax, nbins, cutoff) {
   while ( is.na(v[line, "gamma"]) || v[line, "gamma"] == 0 ) { 
     line <- line + 1 
   }
-  subset(v, np > 0 & seq.int(nrow(v)) >= line )
+  v[ v[ ,"np"] > 0 & seq.int(nrow(v)) >= line, ]
 }
 
 spherical_model <- function(X, nugget, psill, range) { 
@@ -469,12 +472,16 @@ compute_vario_metrics <- function(pars) {
 #' 
 #' @param mat A matrix 
 #' 
-#' @param subset_frac The number of matrix cells to consider (as a 
-#'   proportion of the total number in the matrix) to compute the variogram. 
-#'   A lower value here will speed up computations, at the expense of precision.
+#' @param model The variogram model to use, either "sph" (for a spherical
+#'   model) or "exp" (for an exponential model)
 #' 
-#' @param model The variogram model to use, either "sph" (for a spherical model)
-#'   or "exp" (for an exponential model)
+#' @param nmax The maximum number of pairs of cells to use when computing the 
+#'   variogram
+#' 
+#' @param nbins Number of distance bins to use to compute the variogram
+#' 
+#' @param cutoff Maximum distance to consider in the variogram. If NULL, then 
+#'   a distance equal to one third of the diagonal of the matrix is used
 #' 
 #' @examples 
 #' 
@@ -502,12 +509,16 @@ raw_variogram_metrics <- function(mat,
 #' 
 #' @param mat A matrix 
 #' 
-#' @param subset_frac The number of matrix cells to consider (as a 
-#'   proportion of the total number in the matrix) to compute the variogram. 
-#'   A lower value here will speed up computations, at the expense of precision.
+#' @param model The variogram model to use, either "sph" (for a spherical
+#'   model) or "exp" (for an exponential model)
 #' 
-#' @param model The variogram model to use, either "sph" (for a spherical model)
-#'   or "exp" (for an exponential model)
+#' @param nmax The maximum number of pairs of cells to use when computing the 
+#'   variogram
+#' 
+#' @param nbins Number of distance bins to use to compute the variogram
+#' 
+#' @param cutoff Maximum distance to consider in the variogram. If NULL, then 
+#'   a distance equal to one third of the diagonal of the matrix is used
 #' 
 #' @seealso raw_variogram_metrics, variogram_sews
 #' 

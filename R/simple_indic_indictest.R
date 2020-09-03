@@ -40,7 +40,7 @@ indictest.simple_sews_single <- function(x,
   x <- append(x, null_values[["info"]])
   
   class(x) <- c('simple_sews_test_single', 'sews_test', 
-                'sews_result_single', 'list')
+                'sews_result_single')
   
   return(x)
 }
@@ -61,7 +61,7 @@ indictest.simple_sews_list <- function(x,
   }
   
   class(results) <- c('simple_sews_test_list', 'sews_test', 
-                      'sews_result_list', 'list')
+                      'sews_result_list')
   
   return(results)
 }

@@ -145,8 +145,7 @@ patchdistr_sews <- function(mat,
     results <- future.apply::future_lapply(mat, patchdistr_sews, merge,
                                            fit_lnorm, best_by, xmin,
                                            xmin_bounds, wrap)
-    class(results) <- c('patchdistr_sews_list', 'patchdistr_sews', 
-                        'sews_result_list', 'list')
+    class(results) <- c('patchdistr_sews_list', 'sews_result_list')
     return(results)
   } 
   
@@ -202,8 +201,7 @@ patchdistr_sews <- function(mat,
                  npatches = length(psd),
                  unique_patches = length(unique(psd)), 
                  orig_data = mat)
-  class(result) <- c('patchdistr_sews_single', 'patchdistr_sews', 
-                     'sews_result_single', 'list')
+  class(result) <- c('patchdistr_sews_single', 'sews_result_single')
   
   return(result)
 }

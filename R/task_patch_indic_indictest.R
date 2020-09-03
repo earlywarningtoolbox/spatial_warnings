@@ -64,8 +64,7 @@ indictest.patchdistr_sews_single <- function(x,
   class(ans) <- c('patchdistr_sews_test_single', 
                   'patchdistr_sews_single', 
                   'sews_result_single', 
-                  'sews_test', 
-                  'list')
+                  'sews_test')
   return(ans)
 }
 
@@ -87,7 +86,7 @@ indictest.patchdistr_sews_list <- function(x,
   class(results) <- c('patchdistr_sews_test_list', 
                       'patchdistr_sews_list', 
                       'sews_result_list', 
-                      'sews_test', 'list')
+                      'sews_test')
   
   return(results)
   
@@ -108,12 +107,12 @@ print.patchdistr_sews_test_single <- function(x, ...) {
 
 #'@export
 summary.patchdistr_sews_test_list <- function(object, ...) { 
-  summary.patchdistr_sews(object, ...)
+  summary.patchdistr_sews_list(object, ...)
 }
 
 #'@export
 summary.patchdistr_sews_test_single <- function(object, ...) { 
-  summary.patchdistr_sews(object, ...)
+  summary.patchdistr_sews_single(object, ...)
 }
 
 # Convert each element to a data frame, and a column with the matrixn number

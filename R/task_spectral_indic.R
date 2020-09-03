@@ -201,8 +201,7 @@ spectral_sews <- function(mat,
                      'spectral_sews', 
                      'simple_sews_single', 
                      'simple_sews', 
-                     'sews_result_single', 
-                     'list')
+                     'sews_result_single')
   
   return(output)
 }

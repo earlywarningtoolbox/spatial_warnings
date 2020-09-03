@@ -9,12 +9,16 @@ raw_structvar(mat, model = "sph", nmax = 100000L, nbins = 32, cutoff = NULL)
 \arguments{
 \item{mat}{A matrix}
 
-\item{model}{The variogram model to use, either "sph" (for a spherical model)
-or "exp" (for an exponential model)}
+\item{model}{The variogram model to use, either "sph" (for a spherical
+model) or "exp" (for an exponential model)}
 
-\item{subset_frac}{The number of matrix cells to consider (as a 
-proportion of the total number in the matrix) to compute the variogram. 
-A lower value here will speed up computations, at the expense of precision.}
+\item{nmax}{The maximum number of pairs of cells to use when computing the 
+variogram}
+
+\item{nbins}{Number of distance bins to use to compute the variogram}
+
+\item{cutoff}{Maximum distance to consider in the variogram. If NULL, then 
+a distance equal to one third of the diagonal of the matrix is used}
 }
 \description{
 Compute the structural variance on a matrix.

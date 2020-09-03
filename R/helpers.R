@@ -77,7 +77,8 @@ ifNULLthen <- function(a, b) {
 }
 
 list_methods <- function(class, 
-                         exclude = c("print", "display_size_info")) { 
+                         exclude = c("print", "display_size_info", 
+                                     "summary")) { 
   all_methods <- lapply(class, function(class) { 
     tab <- attr(methods(class = class), "info")
 #     tab[tab[ ,"from"] == "spatialwarnings", "generic"]

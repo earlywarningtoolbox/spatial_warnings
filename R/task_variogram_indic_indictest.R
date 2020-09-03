@@ -35,14 +35,9 @@ indictest.variogram_sews_single <- function(x,
                                             ...) { 
   
   # This function will produce a vector, with the 4 first values holding 
-  # the summarized metrics, and the last ones the values of the variogram. The 
-  # total number of values is the same, as the locations at which the variogram
-  # is sampled stay constant. 
+  # the summarized metrics, and the last ones the values of the variogram. 
   metric_compute <- function(mat) { 
-    a <- fit_variogram(mat, 
-                       subset_frac = x[['pars']][['subset_frac']], 
-                       model = x[["pars"]][["model"]], 
-                       locations = x[["location"]]) 
+    a <- with(x[["pars"]], fit_variogram(mat, model, nmax, nbins, cutoff))
     unlist(with(a, c(compute_vario_metrics(pars), vario[ ,"gamma"])))
   }
   

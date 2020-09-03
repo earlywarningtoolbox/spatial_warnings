@@ -120,7 +120,7 @@ create_indicator <- function(fun,
                    indicf = fun)
     
     class(result) <- c('custom_sews_single', 'simple_sews_single',
-                       'sews_result_single', 'list')
+                       'sews_result_single')
     return(result)
   }
   
@@ -130,7 +130,7 @@ create_indicator <- function(fun,
       result <- future.apply::future_lapply(mat, get_one_result, ...)
       names(result) <- names(mat)
       class(result) <- c('custom_sews_single', 'simple_sews_list',
-                         'sews_result_list', 'list')
+                         'sews_result_list')
     } else { 
       result <- get_one_result(mat, ...)
     }

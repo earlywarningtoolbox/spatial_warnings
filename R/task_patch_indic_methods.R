@@ -568,7 +568,11 @@ prepare_summary_table <- function(x, ...) {
 }
 
 #'@export
-summary.patchdistr_sews <- function(object, ...) { 
+summary.patchdistr_sews_single <- function(object, ...) { 
+  summary.patchdistr_sews_list(object, ...)
+}
+#'@export
+summary.patchdistr_sews_list <- function(object, ...) { 
   dat <- prepare_summary_table(object)
   
   cat('Spatial Early-Warning: Patch-based indicators\n') 
@@ -576,7 +580,7 @@ summary.patchdistr_sews <- function(object, ...) {
   print.data.frame(dat, row.names = FALSE, digits = DIGITS)
   cat('\n')
   cat("The following methods are available: \n")
-  cat(list_methods("simple_sews_list"), "\n")
+  cat(list_methods(class(object)), "\n")
   
   invisible(dat)
 }
@@ -590,8 +594,12 @@ summary.patchdistr_sews <- function(object, ...) {
 #   equivalents)
 
 #'@export
-print.patchdistr_sews <- function(x, ...) { 
-  summary(x, ...)
+print.patchdistr_sews_single <- function(x, ...) { 
+  summary.patchdistr_sews_single(x, ...)
+}
+#'@export
+print.patchdistr_sews_list <- function(x, ...) { 
+  summary.patchdistr_sews_list(x, ...)
 }
 
 

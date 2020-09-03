@@ -271,12 +271,16 @@ pl_ll <- function(dat, expo, xmin) {
 #' exp_fit(patchsizes(forestgap[[8]]))
 #'  
 #' # Use the estimated parameters as an indicator function
+#' \dontrun{
+#' 
 #' get_truncation <- function(mat) { 
 #'    c(exp_cutoff = exp_fit(patchsizes(mat))$cutoff)
-#'  }
+#' }
 #' trunc_indic <- compute_indicator(forestgap, get_truncation)
 #' plot(trunc_indic)
 #' plot(indictest(trunc_indic, nulln = 19))
+#' 
+#' }
 #' 
 #'@export
 pl_fit <- function(dat, xmin = 1) { 

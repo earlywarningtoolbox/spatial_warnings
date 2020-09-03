@@ -24,7 +24,8 @@ Suggests:
     testthat, 
     covr, 
     acss, 
-    mgcv
+    mgcv, 
+    gstat
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
 RoxygenNote: 7.1.0.9000

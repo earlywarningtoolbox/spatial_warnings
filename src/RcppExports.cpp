@@ -152,6 +152,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// variogram_internal_cpp
+NumericMatrix variogram_internal_cpp(NumericMatrix mat, int nmax, int bins, double cutoff);
+RcppExport SEXP _spatialwarnings_variogram_internal_cpp(SEXP matSEXP, SEXP nmaxSEXP, SEXP binsSEXP, SEXP cutoffSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< int >::type nmax(nmaxSEXP);
+    Rcpp::traits::input_parameter< int >::type bins(binsSEXP);
+    Rcpp::traits::input_parameter< double >::type cutoff(cutoffSEXP);
+    rcpp_result_gen = Rcpp::wrap(variogram_internal_cpp(mat, nmax, bins, cutoff));
+    return rcpp_result_gen;
+END_RCPP
+}
 // sum_all_one_over_k
 double sum_all_one_over_k(int from, int to, double expo);
 RcppExport SEXP _spatialwarnings_sum_all_one_over_k(SEXP fromSEXP, SEXP toSEXP, SEXP expoSEXP) {
@@ -191,6 +205,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_spatialwarnings_shuffle_and_compute", (DL_FUNC) &_spatialwarnings_shuffle_and_compute, 3},
     {"_spatialwarnings_rspectrum", (DL_FUNC) &_spatialwarnings_rspectrum, 1},
     {"_spatialwarnings_cpp_skewness", (DL_FUNC) &_spatialwarnings_cpp_skewness, 1},
+    {"_spatialwarnings_variogram_internal_cpp", (DL_FUNC) &_spatialwarnings_variogram_internal_cpp, 4},
     {"_spatialwarnings_sum_all_one_over_k", (DL_FUNC) &_spatialwarnings_sum_all_one_over_k, 3},
     {"_spatialwarnings_sum_all_one_over_k_before", (DL_FUNC) &_spatialwarnings_sum_all_one_over_k_before, 2},
     {NULL, NULL, 0}

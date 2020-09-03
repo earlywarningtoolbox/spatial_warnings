@@ -108,6 +108,10 @@ cpp_skewness <- function(X) {
     .Call('_spatialwarnings_cpp_skewness', PACKAGE = 'spatialwarnings', X)
 }
 
+variogram_internal_cpp <- function(mat, nmax, bins, cutoff) {
+    .Call('_spatialwarnings_variogram_internal_cpp', PACKAGE = 'spatialwarnings', mat, nmax, bins, cutoff)
+}
+
 sum_all_one_over_k <- function(from, to, expo) {
     .Call('_spatialwarnings_sum_all_one_over_k', PACKAGE = 'spatialwarnings', from, to, expo)
 }

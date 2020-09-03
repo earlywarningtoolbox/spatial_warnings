@@ -14,8 +14,9 @@
 #' crossed, \emph{e.g.} going from multiple stable states to a single stable 
 #' state. For a few decades, much research has been dedicated to finding a 
 #' way to anticipate these tipping points in ecological systems. This has led 
-#' to the suggestion of several indicators that could reflect the proximity 
-#' of an ecosystem to a tipping point. 
+#' to the development of several indicators, i.e. metrics based on spatial
+#' structure, that could reflect the proximity of an ecosystem to a tipping
+#' point. 
 #' 
 #' This package implements the computation of these indicators, or 
 #' \emph{early-warning signals} (EWS), on spatial raster data. High-level 
@@ -24,7 +25,7 @@
 #' Lower-level functions are also available to integrate early-warning signals 
 #' into different workflows. 
 #' 
-#' Main functions provided by this package 
+#' Main functions provided by this package: 
 #' 
 #' "Workflow" functions, which may compute several indicators at once:
 #' \itemize{ 
@@ -33,6 +34,7 @@
 #'   \item \code{\link{patchdistr_sews}}: EWS based on patch-size distributions
 #'   \item \code{\link{kbdm_sews}}: Kolmogorov complexity
 #'   \item \code{\link{flowlength_sews}}: Flow length 
+#'   \item \code{\link{variogram_sews}}: Variogram-based indicators
 #' }
 #' 
 #' Individual indicators, which may be used to compute raw indicator values 
@@ -48,11 +50,12 @@
 #'           \code{\link{raw_plrange}} : Power-law range
 #'   \item \code{\link{raw_kbdm}}: Kolmogorov complexity
 #'   \item \code{\link{raw_flowlength_uniform}}: Flow Length
+#'   \item \code{\link{raw_variogram_metrics}}: Variogram-based metrics
 #' }
 #' 
 #' The package homepage is available at 
 #' \href{https://github.com/spatial-ews/spatialwarnings}{Github}
-#' and a longer 
+#' and a  
 #' \href{https://alex.lecairn.org/spatialwarnings-faq.html}{user guide} is 
 #' also available. 
 #' 

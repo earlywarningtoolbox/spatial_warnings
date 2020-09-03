@@ -2,7 +2,7 @@
 #
 #' @title Custom Spatial Early-Warning signals
 #' 
-#' @alias custom_indicator
+#' @aliases custom_indicator
 #' 
 #' @description Computation, significance assessment and display of trends 
 #'   of a custom, user-defined indicator.
@@ -40,7 +40,7 @@
 #'   \code{plot}, \code{summary}, etc. (see Examples). \code{compute_indicator} 
 #'   does the same but without needing an intermediate indicator function. 
 #' 
-#' @seelaso \code{\link{simple_sews}}
+#' @seealso \code{\link{simple_sews}}
 #' 
 #' @examples
 #' 

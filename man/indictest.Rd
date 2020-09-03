@@ -27,7 +27,7 @@ An object with a class ending in \code{*_sews_test}, whose exact
   class depends on the input object. \code{plot}, \code{summary} methods are
   available to display the results of computations, and additional methods
   may be available depending on the input object (e.g. see
-  \link{patchdistr_sews_plot}).
+  \code{\link{patchdistr_sews_plot}}).
 }
 \description{
 Assess the significance of spatial early-warning indicators
@@ -38,19 +38,26 @@ Assess the significance of spatial early-warning indicators
   in the absence of the biological process of interest. 
 
 For a given indicator, a null distribution is obtained by producing a set 
-  of 'null' matrices on which indicator values are recomputed. This produces 
-  a null distribution of \code{nulln} values against which the observed
-  value is tested. 
+  of 'null' matrices, from which indicator values are recomputed. This
+  produces a null distribution of \code{nulln} indicator values against
+  which the observed value is tested. 
 
 Several methods are available to produce the set of null matrices. If 
-  \code{null_method} is set ot "perm", the original matrix is reshuffled 
-  to obtain a null matrix. If the method is "intercept", the mean cover of a 
-  matrix \deqn{mu} is computed, then the matrix is filled randomly with 
-  TRUE values (with probability \deqn{mu}) and FALSE (with probability 
-  \deqn{1 - mu}). This method only works with logical matrices (with 
-  TRUE/FALSE values). 
+  \code{null_method} is set to "perm", the original matrix is reshuffled 
+  to obtain a null matrix. If \code{null_method} is set to "intercept", then 
+  a generalized linear model of the form `y ~ 1` (where y represents the 
+  values of the matrix) is fitted, then values are drawn from this model. If 
+  \code{null_method} is set to "smooth", then a smooth surface is fitted
+  based on a generalized additive model (using \code{\link[=mgcv]{gam}}) to
+  the matrix, then values are drawn from this model. When using the
+  "intercept" or "smooth" null models, it is important to make sure the
+  model 'family' corresponds to the type of values present in the matrix. By
+  default, if a matrix contains TRUE/FALSE values, a `binomial()` family is
+  used, otherwise a `gaussian()` family is used. More information about null
+  models is available in the \href{https://alex.lecairn.org/spatialwarnings-faq.html#Using_advanced_null_models}{spatialwarnings FAQ}. 
 
-The list null_control can have the following components: 
+The list \code{null_control} can be used to adjust the computation of 
+  null matrices. It can have the following components: 
   \itemize{ 
     \item `family` The family used in the model used to produce the null 
       matrices. Typically, it is one of \code{\link[=stats]{binomial}()}, 
@@ -62,10 +69,6 @@ The list null_control can have the following components:
     \item `qsup` The upper quantile to compute from the null distribution 
       and display in summaries/plots. A numeric value between 0 and 1.
   }
-
-\code{null_method} can be set to 'smooth'. In that case, an isotropic spline 
-  will be fitted to the matrix (using \link[mgcv]{gam}), and values will 
-  be
 }
 \references{
 Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 

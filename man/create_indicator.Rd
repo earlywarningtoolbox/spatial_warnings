@@ -2,6 +2,7 @@
 % Please edit documentation in R/simple_indic.R
 \name{create_indicator}
 \alias{create_indicator}
+\alias{custom_indicator}
 \alias{compute_indicator}
 \title{Custom Spatial Early-Warning signals}
 \usage{
@@ -93,4 +94,7 @@ plot(cv_indic2, along = serengeti.rain)
 \dontrun{ 
 indictest(cv_indic, nulln = 99)
 }
+}
+\seealso{
+\code{\link{simple_sews}}
 }

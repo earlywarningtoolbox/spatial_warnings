@@ -6,18 +6,27 @@ Improvements:
 
   * Documentation extended and improved
   
+  * Fitting of distributions now uses 'plexpo' and 'trunc' to refer to the 
+      exponent of a power-law ("slope") and its exponential truncation (from 
+      "expo" and "rate", which was more ambiguous)
+  
+  * EXPERIMENTAL: Variogram-based indicators has been added. Note that this 
+      deserves more testing to make sure that the computation of variograms are
+      correct. 
+  
 Bug fixes: 
 
   * Fix a bug where available methods were not displayed in `summary()`
   
 Misc changes: 
   
-  * NAs in provided matrices produce warnings instead of errors
+  * NAs in provided matrices now produce warnings instead of errors
   
-  * Dependency to tidyr removed
+  * Dependency to tidyr has been removed (this fixes occasional NOTEs on CRAN
+     automated checking)
   
 spatialwarnings v2.0.0 (Release date: 2020-05-14)
-===============================================
+=================================================
 
 Improvements: 
   

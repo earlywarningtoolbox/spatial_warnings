@@ -9,6 +9,10 @@
 #include <Rcpp.h>
 using namespace Rcpp; 
 
+#define _DIST 0
+#define _SQ 1
+#define _NVAL 2
+
 // How much we want to bias the short distances over long distances. A high
 // value here will improve the sampling of variance at short distances, but 
 // if the value is too high computing times may increase a lot
@@ -34,7 +38,7 @@ NumericMatrix variogram_internal_cpp(NumericMatrix mat,
   for ( int i=0; i<bins; i++ ) { 
     // We do not consider distance = 0
     double dist = (i+1) * maxrange/bins; 
-    vario(i, 0) = dist; 
+    vario(i, _DIST) = dist; 
   }
   
   // Cell 1
@@ -71,8 +75,8 @@ NumericMatrix variogram_internal_cpp(NumericMatrix mat,
       int bin = (int) floor( bins * ( dist / maxrange ) );
 //         Rcout << "dist: " << dist << " maxrange: " << maxrange << 
 //           " bin: " << bin << "\n"; 
-      vario(bin, 1) += sq; 
-      vario(bin, 2) += 1.0; 
+      vario(bin, _SQ) += sq; 
+      vario(bin, _NVAL) += 1.0; 
       ntot++; 
     }
     
@@ -80,7 +84,7 @@ NumericMatrix variogram_internal_cpp(NumericMatrix mat,
   
   // Normalize the variogram
   for ( int i=0; i<bins; i++ ) { 
-    vario(i, 1) = 0.5 * vario(i, 1) / vario(i, 2);
+    vario(i, _SQ) = 0.5 * vario(i, _SQ) / vario(i, _NVAL);
   }
   
   return(vario); 

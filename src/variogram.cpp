@@ -31,7 +31,7 @@ NumericMatrix variogram_internal_cpp(NumericMatrix mat,
   // latter has three columns in this order: the distance, the squared
   // differences and the number of values in the bin
   double mindist = 1; 
-  double maxdist = sqrt(nr*nr + nc*nc); 
+  double maxdist = sqrt( (double)(nr*nr + nc*nc) ); 
   maxdist = maxdist > cutoff ? cutoff : maxdist; 
   double maxrange = (maxdist - mindist);
   NumericMatrix vario(bins, 3); 
@@ -60,7 +60,7 @@ NumericMatrix variogram_internal_cpp(NumericMatrix mat,
       // variogram are biased towards zero distance: this helps having a 
       // variogram that is better-sampled at low distances, which are generally
       // the interesting parts for computing variogram-based EWS metrics
-      dist = sqrt( (i1-i2)*(i1-i2) + (j1-j2)*(j1-j2) ); 
+      dist = sqrt( (double)( (i1-i2)*(i1-i2) + (j1-j2)*(j1-j2) ) ); 
       double p_keep = exp( - SHORT_DIST_BIAS * dist / maxrange ); 
 //       Rcout << "dist: " << dist << " p_keep: " << p_keep << "\n"; 
       if ( R::runif(0, 1) < p_keep ) { 

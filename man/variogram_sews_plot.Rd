@@ -52,6 +52,7 @@ The \code{plot()} function will display how the estimated
 }
 \examples{
   
+\dontrun{ 
 serengeti_ews <- variogram_sews(serengeti, model ="exp")
 
 # Display the change in variogram parameters 
@@ -61,7 +62,6 @@ plot(serengeti_ews, along = serengeti.rain) +
 # Visualize the fitted variograms
 plot_variogram(serengeti_ews, along = serengeti.rain) 
 
-\dontrun{ 
   # Test the trends (nulln should be set to a higher value to obtain 
   # meaningful results
   serengeti_test <- indictest(serengeti_ews, nulln = 19)

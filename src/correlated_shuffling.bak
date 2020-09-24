@@ -1,0 +1,117 @@
+// 
+// This code will shuffle a matrix but try to maintain the same Moran's I
+// 
+/*
+# Approche par dichotomie d'abord 
+dichotomy_optim <- function(refmat, 
+                            itermax = 10000) { 
+  iter <- 0
+  minerr <- 10 # minimum error found 
+  mat <- matrix(sample(refmat), 
+                nrow = nrow(refmat), 
+                ncol = ncol(refmat))
+  target <- raw_moran(refmat)
+  
+  while ( iter < itermax ) { 
+    
+    # Get current error
+    error <- target - raw_moran(mat)
+    cat("\nCurrent error: ", error, "")
+    
+    # Make a candidate swap
+    accept_swap <- FALSE
+    while ( ! accept_swap ) { 
+      
+      # Get temporary matrix and make a swap
+      tmpmat <- mat 
+      swap.r <- sample.int(n = nrow(mat), size = 2)
+      swap.c <- sample.int(n = ncol(mat), size = 2)
+      tmp <- tmpmat[swap.r[1], swap.c[1]]
+      tmpmat[swap.r[1], swap.c[1]] <- tmpmat[swap.r[2], swap.c[2]]
+      tmpmat[swap.r[2], swap.c[2]] <- tmp
+      
+      # Do we improve ?
+      candidate_error <- target - raw_moran(tmpmat)
+      if ( candidate_error < error ) { 
+        accept_swap <- TRUE
+        mat <- tmpmat 
+        cat('.')
+      }
+    }
+    
+  }
+  
+}
+dichotomy_optim(arizona[[1]])
+*/
+
+#include <RcppArmadillo.h>
+using namespace arma; 
+
+// Generate random integer between min and max 
+#define RANDN(min, max) \
+  (int)(unif_rand() * (max - min)) + min; 
+
+// Function declarations defined somewhere else but we use it here
+double raw_moran(arma::mat& mat);
+arma::mat shuffle_matrix(arma::mat& mat); 
+
+inline void cellswap(arma::mat& m, 
+                 arma::uword x, 
+                 arma::uword y) { 
+  uword nr = m.n_rows; 
+  double tmp = m(x,y); 
+  m(x,y) = m((x+1)%nr, y); 
+  m((x+1)%nr, y) = tmp; 
+}
+
+//[[Rcpp::export]]
+arma::mat corrshuffle(arma::mat refmat, 
+                      double itermax) { 
+  
+  // Create a random matrix 
+  arma::mat rmat = shuffle_matrix(refmat); 
+  double target = raw_moran(refmat); 
+  
+  uword nr = refmat.n_rows; 
+  uword nc = refmat.n_cols; 
+  
+  uword iter = 0;
+  while ( iter < itermax ) {
+    
+    // Get current error
+    double error = target - raw_moran(rmat); 
+    bool accept_swap = false; 
+    
+    while ( ! accept_swap ) { 
+      Rcpp::checkUserInterrupt(); 
+      
+      // Pick a cell and see if we can swap the cell below
+      uword cellr = RANDN(1, nr);
+      uword cellc = RANDN(1, nc);
+      uword nbcellr = (cellr + 1) % nr; // neighbor wraps around
+      uword nbcellc = cellc; 
+      // Rcpp::Rcout << "Swapping " << cellr << "/" << cellc << "\n"; 
+      
+      // If neighbor below has different value 
+      if ( rmat(cellr, cellc) != rmat(nbcellr, nbcellc) ) { 
+        // Try a swap 
+        cellswap(rmat, cellr, cellc); 
+        double newerror = target - raw_moran(rmat); 
+        
+        if ( newerror < error ) { 
+          accept_swap = true; 
+          error = newerror; 
+          Rcpp::Rcout << "Error: " << newerror << "\n"; 
+          
+          iter++; 
+        } else { 
+          // Swap back the two cells
+          cellswap(rmat, cellr, cellc); 
+        }
+      }
+    }
+  }
+  
+  return(rmat); 
+}

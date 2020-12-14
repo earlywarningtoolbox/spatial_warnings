@@ -13,8 +13,8 @@ indictest.spectral_sews_list <- function(x,
                                          ...) { 
   
   # Compute a distribution of null values for SDR
-  results <- future.apply::future_lapply(x, indictest.spectral_sews_single, 
-                                         nulln, null_method, null_control, ...)
+  results <- future_lapply_seed(x, indictest.spectral_sews_single, 
+                                nulln, null_method, null_control, ...)
   
   # Format and return output
   class(results) <- c('spectral_sews_test_list', 

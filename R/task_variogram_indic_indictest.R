@@ -12,8 +12,8 @@ indictest.variogram_sews_list <- function(x,
                                           null_control = NULL, 
                                           ...) { 
   
-  results <- future.apply::future_lapply(x, indictest.variogram_sews_single, 
-                                         nulln, null_method, null_control, ...)
+  results <- future_lapply_seed(x, indictest.variogram_sews_single, 
+                                nulln, null_method, null_control, ...)
   
   # Add matrixn column with correct matrixn number
   for ( nb in seq_along(results) ) { 

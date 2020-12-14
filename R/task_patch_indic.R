@@ -142,9 +142,9 @@ patchdistr_sews <- function(mat,
   
   # If input is a list -> apply on each element
   if ( !merge & is.list(mat)) { 
-    results <- future.apply::future_lapply(mat, patchdistr_sews, merge,
-                                           fit_lnorm, best_by, xmin,
-                                           xmin_bounds, wrap)
+    results <- future_lapply_seed(mat, patchdistr_sews, merge,
+                                  fit_lnorm, best_by, xmin,
+                                  xmin_bounds, wrap)
     class(results) <- c('patchdistr_sews_list', 'sews_result_list')
     return(results)
   } 

@@ -76,7 +76,7 @@ indictest.patchdistr_sews_list <- function(x,
                                            ...) { 
   
   # Compute a distribution of null values for SDR
-  results <- future.apply::future_lapply(x, indictest.patchdistr_sews_single, 
+  results <- future_lapply_seed(x, indictest.patchdistr_sews_single, 
                                          nulln, null_method, null_control, ...)
   
   # Transfer names 

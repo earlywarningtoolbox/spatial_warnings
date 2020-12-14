@@ -13,13 +13,13 @@ test_that("Parallelism work", {
     
     plan(sequential)
     b.1 <- system.time( indictest(a, 49) ) 
-    plan(multiprocess)
+    plan(multisession)
     b.2 <- system.time( indictest(a, 49) ) 
     
     expect_true( b.1["elapsed"] > b.2["elapsed"] )
     
     if ( .Platform$OS.type == "unix" ) { 
-      plan(multicore)
+      plan(multisession)
       b.3 <- system.time( indictest(a, 49) ) 
       expect_true( b.1["elapsed"] > b.3["elapsed"] )
     }

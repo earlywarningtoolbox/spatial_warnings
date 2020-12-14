@@ -17,9 +17,9 @@ test_that("dtpl handles the log argument correctly", {
 })
 
 if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) { 
-
+  
   test_that('PL fitting works', { 
-
+    
     # Change dir if running tests manually
     if ( file.exists('./tests/testthat') ) { 
       library(testthat)
@@ -60,14 +60,13 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
         
         # ppl_ll <-> zeta.loglike
         expect_equal(zeta.loglike(pldat, exponent = expo, threshold = xmin), 
-                      pl_ll(pldat, expo, xmin = xmin))
+                     pl_ll(pldat, expo, xmin = xmin))
         
         # pl_fit <-> zeta.fit 
         our_expo <- pl_fit(pldat, xmin = xmin)[['plexpo']]
         clauset_expo <- zeta.fit(pldat, threshold = xmin)[['exponent']]
         powerlaw_expo <- estimate_pars( poweRlaw::displ$new(pldat) )[["pars"]]
         expect_equal(clauset_expo, our_expo, tol = 1e-3)
-        
         
         # Look at fit
         plot(log10(cumpsd(pldat[pldat>=xmin])))
@@ -210,8 +209,7 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
             )
           if ( ! all( is.na(dtpl_result) ) ) { 
             expect_equal(dtpl_result, ddpxp_result, 
-                          tolerance = 1e-4)
-
+                         tolerance = 1e-4)
           }
           
           # Here, we check that the binary called by the Clauset code actually 
@@ -221,8 +219,8 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
             )
           if (length(clauset_result) > 0) { 
             expect_equal(tpl_ll(tpldat, expo, rate, xmin),
-                          clauset_result, 
-                          tolerance = 1e-4)
+                         clauset_result, 
+                         tolerance = 1e-4)
           }
           
           our_fit <- tpl_fit(tpldat, xmin = xmin)

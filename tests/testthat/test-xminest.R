@@ -7,7 +7,7 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
     library(testthat)
     setwd('./tests/testthat') 
   }
-
+  
   # Setup pli from Clauzet et al's
   for ( s in dir('./pli-R-v0.0.3-2007-07-25', 
                 full.names = TRUE, pattern = '*.R') ) { 

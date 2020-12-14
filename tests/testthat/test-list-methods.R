@@ -29,7 +29,7 @@ test_that("Methods are OK", {
   
   
   # Test spectral sews
-  a <- spectral_sews(serengeti[1:2])
+  a <- spectral_sews(serengeti[1:2], c(0, .2), c(.8, 1))
   mets <- list_methods(class(a))
   expect_true({ 
     all(c('display_matrix', 'plot', 'indictest', 'plot_spectrum') %in% mets)

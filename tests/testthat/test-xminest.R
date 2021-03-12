@@ -81,6 +81,7 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
     # Check that fits are overwhelmingly good. Sometimes the poweRlaw code will
     # produce different fits, so we need to be able to accomodate some errors here.
     # We put five as a maximum tolerable number of mismatches (out of 45)
+    number_of_ok_fits <- sum(xmin_ests[ ,"fit_is_ok"])
     cat(paste0("Est. xmins OK: ", number_of_ok_fits, "/", nrow(parms), "\n"))
     expect_true({ 
       ( nrow(parms) - number_of_ok_fits ) <= 5

@@ -10,7 +10,7 @@ r:
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get install libfftw3-dev libgsl-dev 
+  - sudo apt-get install libfftw3-dev libgsl-dev libgit2-dev
   
 script:
   # Test first the fitting results against pli code

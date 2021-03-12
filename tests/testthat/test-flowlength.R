@@ -22,7 +22,7 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
     
     # Compute flow lengths
     ds <- cell_size / cos(slope * pi/180)
-    fls <- replicate(19999, { 
+    fls <- replicate(499, { 
       dat <- matrix(runif(L*cols), ncol = cols, nrow = L) < rho
       raw_flowlength_uniform(dat, cell_size = cell_size, slope = slope)
     })
@@ -47,12 +47,15 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
   # Obs. mean and Theoretical mean should be equal 
   expect_true( with(all_fls, t.test(x = obsmean, y = themean)$p.value) > 0.5 )
   expect_true( with(all_fls, t.test(x = obsvar, y = thevar)$p.value) > 0.5 )
-
+  
   # Obs mean and theoretical mean should be very close
   with( subset(all_fls, themean > 0 & thevar > 0), { 
-    plot(themean, abs(obsmean - themean) / themean )
-    expect_true( all( abs(obsmean - themean) / themean < 0.02) )
-    expect_true( all( abs(obsvar - thevar) / thevar < 0.1) )
+    expect_true({ 
+      all(coef(lm(obsmean ~ themean)) < c(0.05, 1.05))
+    })
+    expect_true({ 
+      all(coef(lm(obsvar ~ thevar)) < c(0.05, 1.05))
+    })
   })
 
   # library(ggplot2)

@@ -6,10 +6,9 @@
 #include <Rcpp.h>
 
 using namespace Rcpp;
-
+/*
 #define NUM_TERMS 1000000
 
-//[[Rcpp::export]]
 double discpowerexp_norm(double expo, 
                          double rate, 
                          int xmin) { 
@@ -20,4 +19,4 @@ double discpowerexp_norm(double expo,
   }
   
   return norm; 
-}
+}*/

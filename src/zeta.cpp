@@ -18,8 +18,7 @@ double sum_all_one_over_k(int from,
   
   return(total); 
 }
-
-//[[Rcpp::export]]
+/*
 double sum_all_one_over_k_before(int n, double expo) { 
   
   double total = 0;
@@ -28,4 +27,4 @@ double sum_all_one_over_k_before(int n, double expo) {
   }
   
   return(total); 
-}
+}*/

@@ -26,13 +26,6 @@ check_mat <- function(mat, NAerror = TRUE) {
   return(TRUE)
 }
 
-warn_if_not_square <- function(mat) { 
-  if ( diff(dim(mat)) != 0 ) { 
-    warning('The matrix is not square: indicator_sdr will only use a square ', 
-            'subset centered around the middle point.')
-  } 
-}
-
 # Check whether some variables are suited to make plots : used in task_generic
 #   and task_spectral sews
 check_suitable_for_plots <- function(obj, 

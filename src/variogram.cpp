@@ -15,7 +15,7 @@ using namespace Rcpp;
 
 // How much we want to bias the short distances over long distances. A high
 // value here will improve the sampling of variance at short distances, but 
-// if the value is too high computing times may increase a lot
+// if the value is too high computing times may increase a lot. 
 const double SHORT_DIST_BIAS = 3.0; 
 
 //[[Rcpp::export]]

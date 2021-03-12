@@ -18,19 +18,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// discpowerexp_norm
-double discpowerexp_norm(double expo, double rate, int xmin);
-RcppExport SEXP _spatialwarnings_discpowerexp_norm(SEXP expoSEXP, SEXP rateSEXP, SEXP xminSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type expo(expoSEXP);
-    Rcpp::traits::input_parameter< double >::type rate(rateSEXP);
-    Rcpp::traits::input_parameter< int >::type xmin(xminSEXP);
-    rcpp_result_gen = Rcpp::wrap(discpowerexp_norm(expo, rate, xmin));
-    return rcpp_result_gen;
-END_RCPP
-}
 // fl_internal
 double fl_internal(arma::mat m);
 RcppExport SEXP _spatialwarnings_fl_internal(SEXP mSEXP) {
@@ -179,22 +166,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// sum_all_one_over_k_before
-double sum_all_one_over_k_before(int n, double expo);
-RcppExport SEXP _spatialwarnings_sum_all_one_over_k_before(SEXP nSEXP, SEXP expoSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< double >::type expo(expoSEXP);
-    rcpp_result_gen = Rcpp::wrap(sum_all_one_over_k_before(n, expo));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_spatialwarnings_coarse_grain_cpp", (DL_FUNC) &_spatialwarnings_coarse_grain_cpp, 2},
-    {"_spatialwarnings_discpowerexp_norm", (DL_FUNC) &_spatialwarnings_discpowerexp_norm, 3},
     {"_spatialwarnings_fl_internal", (DL_FUNC) &_spatialwarnings_fl_internal, 1},
     {"_spatialwarnings_label_cpp", (DL_FUNC) &_spatialwarnings_label_cpp, 3},
     {"_spatialwarnings_raw_moran", (DL_FUNC) &_spatialwarnings_raw_moran, 1},
@@ -207,7 +181,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_spatialwarnings_cpp_skewness", (DL_FUNC) &_spatialwarnings_cpp_skewness, 1},
     {"_spatialwarnings_variogram_internal_cpp", (DL_FUNC) &_spatialwarnings_variogram_internal_cpp, 4},
     {"_spatialwarnings_sum_all_one_over_k", (DL_FUNC) &_spatialwarnings_sum_all_one_over_k, 3},
-    {"_spatialwarnings_sum_all_one_over_k_before", (DL_FUNC) &_spatialwarnings_sum_all_one_over_k_before, 2},
     {NULL, NULL, 0}
 };
 

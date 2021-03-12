@@ -5,10 +5,6 @@ coarse_grain_cpp <- function(mat, subsize) {
     .Call('_spatialwarnings_coarse_grain_cpp', PACKAGE = 'spatialwarnings', mat, subsize)
 }
 
-discpowerexp_norm <- function(expo, rate, xmin) {
-    .Call('_spatialwarnings_discpowerexp_norm', PACKAGE = 'spatialwarnings', expo, rate, xmin)
-}
-
 fl_internal <- function(m) {
     .Call('_spatialwarnings_fl_internal', PACKAGE = 'spatialwarnings', m)
 }
@@ -114,9 +110,5 @@ variogram_internal_cpp <- function(mat, nmax, bins, cutoff) {
 
 sum_all_one_over_k <- function(from, to, expo) {
     .Call('_spatialwarnings_sum_all_one_over_k', PACKAGE = 'spatialwarnings', from, to, expo)
-}
-
-sum_all_one_over_k_before <- function(n, expo) {
-    .Call('_spatialwarnings_sum_all_one_over_k_before', PACKAGE = 'spatialwarnings', n, expo)
 }
 

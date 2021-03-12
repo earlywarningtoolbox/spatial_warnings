@@ -130,7 +130,7 @@ variogram_sews <- function(mat,
   
   class(output) <- c('variogram_sews_single', 
                      'simple_sews_single', 
-                     'sews_result_list')
+                     'sews_result_single')
   attr(output, 'indicname') <- "Variogram-based indicators"
   
   return(output)
@@ -434,6 +434,7 @@ fit_variogram <- function(mat, model, nmax, nbins, cutoff) {
 
 # Function that wraps C++ code to compute the variogram
 variogram_internal <- function(mat, nmax, nbins, cutoff) { 
+  
   v <- variogram_internal_cpp(mat, nmax, nbins, cutoff)
   colnames(v) <- c("dist", "gamma", "np")
   v <- as.data.frame(v)

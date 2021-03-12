@@ -55,12 +55,12 @@ if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) {
         if ( exists('GRAPHICAL') && GRAPHICAL && est_xmin != est_xmin_plpkg ) { 
           
           dev.new()
-          par(mfrow = c(1,2))
+          par(mfrow = c(1, 2))
           plot(log10(cumpsd(pldat[pldat >= est_xmin])))
           our_fit <- pl_fit(pldat, xmin = est_xmin)
           xs <- unique(round(seq(min(pldat), max(pldat), length.out = 100)))
           lines(log10(xs), 
-                log10(ippl(xs, our_fit$expo, xmin = est_xmin)))
+                log10(ippl(xs, our_fit$plexpo, xmin = est_xmin)))
           title("OUR FIT")
           
           plot(log10(cumpsd(pldat[pldat >= est_xmin_plpkg])))

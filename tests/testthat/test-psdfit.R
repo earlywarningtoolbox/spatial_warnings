@@ -296,8 +296,8 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
         
         # Test equality of fits
         expect_equal(pl_fit(pldat, xmin = xmin)[["plexpo"]], 
-                      zeta.fit(pldat, xmin)[["exponent"]], 
-                      tol = 1e-3)
+                     zeta.fit(pldat, xmin)[["exponent"]], 
+                     tol = 1e-3)
         
         # Test the estimation of xmin
         expect_is(xmin_estim(pldat), "numeric")
@@ -305,7 +305,7 @@ if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS ) {
     }
     
   })
-
+  
   # Remove auxiliary binaries now that tests are done
   system("cd ./pli-R-v0.0.3-2007-07-25/zeta-function/ && rm zeta_func zeta_func.o")
   system("cd ./pli-R-v0.0.3-2007-07-25/exponential-integral/ && rm exp_int exp_int.o")

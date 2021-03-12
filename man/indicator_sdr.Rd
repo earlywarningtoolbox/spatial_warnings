@@ -2,7 +2,7 @@
 % Please edit documentation in R/deprecation.R
 \name{indicator_sdr}
 \alias{indicator_sdr}
-\title{(DEPRECATED) Density Ratio (SDR) indicator}
+\title{(DEFUNCT) Density Ratio (SDR) indicator}
 \usage{
 indicator_sdr(input, sdr_low_range = NULL, sdr_high_range = NULL, nulln = 99)
 }

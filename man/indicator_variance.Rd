@@ -2,7 +2,7 @@
 % Please edit documentation in R/deprecation.R
 \name{indicator_variance}
 \alias{indicator_variance}
-\title{(DEPRECATED) Spatial variance indicator}
+\title{(DEFUNCT) Spatial variance indicator}
 \usage{
 indicator_variance(input, subsize = 5, nulln = 99)
 }

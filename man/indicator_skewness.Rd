@@ -2,7 +2,7 @@
 % Please edit documentation in R/deprecation.R
 \name{indicator_skewness}
 \alias{indicator_skewness}
-\title{(DEPRECATED) Skewness indicator}
+\title{(DEFUNCT) Skewness indicator}
 \usage{
 indicator_skewness(input, subsize = 5, absolute = TRUE, nulln = 99)
 }

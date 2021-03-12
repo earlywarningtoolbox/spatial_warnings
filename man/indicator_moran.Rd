@@ -2,7 +2,7 @@
 % Please edit documentation in R/deprecation.R
 \name{indicator_moran}
 \alias{indicator_moran}
-\title{(DEPRECATED) Moran's Index at lag of 1}
+\title{(DEFUNCT) Moran's Index at lag of 1}
 \usage{
 indicator_moran(input, subsize = 1, nulln = 99)
 }

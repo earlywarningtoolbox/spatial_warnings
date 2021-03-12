@@ -1,5 +1,5 @@
 # 
-# This file contains deprecated functions 
+# This file contains deprecated/defunct functions 
 # 
 
 #' @rdname generic_spews-deprecated
@@ -106,7 +106,7 @@ spectral_spews <- function(mat,
   .Defunct(new = "spectral_sews", package = "spatialwarnings")
 }
 
-#' @title (DEPRECATED) Moran's Index at lag of 1
+#' @title (DEFUNCT) Moran's Index at lag of 1
 #'
 #' @description This functions computes the Moran's spatial correlation index 
 #'   (with lag one). It also computes a null value obtained by randomizing 
@@ -161,32 +161,11 @@ spectral_spews <- function(mat,
 indicator_moran <- function(input, 
                             subsize = 1, # default = no cg
                             nulln = 99) {
-  .Deprecated(new = "compute_indicator(input, f = raw_moran)", 
-              package = "spatialwarnings")
-  
-#   check_mat(input) # checks if binary and sensible
-  # We do not check for binary status as moran's I can be computed on both. 
-  
-  if (is.list(input)) {
-    # Returns a list of lists
-    return( lapply(input, indicator_moran, subsize, nulln) )
-  } else { 
-    
-    # We alter the moran function to do coarse_graining if the user asked for it
-    #   (and not whether the matrix is binary or not). 
-    if ( subsize > 1 ) { 
-      indicf <- with_coarse_graining(raw_moran, subsize)
-    } else { 
-      indicf <- raw_moran
-    }
-    
-    return( compute_indicator_with_null(input, nulln, indicf, 
-                                        null_method = "perm", 
-                                        null_control = NULL) )
-  }
+  .Defunct(new = "compute_indicator(input, f = raw_moran)", 
+           package = "spatialwarnings")
 }
 
-#' @title (DEPRECATED) Skewness indicator
+#' @title (DEFUNCT) Skewness indicator
 #'
 #' @description Compute the spatial skewness of spatial data. 
 #'   It also computes a null value obtained by randomizing 
@@ -281,30 +260,11 @@ indicator_skewness <- function(input,
                                subsize     = 5, 
                                absolute = TRUE,
                                nulln = 99) {
-  .Deprecated(new = "compute_indicator(input, f = raw_cg_skewness)", 
-              package = "spatialwarnings")
-  
-#   check_mat(input) # checks if binary and sensible
-  
-  if ( is.list(input) ) {
-    # Returns a list of lists
-    return( lapply(input, indicator_skewness, 
-                   subsize, absolute, nulln) )
-  } else { 
-    
-    indicf <- function(mat) { 
-      raw_cg_skewness(mat, subsize, absolute)
-    }
-    
-    # Compute and return the indicator
-    return( compute_indicator_with_null(input, nulln, indicf, 
-                                        null_method = "perm", 
-                                        null_control = NULL) ) 
-    
-  }
+  .Defunct(new = "compute_indicator(input, f = raw_cg_skewness)", 
+           package = "spatialwarnings")
 }
 
-#' @title (DEPRECATED) Spatial variance indicator
+#' @title (DEFUNCT) Spatial variance indicator
 #'
 #' @description This functions computes the spatial variance of spatial data. 
 #'   It also computes a null value obtained by randomizing 
@@ -390,29 +350,12 @@ indicator_skewness <- function(input,
 indicator_variance <- function(input, 
                                subsize = 5, 
                                nulln = 99) {
-  .Deprecated(new = "compute_indicator(input, f = raw_cg_variance)", 
-              package = "spatialwarnings")
-  
-#   check_mat(input) # checks data input
-  
-  if (is.list(input)) { 
-    # Returns a list of lists
-    return( lapply(input, indicator_variance, subsize, nulln) )
-  } else { 
-    
-    indicf <- function(mat) { 
-      raw_cg_variance(mat, subsize = subsize) 
-    }
-    # Compute and return indicator
-    return( compute_indicator_with_null(input, nulln, indicf, 
-                                        null_method = "perm", 
-                                        null_control = NULL) ) 
-    
-  }
+  .Defunct(new = "compute_indicator(input, f = raw_cg_variance)", 
+           package = "spatialwarnings")
 }
 
 # 
-#' @title (DEPRECATED) Density Ratio (SDR) indicator
+#' @title (DEFUNCT) Density Ratio (SDR) indicator
 #' 
 #' @description Compute the ratio of low frequencies over high frequencies
 #'   of the r-spectrum. It also computes a null value obtained by 
@@ -486,46 +429,6 @@ indicator_sdr <- function(input,
                           sdr_low_range  = NULL, 
                           sdr_high_range = NULL, 
                           nulln = 99) { 
-  
-#   check_mat(input) # checks if binary and sensible
-  
-  if ( is.null(sdr_low_range) ) { 
-    warning("Choosing the 20% lowest frequencies for spectral density ratio ",
-            "as none was specified. Use parameter sdr_low_range to choose ", 
-            "a different value.")
-    sdr_low_range <- c(0, .2)
-  }
-  
-  if ( is.null(sdr_high_range) ) { 
-    warning("Choosing the 20% highest frequencies for spectral density ratio ",
-            "as none was specified. Use parameter sdr_high_range to choose ", 
-            "a different value.")
-    sdr_high_range <- c(.8, 1)
-  }
-  
-  if (is.list(input)) {
-    # Returns a list of lists
-    return( llply(input, indicator_sdr, sdr_low_range, sdr_high_range, 
-                   nulln) )
-  } 
-  
-  # Now the input is always a mmatrix
-  warn_if_not_square(input)
-  
-  ranges_absolute <- convert_ranges_to_absolute(input, sdr_low_range, 
-                                                sdr_high_range)
-  
-  indicf <- function(mat) { 
-    indicator_sdr_core(mat, ranges_absolute[["low"]], ranges_absolute[["high"]])
-  }
-  
-  
-  return( 
-    compute_indicator_with_null(input, 
-                                nulln = nulln, 
-                                indicf = indicf, 
-                                null_method = "perm", 
-                                null_control = NULL)
-  )
-  
+  .Defunct(new = "compute_indicator(input, f = raw_sdr)", 
+           package = "spatialwarnings")
 }

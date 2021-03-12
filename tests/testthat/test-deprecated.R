@@ -7,12 +7,10 @@ context('Test the deprecation of functions')
       expect_error(generic_spews(forestgap[[3]]))
       expect_error(spectral_spews(forestgap[[3]]))
       expect_error(patchdistr_spews(forestgap[[3]]))
-      
-      expect_warning(indicator_sdr(forestgap[[2]]), nulln = 3)
-      expect_warning(indicator_variance(forestgap[[2]]), nulln = 3)
-      expect_warning(indicator_skewness(forestgap[[2]]), nulln = 3)
-      expect_warning(indicator_moran(forestgap[[2]]), nulln = 3)
-
+      expect_error(indicator_sdr(forestgap[[2]]), nulln = 3)
+      expect_error(indicator_variance(forestgap[[2]]), nulln = 3)
+      expect_error(indicator_skewness(forestgap[[2]]), nulln = 3)
+      expect_error(indicator_moran(forestgap[[2]]), nulln = 3)
   })
   
 }

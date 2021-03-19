@@ -77,13 +77,13 @@ test_that("Flowlength computations are OK", {
   ds <- 1 / cos(20*pi/180)
   expect <- ds * (10+1)/2
   expect_true({
-      abs(expect - raw_flowlength_uniform(zero_column, slope = 20, cell_size = 1)) < 1e-10
-    })
-  expect_true({ 
-    abs(0 - raw_flowlength_uniform(!zero_column, slope = 20, cell_size = 1)) < 1e-10
+    abs(expect - raw_flowlength_uniform(zero_column, slope = 20, cell_size = 1)) < 0.001
   })
-
-
+  expect_true({ 
+    abs(0 - raw_flowlength_uniform(!zero_column, slope = 20, cell_size = 1)) < 0.001
+  })
+  
+  
   # Test that we reproduce results from images. Note that we base these 
   # tests on images that have been already binarized in matlab/octave
   if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) { 

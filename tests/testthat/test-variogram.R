@@ -9,8 +9,12 @@ test_that("Computation of variograms works", {
   
   if ( requireNamespace("gstat", quietly = TRUE) && 
        requireNamespace("sp", quietly = TRUE) ) { 
+    if ( exists("EXTENDED_TESTS") && EXTENDED_TESTS) { 
+      mats <- list(arizona[[4]], forestgap[[8]], serengeti[[6]]) 
+    } else { 
+      mats <- list(forestgap[[8]])
+    }
     
-    mats <- list(arizona[[4]], forestgap[[8]], serengeti[[6]]) 
     for ( example_mat in mats ) { 
       example_mat = serengeti[[6]]
       nbins <- 32

@@ -11,8 +11,8 @@ Improvements:
       "expo" and "rate", which was more ambiguous)
   
   * EXPERIMENTAL: Variogram-based indicators has been added. Note that this 
-      deserves more testing to make sure that the computation of variograms are
-      correct. 
+      deserves more testing and application to real-world data to make sure that
+      the computation of variograms are accurate enough. 
   
 Bug fixes: 
 
@@ -24,6 +24,10 @@ Misc changes:
   
   * Dependency to tidyr has been removed (this fixes occasional NOTEs on CRAN
      automated checking)
+  
+Removals: 
+
+  * All deprecated functions in spatialwarnings v2.0.0 are now defunct
   
 spatialwarnings v2.0.0 (Release date: 2020-05-14)
 =================================================

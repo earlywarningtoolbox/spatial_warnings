@@ -42,7 +42,7 @@ plot(ics, rain) +
   geom_vline(xintercept = 730)
 
 # Compute indicators for testing
-# spcs <- spectral_spews(matrices, 
+# spcs <- spectral_sews(matrices, 
 #                        sdr_low_range = c(0, .2), 
 #                        sdr_high_range = c(.8, 1))
 # spcs.test <- indictest(spcs)

@@ -114,6 +114,27 @@ test_that("The workflow functions work", {
       plot(patchdistr_sews(a))
     })
     
+    
+    
+    # Variogram-based indicators 
+    indics <- suppressWarnings( variogram_sews(dataset, model = "exp") )
+    test_methods("Variogram-based indicators", 
+                 datal*4, indics) # l(dataset) * 4 metrics reported 
+    # Here, indictest may produce warnings on the testing datasets, so we 
+    # quiet them down
+    indics.test <- suppressWarnings( indictest(indics, nulln = 3) )
+    test_methods("Variogram-based indicators", 
+                 datal*4, indics.test, .test_df = FALSE)
+    
+    # Test prediction of PSDs
+    indics.pred <- predict(indics)
+    
+    if ( ! is.matrix(dataset) ) { 
+      suppressWarnings( print( plot(indics) ) )
+    }
+    suppressWarnings( print( plot_variogram(indics) ) )
+    suppressWarnings( print( plot_variogram(indics.test) ) )
+    
   }
   
 })

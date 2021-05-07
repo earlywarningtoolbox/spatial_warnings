@@ -24,3 +24,5 @@ tools/imgs
 ^spatialwarnings-Ex_x64.Rout$
 ^tests_i386$
 ^tests_x64$
+^find_unused_fs.R^
+

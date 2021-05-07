@@ -18,5 +18,5 @@ double fl_internal(arma::mat m) {
     flcol += a; 
   } 
   
-  return( accu(flcol)/((double)nx * (double)ny) ); 
+  return( accu(flcol) / ((double)nx * (double)ny) ); 
 }

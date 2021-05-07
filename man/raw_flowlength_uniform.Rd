@@ -9,7 +9,7 @@ raw_flowlength_uniform(mat, slope, cell_size)
 \arguments{
 \item{mat}{The input matrix (must be a logical matrix)}
 
-\item{slope}{The slope of the area documented by the matrix (in degree).}
+\item{slope}{The slope of the area documented by the matrix (in degrees).}
 
 \item{cell_size}{The horizontal size of a cell in the matrix (as viewed 
 from above).}

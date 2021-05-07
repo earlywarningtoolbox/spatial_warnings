@@ -34,11 +34,11 @@ test_that("Flowlength computations are OK", {
     V_fl <- E_fl2 - E_fl^2
     
     data.frame(rho = rho, 
-              obsmean = mean_fl, 
-              obsvar  = var_fl, 
-              themean = E_fl, 
-              thevar  = V_fl, 
-              themax  = ds*(L+1)/2)
+               obsmean = mean_fl, 
+               obsvar  = var_fl, 
+               themean = E_fl, 
+               thevar  = V_fl, 
+               themax  = ds*(L+1)/2)
   }, .progress = "none", .id = NULL)
 
   # Obs. mean and Theoretical mean should be equal 
@@ -87,8 +87,9 @@ test_that("Flowlength computations are OK", {
   # Test that we reproduce results from images. Note that we base these 
   # tests on images that have been already binarized in matlab/octave
   if ( exists('EXTENDED_TESTS') && EXTENDED_TESTS ) { 
-    imagedir <- './rodriguez2018/images/'
-    all_images <- lapply(dir(imagedir, full.names = TRUE, pattern = "*.csv"), 
+    imagedir <- './rodriguez2018/images'
+    allimgs <- dir(imagedir, full.names = TRUE, pattern = "*.csv")
+    all_images <- lapply(allimgs, 
                         function(i) { 
                           a <- as.matrix(read.csv(i, header = FALSE)) > 0 
                           dimnames(a) <- NULL
@@ -99,13 +100,88 @@ test_that("Flowlength computations are OK", {
                                 0.48, 0.38, 0.34, 0.218, 0.114, 0.08), 
                       fl = c(1.1231, 1.2624, 5.1928, 9.0719, 4.6266, 8.6047, 
                             1.5144, 2.5934, 3.3909, 4.945, 11.631, 15.6279))
-
+    
     fl.df <- as.data.frame(fls)
-
+    
     compare <- data.frame(fl.df, ref)
     expect_true({ 
       with(compare, all( abs(value - fl) < 0.01))
     })
+#     
+#     # Check approximation
+#     rodri_results <- read.table("./rodriguez2018/fl_approx_values.txt", 
+#                                 header = TRUE)
+#     rodri_results <- rodri_results[order(rodri_results[ ,"im"]), ]
+#     cell_size <- 0.223;              
+#     slope <- 0.6;            
+#     
+#     vals <- as.data.frame( indictest(fls, null_method = "approx_rand") )
+#     
+#     
 
   }
+})
+
+# 
+# The code below is to make sure the FL approximation is correct 
+# 
+# 
+# test_that("Paco's approximation is correctly implemented (Rodriguez 2018)", { 
+#   
+# 
+# plan(multiprocess)
+# a <- future.apply::future_lapply(seq.int(256), function(n) { 
+# # a <- lapply(seq.int(8), function(n) { 
+#   cat(".")
+#   # Generate random matrix 
+#   ldply(seq(0.01, 1, length = 24), function(p) { 
+#     nr <- round(runif(1, 100, 200))
+#     m <- matrix(runif(nr*nr) < p, nrow = nr)
+#     fl <- flowlength_sews(m)
+#     testperm    <- indictest(fl, nulln = 99, null_method = "perm")
+#     testapprox  <- indictest(fl, null_method = "approx_rand")
+#     
+#     a <- rbind(data.frame(null_method = "perm", as.data.frame(testperm)), 
+#                data.frame(null_method = "approx_rand", as.data.frame(testapprox)))
+#     data.frame(n = n, nr = nr, p = mean(m), a)
+#   })
+# })
+# a <- rbind.fill(a)
+# ac <- reshape2::dcast(a, nr + n + p ~ null_method, value.var = "null_sd")
+# 
+# ggplot(ac) + 
+#   geom_abline(intercept = 0, slope = 1, color = "red") + 
+#   geom_point(aes(x = perm, 
+#                  y = approx_rand), 
+#              alpha = .8) + 
+#   scale_x_continuous(trans = "log10") + 
+#   scale_y_continuous(trans = "log10") 
+# 
+# ggplot(a) + 
+#   geom_line(aes(x = p, y = null_sd, color = null_method)) 
+# 
+# 
+# mean(with(ac, perm/approx_rand), na.rm = TRUE)
+# 
+# # For which covers is the approximation OK ? 
+# ggplot(ac) + 
+#   geom_abline(intercept = 0, slope = 0, color = "red") + 
+#   geom_point(aes(x = p, y = perm - approx_rand)) 
+# 
+# # lm(perm ~ 0 + approx_rand^2, data = ac)
+# 
+# setwd("./tests/testthat")
+# rodri_results <- read.table("./rodriguez2018/fl_approx_values.txt", 
+#                             header = TRUE)
+# our_results <- ldply(dir("./rodriguez2018/images", 
+#                          pattern = "*.csv", full = TRUE), 
+#                      function(im) { 
+#   a <- as.matrix(read.csv(im, header = FALSE) > 0 )
+# #   b <- as.data.frame( indictest(flowlength_sews(a), nulln = 99, 
+# #                                 null_method = "perm") )
+#   b <- as.data.frame( indictest(flowlength_sews(a), null_method = "approx_rand") )
+#   b
+# })
+
+
 })

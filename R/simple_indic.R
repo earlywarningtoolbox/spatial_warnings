@@ -129,7 +129,7 @@ create_indicator <- function(fun,
     if ( is.list(mat) ) { 
       result <- future_lapply_seed(mat, get_one_result, ...)
       names(result) <- names(mat)
-      class(result) <- c('custom_sews_single', 'simple_sews_list',
+      class(result) <- c('custom_sews_list', 'simple_sews_list',
                          'sews_result_list')
     } else { 
       result <- get_one_result(mat, ...)

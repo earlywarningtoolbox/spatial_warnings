@@ -90,10 +90,116 @@ flowlength_sews <- function(mat,        # Input matrix
                             slope = 20, # Slope (in degrees)
                             cell_size = 1) { # Cell size
   
-  compute_indicator(mat, raw_flowlength_uniform, 
-                    slope = slope, 
-                    cell_size = cell_size, 
-                    taskname = paste0("Flow length (uniform topography)"))
+  fl_result <- compute_indicator(mat, raw_flowlength_uniform, 
+                                 slope = slope, 
+                                 cell_size = cell_size, 
+                                 taskname = "Flow length (uniform topography)")
+  
+  # Make sure we adjust the class to add flowlength-related information. This is 
+  # used later on so that indictest() will use specific methods written for the 
+  # flowlength. 
+  if ( inherits(fl_result, "sews_result_list") ) { 
+    class(fl_result) <- c("flowlength_sews_list", class(fl_result))
+    for ( i in seq_along(fl_result) ) { 
+      class(fl_result[[i]]) <- c("flowlength_sews_single", class(fl_result[[i]]))
+    }
+  } else { 
+    class(fl_result) <- c("flowlength_sews_single", class(fl_result))
+  }
+  
+  return(fl_result)
+}
+
+#'@export
+indictest.flowlength_sews_list <- function(x, 
+                                           nulln = 999, 
+                                           null_method = "perm", 
+                                           null_control = NULL, 
+                                           ...) { 
+  
+  results <- future_lapply_seed(x, indictest.flowlength_sews_single, 
+                                nulln, null_method, null_control, 
+                                ...)
+  
+  # Add matrixn value with correct number
+  for ( nb in seq_along(results) ) { 
+    results[[nb]][['matrixn']] <- nb
+  }
+  
+  class(results) <- c('flowlength_sews_test_list', 
+                      'simple_sews_test_list', 'sews_test', 
+                      'sews_result_list')
+  
+  return(results)
+}
+
+#'@export
+indictest.flowlength_sews_single <- function(x, 
+                                             nulln = 999, 
+                                             null_method = "perm", 
+                                             null_control = NULL, 
+                                             ...) { 
+  
+  # Read null_control values we may use to compute null expectation for FL
+  qinf <- ifelse(is.null(null_control[["qinf"]]), .05, null_control[["qinf"]]) 
+  qsup <- ifelse(is.null(null_control[["qsup"]]), .95, null_control[["qsup"]])
+  
+  # These methods use an analytical approximation to compute the expected values
+  # of flowlength given an homogeneous matrix, or one that is somewhat aggregated 
+  # (see Rodriguez et al., Ecological Indicators).
+  if ( ( ! is.function(null_method) ) && ( null_method == "approx_rand" ) ) { 
+    
+    rho <- mean(x[["orig_data"]])
+    L <- nrow(x[["orig_data"]])
+    slope <- x[["fun.args"]][["slope"]]
+    cell_size <- x[["fun.args"]][["cell_size"]]
+    ds <- cell_size / cos(slope * pi / 180)
+    
+    # Eq. 1 in the above paper (with ds = 1)
+    E_fl <- ds * (1 - rho)*(rho * L - (1 - rho)*(1 - (1 - rho)^L)) / (rho^2*L)
+    E_fl2 <- ds^2*( (1 - rho)*(rho^2*(1 - rho)*(L+1)^2 + rho^2*L - 6 * (1 - rho) + 
+                        (1 - rho)^(L+1)*(rho^2*(2*L^2 - 1) + 6 * rho * L + 6)) ) / 
+                        (rho^4 * L^2)
+    V_fl <- E_fl2 - E_fl^2
+    
+    # NOTE: the values above are for a column vector, we need to compute 
+    # the variance for the average of FL for all columns, which is different
+    V_fl <- V_fl / ( ncol(x[["orig_data"]]) )
+    
+    # Now add the values in the resulting test object 
+    # "nulldistr"   "null_mean"   "null_sd"     "null_qsup"   "null_qinf"  
+    # "z_score"     "pval"        "null_method" "nulln"       "get_nullmat"
+    ans <- x
+    
+    # These are undefined because we never computed a null distribution 
+    # ans[["nulldistr"]] <- NULL
+    # ans[["nulln"]] <- NULL
+    # ans[["get_nullmat"]] <- NULL
+    
+    ans[["null_mean"]] <- E_fl
+    ans[["null_sd"]] <- sqrt(V_fl) 
+    ans[["null_method"]] <- null_method
+    ans[["null_qsup"]] <- qnorm(qsup, mean = E_fl, sd = sqrt(V_fl))
+    ans[["null_qinf"]] <- qnorm(qinf, mean = E_fl, sd = sqrt(V_fl))
+    # P-value close to zero when indicator is above the null distribution
+    ans[["pval"]] <- pnorm(x[["value"]], mean = E_fl, sd = sqrt(V_fl), 
+                           lower.tail = FALSE)
+    ans[["z_score"]] <- ( x[["value"]] - E_fl ) / sqrt(V_fl)
+    
+    class(ans) <- c("flowlength_sews_test_single", 
+                    'simple_sews_test_single', 'sews_test', 
+                    'sews_result_single')
+    
+    return(ans)
+  }
+  
+  # Catch-all: we revert to the default, usual way of doing it 
+  ans <- indictest.simple_sews_single(x, nulln, null_method, null_control)
+  class(ans) <- c("flowlength_sews_test_single", 
+                  'simple_sews_test_single', 'sews_test', 
+                  'sews_result_single')
+  
+  return(ans)
 }
 
 #
@@ -121,7 +227,7 @@ flowlength_sews <- function(mat,        # Input matrix
 #' 
 #' @param mat The input matrix (must be a logical matrix)
 #' 
-#' @param slope The slope of the area documented by the matrix (in degree). 
+#' @param slope The slope of the area documented by the matrix (in degrees). 
 #' 
 #' @param cell_size The horizontal size of a cell in the matrix (as viewed 
 #'   from above). 
@@ -163,12 +269,13 @@ raw_flowlength_uniform <- function(mat,        # Input matrix
   nmat <- ! mat 
   
   # Cell size along the slope 
-  p_slope <- cell_size / cos(slope*pi/180)
+  p_slope <- cell_size / cos(slope * pi / 180)
   
   # Compute flow length without taking slope into account (C++ function)
   flmean <- fl_internal(nmat)
   
+  # Adjust value for slope
   fl <- flmean * p_slope
   
-  return(c(fl_uniform = fl))
+  return(c(flowlength = fl))
 }

@@ -6,14 +6,11 @@ assists ecologists in carrying out computations of early-warning signals (EWS)
 of ecosystem degradation. More information on the package and testing results
 are available below. 
 
-Please note that the domain part of my email has changed following a 
-reorganization of our university. I am not able to send emails from 
-"@univ-montp2.fr" anymore, but I can receive mail at this old address and 
-confirm the change if needed. 
-
 Thanks in advance, 
 
 Alexandre Génin
+
+
 
 ## Test environments
 
@@ -24,23 +21,25 @@ This package was tested using the following environments:
      Ubuntu Linux 16.04 LTS, R-release, GCC
      Windows Server 2008 R2 SP1, R-devel, 32/64 bit
   
- * Travis-ci (Ubuntu 16.04, R 4.0.0 and devel (2020-05-13 r78449) ):
+ * Travis-ci (Ubuntu 16.04, R release () and devel (2020-05-13 r78449) ):
      https://travis-ci.org/spatial-ews/spatialwarnings
  
- * local linux computer, with and without valgrind (Arch Linux as of 
+ X local linux computer, with and without valgrind (Arch Linux as of 
      2020-05-13, R 4.0.0)
  
  * win builder service (R 3.6.3, R 4.0.0, R devel 2020-05-11 r78411)
  
- * Solaris x86 (Solaris 10 in local virtual machine, with manually-installed 
+ X Solaris x86 (Solaris 10 in local virtual machine, with manually-installed 
      R 4.0.0 and GNU gsl 2.6). 
 
 
 
 ## R CMD check results
 
-No ERRORs nor WARNINGs arose during testing on the above platforms. Several 
-NOTEs occurred: 
+No ERRORs nor WARNINGs arose during testing on the above platforms. We removed 
+the unused dependency 'tidyr', which was the cause of a NOTE on CRAN. 
+
+Several remaining NOTEs occurred: 
 
 On platforms Windows Server 2008 R2 SP1, R devel (rhub) and 
 Ubuntu Linux 16.04 LTS, R-release (rhub), the following NOTE was produced, 
@@ -50,51 +49,44 @@ which I believe is a false positive:
    'examples_i386' 'examples_x64' 'spatialwarnings-Ex_i386.Rout'
    'spatialwarnings-Ex_x64.Rout' 'tests_i386' 'tests_x64'
 
-My email address has changed, reflecting the change in domain name of my 
-university, hence the following NOTE: 
-
- * checking CRAN incoming feasibility ... NOTE
-     Maintainer: 'Alexandre Genin <alexandre.genin@umontpellier.fr>'
-     New maintainer:
-       Alexandre Genin <alexandre.genin@umontpellier.fr>
-     Old maintainer(s):
-       Alexandre Genin <alexandre.genin@univ-montp2.fr>
-
-The package size is reported as exceeding 1Mb, probably due to using Rcpp: 
+The package size is sometimes reported as exceeding 1Mb (Solaris & Linux), 
+probably due to the use of Rcpp: 
 
  * checking installed package size ... NOTE
-    installed size is 5.5Mb
+    installed size is 5.1Mb
     sub-directories of 1Mb or more:
     libs 4.5Mb
 
-
+    
 
 ## Changes in this release
 
 Improvements: 
-  * New methods are available to produce null matrices, on top of shuffling the
-      original matrix (e.g. based on smoothing the original matrix). 
-  * Significance of Power-law range can now be tested using `indictest()`. 
-      Using `plot_distr()` on the resulting objects will display the 0.05/0.95 
-      quantiles of the null patch size distributions. 
-  * The package gains a generic function `display_matrix`, to eyeball the  
-      matrices being used in `spatialwarnings` objects 
-  * Improved the fitting of distributions, which should be more robust now. 
-  * Speed improvements in label()
+
+  * Documentation extended and improved
+  
+  * Fitting of distributions now uses 'plexpo' and 'trunc' to refer to the 
+      exponent of a power-law ("slope") and its exponential truncation (from 
+      "expo" and "rate", which was more ambiguous)
+  
+  * EXPERIMENTAL: Variogram-based indicators has been added. Note that this 
+      deserves more testing and application to real-world data to make sure that
+      the computation of variograms are accurate enough. 
   
 Bug fixes: 
-  * Fixed a bug where the normalization constant for truncated power-laws was 
-      miscalculated
-  
-Removals: 
-  * All the deprecated `*_spews` functions are now defunct (removed). 
-  * Most `indicator_*` functions are now deprecated. 
+
+  * Fix a bug where available methods were not displayed in `summary()`
   
 Misc changes: 
-  * Lots of duplicated code has been removed
-  * Minor changes in print/summary methods
-  * Dependency to VGAM is now removed 
   
+  * NAs in provided matrices now produce warnings instead of errors
+  
+  * Dependency to tidyr has been removed (this fixes occasional NOTEs on CRAN
+     automated checking)
+  
+Removals: 
+
+  * All deprecated functions in spatialwarnings v2.0.0 are now defunct
   
   
 ## Package Description

@@ -55,7 +55,7 @@ indictest.simple_sews_list <- function(x,
                                 nulln, null_method, null_control, 
                                 ...)
   
-  # Add matrixn column with correct number
+  # Add matrixn value with correct number
   for ( nb in seq_along(results) ) { 
     results[[nb]][['matrixn']] <- nb
   }

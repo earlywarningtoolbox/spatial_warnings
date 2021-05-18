@@ -18,6 +18,9 @@ Bug fixes:
 
   * Fix a bug where available methods were not displayed in `summary()`
   
+  * Fix a bug where the r-spectrum was wrongly-calculated when the matrix had 
+      an odd number of rows or columns
+  
 Misc changes: 
   
   * NAs in provided matrices now produce warnings instead of errors

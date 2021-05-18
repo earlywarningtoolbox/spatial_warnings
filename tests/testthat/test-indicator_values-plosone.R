@@ -50,9 +50,9 @@ test_that('results matches those in PLOS One', {
     
     # Now test for concordance
     ref_results <- cbind(mean = mean_reduced,  # ! order matters !
-                        corr = corr_reduced, 
-                        skew = skew_reduced, 
-                        var  = var_reduced)
+                         corr = corr_reduced, 
+                         skew = skew_reduced, 
+                         var  = var_reduced)
     
     expect_true(all(abs(ref_results - test_reshaped) < 1e-10))
   }

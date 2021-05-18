@@ -29,7 +29,7 @@ test_that("the cpp implementation of the spectrum computations is correct", {
   tmp <- fft(mat)
   class(tmp) <- "matrix"
   tmpshift <- myfftshift(tmp)
-  tmpshift[n0x,n0y] <- 0
+  tmpshift[n0x, n0y] <- 0
   aspectr2D <- abs(tmpshift)^2 / (n0x*n0y)^4
   
   sig2 <- sum(aspectr2D[DISTMASK]) #Normalisation
@@ -81,13 +81,18 @@ test_that("the cpp implementation of the spectrum computations is correct", {
     # is to return NA whereas the old code just compute things 
     if ( length(unique(as.vector(testmat))) > 1 ) { 
     
-    expect_equal(rspectrum_old(testmat), 
+    ospec <- rspectrum_old(testmat)
+    expect_equal(ospec, 
                  rspectrum(testmat), 
                  tolerance = 1/1000) 
     }
-      
-      
   }
+  
+  # Test on odd-sized matrix 
+  s <- 101
+  modd <- matrix(runif(s^2) < 0.5, ncol = s)
+  expect_equal(rspectrum(modd), rspectrum_old(modd), 
+               tolerance = 1/1000)
   
 })
 

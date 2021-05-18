@@ -11,7 +11,7 @@ using namespace arma;
 #define SQ(a) ( (double)(a) * (double)(a) )
 
 // Distance step of the r-spectrum
-#define step 1.0
+const double step = 1.0; 
 
 // 
 //' @title r-spectrum 
@@ -53,11 +53,17 @@ using namespace arma;
 // [[Rcpp::export]]
 DataFrame rspectrum(arma::mat mat) { 
   
-  // Get number of rows and number of cols
-  int nr = mat.n_rows; 
-  int nc = mat.n_cols; 
+  // Get number of rows and number of cols to consider. If the matrix has an 
+  // odd number of rows/cols, then we will not consider the last column/row so 
+  // that the center falls on a cell. This is a minor approximation given the 
+  // fact that we should work with matrices of large size in spatialwarnings 
+  // (typically > 50 rows/cols)
+  int nr = mat.n_rows - ( mat.n_rows % 2 == 0 ? 0 : 1); 
+  int nc = mat.n_cols - ( mat.n_cols % 2 == 0 ? 0 : 1); 
   
-  // Middle point of matrix
+  // Middle point of matrix. NOTE: this is exact only if nc and nr can be 
+  // divided by 2: it is not when nc or nr is odd. This is why we discard the 
+  // last row/col above if needed
   int n0x = nc / 2; 
   int n0y = nr / 2; 
   
@@ -66,7 +72,7 @@ DataFrame rspectrum(arma::mat mat) {
   int ma = 1 + (n0x < n0y ? n0x : n0y);
   
   // Initialize the variables that will hold the spectrum values
-  arma::vec ray = arma::linspace(mi, ma, ma - mi + 1); // +1 ?
+  arma::vec ray = arma::linspace(mi, ma, ma - mi + 1); // ma - mi + 1 values
   arma::vec rspectr = arma::zeros(ma - mi + 1); 
   
   // We check whether there is more than one value in the supplied matrix
@@ -79,17 +85,19 @@ DataFrame rspectrum(arma::mat mat) {
     i++;
   } 
   
-  // We have not found more than one value -> return early
-  if ( ! nonzero_variance ) { 
+  // We have not found more than one value, or the matrix is too small -> 
+  //   return early with NAs
+  if ( ( ! nonzero_variance ) || nr < 1 || nc < 1 ) { 
+    rspectr.fill(NumericVector::get_na()); 
     return DataFrame::create(_["dist"]  = ray, 
-                             _["rspec"] = NumericVector::create(NumericVector::get_na()));
+                             _["rspec"] = rspectr); 
   }
   
   // Compute and shift DFT
   arma::cx_mat mat_fft = arma::fft2(mat); 
   
   // Compute aspectr2D and normalize it
-  mat_fft(n0y, n0x) = 0; 
+  // mat_fft(n0y, n0x) = 0; 
   
   // Compute r-spectrum
   double norm_factor = 0; 
@@ -107,9 +115,11 @@ DataFrame rspectrum(arma::mat mat) {
       for ( int i = (n0x - r - 1); i < (n0x + r + 1); i++) { 
         
         // Squared distance to center
-        double dist = SQ(i-n0x) + SQ(j-n0y);
+        double dist = SQ(i - n0x) + SQ(j - n0y);
         
-        if ( dist >= SQ(r - step/2) && dist < SQ(r + step/2) ) { 
+        if ( ( dist > 0 ) && 
+             dist >= SQ(r - step/2) && 
+             dist  < SQ(r + step/2) ) { 
           
           // We use shifted coordinates to pick the value in mat_fft 
           // instead of making a call to arma::shift() that does a copy of 
@@ -117,7 +127,7 @@ DataFrame rspectrum(arma::mat mat) {
           int shift_i = (i + n0x) % nc;
           int shift_j = (j + n0y) % nr;
           double aspectr2D_ij = SQ( abs(mat_fft(shift_j, shift_i)) ) / 
-                                  SQ(SQ( (n0x+1) * (n0y+1) ));
+                                  SQ(SQ( (n0x + 1) * (n0y + 1) ));
           
           rspectr(l) += aspectr2D_ij;
           norm_factor += aspectr2D_ij;
@@ -127,14 +137,17 @@ DataFrame rspectrum(arma::mat mat) {
       }
     }
     
-//     Rcout << "dist: " << r << " -> total_inmask: " << total_inmask << "\n"; 
+//     if ( r < 3 ) { 
+//       Rcout << "from: " << (r-step/2) << " to: " << (r+step/2) << " -> total_inmask: " << total_inmask << "\n"; 
+//       Rcout << "n0x: " << n0x << " n0y: " << n0y << "\n"; 
+//     }
     
     rspectr(l) = rspectr(l) / total_inmask;
   }
   
   rspectr = rspectr / norm_factor;
-  
+//   Rcout << ray << "\n"; 
+//   Rcout << rspectr << "\n\n"; 
   return DataFrame::create(_["dist"]  = ray, 
                            _["rspec"] = rspectr);
 }
-

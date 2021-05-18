@@ -182,6 +182,3 @@ test_that("Flowlength computations are OK", {
 #   b <- as.data.frame( indictest(flowlength_sews(a), null_method = "approx_rand") )
 #   b
 # })
-
-
-})

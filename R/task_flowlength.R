@@ -22,7 +22,12 @@
 #'   aggregated-pattern null models can be used as an indicator of imminent 
 #'   transition to a degraded state (Rodriguez et al. 2017) in the context 
 #'   of arid drylands. An increased deviation of flowlength compared to its 
-#'   null values is expected as a possible transition gets closer. 
+#'   null values is expected as a possible transition gets closer. This deviation
+#'   can be computed using any null model provided by \code{spatialwarnings} (see 
+#'   \code{\link{indictest}} for more details), but a specific null model is 
+#'   provided for Flowlength based on a much-faster analytical approximation, 
+#'   using the argument \code{null_method = "approx_rand"} when calling 
+#'   \code{indictest} (see examples below). 
 #' 
 #' In general, Flowlength can be used as indicator of dryland functional status 
 #'   by assessing potential water and soil losses in patchy landscapes 
@@ -68,7 +73,6 @@
 #' @return A `simple_sews` object containing the flow length value, among 
 #'   other things, see \code{\link{simple_sews_object}} for more information.
 #' 
-#' 
 #' @seealso 
 #'   \code{\link{raw_flowlength_uniform}}, 
 #'   \code{\link{indictest}} to test the significance of indicator values. 
@@ -83,6 +87,12 @@
 #' #   Rodriguez et al. (2017) as an indicator of degradation. 
 #' fl_test <- indictest(fl_result, nulln = 19)
 #' plot(fl_test, what = "z_score")
+#' 
+#' # Use the analytical approximation suggested in Rodriguez et al. (2017), 
+#' # instead of permuting the original values in the matrix (much faster)
+#' fl_test <- indictest(fl_result, null_method = "approx_rand")
+#' plot(fl_test, what = "z_score")
+#' 
 #' }
 #' 
 #'@export
@@ -145,8 +155,8 @@ indictest.flowlength_sews_single <- function(x,
   qsup <- ifelse(is.null(null_control[["qsup"]]), .95, null_control[["qsup"]])
   
   # These methods use an analytical approximation to compute the expected values
-  # of flowlength given an homogeneous matrix, or one that is somewhat aggregated 
-  # (see Rodriguez et al., Ecological Indicators).
+  # of flowlength given an homogeneous matrix, or (TODO) one that is somewhat
+  # aggregated (see Rodriguez et al., Ecological Indicators).
   if ( ( ! is.function(null_method) ) && ( null_method == "approx_rand" ) ) { 
     
     rho <- mean(x[["orig_data"]])

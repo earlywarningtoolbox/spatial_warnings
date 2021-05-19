@@ -135,6 +135,25 @@ test_that("The workflow functions work", {
     suppressWarnings( print( plot_variogram(indics) ) )
     suppressWarnings( print( plot_variogram(indics.test) ) )
     
+    
+    # Flowlength-based indicator
+    indics <- suppressWarnings( flowlength_sews(dataset, cell_size = 10) )
+    test_methods("Flow length \\(uniform topography\\)", 
+                 datal, indics) # l(dataset) * 4 metrics reported 
+    indics.test <- indictest(indics, nulln = 3) 
+    test_methods("Flow length \\(uniform topography\\)", 
+                 datal, indics.test, .test_df = FALSE)
+    
+    # Make sure that args are passed through the workflow function 
+    indics_standalone <- compute_indicator(dataset, raw_flowlength_uniform, 
+                                           cell_size = 10, slope = 20)
+    expect_equal(as.data.frame(indics)[ ,"value"], 
+                 as.data.frame(indics_standalone)[ ,"value"])
+    
+    if ( ! is.matrix(dataset) ) { 
+      suppressWarnings( print( plot(indics) ) )
+    }
+    
   }
   
 })

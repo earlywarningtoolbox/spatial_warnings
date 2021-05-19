@@ -14,6 +14,9 @@ Improvements:
       deserves more testing and application to real-world data to make sure that
       the computation of variograms are accurate enough. 
   
+  * EXPERIMENTAL: Significance of flow-length can now be assessed using the 
+      analytical approximation described in Rodriguez et al. (2017)
+  
 Bug fixes: 
 
   * Fix a bug where available methods were not displayed in `summary()`

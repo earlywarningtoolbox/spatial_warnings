@@ -56,6 +56,10 @@ Several methods are available to produce the set of null matrices. If
   used, otherwise a `gaussian()` family is used. More information about null
   models is available in the \href{https://alex.lecairn.org/spatialwarnings-faq.html#Using_advanced_null_models}{spatialwarnings FAQ}. 
 
+Please note that specific null methods may exists for some indicators, such as
+\code{\link[=flowlength_sews]{flowlength}}. These are often based on 
+analytical approximation and allow faster computations. 
+
 The list \code{null_control} can be used to adjust the computation of 
   null matrices. It can have the following components: 
   \itemize{ 
@@ -78,5 +82,5 @@ Methods for Spatial Patterns. PLoS ONE, 9, e92097
 \seealso{
 \code{\link{generic_sews}}, \code{\link{spectral_sews}}, 
   \code{\link{kbdm_sews}},
-  \code{\link{compute_indicator}}
+  \code{\link{compute_indicator}}, \code{\link{flowlength_sews}}
 }

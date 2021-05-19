@@ -101,29 +101,36 @@ test_that("Flowlength computations are OK", {
                       fl = c(1.1231, 1.2624, 5.1928, 9.0719, 4.6266, 8.6047, 
                             1.5144, 2.5934, 3.3909, 4.945, 11.631, 15.6279))
     
-    fl.df <- as.data.frame(fls)
+    fl.df <- as.data.frame( indictest(fls, nulln = 9) )
     
     compare <- data.frame(fl.df, ref)
     expect_true({ 
       with(compare, all( abs(value - fl) < 0.01))
     })
-#     
-#     # Check approximation
-#     rodri_results <- read.table("./rodriguez2018/fl_approx_values.txt", 
-#                                 header = TRUE)
-#     rodri_results <- rodri_results[order(rodri_results[ ,"im"]), ]
-#     cell_size <- 0.223;              
-#     slope <- 0.6;            
-#     
-#     vals <- as.data.frame( indictest(fls, null_method = "approx_rand") )
-#     
-#     
-
+    
+    # Check approximation
+    rodri_results <- read.table("./rodriguez2018/fl_approx_values.txt", 
+                                header = TRUE)
+    rodri_results <- rodri_results[order(rodri_results[ ,"im"]), ]
+    cell_size <- 0.223
+    slope <- 0.6
+    
+    ourvalues <- as.data.frame( indictest(fls, null_method = "approx_rand") )
+    
+    # Check that the observed value, the null mean and sd are close to each other
+    expect_equal(fl.df[ ,"value"], 
+                 ourvalues[ ,"value"])
+    expect_equal(fl.df[ ,"null_mean"], 
+                 ourvalues[ ,"null_mean"], 
+                 tolerance = 1/100)
+    expect_equal(fl.df[ ,"null_sd"], 
+                 ourvalues[ ,"null_sd"], 
+                 tolerance = 1/100)
   }
 })
 
 # 
-# The code below is to make sure the FL approximation is correct 
+# The code below is to check the FL approximation is correct 
 # 
 # 
 # test_that("Paco's approximation is correctly implemented (Rodriguez 2018)", { 
@@ -160,7 +167,6 @@ test_that("Flowlength computations are OK", {
 # ggplot(a) + 
 #   geom_line(aes(x = p, y = null_sd, color = null_method)) 
 # 
-# 
 # mean(with(ac, perm/approx_rand), na.rm = TRUE)
 # 
 # # For which covers is the approximation OK ? 
@@ -168,17 +174,16 @@ test_that("Flowlength computations are OK", {
 #   geom_abline(intercept = 0, slope = 0, color = "red") + 
 #   geom_point(aes(x = p, y = perm - approx_rand)) 
 # 
-# # lm(perm ~ 0 + approx_rand^2, data = ac)
-# 
 # setwd("./tests/testthat")
 # rodri_results <- read.table("./rodriguez2018/fl_approx_values.txt", 
 #                             header = TRUE)
 # our_results <- ldply(dir("./rodriguez2018/images", 
 #                          pattern = "*.csv", full = TRUE), 
 #                      function(im) { 
-#   a <- as.matrix(read.csv(im, header = FALSE) > 0 )
+# a <- as.matrix(read.csv(im, header = FALSE) > 0 )
 # #   b <- as.data.frame( indictest(flowlength_sews(a), nulln = 99, 
 # #                                 null_method = "perm") )
-#   b <- as.data.frame( indictest(flowlength_sews(a), null_method = "approx_rand") )
-#   b
+# b <- as.data.frame( indictest(flowlength_sews(a), null_method = "approx_rand") )
+# b
+#   
 # })

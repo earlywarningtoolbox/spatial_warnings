@@ -1,7 +1,7 @@
 # 
 # Variogram-based indicators. 
 # 
-#' @title Early-Warning signals based on variograms 
+#' @title Early-Warning signals based on variograms (EXPERIMENTAL)
 #' 
 #' @description Compute Early-warning signals based on metrics derived 
 #'   form semi-variograms. 
@@ -55,7 +55,9 @@
 #'   an exponential model. The best-fitting model depends on your data, you 
 #'   should try different options and review the fits using
 #'   \code{\link{plot_variogram}}.
-#'   
+#' 
+#' Please note that this part of the package is still experimental and deserves 
+#'   more testing. 
 #' 
 #' @seealso \code{\link{raw_structvar}},
 #'   \code{\link{plot_variogram}}, \code{\link{extract_variogram}},

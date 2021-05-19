@@ -2,7 +2,7 @@
 % Please edit documentation in R/task_variogram_indic.R
 \name{variogram_sews}
 \alias{variogram_sews}
-\title{Early-Warning signals based on variograms}
+\title{Early-Warning signals based on variograms (EXPERIMENTAL)}
 \usage{
 variogram_sews(mat, model = "sph", nmax = 1e+05, nbins = 32, cutoff = NULL)
 }
@@ -60,6 +60,9 @@ This function offers to fit a spherical model or
   an exponential model. The best-fitting model depends on your data, you 
   should try different options and review the fits using
   \code{\link{plot_variogram}}.
+
+Please note that this part of the package is still experimental and deserves 
+  more testing.
 }
 \examples{
 

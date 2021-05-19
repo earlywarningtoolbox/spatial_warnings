@@ -12,45 +12,45 @@
 #' 
 #' @details 
 #' 
-#'   The \code{\link{spatialwarnings}} uses S3 objects internally to store 
-#' indicator values, along with the necessary data to plot and display
-#' results. It is not recommended to extract data directly from these objects,
-#' as they are subject to change with different releases of the package. The 
-#' preferred method is to use dedicated generic functions such as 
-#' \code{plot()} or \code{as.data.frame()} to display or export the results.
-#' Nonetheless, we document the structure of these objects here for reference. 
+#' The \code{\link{spatialwarnings}} uses S3 objects (lists) internally to store 
+#'   indicator values, along with the necessary data to plot and display
+#'   results. It is not recommended to extract data directly from these objects,
+#'   as they are subject to change with different releases of the package. The 
+#'   preferred method is to use dedicated generic functions such as 
+#'   \code{plot()} or \code{as.data.frame()} to display or export the results.
+#'   Nonetheless, we document the structure of these objects here for reference. 
 #' 
-#'   \code{simple_sews} objects are returned by all indicator functions that 
-#' return numeric values. This includes for example \code{\link{generic_sews}}, 
-#' \code{\link{flowlength_sews}}, \code{\link{compute_indicator}} but *not*
-#' \code{\link{patchdistr_sews}} or \code{\link{spectral_sews}}, which provide
-#' indicators that depend on non-numeric values (e.g. patch-size distribution
-#' type), or need to store more information than just a single numerical value
-#' (e.g. the spectrum of the input matrix). 
+#' \code{simple_sews} objects are returned by all indicator functions that 
+#'   return numeric values. This includes for example \code{\link{generic_sews}}, 
+#'   \code{\link{flowlength_sews}}, \code{\link{compute_indicator}} but *not*
+#'   \code{\link{patchdistr_sews}} or \code{\link{spectral_sews}}, which provide
+#'   indicators that depend on non-numeric values (e.g. patch-size distribution
+#'   type), or need to store more information than just a single numerical value
+#'   (e.g. the spectrum of the input matrix). 
 #' 
-#'   \code{simple_sews} objects come in multiple variants:
-#' \code{simple_sews_single} is the result of an indicator function applied to 
-#' a single matrix, and \code{simple_sews_test_single} is the result of 
-#' \code{\link{indictest}} applied to a \code{simple_sews_single} object. Both 
-#' these objects have list equivalents, \code{simple_sews_list} and 
-#' \code{simple_sews_test_list} which are simply a collection of their 
-#' 'single' equivalent. These 'list' objects are used to store the results 
-#' of computations when working with multiple matrices. 
+#' \code{simple_sews} objects come in multiple variants:
+#'   \code{simple_sews_single} is the result of an indicator function applied to 
+#'   a single matrix, and \code{simple_sews_test_single} is the result of 
+#'   \code{\link{indictest}} applied to a \code{simple_sews_single} object. Both 
+#'   these objects have list equivalents, \code{simple_sews_list} and 
+#'   \code{simple_sews_test_list} which are simply a collection of their 
+#'   'single' equivalent. These 'list' objects are used to store the results 
+#'   of computations when working with multiple matrices. 
 #' 
-#'   A \code{simple_sews_single} object is a list with the following components
-#' \itemize{
-#'   \item{value: }{the indicator values. A vector of length one if there is 
-#'     only one numeric value returned by the indicator function (e.g.
-#'     \code{\link{flowlength_sews}}, or with a length above one otherwise}
-#'   \item{orig_data: }{the original matrix on which the indicator was computed} 
-#'   \item{fun.args: }{the argument used in the call to the indicator function 
-#'     (the function that given a matrix, returns the spatial metrics of
-#'     interest)}
-#'   \item{taskname: }{a character string describing the current indicator(s) 
-#'     being computed}
-#'   \item{indicf: }{the indicator function, which given the matrix, returns the
-#'     spatial metric(s) of interest}
-#' }
+#' A \code{simple_sews_single} object is a list with the following components
+#'   \itemize{
+#'     \item{value: }{the indicator values. A vector of length one if there is 
+#'       only one numeric value returned by the indicator function (e.g.
+#'       \code{\link{flowlength_sews}}, or with a length above one otherwise}
+#'     \item{orig_data: }{the original matrix on which the indicator was computed} 
+#'     \item{fun.args: }{the argument used in the call to the indicator function 
+#'       (the function that given a matrix, returns the spatial metrics of
+#'       interest)}
+#'     \item{taskname: }{a character string describing the current indicator(s) 
+#'       being computed}
+#'     \item{indicf: }{the indicator function, which given the matrix, returns the
+#'       spatial metric(s) of interest}
+#'   }
 #' 
 #'   \code{simple_sews_test_single} have all of the above components, plus 
 #' the following: 
@@ -74,10 +74,11 @@
 #'   \item{null_method: }{the method used to produce the null matrices. See 
 #'     \code{\link{indictest}} for details}
 #'   \item{nulln: }{the number of null matrices used}
-#'   \item{get_nullmat: }{a function that can called to obtain a randomized 
+#'   \item{get_nullmat: }{a function that can be called to obtain a randomized 
 #'     matrix}
 #'   \item{matrixn: }{the number of the matrix, can be above one if the
-#'     computations has been run on a list of matrices}
+#'     computations have been run on a list of matrices, or non-existent if 
+#'     only one matrix was used}
 #' }
 #' 
 #' @seealso \code{\link{custom_indicator}} 

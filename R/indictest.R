@@ -90,9 +90,9 @@ indictest <- function(x,
                       null_control = NULL, 
                       ...) { 
   # If indictest has already run on the object, return itself
-  if ( any(grepl("_sews_test_", class(x))) ) { 
-    return(x)
-  }
+#   if ( any(grepl("_sews_test_", class(x))) ) { 
+#     return(x)
+#   }
   
   UseMethod('indictest')
 }

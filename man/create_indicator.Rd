@@ -36,14 +36,12 @@ Computation, significance assessment and display of trends
   of a custom, user-defined indicator.
 }
 \details{
-Spatial Early-warning signals (EWS) are metrics that are based on the 
-  spatial structure of a system and measure the degradation of an ecological 
-  system. The package provides "workflow functions", named \code{*_sews}, 
+\code{spatialwarnings} provides "workflow functions", named \code{*_sews}, 
   that assist the user in computing, displaying and assessing the 
-  significance of indicator values. 
-
-\code{create_indicator} extends the package to any arbitrary function. 
-  It takes a function `fun` and returns another function that can be used 
+  significance of indicator values. The functions \code{create_indicator} and 
+  \code{compute_indicator} provides such workflow for any arbitrary function. 
+  
+It takes a function `fun` and returns another function that can be used 
   as an indicator similar to the \code{*_sews} functions. The 
   results of this function can be assessed for significance using 
   \code{indictest} and trends can be displayed using 

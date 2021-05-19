@@ -14,7 +14,6 @@ before_install:
   
 script:
   # Test first the fitting results against pli code
-  - R -e "Sys.sleep(10); update.packages(ask = FALSE)"
   - R -e "install.packages(c('testthat', 'roxygen2', 'devtools', 'gsl'))"
   - R -e "devtools::install_deps(upgrade = 'always', dependencies = TRUE, repos = 'https://cloud.r-project.org')"
   - R -e "EXTENDED_TESTS <- TRUE; devtools::test(filter = 'psdfit')"

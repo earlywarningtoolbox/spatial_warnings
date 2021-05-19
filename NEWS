@@ -10,7 +10,7 @@ Improvements:
       exponent of a power-law ("slope") and its exponential truncation (from 
       "expo" and "rate", which were ambiguous)
   
-  * EXPERIMENTAL: Variogram-based indicators has been added. Note that this 
+  * EXPERIMENTAL: Variogram-based indicators have been added. Note that this 
       deserves more testing and application to real-world data to make sure that
       the computation of variograms are accurate enough. 
   
@@ -18,7 +18,7 @@ Improvements:
       analytical approximation described in Rodriguez et al. (2017)
   
 Bug fixes: 
-
+  
   * Fixed a bug where available methods were not displayed in `summary()`
   
   * Fixed a bug where the r-spectrum was wrong when the matrix had an odd number 

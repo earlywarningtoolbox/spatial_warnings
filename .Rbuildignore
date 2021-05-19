@@ -25,4 +25,5 @@ tools/imgs
 ^tests_i386$
 ^tests_x64$
 ^find_unused_fs.R^
-
+^src/.gitignore$
+^.git$

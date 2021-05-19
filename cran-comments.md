@@ -1,10 +1,10 @@
 Dear CRAN maintainers, 
 
-This is an update to the package spatialwarnings that fixes bugs, improves the 
-code base and provides new functionality. spatialwarnings is a package that 
-assists ecologists in carrying out computations of early-warning signals (EWS) 
-of ecosystem degradation. More information on the package and testing results
-are available below. 
+This is a major update to the package spatialwarnings that fixes bugs, improves 
+the code base and provides new functionality. spatialwarnings is a package that 
+assists ecologists in carrying out computations of early-warning signals (EWS) of 
+ecosystem degradation. More information on the package and testing results are 
+available below. 
 
 Thanks in advance, 
 
@@ -16,38 +16,25 @@ Alexandre Génin
 
 This package was tested using the following environments: 
 
- * rhub service using the following platforms: 
-     Fedora Linux, R-devel, clang, gfortran
-     Ubuntu Linux 16.04 LTS, R-release, GCC
-     Windows Server 2008 R2 SP1, R-devel, 32/64 bit
-  
- * Travis-ci (Ubuntu 16.04, R release () and devel (2020-05-13 r78449) ):
+ * Travis-ci (Ubuntu 16.04, R release (4.0.2) and devel (2021-05-17 r80314) ):
      https://travis-ci.org/spatial-ews/spatialwarnings
  
- X local linux computer, with and without valgrind (Arch Linux as of 
-     2020-05-13, R 4.0.0)
+ * local linux computer (Arch Linux as of 2021-05-18, R 4.0.5)
  
- * win builder service (R 3.6.3, R 4.0.0, R devel 2020-05-11 r78411)
+ * win builder service (R release as of 2021-05-19)
  
- X Solaris x86 (Solaris 10 in local virtual machine, with manually-installed 
+ * Solaris x86 (Solaris 10 in local virtual machine, with manually-installed 
      R 4.0.0 and GNU gsl 2.6). 
 
 
 
 ## R CMD check results
 
-No ERRORs nor WARNINGs arose during testing on the above platforms. We removed 
-the unused dependency 'tidyr', which was the cause of a NOTE on CRAN. 
+No relevant ERRORs nor WARNINGs arose during testing on the above platforms. We
+removed the unused dependency 'tidyr', which was the cause of an occasional NOTE 
+on CRAN. 
 
-Several remaining NOTEs occurred: 
-
-On platforms Windows Server 2008 R2 SP1, R devel (rhub) and 
-Ubuntu Linux 16.04 LTS, R-release (rhub), the following NOTE was produced, 
-which I believe is a false positive: 
-  
- * Found the following files/directories:
-   'examples_i386' 'examples_x64' 'spatialwarnings-Ex_i386.Rout'
-   'spatialwarnings-Ex_x64.Rout' 'tests_i386' 'tests_x64'
+One remaining NOTE occurred: 
 
 The package size is sometimes reported as exceeding 1Mb (Solaris & Linux), 
 probably due to the use of Rcpp: 
@@ -57,8 +44,6 @@ probably due to the use of Rcpp:
     sub-directories of 1Mb or more:
     libs 4.5Mb
 
-    
-
 ## Changes in this release
 
 Improvements: 
@@ -67,15 +52,21 @@ Improvements:
   
   * Fitting of distributions now uses 'plexpo' and 'trunc' to refer to the 
       exponent of a power-law ("slope") and its exponential truncation (from 
-      "expo" and "rate", which was more ambiguous)
+      "expo" and "rate", which were ambiguous)
   
   * EXPERIMENTAL: Variogram-based indicators has been added. Note that this 
       deserves more testing and application to real-world data to make sure that
       the computation of variograms are accurate enough. 
   
+  * EXPERIMENTAL: Significance of flow-length can now be assessed using the 
+      analytical approximation described in Rodriguez et al. (2017)
+  
 Bug fixes: 
 
-  * Fix a bug where available methods were not displayed in `summary()`
+  * Fixed a bug where available methods were not displayed in `summary()`
+  
+  * Fixed a bug where the r-spectrum was wrong when the matrix had an odd number 
+      of rows or columns
   
 Misc changes: 
   

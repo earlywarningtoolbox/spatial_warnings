@@ -1,5 +1,5 @@
 
-spatialwarnings v3.0.0 (Release date: unknown) 
+spatialwarnings v3.0.0 (Release date: 2020-05-19) 
 ==============================================
 
 Improvements: 
@@ -8,7 +8,7 @@ Improvements:
   
   * Fitting of distributions now uses 'plexpo' and 'trunc' to refer to the 
       exponent of a power-law ("slope") and its exponential truncation (from 
-      "expo" and "rate", which was more ambiguous)
+      "expo" and "rate", which were ambiguous)
   
   * EXPERIMENTAL: Variogram-based indicators has been added. Note that this 
       deserves more testing and application to real-world data to make sure that
@@ -19,10 +19,10 @@ Improvements:
   
 Bug fixes: 
 
-  * Fix a bug where available methods were not displayed in `summary()`
+  * Fixed a bug where available methods were not displayed in `summary()`
   
-  * Fix a bug where the r-spectrum was wrongly-calculated when the matrix had 
-      an odd number of rows or columns
+  * Fixed a bug where the r-spectrum was wrong when the matrix had an odd number 
+      of rows or columns
   
 Misc changes: 
   

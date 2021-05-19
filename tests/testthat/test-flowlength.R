@@ -48,10 +48,10 @@ test_that("Flowlength computations are OK", {
   # Obs mean and theoretical mean should be very close
   with( subset(all_fls, themean > 0 & thevar > 0), { 
     expect_true({ 
-      all(coef(lm(obsmean ~ themean)) < c(0.05, 1.05))
+      all(coef(lm(obsmean ~ themean)) < c(0.05, 1.10))
     })
     expect_true({ 
-      all(coef(lm(obsvar ~ thevar)) < c(0.05, 1.05))
+      all(coef(lm(obsvar ~ thevar)) < c(0.05, 1.10))
     })
   })
 

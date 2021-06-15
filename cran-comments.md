@@ -6,6 +6,9 @@ assists ecologists in carrying out computations of early-warning signals (EWS) o
 ecosystem degradation. More information on the package and testing results are 
 available below. 
 
+Please note that my institutional address has changed, due to me being an 
+ever-moving postdoc. 
+
 Thanks in advance, 
 
 Alexandre Génin

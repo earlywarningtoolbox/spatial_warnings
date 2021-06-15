@@ -1,6 +1,6 @@
 
-spatialwarnings v3.0.0 (Release date: 2020-05-19) 
-==============================================
+spatialwarnings v3.0.0 (Release date: 2021-05-19) 
+=================================================
 
 Improvements: 
 
@@ -14,7 +14,7 @@ Improvements:
       deserves more testing and application to real-world data to make sure that
       the computation of variograms are accurate enough. 
   
-  * EXPERIMENTAL: Significance of flow-length can now be assessed using the 
+  * EXPERIMENTAL: Significance of flow length can now be assessed using the 
       analytical approximation described in Rodriguez et al. (2017)
   
 Bug fixes: 
@@ -77,7 +77,7 @@ Misc changes:
   * Dependency to VGAM is now removed 
   
 spatialwarnings v1.3.1 (Release date: 2018-12)
-===============================================
+==============================================
 
 New indicators:
   
@@ -120,7 +120,7 @@ Bug fixes:
 
 
 spatialwarnings v1.1 (Release date: 2018-06)
-===============================================
+============================================
 
 This release provides changes as to satisfy referees' comments
 prior to the publication of the package, as long as minor

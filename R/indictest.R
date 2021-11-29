@@ -15,8 +15,7 @@
 #' @param nulln The number of values to compute to produce the null 
 #'   distribution 
 #' 
-#' @param null_method The method used to produce the null values (right now 
-#'   only the permutation method is supported, 'perm')
+#' @param null_method The method used to produce the null values (see Details)
 #' 
 #' @param null_control List of arguments used to control the generation of 
 #'   null matrices. If NULL, then arguments then sensible defaults are chosen 
@@ -58,6 +57,10 @@
 #' Please note that specific null methods may exists for some indicators, such as
 #' \code{\link[=flowlength_sews]{flowlength}}. These are often based on 
 #' analytical approximation and allow faster computations. 
+#' 
+#' If a matrix has attributes, then these are preserved and passed to the 
+#'   function used to compute the indicator value, except when using the 
+#'   null method 'perm', in which case matrix attributes are discarded. 
 #' 
 #' The list \code{null_control} can be used to adjust the computation of 
 #'   null matrices. It can have the following components: 

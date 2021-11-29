@@ -109,10 +109,13 @@ generate_nulls <- function(input, indicf, nulln, null_method,
     null_mod <- NULL # No model involved when we are permuting
     get_nullmat <- function() { 
       if ( is.logical(input) ) { 
-        shuffle_matrix(input) > 0.5 
+        a <- shuffle_matrix(input) > 0.5 
       } else { 
-        shuffle_matrix(input) 
+        a <- shuffle_matrix(input) 
       }
+      # Pass attributes to the new, random matrix
+      attributes(a) <- attributes(input)
+      return(a)
     }
   }
   
@@ -242,6 +245,8 @@ create_nullmat_generator <- function(mat, null_mod, family) {
     if ( is.binomial(family) ) { 
       sim <- sim > .5
     }
+    # Transfer matrix attributes
+    attributes(sim) <- attributes(mat)
     return(sim)
   }
 }

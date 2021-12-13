@@ -4,7 +4,7 @@
 test_that("Moran correlation is computed correctly", { 
   
   within_bounds <- function(x) { 
-    expect_true( x >= -1 & x <= 1 )
+    expect_true( all(x >= -1 & x <= 1) )
   }
   
   # We work on small matrices so that the handling of sides has a big effect
@@ -15,7 +15,7 @@ test_that("Moran correlation is computed correctly", {
   morans <- replicate(nreps, { 
     raw_moran(matrix(rnorm(n), ncol = sqrt(n)))
   })
-  lapply(morans, within_bounds)
+  within_bounds(morans)
   # Check that the mean value is equal to the expected value
   expect_true( abs(mean(morans) - ( -1 / ( n - 1 ) )) < 1e-2)
   

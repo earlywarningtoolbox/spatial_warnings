@@ -56,8 +56,8 @@ test_that('results matches those in PLOS One', {
     
     # Mean skew var are expected to map 1:1
     expect_true(all(abs(ref_results[ ,"mean"] - test_reshaped[ ,"mean"]) < 1e-10))
-    expect_true(all(abs(ref_results[ ,"skew"] - test_reshaped[ ,"skew"]) < 1e-10))
-    expect_true(all(abs(ref_results[ ,"var"] - test_reshaped[ ,"var"]) < 1e-10))
+    expect_true(all(abs(ref_results[ ,"skew"] - test_reshaped[ ,"skewness"]) < 1e-10))
+    expect_true(all(abs(ref_results[ ,"var"] - test_reshaped[ ,"variance"]) < 1e-10))
     
     # Moran correlation is computed differently in spw, so resuults do not have to 
     # match exactly 

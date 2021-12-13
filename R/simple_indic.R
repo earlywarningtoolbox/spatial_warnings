@@ -31,8 +31,8 @@
 #'   significance of indicator values. The functions \code{create_indicator} and 
 #'   \code{compute_indicator} provides such workflow for any arbitrary function. 
 #'   
-#' It takes a function `fun` and returns another function that can be used 
-#'   as an indicator similar to the \code{*_sews} functions. The 
+#' \code{create_indicator} takes a function `fun` and returns another function 
+#'   that can be used as an indicator similar to the \code{*_sews} functions. The 
 #'   results of this function can be assessed for significance using 
 #'   \code{indictest} and trends can be displayed using 
 #'   \code{plot}, \code{summary}, etc. (see Examples). \code{compute_indicator} 

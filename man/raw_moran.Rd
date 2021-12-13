@@ -19,13 +19,21 @@ This function computes the Moran's I index of spatial
 \details{
 This function returns the spatial correlation as measured by 
   the Moran's I index. If the variance of the matrix is zero, then 
-  \code{NaN} is returned.
+  \code{NaN} is returned. This function assumes a 4-way neighborhood, and does 
+  not wrap around at the sides of the matrix.
 }
 \examples{
 
 # Spatial correlation of white noise is close to zero
 rmat <- matrix(runif(1000) > .5, ncol = 100)
 raw_moran(rmat) 
+
+# Spatial correlation of a half-ones / half-zeros matrix is close to one. 
+# This would produce close but inaccurate results in version <3.0.2
+m <- cbind(matrix(1, nrow = 100, ncol = 50), 
+           matrix(0, nrow = 100, ncol = 50))
+
+raw_moran(m)
 
 }
 \seealso{

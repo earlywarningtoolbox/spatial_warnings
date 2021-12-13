@@ -1,0 +1,40 @@
+
+
+
+test_that("Moran correlation is computed correctly", { 
+  
+  within_bounds <- function(x) { 
+    expect_true( x >= -1 & x <= 1 )
+  }
+  
+  # We work on small matrices so that the handling of sides has a big effect
+  n <- 5*5
+  nreps <- 1999
+  
+  # Correlation of random matrices is near-zero 
+  morans <- replicate(nreps, { 
+    raw_moran(matrix(rnorm(n), ncol = sqrt(n)))
+  })
+  lapply(morans, within_bounds)
+  # Check that the mean value is equal to the expected value
+  expect_true( abs(mean(morans) - ( -1 / ( n - 1 ) )) < 1e-2)
+  
+  # Correlation of checkerboard is near -1 
+  # If n is even, then make it odd, so that the testing matrices are really checkerboards
+  ncheck <- ifelse(n %% 2 == 0, (sqrt(n)+1)^2, n)
+  c1 <- matrix((1+seq.int(ncheck)) %% 2, ncol = sqrt(ncheck))
+  c2 <- matrix(seq.int(ncheck) %% 2, ncol = sqrt(ncheck))
+  expect_true( abs(raw_moran(c1) - -1) < 1e-10 )
+  expect_true( abs(raw_moran(c2) - -1) < 1e-10 )
+  within_bounds(raw_moran(c1))
+  within_bounds(raw_moran(c2))
+  
+  # Correlation of left/right matrix is near +1
+  nm <- 200*200
+  m1 <- cbind(matrix(1, nrow = sqrt(nm), ncol = floor(sqrt(nm) / 2)), 
+              matrix(0, nrow = sqrt(nm), ncol = ceiling(sqrt(nm) / 2)))
+  expect_true( abs( raw_moran(m1) - 1 ) < 0.01 )
+  within_bounds(raw_moran(m1))
+  
+})
+

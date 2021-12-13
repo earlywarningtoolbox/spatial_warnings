@@ -32,7 +32,7 @@ a FAQ is also available [there](https://alex.lecairn.org/spatialwarnings-faq.htm
 
 ## Contributors
 
-Alain Danet, [Alexandre Génin (Maintainer)](mailto:alexandre.genin@umontpellier.fr),
+Alain Danet, [Alexandre Génin (Maintainer)](mailto:a.a.h.genin@uu.nl),
 Vishwesha Guttal, Sonia Kefi, Sabiha Majumder, Sumithra Sankaran, Florian Schneider
 
 `spatialwarnings` has also benefited from contributions from Angeles Garcia-Mayor, Vasilis Dakos

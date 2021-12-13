@@ -46,9 +46,9 @@ IntegerMatrix label_cpp(IntegerMatrix mat,
       }
       
       // If it is within a patch and not marked already 
-      if ( !is_marked(i,j) ) { 
+      if ( ! is_marked(i, j) ) { 
         // We flood fill the patch
-        std::pair<int,int> xy = std::make_pair(i,j);
+        std::pair<int,int> xy = std::make_pair(i, j);
         patch = flood_fill(mat, is_marked, output, nbmask, 
                            xy, patch_id, wrap);
         // Update percolation status, patch sizes and increase patch id

@@ -147,7 +147,7 @@ DataFrame rspectrum(arma::mat mat) {
   
   rspectr = rspectr / norm_factor;
 //   Rcout << ray << "\n"; 
-//   Rcout << rspectr << "\n\n"; 
+//   Rcpp::Rcout << rspectr << "\n\n"; 
   return DataFrame::create(_["dist"]  = ray, 
                            _["rspec"] = rspectr);
 }

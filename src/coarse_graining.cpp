@@ -15,18 +15,25 @@ using namespace Rcpp;
 
 //[[Rcpp::export]]
 NumericMatrix coarse_grain_cpp(NumericMatrix mat, int subsize) {
-
+  
   // Integer division (round down to nearest integer). We convert to (int) 
   // as mat.n_rows may be a uword.
   int nr = (int)(mat.nrow() / subsize);
   int nc = (int)(mat.ncol() / subsize);
   
   NumericMatrix reduced_matrix = NumericMatrix(nr, nc);
+  // Rcpp::Rcout << "nr:" << nr << " nc: " << nc; 
+  // Rcpp::Rcout << "nr:" << mat.nrow() << " nc: " << mat.ncol(); 
   
   // Fill in values of the submatrix
   for ( int j=0; j<nc; j++ ) {
     for ( int i=0; i<nr; i++ ) {
-
+      
+      assert(j*subsize < mat.ncol()); 
+      assert((j+1)*subsize < mat.ncol()); 
+      assert(i*subsize < mat.nrow()); 
+      assert((i+1)*subsize < mat.nrow()); 
+      
       // Compute mean of the corresponding cells in the original matrix
       double sum = 0;
       for ( int l=(j*subsize); l < (j+1)*subsize; l++ ) {
@@ -38,6 +45,6 @@ NumericMatrix coarse_grain_cpp(NumericMatrix mat, int subsize) {
       reduced_matrix(i,j) = sum / ( subsize * subsize );
     }
   }
-
+  
   return reduced_matrix;
 }

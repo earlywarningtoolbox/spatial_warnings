@@ -59,14 +59,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // tplsum
-NumericVector tplsum(double expo, double rate, IntegerVector xs, int xmin);
+arma::vec tplsum(double expo, double rate, arma::ivec xs, int xmin);
 RcppExport SEXP _spatialwarnings_tplsum(SEXP expoSEXP, SEXP rateSEXP, SEXP xsSEXP, SEXP xminSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< double >::type expo(expoSEXP);
     Rcpp::traits::input_parameter< double >::type rate(rateSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type xs(xsSEXP);
+    Rcpp::traits::input_parameter< arma::ivec >::type xs(xsSEXP);
     Rcpp::traits::input_parameter< int >::type xmin(xminSEXP);
     rcpp_result_gen = Rcpp::wrap(tplsum(expo, rate, xs, xmin));
     return rcpp_result_gen;
@@ -134,12 +134,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_skewness
-double cpp_skewness(Rcpp::NumericVector X);
+double cpp_skewness(arma::vec X);
 RcppExport SEXP _spatialwarnings_cpp_skewness(SEXP XSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type X(XSEXP);
     rcpp_result_gen = Rcpp::wrap(cpp_skewness(X));
     return rcpp_result_gen;
 END_RCPP

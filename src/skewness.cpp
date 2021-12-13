@@ -2,13 +2,13 @@
 // Compute the skewness of a set of values
 // 
 
-#include <Rcpp.h>
-using namespace Rcpp; 
+#include <RcppArmadillo.h>
+using namespace arma; 
 
 #define NOVAR_SKEWNESS_VAL NA_REAL
 
 //[[Rcpp::export]]
-double cpp_skewness(Rcpp::NumericVector X) { 
+double cpp_skewness(arma::vec X) { 
   
   // Number of elements in X
   int N = X.size(); 
@@ -38,5 +38,6 @@ double cpp_skewness(Rcpp::NumericVector X) {
   } else { 
     skewness = cubesum / pow(sqsum, 1.5); 
   }
+  
   return(skewness);
 }

@@ -4,20 +4,20 @@
 //   a TPL. The function is vectorized. 
 // 
 
-#include <Rcpp.h>
+#include <RcppArmadillo.h>
 
-using namespace Rcpp; 
+using namespace arma; 
 
 const int MAXIT = 1e6L; 
 const double TOL = 1e-8; 
   
 
 //[[Rcpp::export]]
-NumericVector tplsum(double expo, double rate, IntegerVector xs, int xmin) { 
+arma::vec tplsum(double expo, double rate, arma::ivec xs, int xmin) { 
   
-  NumericVector output(xs.length());
+  arma::vec output(xs.n_elem);
   
-  for (int i=0; i<xs.length(); i++) { 
+  for (int i=0; i<xs.n_elem; i++) { 
     int x = xs(i);
     double total = 0;
     for (int k=xmin; k<x; k++) { 

@@ -130,6 +130,10 @@ summary.simple_sews_test_list <- function(object,
   
   tab <- tab[ ,c('matrixn', 'indic', 'value', 'pval', 'stars')]
   
+  # Format P-values 
+  nulln <- object[[1]][["nulln"]]
+  tab[ ,"pval"] <- format.pval(tab[ ,"pval"], digits = DIGITS, eps = 1/nulln)
+  
   # Reshape the table 
   tab_pretty <- llply(unique(tab[['indic']]), function(current_indic) { 
     a <- tab[tab[ ,"indic"] == current_indic, c('value', 'pval', 'stars')]

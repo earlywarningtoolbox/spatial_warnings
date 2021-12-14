@@ -1,5 +1,6 @@
 
 
+context('Test the computation of moran correlation')
 
 test_that("Moran correlation is computed correctly", { 
   
@@ -35,6 +36,19 @@ test_that("Moran correlation is computed correctly", {
               matrix(0, nrow = sqrt(nm), ncol = ceiling(sqrt(nm) / 2)))
   expect_true( abs( raw_moran(m1) - 1 ) < 0.01 )
   within_bounds(raw_moran(m1))
+  
+  # Test our implementation against the one in package raster
+  if ( requireNamespace("raster", quietly = TRUE) ) { 
+    c <- seq(0.01, 0.99, l = 21)
+    for ( i in seq_along(c) ) { 
+      m <- matrix(runif(n) < c[i], ncol = sqrt(n))
+      w <- matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0), byrow = TRUE, ncol = 3)
+      diffidx <- abs( raw_moran(m) - raster::Moran(raster::raster(m), w) )
+      if ( ! is.nan(diffidx) ) { 
+        expect_true( diffidx < 1e-10 )
+      }
+    }
+  }
   
 })
 

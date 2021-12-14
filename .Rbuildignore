@@ -27,3 +27,4 @@ tools/imgs
 ^find_unused_fs.R^
 ^src/.gitignore$
 ^.git$
+^\.github$

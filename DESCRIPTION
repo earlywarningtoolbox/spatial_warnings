@@ -27,7 +27,8 @@ Suggests:
     acss, 
     mgcv, 
     gstat, 
-    sp
+    sp, 
+    raster
 LinkingTo: Rcpp, RcppArmadillo
 LazyData: true
 RoxygenNote: 7.1.2

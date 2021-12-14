@@ -40,14 +40,22 @@ test_that("Moran correlation is computed correctly", {
   # Test our implementation against the one in package raster
   if ( requireNamespace("raster", quietly = TRUE) ) { 
     c <- seq(0.01, 0.99, l = 21)
+    w <- matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0), byrow = TRUE, ncol = 3)
+    
     for ( i in seq_along(c) ) { 
       m <- matrix(runif(n) < c[i], ncol = sqrt(n))
-      w <- matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0), byrow = TRUE, ncol = 3)
       diffidx <- abs( raw_moran(m) - raster::Moran(raster::raster(m), w) )
       if ( ! is.nan(diffidx) ) { 
         expect_true( diffidx < 1e-10 )
       }
     }
+    expect_true({ 
+      abs(raw_moran(c1) - raster::Moran(raster::raster(c1), w)) < 1e-10
+    })
+    expect_true({ 
+      abs(raw_moran(c2) - raster::Moran(raster::raster(c2), w)) < 1e-10
+    })
+    
   }
   
 })

@@ -1,4 +1,16 @@
 
+spatialwarnings v3.0.2 (Release date: unknown)
+==============================================
+  
+Improvements: 
+  
+  * Matrix attributes are now preserved when generating null matrices (except 
+      when shuffling the original matrix, null_method = 'perm')
+  
+Bug fixes: 
+  
+  * Computation of Moran's I is now accurate for small matrices
+  
 spatialwarnings v3.0.0 (Release date: 2021-05-19) 
 =================================================
 

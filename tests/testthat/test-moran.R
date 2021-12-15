@@ -10,7 +10,7 @@ test_that("Moran correlation is computed correctly", {
   
   # We work on small matrices so that the handling of sides has a big effect
   n <- 5*5
-  nreps <- 1999
+  nreps <- 9999
   
   # Correlation of random matrices is near-zero 
   morans <- replicate(nreps, { 

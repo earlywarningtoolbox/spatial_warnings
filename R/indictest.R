@@ -1,0 +1,102 @@
+# 
+# Indictest is a method for testing the significance of spatial indicators 
+# based on shuffling the original matrix. 
+# 
+# This file only defines the global method and maybe some helpers. For each 
+#   method, please refer to the task_* files. 
+
+#' @title Significance-assessment of spatial early-warning signals
+#' 
+#' @description Assess the significance of spatial early-warning indicators
+#' 
+#' @param x A spatial warning object such as one produced by the \code{*_sews}
+#'   functions, or \code{\link{compute_indicator}}
+#' 
+#' @param nulln The number of values to compute to produce the null 
+#'   distribution 
+#' 
+#' @param null_method The method used to produce the null values (see Details)
+#' 
+#' @param null_control List of arguments used to control the generation of 
+#'   null matrices. If NULL, then arguments then sensible defaults are chosen 
+#'   (see Details)
+#' 
+#' @param ... Additional arguments are ignored
+#' 
+#' @return An object with a class ending in \code{*_sews_test}, whose exact
+#'   class depends on the input object. \code{plot}, \code{summary} methods are
+#'   available to display the results of computations, and additional methods
+#'   may be available depending on the input object (e.g. see
+#'   \code{\link{patchdistr_sews_plot}}). 
+#' 
+#' @details 
+#' 
+#' \code{indictest} is used to test the significance of early-warning signals
+#'   against 'null matrices', which represent the expected spatial structure 
+#'   in the absence of the biological process of interest. 
+#' 
+#' For a given indicator, a null distribution is obtained by producing a set 
+#'   of 'null' matrices, from which indicator values are recomputed. This
+#'   produces a null distribution of \code{nulln} indicator values against
+#'   which the observed value is tested. 
+#' 
+#' Several methods are available to produce the set of null matrices. If 
+#'   \code{null_method} is set to "perm", the original matrix is reshuffled 
+#'   to obtain a null matrix. If \code{null_method} is set to "intercept", then 
+#'   a generalized linear model of the form `y ~ 1` (where y represents the 
+#'   values of the matrix) is fitted, then values are drawn from this model. If 
+#'   \code{null_method} is set to "smooth", then a smooth surface is fitted
+#'   based on a generalized additive model (using \code{\link[=mgcv]{gam}}) to
+#'   the matrix, then values are drawn from this model. When using the
+#'   "intercept" or "smooth" null models, it is important to make sure the
+#'   model 'family' corresponds to the type of values present in the matrix. By
+#'   default, if a matrix contains TRUE/FALSE values, a `binomial()` family is
+#'   used, otherwise a `gaussian()` family is used. More information about null
+#'   models is available in the \href{https://alex.lecairn.org/spatialwarnings-faq.html#Using_advanced_null_models}{spatialwarnings FAQ}. 
+#' 
+#' Please note that specific null methods may exists for some indicators, such as
+#' \code{\link[=flowlength_sews]{flowlength}}. These are often based on 
+#' analytical approximation and allow faster computations. 
+#' 
+#' If a matrix has attributes, then these are preserved and passed to the 
+#'   function used to compute the indicator value, except when using the 
+#'   null method 'perm', in which case matrix attributes are discarded. 
+#' 
+#' The list \code{null_control} can be used to adjust the computation of 
+#'   null matrices. It can have the following components: 
+#'   \itemize{ 
+#'     \item `family` The family used in the model used to produce the null 
+#'       matrices. Typically, it is one of \code{\link[=stats]{binomial}()}, 
+#'       \code{\link[=stats]{binomial}()}, etc. 
+#' 
+#'     \item `qinf` The lower quantile to compute from the null distribution 
+#'       and display in summaries/plots. A numeric value between 0 and 1.
+#' 
+#'     \item `qsup` The upper quantile to compute from the null distribution 
+#'       and display in summaries/plots. A numeric value between 0 and 1.
+#'   }
+#' 
+#' @seealso \code{\link{generic_sews}}, \code{\link{spectral_sews}}, 
+#'   \code{\link{kbdm_sews}},
+#'   \code{\link{compute_indicator}}, \code{\link{flowlength_sews}}
+#' 
+#' @references 
+#' 
+#' Kefi, S., Guttal, V., Brock, W.A., Carpenter, S.R., Ellison, A.M., Livina, 
+#' V.N., et al. (2014). Early Warning Signals of Ecological Transitions: 
+#' Methods for Spatial Patterns. PLoS ONE, 9, e92097
+#' 
+#'@export
+indictest <- function(x, 
+                      nulln = 999, 
+                      null_method = 'perm', 
+                      null_control = NULL, 
+                      ...) { 
+  # If indictest has already run on the object, return itself
+#   if ( any(grepl("_sews_test_", class(x))) ) { 
+#     return(x)
+#   }
+  
+  UseMethod('indictest')
+}
+

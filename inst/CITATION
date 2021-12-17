@@ -1,0 +1,22 @@
+
+
+note <- sprintf("R package version %s", meta$Version)
+year <- substr(as.character(Sys.Date()), 1, 4)
+
+bibentry(bibtype = "Article",
+         title = "Monitoring ecosystem degradation using spatial data and the R 'spatialwarnings'",
+         journal = "Methods in Ecology and Evolution", 
+         volume = "9", 
+         number = "10", 
+         pages  = "2067-2075",
+         doi = "10.1111/2041-210X.13058", 
+         author = c(person("Alexandre", "Genin"),
+                    person("Sabiha", "Majumder"),
+                    person("Sumithra", "Sankaran"),
+                    person("Alain", "Danet"),
+                    person("Vishvesha", "Guttal"),
+                    person("Florian D.", "Schneider"),
+                    person("Sonia", "Kefi")), 
+         year = year, 
+         note = note,
+         url = "https://CRAN.R-project.org/package=spatialwarnings")
